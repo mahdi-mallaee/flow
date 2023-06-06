@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+  }
+  
+  .main-view {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  
+    .title {
+      text-align: center;
+      margin: 0;
+    }
+  
+    .session-title-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+  
+      .session-title-text {
+        font-size: 1rem;
+      }
+  
+      .new-session-button,
+      .save-session-button {
+        border: none;
+        background-color: #e0e0e0;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+  
+        &:hover {
+          opacity: 0.5;
+        }
+      }
+    }
+  
+    .sessions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+  
+      .session {
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: background-color 0.13s ease-in;
+        display: flex;
+        gap: 8px;
+  
+        .title {
+          flex-grow: 1;
+          text-align: start;
+        }
+  
+        &:hover {
+          background-color: rgba($color: #a3a3a3, $alpha: 0.3);
+        }
+      }
+    }
+  
+    .unsaved-windows-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+  
+      .unsaved-window {
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: background-color 0.13s ease-in;
+        display: flex;
+        gap: 8px;
+  
+        .title {
+          flex-grow: 1;
+          text-align: start;
+        }
+  
+        &:hover {
+          background-color: rgba($color: #a3a3a3, $alpha: 0.3);
+        }
+      }
+    }
+  }
+  
