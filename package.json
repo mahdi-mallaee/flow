@@ -1,0 +1,32 @@
+{
+  "name": "a",
+  "displayName": "A",
+  "version": "0.0.1",
+  "description": "A basic Plasmo extension.",
+  "author": "Mahdi",
+  "packageManager": "npm@9.1.3",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
+  },
+  "dependencies": {
+    "plasmo": "0.74.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.237",
+    "@types/node": "20.2.4",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4",
+    "prettier": "2.8.8",
+    "typescript": "5.0.4",
+    "@plasmohq/prettier-plugin-sort-imports": "3.6.4"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ]
+  }
+}
