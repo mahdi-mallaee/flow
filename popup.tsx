@@ -4,22 +4,25 @@ import createNewSession from "~actions/createNewSession"
 import storageGetSesstion from "~store/storageGetSesstion"
 import storageSetSessions from "~store/storageSetSessions"
 import openSession from "~actions/openSession"
+import getUnsavedWindows from "~actions/getUnsavedWindows"
 
 function IndexPopup() {
   const [showTitleInputDialog, setShowTitleInputDialog] = useState(false)
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [sessions, setSessions] = useState([])
+  const [unsavedWindows, setUnsavedWindows] = useState([])
 
   const newSessionClickHandler = () => {
     setShowTitleInputDialog(true)
   }
 
   const _createNewSession = async () => {
-    const newSession = await createNewSession()
+    const newSession = await createNewSession(0, [], sessionTitleInput)
     const sessions = await storageGetSesstion()
     await storageSetSessions([...sessions, newSession])
     setShowTitleInputDialog(false)
     setSessionTitleInput('')
+    refreshSessions()
   }
 
   const sessionClickHandler = async (sessionId: string) => {
@@ -28,15 +31,35 @@ function IndexPopup() {
     await storageSetSessions(newSessions)
   }
 
-  const clearStorage = () => {
-    chrome.storage.local.clear()
+  const addAsSessionButtonClickHandler = async (window: chrome.windows.Window) => {
+    const newSession = await createNewSession(window.id)
+    const sessions = await storageGetSesstion()
+    await storageSetSessions([...sessions, newSession])
+    refreshSessions()
   }
 
-  useEffect(() => {
+
+  const clearStorage = () => {
+    chrome.storage.local.clear()
+    refreshSessions()
+  }
+
+  const refreshSessions = () => {
     storageGetSesstion()
       .then(sessions => {
         setSessions(sessions)
+        getUnsavedWindows(sessions)
+          .then(windows => {
+            setUnsavedWindows(windows)
+          })
       })
+
+  }
+
+
+
+  useEffect(() => {
+    refreshSessions()
   }, [])
 
 
@@ -74,19 +97,18 @@ function IndexPopup() {
           {sessions.map(session => {
             return <div key={session.id} className='session' onClick={() => { sessionClickHandler(session.id) }}>
               <div className="title">{session.title}</div>
-              {/* <div className="tabs-count">{session.Tabs.length} tabs</div> */}
-              <div className="save-status">{session.saved ? "saved" : "unsaved"}</div>
+              <div className="tabs-count">{session.tabs.length} tabs</div>
             </div>
           })}
         </div>
-        {/* <div className="unsaved-windows-container">
+        <div className="unsaved-windows-container">
           {unsavedWindows.map(window => {
             return <div key={window.id} className='unsaved-window'>
               <div className="title">Unsaved Window {window.id}</div>
               <button className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>add +</button>
             </div>
           })}
-        </div> */}
+        </div>
 
         <button onClick={() => { clearStorage() }}>delete</button>
         <button onClick={() => {
