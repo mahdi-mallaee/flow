@@ -1,16 +1,26 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import './index.scss'
 import createNewSession from "~actions/createNewSession"
 import storageGetSesstion from "~store/storageGetSesstion"
-import storageSetSessions from "~store/storageSetSessions"
 import openSession from "~actions/openSession"
-import getUnsavedWindows from "~actions/getUnsavedWindows"
+import { useStorage } from "@plasmohq/storage/hook"
+import { Storage } from "@plasmohq/storage"
 
 function IndexPopup() {
   const [showTitleInputDialog, setShowTitleInputDialog] = useState(false)
   const [sessionTitleInput, setSessionTitleInput] = useState('')
-  const [sessions, setSessions] = useState([])
-  const [unsavedWindows, setUnsavedWindows] = useState([])
+  const [sessions, setSessions] = useStorage({
+    key: "sessions",
+    instance: new Storage({
+      area: "local"
+    })
+  }, [])
+  // const [unsavedWindows, setUnsavedWindows] = useStorage({
+  //   key: "unsaved-windows",
+  //   instance: new Storage({
+  //     area: "local"
+  //   })
+  // }, [])
 
   const newSessionClickHandler = () => {
     setShowTitleInputDialog(true)
@@ -18,50 +28,26 @@ function IndexPopup() {
 
   const _createNewSession = async () => {
     const newSession = await createNewSession(0, [], sessionTitleInput)
-    const sessions = await storageGetSesstion()
-    await storageSetSessions([...sessions, newSession])
+    await setSessions(current => {
+      return [...current, newSession]
+    })
     setShowTitleInputDialog(false)
     setSessionTitleInput('')
-    refreshSessions()
   }
 
   const sessionClickHandler = async (sessionId: string) => {
-    const sessions = await storageGetSesstion()
     const newSessions = await openSession(sessions, sessionId)
-    await storageSetSessions(newSessions)
+    await setSessions(newSessions)
   }
 
-  const addAsSessionButtonClickHandler = async (window: chrome.windows.Window) => {
-    const newSession = await createNewSession(window.id)
-    const sessions = await storageGetSesstion()
-    await storageSetSessions([...sessions, newSession])
-    refreshSessions()
-  }
-
+  // const addAsSessionButtonClickHandler = async (window: chrome.windows.Window) => {
+  //   const newSession = await createNewSession(window.id)
+  //   await setSessions(current => { return [...current, newSession] })
+  // }
 
   const clearStorage = () => {
-    chrome.storage.local.clear()
-    refreshSessions()
+    setSessions([])
   }
-
-  const refreshSessions = () => {
-    storageGetSesstion()
-      .then(sessions => {
-        setSessions(sessions)
-        getUnsavedWindows(sessions)
-          .then(windows => {
-            setUnsavedWindows(windows)
-          })
-      })
-
-  }
-
-
-
-  useEffect(() => {
-    refreshSessions()
-  }, [])
-
 
   return (
     <>
@@ -101,14 +87,14 @@ function IndexPopup() {
             </div>
           })}
         </div>
-        <div className="unsaved-windows-container">
+        {/* <div className="unsaved-windows-container">
           {unsavedWindows.map(window => {
             return <div key={window.id} className='unsaved-window'>
               <div className="title">Unsaved Window {window.id}</div>
               <button className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>add +</button>
             </div>
           })}
-        </div>
+        </div> */}
 
         <button onClick={() => { clearStorage() }}>delete</button>
         <button onClick={() => {

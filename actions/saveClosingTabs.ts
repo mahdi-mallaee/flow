@@ -1,4 +1,3 @@
-import storageSetSessions from "~store/storageSetSessions";
 import type { Session, Tab } from "~utils/types";
 
 const saveClosingTabs = (sessions: Session[], closingTabs: Tab[]): Session[] => {
