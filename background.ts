@@ -1,6 +1,7 @@
 import saveClosingTabs from "~actions/saveClosingTabs"
 import type { Tab } from "~utils/types"
 import { Storage as store } from '@plasmohq/storage'
+import getUnsavedWindows from "~actions/getUnsavedWindows"
 
 export { }
 
@@ -21,6 +22,16 @@ const refreshTabs = async () => {
                 }
             })
             storage.set('tabs', localTabs)
+        })
+}
+
+const refreshUnsavedWindows = async () => {
+    storage.get('sessions')
+        .then((sessions: any) => {
+            getUnsavedWindows(sessions)
+                .then(windows => {
+                    storage.set('unsaved-windows', windows)
+                })
         })
 }
 
@@ -49,6 +60,7 @@ chrome.tabs.onReplaced.addListener(() => {
 })
 
 chrome.windows.onRemoved.addListener(id => {
+    refreshUnsavedWindows()
     const closingTabs = []
     storage.get('tabs')
         .then((tabs: any) => {
@@ -63,4 +75,8 @@ chrome.windows.onRemoved.addListener(id => {
                     storage.set('sessions', newSessions)
                 })
         })
+})
+
+chrome.windows.onCreated.addListener(() => {
+    refreshUnsavedWindows()
 })
