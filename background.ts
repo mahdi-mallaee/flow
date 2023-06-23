@@ -4,50 +4,63 @@ import { Storage as store } from '@plasmohq/storage'
 
 export { }
 
-console.log('running background script')
-
 const storage = new store({ area: 'local' })
 
-const tabs: Tab[] = []
+let localTabs: Tab[] = []
 
-const getTabById = (id: number): Tab => {
-    const index = tabs.findIndex(tab => tab.id === id)
-    return tabs[index]
+const refreshTabs = async () => {
+    chrome.tabs.query({})
+        .then(browserTabs => {
+            localTabs = browserTabs.map(tab => {
+                return {
+                    id: tab.id,
+                    url: tab.pendingUrl || tab.url || '',
+                    windowId: tab.windowId,
+                    index: tab.index,
+                    groupId: tab.groupId
+                }
+            })
+            storage.set('tabs', localTabs)
+        })
 }
 
-chrome.tabs.onCreated.addListener(tab => {
-    tabs.push({ id: tab.id, url: tab.pendingUrl || tab.url || '', windowId: tab.windowId, index: tab.index, groupId: tab.groupId })
+chrome.tabs.onCreated.addListener(() => {
+    refreshTabs()
 })
-
-chrome.tabs.onUpdated.addListener((id, info) => {
-    const tab = getTabById(id)
-    if (tab) {
-        if (info.groupId) {
-            tab.groupId = info.groupId
-        }
-        if (info.url) {
-            tab.url = info.url
-        }
-    }
-
+chrome.tabs.onUpdated.addListener(() => {
+    refreshTabs()
 })
-chrome.tabs.onRemoved.addListener((id, info) => {
+chrome.tabs.onRemoved.addListener((_, info) => {
     if (!info.isWindowClosing) {
-        const index = tabs.findIndex(tab => tab.id === id)
-        tabs.splice(index, 1)
+        refreshTabs()
     }
+})
+chrome.tabs.onAttached.addListener(() => {
+    refreshTabs()
+})
+chrome.tabs.onDetached.addListener(() => {
+    refreshTabs()
+})
+chrome.tabs.onMoved.addListener(() => {
+    refreshTabs()
+})
+chrome.tabs.onReplaced.addListener(() => {
+    refreshTabs()
 })
 
 chrome.windows.onRemoved.addListener(id => {
     const closingTabs = []
-    tabs.forEach(tab => {
-        if (tab.windowId === id) {
-            closingTabs.push(tab)
-        }
-    })
-    storage.get('sessions')
-        .then((sessions: any) => {
-            const newSessions = saveClosingTabs(sessions, closingTabs)
-            storage.set('sessions', newSessions)
+    storage.get('tabs')
+        .then((tabs: any) => {
+            tabs.forEach((tab: Tab) => {
+                if (tab.windowId === id) {
+                    closingTabs.push(tab)
+                }
+            })
+            storage.get('sessions')
+                .then((sessions: any) => {
+                    const newSessions = saveClosingTabs(sessions, closingTabs, id)
+                    storage.set('sessions', newSessions)
+                })
         })
 })
