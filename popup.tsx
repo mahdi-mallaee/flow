@@ -35,6 +35,7 @@ function IndexPopup() {
     })
     setShowTitleInputDialog(false)
     setSessionTitleInput('')
+    refreshUnsavedWindows([...sessions, newSession])
   }
 
   const sessionClickHandler = async (sessionId: string) => {
