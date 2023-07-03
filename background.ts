@@ -1,6 +1,7 @@
 import type { Session, Tab } from "~utils/types"
 import { Storage as store } from '@plasmohq/storage'
 import getUnsavedWindows from "~actions/getUnsavedWindows"
+import openSession from "~actions/openSession"
 
 export { }
 
@@ -22,18 +23,18 @@ const refreshTabs = async () => {
             storage.get('sessions')
                 .then((sessions: any) => {
                     if (sessions){
-                    const newSessions = sessions.map((session: Session) => {
-                        const sessionTabs = []
-                        localTabs.forEach(tab => {
-                            if (tab.windowId === session.windowId) {
-                                sessionTabs.push(tab)
+                        const newSessions = sessions.map((session: Session) => {
+                            const sessionTabs = []
+                            localTabs.forEach(tab => {
+                                if (tab.windowId === session.windowId) {
+                                    sessionTabs.push(tab)
+                                }
+                            })
+                            if (sessionTabs && sessionTabs.length > 0) {
+                                session.tabs = sessionTabs
                             }
+                            return session
                         })
-                        if (sessionTabs && sessionTabs.length > 0) {
-                            session.tabs = sessionTabs
-                        }
-                        return session
-                    })
                     storage.set('sessions', newSessions)}
                 })
         })
@@ -73,10 +74,33 @@ chrome.tabs.onReplaced.addListener(() => {
     refreshTabs()
 })
 
-chrome.windows.onRemoved.addListener(id => {
+chrome.windows.onRemoved.addListener(() => {
     refreshUnsavedWindows()
 })
 
 chrome.windows.onCreated.addListener(() => {
     refreshUnsavedWindows()
+})
+
+chrome.runtime.onStartup.addListener(() => {
+    storage.get('sessions')
+        .then((sessions: any) => {
+            const session: Session = sessions.find((session: Session) => session.main === true)
+            if (session) {
+                openSession(sessions, session.id)
+                    .then((newSessions) => {
+                        storage.set('sessions', newSessions)
+                            .then(() => {
+                                chrome.windows.getAll()
+                                    .then(windows => {
+                                        windows.forEach(window => {
+                                            if (window.id !== session.windowId) {
+                                                chrome.windows.remove(window.id)
+                                            }
+                                        })
+                                    })
+                            })
+                    })
+            }
+        })
 })

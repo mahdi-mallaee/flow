@@ -18,15 +18,15 @@ const openSession = async (sessions: Session[], sessionId: string): Promise<Sess
         return s;
     })
 
-
-    // await chrome.tabs.query({ windowId: newWindowId })
-    //     .then(tabs => {
-    //         if (tabs[0].id) {
-    //             chrome.tabs.remove(tabs[0].id)
-    //         }
-    //     })
-
     storage.set('sessions', newSessions)
+
+    chrome.tabs.query({ windowId: newWindowId })
+        .then(tabs => {
+            if (tabs[0].id) {
+                chrome.tabs.remove(tabs[0].id)
+            }
+        })
+
     return newSessions
 }
 

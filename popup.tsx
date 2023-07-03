@@ -1,7 +1,6 @@
 import { useState } from "react"
 import './index.scss'
 import createNewSession from "~actions/createNewSession"
-import storageGetSesstion from "~store/storageGetSesstion"
 import openSession from "~actions/openSession"
 import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
@@ -64,7 +63,7 @@ function IndexPopup() {
   const mainButtonClickHandler = (id: string) => {
     const newSessions: Session[] = sessions.map(session => {
       if (session.id === id) {
-        session.main = true
+        session.main = !session.main
       } else {
         session.main = false
       }
