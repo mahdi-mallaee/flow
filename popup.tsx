@@ -40,7 +40,7 @@ function IndexPopup() {
 
   const sessionClickHandler = async (sessionId: string) => {
     const newSessions = await openSession(sessions, sessionId)
-    await setSessions(newSessions)
+    setSessions(newSessions)
     refreshUnsavedWindows(newSessions)
   }
 
@@ -59,6 +59,18 @@ function IndexPopup() {
     setSessions([])
     setUnsavedWindows([])
     refreshUnsavedWindows()
+  }
+
+  const mainButtonClickHandler = (id: string) => {
+    const newSessions: Session[] = sessions.map(session => {
+      if (session.id === id) {
+        session.main = true
+      } else {
+        session.main = false
+      }
+      return session
+    })
+    setSessions(newSessions)
   }
 
   return (
@@ -93,8 +105,14 @@ function IndexPopup() {
 
         <div className='sessions-container'>
           {sessions.map(session => {
-            return <div key={session.id} className='session' onClick={() => { sessionClickHandler(session.id) }}>
+            return <div key={session.id} className={session.main ? 'session main' : 'session'} onClick={() => {
+              sessionClickHandler(session.id)
+            }}>
               <div className="title">{session.title}</div>
+              <div className="main-button" onClick={e => {
+                mainButtonClickHandler(session.id)
+                e.stopPropagation()
+              }}>main</div>
               <div className="tabs-count">{session.tabs.length} tabs</div>
             </div>
           })}
@@ -110,11 +128,8 @@ function IndexPopup() {
 
         <button onClick={() => { clearStorage() }}>delete</button>
         <button onClick={() => {
-          storageGetSesstion()
-            .then(sessions => {
-              console.log('sessions', sessions)
-              console.log('windows', unsavedWindows)
-            })
+          console.log('unsaved windows: ', unsavedWindows)
+          console.log('log sessions: ', sessions)
         }}>log storage</button>
       </div >
     </>

@@ -2,7 +2,8 @@ export type Session = {
     id: string,
     windowId: number,
     tabs: Tab[],
-    title: string
+    title: string,
+    main: boolean
 }
 
 export type Tab = {

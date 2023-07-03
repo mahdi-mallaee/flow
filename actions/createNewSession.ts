@@ -15,6 +15,7 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
     windowId: windowId,
     title: title || 'New Session - ' + new Date().toUTCString(),
     tabs,
+    main: false
   }
 
   return session
