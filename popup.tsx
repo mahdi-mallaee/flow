@@ -39,7 +39,7 @@ function IndexPopup() {
 
   const sessionClickHandler = async (sessionId: string) => {
     const newSessions = await openSession(sessions, sessionId)
-    setSessions(newSessions)
+    await setSessions(newSessions)
     refreshUnsavedWindows(newSessions)
   }
 
@@ -54,14 +54,8 @@ function IndexPopup() {
     setUnsavedWindows(windows)
   }
 
-  const clearStorage = () => {
-    setSessions([])
-    setUnsavedWindows([])
-    refreshUnsavedWindows()
-  }
-
   const mainButtonClickHandler = (id: string) => {
-    const newSessions: Session[] = sessions.map(session => {
+    const newSessions = sessions.map(session => {
       if (session.id === id) {
         session.main = !session.main
       } else {
@@ -70,6 +64,13 @@ function IndexPopup() {
       return session
     })
     setSessions(newSessions)
+  }
+
+  const deleteSession = (id: string) => {
+    const newSessions = sessions
+    const index = newSessions.findIndex(s => s.id === id)
+    newSessions.splice(index, 1)
+    setSessions([...newSessions])
   }
 
   return (
@@ -108,10 +109,14 @@ function IndexPopup() {
               sessionClickHandler(session.id)
             }}>
               <div className="title">{session.title}</div>
-              <div className="main-button" onClick={e => {
+              <button className="main-button" onClick={e => {
                 mainButtonClickHandler(session.id)
                 e.stopPropagation()
-              }}>main</div>
+              }}>main</button>
+              <button className="delete-session-button" onClick={e => {
+                deleteSession(session.id)
+                e.stopPropagation()
+              }}>del</button>
               <div className="tabs-count">{session.tabs.length} tabs</div>
             </div>
           })}
@@ -125,11 +130,6 @@ function IndexPopup() {
           })}
         </div>
 
-        <button onClick={() => { clearStorage() }}>delete</button>
-        <button onClick={() => {
-          console.log('unsaved windows: ', unsavedWindows)
-          console.log('log sessions: ', sessions)
-        }}>log storage</button>
       </div >
     </>
   )

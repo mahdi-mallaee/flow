@@ -63,9 +63,11 @@ chrome.tabs.onRemoved.addListener((_, info) => {
 })
 chrome.tabs.onAttached.addListener(() => {
     refreshTabs()
+    refreshUnsavedWindows()
 })
 chrome.tabs.onDetached.addListener(() => {
     refreshTabs()
+    refreshUnsavedWindows()
 })
 chrome.tabs.onMoved.addListener(() => {
     refreshTabs()
