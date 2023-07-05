@@ -22,7 +22,7 @@ const refreshTabs = async () => {
 
             storage.get('sessions')
                 .then((sessions: any) => {
-                    if (sessions){
+                    if (sessions) {
                         const newSessions = sessions.map((session: Session) => {
                             const sessionTabs = []
                             localTabs.forEach(tab => {
@@ -35,7 +35,8 @@ const refreshTabs = async () => {
                             }
                             return session
                         })
-                    storage.set('sessions', newSessions)}
+                        storage.set('sessions', newSessions)
+                    }
                 })
         })
 }
@@ -98,6 +99,9 @@ chrome.runtime.onStartup.addListener(() => {
                                         windows.forEach(window => {
                                             if (window.id !== session.windowId) {
                                                 chrome.windows.remove(window.id)
+                                                    .then(() => {
+                                                        refreshUnsavedWindows()
+                                                    })
                                             }
                                         })
                                     })

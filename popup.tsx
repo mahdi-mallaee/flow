@@ -6,6 +6,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
 import getUnsavedWindows from "~actions/getUnsavedWindows"
 import type { Session } from "~utils/types"
+import isSessionOpen from "~actions/isSessionOpen"
 
 function IndexPopup() {
   const [showTitleInputDialog, setShowTitleInputDialog] = useState(false)
@@ -38,9 +39,13 @@ function IndexPopup() {
   }
 
   const sessionClickHandler = async (sessionId: string) => {
-    const newSessions = await openSession(sessions, sessionId)
-    await setSessions(newSessions)
-    refreshUnsavedWindows(newSessions)
+    const isOpen = await isSessionOpen(sessions, sessionId)
+    console.log(isOpen)
+    if (!isOpen) {
+      const newSessions = await openSession(sessions, sessionId)
+      await setSessions(newSessions)
+      refreshUnsavedWindows(newSessions)
+    }
   }
 
   const addAsSessionButtonClickHandler = async (window: chrome.windows.Window) => {
