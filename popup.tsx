@@ -1,5 +1,6 @@
 import { useState } from "react"
 import './index.scss'
+import './utils/colors.scss'
 import createNewSession from "~actions/createNewSession"
 import openSession from "~actions/openSession"
 import { useStorage } from "@plasmohq/storage/hook"
@@ -11,6 +12,7 @@ import isSessionOpen from "~actions/isSessionOpen"
 function IndexPopup() {
   const [showTitleInputDialog, setShowTitleInputDialog] = useState(false)
   const [sessionTitleInput, setSessionTitleInput] = useState('')
+  const [gettingSessionName, setGettingSessionName] = useState(false)
   const [sessions, setSessions] = useStorage({
     key: "sessions",
     instance: new Storage({
@@ -25,7 +27,7 @@ function IndexPopup() {
   }, [])
 
   const newSessionClickHandler = () => {
-    setShowTitleInputDialog(true)
+    setGettingSessionName(true)
   }
 
   const _createNewSession = async () => {
@@ -33,7 +35,7 @@ function IndexPopup() {
     await setSessions(current => {
       return [...current, newSession]
     })
-    setShowTitleInputDialog(false)
+    setGettingSessionName(false)
     setSessionTitleInput('')
     refreshUnsavedWindows([...sessions, newSession])
   }
@@ -103,16 +105,15 @@ function IndexPopup() {
       <div className="main-view">
         <h2 className='title'>Future Tabs</h2>
 
-        <div className='session-title-container'>
-          <span className='session-title-text'>Sessions</span>
-          <button onClick={newSessionClickHandler} className='new-session-button'>new +</button>
-        </div>
+        <div className='session-title'>Sessions</div>
 
         <div className='sessions-container'>
           {sessions.map(session => {
-            return <div key={session.id} className={session.main ? 'session main' : 'session'} onClick={() => {
+            return <div key={session.id} className='session' onClick={() => {
               sessionClickHandler(session.id)
             }}>
+              <div className="tabs-count">{session.tabs.length}</div>
+              {session.main && <div className="main-indicator">M</div>}
               <div className="title">{session.title}</div>
               <button className="main-button" onClick={e => {
                 mainButtonClickHandler(session.id)
@@ -122,15 +123,30 @@ function IndexPopup() {
                 deleteSession(session.id)
                 e.stopPropagation()
               }}>del</button>
-              <div className="tabs-count">{session.tabs.length} tabs</div>
             </div>
           })}
+          {gettingSessionName ?
+            <div className="get-session-title-container">
+              <input type="text" value={sessionTitleInput} onChange={e => {
+                setSessionTitleInput(e.target.value)
+              }} name="session-title-input" placeholder={new Date().toUTCString()} />
+              <button onClick={() => setGettingSessionName(false)}>cancel</button>
+              <button onClick={() => _createNewSession()}>add</button>
+            </div>
+            :
+            <div className="new-session-button" onClick={newSessionClickHandler}>+ Add new session</div>
+          }
         </div>
+
+        {unsavedWindows.length >= 1 &&
+          <div className="unsaved-windows-title">Unsaved Windows</div>
+        }
+
         <div className="unsaved-windows-container">
           {unsavedWindows.map(window => {
             return <div key={window.id} className='unsaved-window'>
               <div className="title">Unsaved Window {window.id}</div>
-              <button className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>add +</button>
+              <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>Add +</div>
             </div>
           })}
         </div>

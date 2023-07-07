@@ -13,7 +13,7 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
   const session = {
     id: v4(),
     windowId: windowId,
-    title: title || 'New Session - ' + new Date().toUTCString(),
+    title: title || new Date().toUTCString(),
     tabs,
     main: false
   }
