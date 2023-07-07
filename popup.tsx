@@ -8,12 +8,12 @@ import { Storage } from "@plasmohq/storage"
 import getUnsavedWindows from "~actions/getUnsavedWindows"
 import type { Session } from "~utils/types"
 import isSessionOpen from "~actions/isSessionOpen"
+import SessionCard from "~components/SessionCard"
 
 function IndexPopup() {
-  const [showTitleInputDialog, setShowTitleInputDialog] = useState(false)
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [gettingSessionName, setGettingSessionName] = useState(false)
-  const [sessions, setSessions] = useStorage({
+  const [sessions, setSessions] = useStorage<Session[]>({
     key: "sessions",
     instance: new Storage({
       area: "local"
@@ -80,28 +80,19 @@ function IndexPopup() {
     setSessions([...newSessions])
   }
 
+  const editSession = async (id: string, title: string, callBack: Function) => {
+    const newSesssions = sessions.map(s => {
+      if (s.id === id) {
+        s.title = title
+      }
+      return s
+    })
+    await setSessions(newSesssions)
+    callBack()
+  }
+
   return (
     <>
-      {showTitleInputDialog &&
-        <div className="session-title-dialog">
-          <div className="scrim" onClick={() => {
-            setShowTitleInputDialog(false)
-          }}></div>
-          <div className="dialog-container">
-            <div className="dialog-text">Insert a title for the new session.</div>
-            <input type="text" className="session-title-input" placeholder={'New Session - ' + new Date().toUTCString()} value={sessionTitleInput} onChange={(e) => {
-              setSessionTitleInput(e.target.value)
-            }} />
-            <div className="dialog-buttons-container">
-              <button className="cancel-session-creation-button" onClick={() => {
-                setShowTitleInputDialog(false)
-              }}>cancel</button>
-              <button className="create-new-session-button" onClick={_createNewSession}>create</button>
-            </div>
-          </div>
-        </div>
-      }
-
       <div className="main-view">
         <h2 className='title'>Future Tabs</h2>
 
@@ -109,21 +100,14 @@ function IndexPopup() {
 
         <div className='sessions-container'>
           {sessions.map(session => {
-            return <div key={session.id} className='session' onClick={() => {
-              sessionClickHandler(session.id)
-            }}>
-              <div className="tabs-count">{session.tabs.length}</div>
-              {session.main && <div className="main-indicator">M</div>}
-              <div className="title">{session.title}</div>
-              <button className="main-button" onClick={e => {
-                mainButtonClickHandler(session.id)
-                e.stopPropagation()
-              }}>main</button>
-              <button className="delete-session-button" onClick={e => {
-                deleteSession(session.id)
-                e.stopPropagation()
-              }}>del</button>
-            </div>
+            return <SessionCard
+              session={session}
+              sessionClickHandler={sessionClickHandler}
+              mainButtonClickHandler={mainButtonClickHandler}
+              deleteSession={deleteSession}
+              editSession={(id: string, title: string, callBack: Function) => {
+                editSession(id, title, callBack)
+              }} />
           })}
           {gettingSessionName ?
             <div className="get-session-title-container">

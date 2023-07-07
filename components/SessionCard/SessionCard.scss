@@ -1,0 +1,53 @@
+.session {
+    .session-container {
+        cursor: pointer;
+        padding: 0.75rem 0.5rem;
+        transition: background-color 0.13s ease-in;
+        display: flex;
+        gap: 8px;
+        border-bottom: 1px solid #E8E8E8;
+
+        .tabs-count,
+        .main-indicator {
+            flex-shrink: 0;
+            background-color: #93F2FF;
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            flex-grow: 1;
+            white-space: nowrap;
+            text-align: start;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &:hover {
+            background-color: rgba($color: #a3a3a3, $alpha: 0.3);
+        }
+    }
+
+    .edit-session-title-container {
+        display: flex;
+        gap: 8px;
+        padding: 12px 8px;
+
+        input {
+            flex-grow: 1;
+        }
+
+        button {
+            flex-shrink: 0;
+        }
+    }
+
+    .menu-session-container {
+        display: flex;
+        gap: 8px;
+    }
+}
