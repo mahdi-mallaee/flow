@@ -28,14 +28,14 @@ const SessionCard = (
                 <div className="tabs-count">{session.tabs.length}</div>
                 {session.main && <div className="main-indicator">M</div>}
                 <div className="title">{session.title}</div>
-                <button className="edit-title-button" onClick={e => {
+                <div className="edit-title-button" onClick={e => {
                     setSessionCardState('title-edit')
                     e.stopPropagation()
-                }}><MdEdit /></button>
-                <button className="menu-session-button" onClick={e => {
+                }}><MdEdit /></div>
+                <div className="menu-session-button" onClick={e => {
                     setSessionCardState('menu')
                     e.stopPropagation()
-                }}><MdMoreVert /></button>
+                }}><MdMoreVert /></div>
             </div>
         )
     }
@@ -43,16 +43,16 @@ const SessionCard = (
     const titleEditState = () => {
         return (
             <div className="edit-session-title-container">
-                <input type="text" placeholder={session.title} value={sessionTitleInput}
+                <input type="text" id="edit-title-input" className="edit-title-input" placeholder={session.title} value={sessionTitleInput}
                     onChange={e => {
                         setSessionTitleInput(e.target.value)
                     }} />
-                <button onClick={() => {
+                <div className="confirm-edit-title-button" onClick={() => {
                     editSession(session.id, sessionTitleInput || session.title, () => {
                         setSessionCardState('default')
                         setSessionTitleInput('')
                     })
-                }}><MdDone /></button>
+                }}><MdDone /></div>
             </div >
         )
     }
@@ -61,11 +61,13 @@ const SessionCard = (
         return (
             <div className="menu-session-container">
                 <div className="tabs-count">{session.tabs.length} Tabs</div>
-                <button className="main-session-button" onClick={() => mainButtonClickHandler(session.id)}><MdPushPin />Main</button>
-                <button className="delete-session" onClick={() => deleteSession(session.id)}><MdDelete /></button>
-                <div className="close-menu-button" onClick={() => {
-                    setSessionCardState('default')
-                }}><MdClose /></div>
+                <div className={session.main ? "main-session-button main" : "main-session-button"} onClick={() => mainButtonClickHandler(session.id)}><MdPushPin /> Main</div>
+                <div className="buttons-container">
+                    <div className="delete-session-button" onClick={() => deleteSession(session.id)}><MdDelete /></div>
+                    <div className="close-menu-button" onClick={() => {
+                        setSessionCardState('default')
+                    }}><MdClose /></div>
+                </div>
             </div>
         )
     }

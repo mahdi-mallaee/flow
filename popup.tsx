@@ -9,7 +9,8 @@ import getUnsavedWindows from "~actions/getUnsavedWindows"
 import type { Session } from "~utils/types"
 import isSessionOpen from "~actions/isSessionOpen"
 import SessionCard from "~components/SessionCard"
-import { MdAdd, MdDone, MdClose, MdPushPin } from 'react-icons/md'
+import { MdAdd, MdDone, MdClose, MdTune } from 'react-icons/md'
+import Logo from "~components/Logo"
 
 function IndexPopup() {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -98,7 +99,11 @@ function IndexPopup() {
   return (
     <>
       <div className="main-view">
-        <h2 className='title'>Future Tabs</h2>
+        <div className="header">
+          <div className="logo"><Logo /></div>
+          <div className='title'>Future Tabs</div>
+          <div className="settings-button"><MdTune /></div>
+        </div>
 
         <div className='session-title'>Sessions</div>
 
@@ -118,8 +123,8 @@ function IndexPopup() {
               <input type="text" value={sessionTitleInput} onChange={e => {
                 setSessionTitleInput(e.target.value)
               }} name="session-title-input" placeholder={new Date().toUTCString()} />
-              <button onClick={() => setGettingSessionName(false)}><MdClose /></button>
-              <button onClick={() => _createNewSession()}><MdDone /></button>
+              <div className='close-get-title-button' onClick={() => setGettingSessionName(false)}><MdClose /></div>
+              <div className='confirm-title-button' onClick={() => _createNewSession()}><MdDone /></div>
             </div>
             :
             <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> Add new session</div>

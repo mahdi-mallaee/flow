@@ -6,6 +6,7 @@
         display: flex;
         gap: 8px;
         border-bottom: 1px solid #E8E8E8;
+        align-items: center;
 
         .tabs-count,
         .main-indicator {
@@ -27,11 +28,14 @@
             text-overflow: ellipsis;
         }
 
-        .edit-title-button,
-        .menu-session-button {
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
+        .menu-session-button,
+        .edit-title-button {
+            flex-shrink: 0;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
         }
 
         &:hover {
@@ -42,19 +46,68 @@
     .edit-session-title-container {
         display: flex;
         gap: 8px;
-        padding: 12px 8px;
+        padding: 12px;
+        align-items: center;
 
         input {
             flex-grow: 1;
+            border: none;
+            outline: none;
         }
 
-        button {
+        .confirm-edit-title-button {
             flex-shrink: 0;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
         }
     }
 
     .menu-session-container {
+        user-select: none;
         display: flex;
         gap: 8px;
+        justify-content: space-between;
+        padding: 12px;
+
+        .tabs-count {
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            background-color: #45FFF4;
+            border-radius: 6px;
+        }
+
+        .main-session-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            &.main {
+                background-color: #45FFF4;
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 16px;
+
+            .close-menu-button,
+            .delete-session-button {
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
     }
 }
