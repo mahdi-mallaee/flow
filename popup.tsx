@@ -9,6 +9,7 @@ import getUnsavedWindows from "~actions/getUnsavedWindows"
 import type { Session } from "~utils/types"
 import isSessionOpen from "~actions/isSessionOpen"
 import SessionCard from "~components/SessionCard"
+import { MdAdd, MdDone, MdClose, MdPushPin } from 'react-icons/md'
 
 function IndexPopup() {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -31,6 +32,9 @@ function IndexPopup() {
   }
 
   const _createNewSession = async () => {
+    const duplicateSession = sessions.find(s => s.title === sessionTitleInput)
+    if (duplicateSession) { return }
+
     const newSession = await createNewSession(0, [], sessionTitleInput)
     await setSessions(current => {
       return [...current, newSession]
@@ -114,11 +118,11 @@ function IndexPopup() {
               <input type="text" value={sessionTitleInput} onChange={e => {
                 setSessionTitleInput(e.target.value)
               }} name="session-title-input" placeholder={new Date().toUTCString()} />
-              <button onClick={() => setGettingSessionName(false)}>cancel</button>
-              <button onClick={() => _createNewSession()}>add</button>
+              <button onClick={() => setGettingSessionName(false)}><MdClose /></button>
+              <button onClick={() => _createNewSession()}><MdDone /></button>
             </div>
             :
-            <div className="new-session-button" onClick={newSessionClickHandler}>+ Add new session</div>
+            <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> Add new session</div>
           }
         </div>
 
@@ -130,7 +134,7 @@ function IndexPopup() {
           {unsavedWindows.map(window => {
             return <div key={window.id} className='unsaved-window'>
               <div className="title">Unsaved Window {window.id}</div>
-              <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>Add +</div>
+              <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>Add<MdAdd /></div>
             </div>
           })}
         </div>

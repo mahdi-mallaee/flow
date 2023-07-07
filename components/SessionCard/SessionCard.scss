@@ -27,6 +27,13 @@
             text-overflow: ellipsis;
         }
 
+        .edit-title-button,
+        .menu-session-button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
         &:hover {
             background-color: rgba($color: #a3a3a3, $alpha: 0.3);
         }

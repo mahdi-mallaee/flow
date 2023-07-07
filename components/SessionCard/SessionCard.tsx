@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
+import { MdEdit, MdMoreVert, MdDone, MdClose, MdDelete, MdPushPin } from 'react-icons/md'
 
 type SessionCardArgs = {
     session: Session,
@@ -27,14 +28,14 @@ const SessionCard = (
                 <div className="tabs-count">{session.tabs.length}</div>
                 {session.main && <div className="main-indicator">M</div>}
                 <div className="title">{session.title}</div>
-                <button className="main-button" onClick={e => {
+                <button className="edit-title-button" onClick={e => {
                     setSessionCardState('title-edit')
                     e.stopPropagation()
-                }}>edit</button>
+                }}><MdEdit /></button>
                 <button className="menu-session-button" onClick={e => {
                     setSessionCardState('menu')
                     e.stopPropagation()
-                }}>menu</button>
+                }}><MdMoreVert /></button>
             </div>
         )
     }
@@ -51,8 +52,8 @@ const SessionCard = (
                         setSessionCardState('default')
                         setSessionTitleInput('')
                     })
-                }}>edit</button>
-            </div>
+                }}><MdDone /></button>
+            </div >
         )
     }
 
@@ -60,11 +61,11 @@ const SessionCard = (
         return (
             <div className="menu-session-container">
                 <div className="tabs-count">{session.tabs.length} Tabs</div>
-                <button className="main-session-button" onClick={() => mainButtonClickHandler(session.id)}>main</button>
-                <button className="delete-session" onClick={() => deleteSession(session.id)}>del</button>
+                <button className="main-session-button" onClick={() => mainButtonClickHandler(session.id)}><MdPushPin />Main</button>
+                <button className="delete-session" onClick={() => deleteSession(session.id)}><MdDelete /></button>
                 <div className="close-menu-button" onClick={() => {
                     setSessionCardState('default')
-                }}>x</div>
+                }}><MdClose /></div>
             </div>
         )
     }
