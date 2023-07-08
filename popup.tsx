@@ -11,6 +11,7 @@ import isSessionOpen from "~actions/isSessionOpen"
 import SessionCard from "~components/SessionCard"
 import { MdAdd, MdDone, MdClose, MdTune } from 'react-icons/md'
 import Logo from "~components/Logo"
+import ThemeProvider from "~components/ThemeProvider"
 
 function IndexPopup() {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -51,7 +52,8 @@ function IndexPopup() {
     if (!isOpen) {
       const newSessions = await openSession(sessions, sessionId)
       await setSessions(newSessions)
-      refreshUnsavedWindows(newSessions)
+      await refreshUnsavedWindows(newSessions)
+      refreshUnsavedWindows()
     }
   }
 
@@ -83,6 +85,7 @@ function IndexPopup() {
     const index = newSessions.findIndex(s => s.id === id)
     newSessions.splice(index, 1)
     setSessions([...newSessions])
+    refreshUnsavedWindows(newSessions)
   }
 
   const editSession = async (id: string, title: string, callBack: Function) => {
@@ -97,7 +100,7 @@ function IndexPopup() {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <div className="main-view">
         <div className="header">
           <div className="logo"><Logo /></div>
@@ -146,7 +149,7 @@ function IndexPopup() {
         </div>
 
       </div >
-    </>
+    </ThemeProvider>
   )
 }
 

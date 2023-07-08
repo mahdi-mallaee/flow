@@ -1,14 +1,15 @@
-body {
+#theme-provider[data-theme='light'] {
 
     --background-color: #fcfcfc;
     --on-background-color: #101010;
-    --on-background-variant-color: #3C3C3C;
+    --on-background-variant-color: #393939;
+    --on-background-disabled-color: #9e9e9e;
 
     --primary-color: #45FFF4;
-    --on-primary-color: #fff;
+    --on-primary-color: #4c4c4c;
 
-    --surface-color: #f9f9e8;
-    --on-surface-color: #696969;
+    --surface-color: #f7f7ec;
+    --on-surface-color: #5a5a5a;
 
     --outline-color: #DCDCDC;
-}
+}  

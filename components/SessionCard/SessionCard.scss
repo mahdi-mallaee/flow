@@ -1,5 +1,5 @@
 .session {
-    border-bottom: 1px solid #E8E8E8;
+    border-bottom: 1px solid var(--outline-color);
     user-select: none;
 
     .session-container {
@@ -14,7 +14,8 @@
         .tabs-count,
         .main-indicator {
             flex-shrink: 0;
-            background-color: #93F2FF;
+            background-color: var(--primary-color);
+            color: var(--on-primary-color);
             border-radius: 4px;
             width: 20px;
             height: 20px;
@@ -91,7 +92,7 @@
             display: flex;
             align-items: center;
             padding: 0 8px;
-            background-color: #45FFF4;
+            background-color: var(--primary-color);
             border-radius: 6px;
             font-size: 10px;
             font-weight: 700;
@@ -104,7 +105,7 @@
             border-radius: 6px;
             font-size: 10px;
             height: 100%;
-            color: #9B9B9B;
+            color: var(--on-background-disabled-color);
             gap: 4px;
 
             svg {
@@ -113,7 +114,7 @@
             }
 
             &.main {
-                color: #000000;
+                color: var(--on-background-color);
             }
         }
 
@@ -126,6 +127,7 @@
             .delete-session-button {
                 display: flex;
                 align-items: center;
+
                 svg {
                     width: 14px;
                     height: 14px;
