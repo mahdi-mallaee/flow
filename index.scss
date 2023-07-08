@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
 
 body {
   margin: 0;
   min-height: 300px;
   width: 320px;
   font-family: "Lexend";
+  background-color: var(--background-color);
+  color: var(--on-background-color);
 }
 
 #__plasmo {
@@ -15,6 +17,7 @@ body {
 * {
   box-sizing: border-box;
   font: inherit;
+  font-weight: 400;
 }
 
 .header {
@@ -22,6 +25,7 @@ body {
   gap: 8px;
   padding: 12px 12px 16px 8px;
   align-items: center;
+  height: 60px;
 
   .logo {
     svg {
@@ -38,8 +42,8 @@ body {
     margin-left: auto;
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
     }
   }
 }
@@ -74,14 +78,21 @@ body {
       gap: 8px;
       cursor: pointer;
       user-select: none;
+      font-size: 12px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     .get-session-title-container {
       display: flex;
-      padding: 12px;
+      padding: 0 12px;
       align-items: center;
       gap: 8px;
       user-select: none;
+      height: 44px;
 
       .confirm-title-button,
       .close-get-title-button {
@@ -111,9 +122,11 @@ body {
       cursor: default;
       transition: background-color 0.13s ease-in;
       display: flex;
+      align-items: center;
       gap: 8px;
-      padding: 0.75rem 0.5rem;
+      padding: 0 8px;
       border-bottom: 1px solid #E8E8E8;
+      height: 40px;
 
       .title {
         flex-grow: 1;
@@ -121,10 +134,19 @@ body {
         text-align: start;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 11px;
       }
 
       .add-as-session-button {
+        display: flex;
+        align-items: center;
         padding: 3px 8px;
+        font-weight: 700;
+
+        svg {
+          width: 14px;
+          height: 14px;
+        }
 
         &:hover {
           background-color: rgba($color: #a3a3a3, $alpha: 0.3);

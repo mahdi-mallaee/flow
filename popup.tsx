@@ -110,6 +110,7 @@ function IndexPopup() {
         <div className='sessions-container'>
           {sessions.map(session => {
             return <SessionCard
+              key={session.id}
               session={session}
               sessionClickHandler={sessionClickHandler}
               mainButtonClickHandler={mainButtonClickHandler}
@@ -127,7 +128,7 @@ function IndexPopup() {
               <div className='confirm-title-button' onClick={() => _createNewSession()}><MdDone /></div>
             </div>
             :
-            <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> Add new session</div>
+            <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
           }
         </div>
 

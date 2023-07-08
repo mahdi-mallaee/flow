@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
-import { MdEdit, MdMoreVert, MdDone, MdClose, MdDelete, MdPushPin } from 'react-icons/md'
+import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
 
 type SessionCardArgs = {
     session: Session,
@@ -31,7 +31,7 @@ const SessionCard = (
                 <div className="edit-title-button" onClick={e => {
                     setSessionCardState('title-edit')
                     e.stopPropagation()
-                }}><MdEdit /></div>
+                }}><MdOutlineEdit /></div>
                 <div className="menu-session-button" onClick={e => {
                     setSessionCardState('menu')
                     e.stopPropagation()
@@ -61,9 +61,12 @@ const SessionCard = (
         return (
             <div className="menu-session-container">
                 <div className="tabs-count">{session.tabs.length} Tabs</div>
-                <div className={session.main ? "main-session-button main" : "main-session-button"} onClick={() => mainButtonClickHandler(session.id)}><MdPushPin /> Main</div>
+                <div className={session.main ? "main-session-button main" : "main-session-button"}
+                    onClick={() => mainButtonClickHandler(session.id)}>
+                    {session.main ? <MdPushPin /> : <MdOutlinePushPin />}<span>Main</span>
+                </div>
                 <div className="buttons-container">
-                    <div className="delete-session-button" onClick={() => deleteSession(session.id)}><MdDelete /></div>
+                    <div className="delete-session-button" onClick={() => deleteSession(session.id)}><MdOutlineDelete /></div>
                     <div className="close-menu-button" onClick={() => {
                         setSessionCardState('default')
                     }}><MdClose /></div>

@@ -6,12 +6,12 @@ const Logo = () => {
             <g filter="url(#filter0_d_2_391)">
                 <rect x="10" y="9" width="64" height="42" rx="2" fill="#62E6B6" />
             </g>
-            <path d="M17 18H64" stroke="#A8FFE0" stroke-width="5" stroke-linecap="round" />
-            <path d="M17 30H45" stroke="#A8FFE0" stroke-width="5" stroke-linecap="round" />
-            <path d="M17 42H55" stroke="#A8FFE0" stroke-width="5" stroke-linecap="round" />
+            <path d="M17 18H64" stroke="#A8FFE0" strokeWidth="5" strokeLinecap="round" />
+            <path d="M17 30H45" stroke="#A8FFE0" strokeWidth="5" strokeLinecap="round" />
+            <path d="M17 42H55" stroke="#A8FFE0" strokeWidth="5" strokeLinecap="round" />
             <defs>
-                <filter id="filter0_d_2_391" x="4" y="5" width="76" height="54" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <filter id="filter0_d_2_391" x="4" y="5" width="76" height="54" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                     <feOffset dy="2" />
                     <feGaussianBlur stdDeviation="3" />
