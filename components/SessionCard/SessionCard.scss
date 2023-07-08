@@ -1,0 +1,136 @@
+.session {
+    border-bottom: 1px solid #E8E8E8;
+    user-select: none;
+
+    .session-container {
+        cursor: pointer;
+        padding: 0 8px;
+        transition: background-color 0.13s ease-in;
+        display: flex;
+        gap: 8px;
+        height: 40px;
+        align-items: center;
+
+        .tabs-count,
+        .main-indicator {
+            flex-shrink: 0;
+            background-color: #93F2FF;
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .title {
+            flex-grow: 1;
+            white-space: nowrap;
+            text-align: start;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 11px;
+        }
+
+        .menu-session-button,
+        .edit-title-button {
+            flex-shrink: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        &:hover {
+            background-color: rgba($color: #a3a3a3, $alpha: 0.3);
+        }
+    }
+
+    .edit-session-title-container {
+        display: flex;
+        gap: 8px;
+        padding: 0 12px;
+        height: 40px;
+        align-items: center;
+
+        input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+        }
+
+        .confirm-edit-title-button {
+            flex-shrink: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+
+    .menu-session-container {
+        display: flex;
+        gap: 8px;
+        justify-content: space-between;
+        padding: 12px;
+        height: 40px;
+
+        .tabs-count {
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            background-color: #45FFF4;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .main-session-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 10px;
+            height: 100%;
+            color: #9B9B9B;
+            gap: 4px;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            &.main {
+                color: #000000;
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+
+            .close-menu-button,
+            .delete-session-button {
+                display: flex;
+                align-items: center;
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
+    }
+}
