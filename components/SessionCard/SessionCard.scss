@@ -38,19 +38,29 @@
         .menu-session-button,
         .edit-title-button {
             flex-shrink: 0;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 6px 4px;
+            border-radius: 8px;
 
             svg {
                 width: 14px;
                 height: 14px;
             }
+
+            &:hover {
+                background-color: #dce1c8;
+            }
         }
 
         &:hover {
-            background-color: rgba($color: #a3a3a3, $alpha: 0.3);
+            background-color: rgb(240, 240, 240);
+
+            .title {
+                text-decoration: underline;
+            }
+
         }
     }
 
@@ -69,14 +79,20 @@
 
         .confirm-edit-title-button {
             flex-shrink: 0;
-            height: 100%;
+            padding: 6px 4px;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
 
             svg {
                 width: 14px;
                 height: 14px;
+            }
+
+            &:hover {
+                background-color: #dce1c8;
             }
         }
     }
@@ -85,7 +101,7 @@
         display: flex;
         gap: 8px;
         justify-content: space-between;
-        padding: 12px;
+        padding: 12 8px 12px 12px;
         height: 40px;
 
         .tabs-count {
@@ -120,17 +136,24 @@
 
         .buttons-container {
             display: flex;
-            gap: 16px;
+            gap: 8px;
             align-items: center;
 
             .close-menu-button,
             .delete-session-button {
+                cursor: pointer;
                 display: flex;
                 align-items: center;
+                padding: 6px 4px;
+                border-radius: 8px;
 
                 svg {
                     width: 14px;
                     height: 14px;
+                }
+
+                &:hover {
+                    background-color: #dce1c8;
                 }
             }
         }

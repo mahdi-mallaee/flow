@@ -22,7 +22,7 @@ function IndexPopup() {
       area: "local"
     })
   }, [])
-  const [unsavedWindows, setUnsavedWindows] = useStorage({
+  const [unsavedWindows, setUnsavedWindows] = useStorage<chrome.windows.Window[]>({
     key: "unsaved-windows",
     instance: new Storage({
       area: "local"
@@ -142,7 +142,7 @@ function IndexPopup() {
         <div className="unsaved-windows-container">
           {unsavedWindows.map(window => {
             return <div key={window.id} className='unsaved-window'>
-              <div className="title">Unsaved Window {window.id}</div>
+              <div className="title">Unsaved Window ( {window.id} )</div>
               <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>Add<MdAdd /></div>
             </div>
           })}

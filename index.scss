@@ -14,6 +14,7 @@ body {
 .main-view {
   width: 320px;
   min-height: 300px;
+  padding-bottom: 16px;
   font-family: "Lexend";
   display: flex;
   flex-direction: column;
@@ -76,6 +77,14 @@ body {
         width: 20px;
         height: 20px;
       }
+
+      &:hover {
+        background-color: #f0f0f0;
+
+        span {
+          text-decoration: underline;
+        }
+      }
     }
 
     .get-session-title-container {
@@ -88,9 +97,20 @@ body {
 
       .confirm-title-button,
       .close-get-title-button {
+        padding: 6px 4px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         svg {
           width: 14px;
           height: 14px;
+        }
+
+        &:hover {
+          background-color: #dce1c8;
         }
       }
 
@@ -132,8 +152,10 @@ body {
       .add-as-session-button {
         display: flex;
         align-items: center;
-        padding: 3px 8px;
+        padding: 6px 8px;
         font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
 
         svg {
           width: 14px;
@@ -141,8 +163,12 @@ body {
         }
 
         &:hover {
-          background-color: rgba($color: #a3a3a3, $alpha: 0.3);
+          background-color: #dce1c8;
         }
+      }
+
+      &:last-child {
+        border: none;
       }
     }
   }

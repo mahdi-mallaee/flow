@@ -25,7 +25,7 @@ const SessionCard = (
                 onClick={() => {
                     sessionClickHandler(session.id)
                 }}>
-                <div className="tabs-count">{session.tabs.length}</div>
+                <div className="tabs-count">{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
                 {session.main && <div className="main-indicator">M</div>}
                 <div className="title">{session.title}</div>
                 <div className="edit-title-button" onClick={e => {
