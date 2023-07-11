@@ -124,9 +124,13 @@ function IndexPopup() {
           })}
           {gettingSessionName ?
             <div className="get-session-title-container">
-              <input type="text" value={sessionTitleInput} onChange={e => {
+              <input autoFocus type="text" value={sessionTitleInput} onChange={e => {
                 setSessionTitleInput(e.target.value)
-              }} name="session-title-input" placeholder={new Date().toUTCString()} />
+              }} name="session-title-input" placeholder={new Date().toUTCString()} onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  _createNewSession()
+                }
+              }} />
               <div className='close-get-title-button' onClick={() => setGettingSessionName(false)}><MdClose /></div>
               <div className='confirm-title-button' onClick={() => _createNewSession()}><MdDone /></div>
             </div>

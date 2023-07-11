@@ -41,18 +41,23 @@ const SessionCard = (
     }
 
     const titleEditState = () => {
+        const _editSession = () => {
+            editSession(session.id, sessionTitleInput || session.title, () => {
+                setSessionCardState('default')
+                setSessionTitleInput('')
+            })
+        }
         return (
             <div className="edit-session-title-container">
-                <input type="text" id="edit-title-input" className="edit-title-input" placeholder={session.title} value={sessionTitleInput}
+                <input autoFocus onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        _editSession()
+                    }
+                }} type="text" id="edit-title-input" className="edit-title-input" placeholder={session.title} value={sessionTitleInput}
                     onChange={e => {
                         setSessionTitleInput(e.target.value)
                     }} />
-                <div className="confirm-edit-title-button" onClick={() => {
-                    editSession(session.id, sessionTitleInput || session.title, () => {
-                        setSessionCardState('default')
-                        setSessionTitleInput('')
-                    })
-                }}><MdDone /></div>
+                <div className="confirm-edit-title-button" onClick={_editSession}><MdDone /></div>
             </div >
         )
     }
@@ -66,11 +71,25 @@ const SessionCard = (
                     {session.main ? <MdPushPin /> : <MdOutlinePushPin />}<span>Main</span>
                 </div>
                 <div className="buttons-container">
-                    <div className="delete-session-button" onClick={() => deleteSession(session.id)}><MdOutlineDelete /></div>
+                    <div className="delete-session-button" onClick={() => setSessionCardState('delete-confirmation')}><MdOutlineDelete /></div>
                     <div className="close-menu-button" onClick={() => {
                         setSessionCardState('default')
                     }}><MdClose /></div>
                 </div>
+            </div>
+        )
+    }
+
+    const deleteConfirmationState = () => {
+        return (
+            <div className="delete-confirmation-container">
+                <div className="confirmation-text">Are you sure of deleting this session ?</div>
+                <div className="close-confirmation-button" onClick={() => {
+                    setSessionCardState('default')
+                }}><MdClose /></div>
+                <div className="accept-confirmation-button" onClick={() => {
+                    deleteSession(session.id)
+                }}><MdDone /></div>
             </div>
         )
     }
@@ -86,12 +105,17 @@ const SessionCard = (
             case 'menu': {
                 return menuState()
             }
+            case 'delete-confirmation': {
+                return deleteConfirmationState()
+            }
             default: {
                 setSessionCardState('default')
                 return defaultState()
             }
         }
     }
+
+
 
     return (
         <div key={session.id} className='session'>

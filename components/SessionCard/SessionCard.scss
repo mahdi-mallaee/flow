@@ -158,4 +158,35 @@
             }
         }
     }
+
+    .delete-confirmation-container {
+        display: flex;
+        gap: 8px;
+        padding: 0 8px;
+        height: 40px;
+        align-items: center;
+
+        .confirmation-text {
+            flex-grow: 1;
+            font-weight: 700;
+        }
+
+        .close-confirmation-button,
+        .accept-confirmation-button {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 6px 4px;
+            border-radius: 8px;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            &:hover {
+                background-color: #dce1c8;
+            }
+        }
+    }
 }
