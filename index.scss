@@ -62,6 +62,19 @@ body {
   .sessions-container {
     display: flex;
     flex-direction: column;
+    max-height: 250px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 6px;
+      border-radius: 8px;
+    } 
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(200, 200, 200);
+      border-radius: 8px;
+    }
 
     .new-session-button {
       display: flex;
@@ -88,7 +101,7 @@ body {
 
     .get-session-title-container {
       display: flex;
-      padding: 0 12px;
+      padding: 12px;
       align-items: center;
       gap: 8px;
       user-select: none;
@@ -109,7 +122,7 @@ body {
         }
 
         &:hover {
-          background-color: #dce1c8;
+          background-color: var(--surface-color);
         }
       }
 
@@ -128,9 +141,23 @@ body {
   .unsaved-windows-container {
     display: flex;
     flex-direction: column;
+    max-height: 150px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 6px;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background-color: rgb(200, 200, 200);
+    }
 
     .unsaved-window {
       cursor: default;
+      flex-shrink: 0;
       transition: background-color 0.13s ease-in;
       display: flex;
       align-items: center;

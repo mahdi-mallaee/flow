@@ -111,17 +111,6 @@ function IndexPopup() {
         <div className='session-title'>Sessions</div>
 
         <div className='sessions-container'>
-          {sessions.map(session => {
-            return <SessionCard
-              key={session.id}
-              session={session}
-              sessionClickHandler={sessionClickHandler}
-              mainButtonClickHandler={mainButtonClickHandler}
-              deleteSession={deleteSession}
-              editSession={(id: string, title: string, callBack: Function) => {
-                editSession(id, title, callBack)
-              }} />
-          })}
           {gettingSessionName ?
             <div className="get-session-title-container">
               <input autoFocus type="text" value={sessionTitleInput} onChange={e => {
@@ -137,11 +126,18 @@ function IndexPopup() {
             :
             <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
           }
+          {sessions.map(session => {
+            return <SessionCard
+              key={session.id}
+              session={session}
+              sessionClickHandler={sessionClickHandler}
+              mainButtonClickHandler={mainButtonClickHandler}
+              deleteSession={deleteSession}
+              editSession={(id: string, title: string, callBack: Function) => {
+                editSession(id, title, callBack)
+              }} />
+          })}
         </div>
-
-        <button onClick={() => {
-          console.log(sessions)
-        }}>log sessions</button>
 
         {unsavedWindows.length >= 1 &&
           <div className="unsaved-windows-title">Unsaved Windows</div>
