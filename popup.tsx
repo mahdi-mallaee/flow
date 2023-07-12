@@ -139,6 +139,10 @@ function IndexPopup() {
           }
         </div>
 
+        <button onClick={() => {
+          console.log(sessions)
+        }}>log sessions</button>
+
         {unsavedWindows.length >= 1 &&
           <div className="unsaved-windows-title">Unsaved Windows</div>
         }
