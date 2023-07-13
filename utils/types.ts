@@ -13,3 +13,9 @@ export type Tab = {
     index: number,
     groupId: number,
 }
+
+export type AlertMessage = {
+    show: boolean,
+    text: string,
+    type: 'error' | 'warning' | 'info'
+}

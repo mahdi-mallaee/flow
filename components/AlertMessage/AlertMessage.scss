@@ -1,0 +1,21 @@
+.alert-message-container {
+    position: fixed;
+    top: 10px;
+    display: flex;
+    left: 70px;
+    .message{
+        font-size: 12px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--outline-color);
+        &.info{
+            background-color: var(--surface-color);
+        }
+        &.warning{
+            background-color: rgb(237, 213, 191);
+        }
+        &.error{
+            background-color: rgb(244, 201, 201);
+        }
+    }
+}

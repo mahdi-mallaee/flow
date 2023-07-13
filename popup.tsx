@@ -6,16 +6,22 @@ import openSession from "~actions/openSession"
 import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
 import getUnsavedWindows from "~actions/getUnsavedWindows"
-import type { Session } from "~utils/types"
+import type { AlertMessage, Session } from "~utils/types"
 import isSessionOpen from "~actions/isSessionOpen"
 import SessionCard from "~components/SessionCard"
 import { MdAdd, MdDone, MdClose, MdTune } from 'react-icons/md'
 import Logo from "~components/Logo"
 import ThemeProvider from "~components/ThemeProvider"
+import AlertMessageView from "~components/AlertMessage"
 
 function IndexPopup() {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [gettingSessionName, setGettingSessionName] = useState(false)
+  const [message, setMessage] = useState<AlertMessage>({
+    show: false,
+    text: '',
+    type: 'info'
+  })
   const [sessions, setSessions] = useStorage<Session[]>({
     key: "sessions",
     instance: new Storage({
@@ -54,6 +60,12 @@ function IndexPopup() {
       await setSessions(newSessions)
       await refreshUnsavedWindows(newSessions)
       refreshUnsavedWindows()
+    } else {
+      setMessage({
+        show: true,
+        text: 'This session is already open.',
+        type: 'info'
+      })
     }
   }
 
@@ -101,6 +113,9 @@ function IndexPopup() {
 
   return (
     <ThemeProvider>
+
+      <AlertMessageView message={message} setMessage={setMessage} />
+
       <div className="main-view">
         <div className="header">
           <div className="logo"><Logo /></div>
