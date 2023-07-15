@@ -19,3 +19,13 @@ export type AlertMessage = {
   text: string,
   type: 'error' | 'warning' | 'info'
 }
+
+export type Settings = {
+  theme: Theme
+}
+
+export enum Theme {
+  light = 'light',
+  dark = 'dark',
+  osDefault = 'os-default'
+}

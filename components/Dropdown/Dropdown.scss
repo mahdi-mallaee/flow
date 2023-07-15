@@ -1,0 +1,50 @@
+.dropdown {
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  cursor: pointer;
+  position: relative;
+  padding: 4px;
+  border-radius: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid var(--outline-color);
+
+  .value-container {
+    display: flex;
+    align-items: center;
+
+    .value {
+      flex-grow: 1;
+    }
+
+    svg {
+      font-size: 20px;
+    }
+  }
+
+  .options {
+    border-radius: 8px;
+    position: absolute;
+    top: calc(100% + 4px);
+    z-index: 10;
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    left: 0;
+    overflow: hidden;
+    border: 1px solid var(--outline-color);
+
+    .option {
+      padding: 4px;
+
+      &:hover {
+        background-color: rgb(239, 211, 171);
+      }
+    }
+  }
+}

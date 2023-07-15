@@ -1,15 +1,23 @@
 #theme-provider[data-theme='light'] {
-
   --background-color: #fcfcfc;
   --on-background-color: #101010;
   --on-background-variant-color: #393939;
   --on-background-disabled-color: #9e9e9e;
-
   --primary-color: #45FFF4;
   --on-primary-color: #4c4c4c;
-
   --surface-color: #f7f7ec;
   --on-surface-color: #5a5a5a;
-
   --outline-color: #DCDCDC;
+}
+
+#theme-provider[data-theme='dark'] {
+  --background-color: #323e54;
+  --on-background-color: #ffffff;
+  --on-background-variant-color: #c1c1c1;
+  --on-background-disabled-color: #9e9e9e;
+  --primary-color: #45fff4;
+  --on-primary-color: #4c4c4c;
+  --surface-color: #757535;
+  --on-surface-color: #bebebe;
+  --outline-color: #707070
 }
