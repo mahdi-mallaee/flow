@@ -54,7 +54,6 @@ function IndexPopup() {
 
   const sessionClickHandler = async (sessionId: string) => {
     const isOpen = await isSessionOpen(sessions, sessionId)
-    console.log(isOpen)
     if (!isOpen) {
       const newSessions = await openSession(sessions, sessionId)
       await setSessions(newSessions)

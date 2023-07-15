@@ -12,7 +12,6 @@ const openSession = async (sessions: Session[], sessionId: string): Promise<Sess
     const tabs = await getTabsByWindowId(newWindowId)
     const groups = {}
 
-    console.log(tabs)
     session.tabs.forEach(tab => {
         const key = tab.groupId.toString()
         if (tab.groupId > 0) {
@@ -25,7 +24,6 @@ const openSession = async (sessions: Session[], sessionId: string): Promise<Sess
     })
     Object.keys(groups).forEach(group => {
         const tabIds: number[] = groups[group]
-        console.log(tabIds)
         chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
     })
 
