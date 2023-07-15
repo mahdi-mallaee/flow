@@ -1,0 +1,78 @@
+.sessions-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 250px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 6px;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(200, 200, 200);
+    border-radius: 8px;
+  }
+
+  .new-session-button {
+    display: flex;
+    padding: 12px 8px;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 12px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background-color: #f0f0f0;
+
+      span {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .get-session-title-container {
+    display: flex;
+    padding: 12px;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+    height: 44px;
+
+    .confirm-title-button,
+    .close-get-title-button {
+      padding: 6px 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      &:hover {
+        background-color: var(--surface-color);
+      }
+    }
+
+    input {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      flex-shrink: 0;
+    }
+  }
+}

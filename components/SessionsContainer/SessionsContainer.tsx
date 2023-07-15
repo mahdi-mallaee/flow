@@ -7,6 +7,7 @@ import refreshUnsavedWindows from "~storage/refreshUnsavedWindows"
 import type { AlertMessage, Session } from "~utils/types"
 import { useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
+import './SessionsContainer.scss'
 
 
 const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {

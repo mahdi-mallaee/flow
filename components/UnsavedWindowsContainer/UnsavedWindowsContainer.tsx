@@ -4,6 +4,7 @@ import { MdAdd } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import refreshUnsavedWindows from "~storage/refreshUnsavedWindows"
 import type { Session } from "~utils/types"
+import './UnsavedWindowsContainer.scss'
 
 const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
     const [unsavedWindows] = useStorage<chrome.windows.Window[]>({

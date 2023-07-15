@@ -1,0 +1,60 @@
+.unsaved-windows-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 150px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 6px;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: rgb(200, 200, 200);
+  }
+
+  .unsaved-window {
+    cursor: default;
+    flex-shrink: 0;
+    transition: background-color 0.13s ease-in;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px;
+    border-bottom: 1px solid #E8E8E8;
+    height: 40px;
+
+    .title {
+      flex-grow: 1;
+      white-space: nowrap;
+      text-align: start;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 11px;
+    }
+
+    .add-as-session-button {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      &:hover {
+        background-color: #dce1c8;
+      }
+    }
+
+    &:last-child {
+      border: none;
+    }
+  }
+}
