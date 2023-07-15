@@ -6,40 +6,40 @@ import refreshLastClosedWindow from "~storage/refreshLastClosedWindow"
 export { }
 
 chrome.tabs.onCreated.addListener(() => {
-    refreshTabs()
+  refreshTabs()
 })
 chrome.tabs.onUpdated.addListener(() => {
-    refreshTabs()
+  refreshTabs()
 })
 chrome.tabs.onRemoved.addListener((_, info) => {
-    if (!info.isWindowClosing) {
-        refreshTabs()
-    }
+  if (!info.isWindowClosing) {
+    refreshTabs()
+  }
 })
 chrome.tabs.onAttached.addListener(() => {
-    refreshTabs()
-    refreshUnsavedWindows()
+  refreshTabs()
+  refreshUnsavedWindows()
 })
 chrome.tabs.onDetached.addListener(() => {
-    refreshTabs()
-    refreshUnsavedWindows()
+  refreshTabs()
+  refreshUnsavedWindows()
 })
 chrome.tabs.onMoved.addListener(() => {
-    refreshTabs()
+  refreshTabs()
 })
 chrome.tabs.onReplaced.addListener(() => {
-    refreshTabs()
+  refreshTabs()
 })
 
 chrome.windows.onRemoved.addListener(() => {
-    refreshUnsavedWindows()
-    refreshLastClosedWindow()
+  refreshUnsavedWindows()
+  refreshLastClosedWindow()
 })
 
 chrome.windows.onCreated.addListener(() => {
-    refreshUnsavedWindows()
+  refreshUnsavedWindows()
 })
 
 chrome.runtime.onStartup.addListener(() => {
-    openMainSession()
+  openMainSession()
 })

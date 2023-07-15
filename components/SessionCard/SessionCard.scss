@@ -1,192 +1,192 @@
 .session {
-    border-top: 1px solid var(--outline-color);
-    user-select: none;
+  border-top: 1px solid var(--outline-color);
+  user-select: none;
 
-    .session-container {
+  .session-container {
+    cursor: pointer;
+    padding: 0 8px;
+    transition: background-color 0.13s ease-in;
+    display: flex;
+    gap: 8px;
+    height: 40px;
+    align-items: center;
+
+    .tabs-count,
+    .main-indicator {
+      flex-shrink: 0;
+      background-color: var(--primary-color);
+      color: var(--on-primary-color);
+      border-radius: 4px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .title {
+      flex-grow: 1;
+      white-space: nowrap;
+      text-align: start;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 11px;
+    }
+
+    .menu-session-button,
+    .edit-title-button {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 4px;
+      border-radius: 8px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      &:hover {
+        background-color: #dce1c8;
+      }
+    }
+
+    &:hover {
+      background-color: rgb(240, 240, 240);
+
+      .title {
+        text-decoration: underline;
+      }
+
+    }
+  }
+
+  .edit-session-title-container {
+    display: flex;
+    gap: 8px;
+    padding: 0 12px;
+    height: 40px;
+    align-items: center;
+
+    input {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+    }
+
+    .confirm-edit-title-button {
+      flex-shrink: 0;
+      padding: 6px 4px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      &:hover {
+        background-color: #dce1c8;
+      }
+    }
+  }
+
+  .menu-session-container {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    padding: 12 8px 12px 12px;
+    height: 40px;
+
+    .tabs-count {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      background-color: var(--primary-color);
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .main-session-button {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 10px;
+      height: 100%;
+      color: var(--on-background-disabled-color);
+      gap: 4px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      &.main {
+        color: var(--on-background-color);
+      }
+    }
+
+    .buttons-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .close-menu-button,
+      .delete-session-button {
         cursor: pointer;
-        padding: 0 8px;
-        transition: background-color 0.13s ease-in;
         display: flex;
-        gap: 8px;
-        height: 40px;
         align-items: center;
+        padding: 6px 4px;
+        border-radius: 8px;
 
-        .tabs-count,
-        .main-indicator {
-            flex-shrink: 0;
-            background-color: var(--primary-color);
-            color: var(--on-primary-color);
-            border-radius: 4px;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .title {
-            flex-grow: 1;
-            white-space: nowrap;
-            text-align: start;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 11px;
-        }
-
-        .menu-session-button,
-        .edit-title-button {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 4px;
-            border-radius: 8px;
-
-            svg {
-                width: 14px;
-                height: 14px;
-            }
-
-            &:hover {
-                background-color: #dce1c8;
-            }
+        svg {
+          width: 14px;
+          height: 14px;
         }
 
         &:hover {
-            background-color: rgb(240, 240, 240);
-
-            .title {
-                text-decoration: underline;
-            }
-
+          background-color: #dce1c8;
         }
+      }
+    }
+  }
+
+  .delete-confirmation-container {
+    display: flex;
+    gap: 8px;
+    padding: 0 8px;
+    height: 40px;
+    align-items: center;
+
+    .confirmation-text {
+      flex-grow: 1;
+      font-weight: 700;
     }
 
-    .edit-session-title-container {
-        display: flex;
-        gap: 8px;
-        padding: 0 12px;
-        height: 40px;
-        align-items: center;
+    .close-confirmation-button,
+    .accept-confirmation-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 6px 4px;
+      border-radius: 8px;
 
-        input {
-            flex-grow: 1;
-            border: none;
-            outline: none;
-        }
+      svg {
+        width: 14px;
+        height: 14px;
+      }
 
-        .confirm-edit-title-button {
-            flex-shrink: 0;
-            padding: 6px 4px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-
-            svg {
-                width: 14px;
-                height: 14px;
-            }
-
-            &:hover {
-                background-color: #dce1c8;
-            }
-        }
+      &:hover {
+        background-color: #dce1c8;
+      }
     }
-
-    .menu-session-container {
-        display: flex;
-        gap: 8px;
-        justify-content: space-between;
-        padding: 12 8px 12px 12px;
-        height: 40px;
-
-        .tabs-count {
-            display: flex;
-            align-items: center;
-            padding: 0 8px;
-            background-color: var(--primary-color);
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .main-session-button {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 10px;
-            height: 100%;
-            color: var(--on-background-disabled-color);
-            gap: 4px;
-
-            svg {
-                width: 14px;
-                height: 14px;
-            }
-
-            &.main {
-                color: var(--on-background-color);
-            }
-        }
-
-        .buttons-container {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-
-            .close-menu-button,
-            .delete-session-button {
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                padding: 6px 4px;
-                border-radius: 8px;
-
-                svg {
-                    width: 14px;
-                    height: 14px;
-                }
-
-                &:hover {
-                    background-color: #dce1c8;
-                }
-            }
-        }
-    }
-
-    .delete-confirmation-container {
-        display: flex;
-        gap: 8px;
-        padding: 0 8px;
-        height: 40px;
-        align-items: center;
-
-        .confirmation-text {
-            flex-grow: 1;
-            font-weight: 700;
-        }
-
-        .close-confirmation-button,
-        .accept-confirmation-button {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 6px 4px;
-            border-radius: 8px;
-
-            svg {
-                width: 14px;
-                height: 14px;
-            }
-
-            &:hover {
-                background-color: #dce1c8;
-            }
-        }
-    }
+  }
 }
