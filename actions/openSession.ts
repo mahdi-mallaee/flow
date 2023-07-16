@@ -6,7 +6,8 @@ import { Storage as store } from '@plasmohq/storage'
 
 const storage = new store({ area: 'local' })
 
-const openSession = async (sessions: Session[], sessionId: string): Promise<Session[]> => {
+const openSession = async (sessions: Session[], sessionId: string, removeHistory?: boolean): Promise<Session[]> => {
+  const startTime = Date.now()
   const session = sessions.find(s => { return s.id === sessionId })
   const newWindowId = await createNewWindow(session.tabs.map(t => { return t.url }))
   const tabs = await getTabsByWindowId(newWindowId)
@@ -25,6 +26,11 @@ const openSession = async (sessions: Session[], sessionId: string): Promise<Sess
   Object.keys(groups).forEach(group => {
     const tabIds: number[] = groups[group]
     chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
+      .then(() => {
+        if (removeHistory) {
+          chrome.history.deleteRange({ startTime, endTime: Date.now() })
+        }
+      })
   })
 
 

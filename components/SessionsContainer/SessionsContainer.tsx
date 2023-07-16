@@ -70,7 +70,7 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
   const sessionClickHandler = async (sessionId: string) => {
     const isOpen = await isSessionOpen(sessions, sessionId)
     if (!isOpen) {
-      const newSessions = await openSession(sessions, sessionId)
+      const newSessions = await openSession(sessions, sessionId, true)
       await setSessions(newSessions)
       await refreshUnsavedWindows(newSessions)
       refreshUnsavedWindows()

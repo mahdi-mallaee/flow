@@ -34,7 +34,8 @@
     ],
     "permissions": [
       "storage",
-      "tabs"
+      "tabs",
+      "history"
     ]
   }
 }
