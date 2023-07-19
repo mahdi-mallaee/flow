@@ -26,7 +26,7 @@ const openMainSession = async () => {
       refreshUnsavedWindows()
     }
   } else if (mainSession) {
-    const newSessions = await openSession(sessions, mainSession.id)
+    const newSessions = await openSession(sessions, mainSession.id, true)
     storage.set('sessions', newSessions)
       .then(() => {
         chrome.windows.getAll()

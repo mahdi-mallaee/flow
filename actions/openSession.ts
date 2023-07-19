@@ -11,6 +11,14 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
   const session = sessions.find(s => { return s.id === sessionId })
   const newWindowId = await createNewWindow(session.tabs.map(t => { return t.url }))
   const tabs = await getTabsByWindowId(newWindowId)
+  const openedTabs = tabs.map((tab, i) => {
+    if (i < tabs.length - 1) {
+      return { id: tab.id, discarded: false }
+    }
+  })
+
+  storage.set('openedTabs', openedTabs)
+
   const groups = {}
 
   session.tabs.forEach(tab => {
@@ -23,6 +31,7 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
       }
     }
   })
+
   Object.keys(groups).forEach(group => {
     const tabIds: number[] = groups[group]
     chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
@@ -32,7 +41,6 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
         }
       })
   })
-
 
   const newSessions = sessions.map(s => {
     if (s.id === sessionId) {
@@ -50,6 +58,10 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
         chrome.tabs.remove(tabs[0].id)
       }
     })
+
+  if (removeHistory) {
+    chrome.history.deleteRange({ startTime, endTime: Date.now() })
+  }
 
   return newSessions
 }

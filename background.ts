@@ -1,15 +1,19 @@
-import refreshTabs from "~storage/refreshTabs"
-import refreshUnsavedWindows from "~storage/refreshUnsavedWindows"
-import openMainSession from "~storage/openMainSession"
-import refreshLastClosedWindow from "~storage/refreshLastClosedWindow"
+import refreshTabs from "~actions/refreshTabs"
+import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
+import openMainSession from "~actions/openMainSession"
+import refreshLastClosedWindow from "~actions/refreshLastClosedWindow"
+import discardOpenedTab from "~actions/discardOpenedTab"
 
 export { }
 
 chrome.tabs.onCreated.addListener(() => {
   refreshTabs()
 })
-chrome.tabs.onUpdated.addListener(() => {
+chrome.tabs.onUpdated.addListener((id, info) => {
   refreshTabs()
+  if (info.url) {
+    discardOpenedTab(id)
+  }
 })
 chrome.tabs.onRemoved.addListener((_, info) => {
   if (!info.isWindowClosing) {
