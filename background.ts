@@ -3,6 +3,7 @@ import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import openMainSession from "~actions/openMainSession"
 import refreshLastClosedWindow from "~actions/refreshLastClosedWindow"
 import discardOpenedTab from "~actions/discardOpenedTab"
+import refreshOpenSessions from "~actions/refreshOpenSessions"
 
 export { }
 
@@ -38,6 +39,7 @@ chrome.tabs.onReplaced.addListener(() => {
 chrome.windows.onRemoved.addListener(() => {
   refreshUnsavedWindows()
   refreshLastClosedWindow()
+  refreshOpenSessions()
 })
 
 chrome.windows.onCreated.addListener(() => {

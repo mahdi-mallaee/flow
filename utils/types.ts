@@ -3,7 +3,8 @@ export type Session = {
   windowId: number,
   tabs: Tab[],
   title: string,
-  main: boolean
+  main: boolean,
+  isOpen: boolean
 }
 
 export type Tab = {

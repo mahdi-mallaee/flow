@@ -3,6 +3,7 @@ import openSession from "~actions/openSession"
 import type { Session } from "~utils/types"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
+import refreshOpenSessions from "./refreshOpenSessions"
 
 const openMainSession = async () => {
   const storage = new Storage({ area: 'local' })
@@ -24,6 +25,7 @@ const openMainSession = async () => {
       await storage.set('sessions', newSessions)
       refreshLastClosedWindow()
       refreshUnsavedWindows()
+      refreshOpenSessions()
     }
   } else if (mainSession) {
     const newSessions = await openSession(sessions, mainSession.id, true)
@@ -37,6 +39,7 @@ const openMainSession = async () => {
                   .then(() => {
                     refreshUnsavedWindows()
                     refreshLastClosedWindow()
+                    refreshOpenSessions()
                   })
               }
             })
@@ -54,6 +57,7 @@ const openMainSession = async () => {
       await storage.set('sessions', newSessions)
       refreshLastClosedWindow()
       refreshUnsavedWindows()
+      refreshOpenSessions()
     }
   }
 }

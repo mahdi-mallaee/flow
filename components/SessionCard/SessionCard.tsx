@@ -21,7 +21,7 @@ const SessionCard = (
 
   const defaultState = () => {
     return (
-      <div className="session-container"
+      <div className={session.isOpen ? 'session-container open' : 'session-container'}
         onClick={() => {
           sessionClickHandler(session.id)
         }}>

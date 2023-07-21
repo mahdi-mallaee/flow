@@ -8,6 +8,7 @@ import type { AlertMessage, Session } from "~utils/types"
 import { useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
+import refreshOpenSessions from "~actions/refreshOpenSessions"
 
 
 const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
@@ -73,6 +74,7 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
       const newSessions = await openSession(sessions, sessionId, true)
       await setSessions(newSessions)
       await refreshUnsavedWindows(newSessions)
+      await refreshOpenSessions()
       refreshUnsavedWindows()
     } else {
       setMessage({
