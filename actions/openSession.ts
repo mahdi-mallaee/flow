@@ -54,9 +54,6 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
   })
 
   storage.set('sessions', newSessions)
-    .then(() => {
-      refreshUnsavedWindows(newSessions)
-    })
 
   chrome.tabs.query({ windowId: newWindowId })
     .then(tabs => {

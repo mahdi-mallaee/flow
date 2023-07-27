@@ -69,6 +69,7 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
     if (!session.isOpen) {
       const newSessions = await openSession(sessions, session.id, true)
       await setSessions(newSessions)
+      await refreshUnsavedWindows(newSessions)
     } else {
       setMessage({
         show: true,
