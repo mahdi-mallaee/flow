@@ -76,12 +76,12 @@
       }
 
       &:hover {
-        background-color: #dce1c8;
+        background-color: var(--icon-button-hover);
       }
     }
 
     &:hover {
-      background-color: rgb(240, 240, 240);
+      background-color: var(--session-hover-color);
 
       .title {
         text-decoration: underline;
@@ -101,6 +101,8 @@
       flex-grow: 1;
       border: none;
       outline: none;
+      background-color: var(--background-color);
+      color: var(--on-background-color);
     }
 
     .confirm-edit-title-button {
@@ -118,7 +120,7 @@
       }
 
       &:hover {
-        background-color: #dce1c8;
+        background-color: var(--icon-button-hover);
       }
     }
   }
@@ -135,6 +137,7 @@
       align-items: center;
       padding: 0 8px;
       background-color: var(--primary-color);
+      color: var(--on-primary-color);
       border-radius: 6px;
       font-size: 10px;
       font-weight: 700;
@@ -179,7 +182,7 @@
         }
 
         &:hover {
-          background-color: #dce1c8;
+          background-color: var(--icon-button-hover);
         }
       }
     }
@@ -211,7 +214,7 @@
       }
 
       &:hover {
-        background-color: #dce1c8;
+        background-color: var(--icon-button-hover);
       }
     }
   }

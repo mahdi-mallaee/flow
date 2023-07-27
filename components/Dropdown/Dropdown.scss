@@ -33,17 +33,16 @@
     color: var(--on-surface-color);
     display: flex;
     flex-direction: column;
-    gap: 8px;
     width: 100%;
     left: 0;
     overflow: hidden;
     border: 1px solid var(--outline-color);
 
     .option {
-      padding: 4px;
+      padding: 8px 4px;
 
       &:hover {
-        background-color: rgb(239, 211, 171);
+        background-color: var(--surface-hover-color);
       }
     }
   }

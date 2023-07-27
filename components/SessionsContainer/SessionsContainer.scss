@@ -34,7 +34,7 @@
     }
 
     &:hover {
-      background-color: #f0f0f0;
+      background-color: var(--session-hover-color);
 
       span {
         text-decoration: underline;
@@ -49,6 +49,11 @@
     gap: 8px;
     user-select: none;
     height: 44px;
+
+    input {
+      background-color: var(--background-color);
+      color: var(--on-background-color);
+    }
 
     .confirm-title-button,
     .close-get-title-button {
@@ -65,7 +70,7 @@
       }
 
       &:hover {
-        background-color: var(--surface-color);
+        background-color: var(--icon-button-hover);
       }
     }
 
