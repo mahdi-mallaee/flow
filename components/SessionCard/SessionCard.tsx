@@ -23,7 +23,7 @@ const SessionCard = (
     return (
       <div className={session.isOpen ? 'session-container open' : 'session-container'}
         onClick={() => {
-          sessionClickHandler(session.id)
+          sessionClickHandler(session)
         }}>
         <div className="tabs-count">{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
         {session.main && <div className="main-indicator">M</div>}

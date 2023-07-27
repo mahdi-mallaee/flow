@@ -1,6 +1,5 @@
 import { MdAdd, MdClose, MdDone } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
-import isSessionOpen from "~actions/isSessionOpen"
 import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
@@ -8,8 +7,6 @@ import type { AlertMessage, Session } from "~utils/types"
 import { useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
-import refreshOpenSessions from "~actions/refreshOpenSessions"
-
 
 const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -68,14 +65,10 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
     refreshUnsavedWindows([...sessions, newSession])
   }
 
-  const sessionClickHandler = async (sessionId: string) => {
-    const isOpen = await isSessionOpen(sessions, sessionId)
-    if (!isOpen) {
-      const newSessions = await openSession(sessions, sessionId, true)
+  const sessionClickHandler = async (session: Session) => {
+    if (!session.isOpen) {
+      const newSessions = await openSession(sessions, session.id, true)
       await setSessions(newSessions)
-      await refreshUnsavedWindows(newSessions)
-      await refreshOpenSessions()
-      refreshUnsavedWindows()
     } else {
       setMessage({
         show: true,

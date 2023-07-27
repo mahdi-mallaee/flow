@@ -11,11 +11,9 @@ const AlertMessageView = ({ message, setMessage }: { message: AlertMessage, setM
   }
 
   useEffect(() => {
-    if (!message.show) {
-      setTimeout(() => {
-        setMessage(returnMessage)
-      }, ALERT_MESSAGE_DURATION)
-    }
+    setTimeout(() => {
+      setMessage(returnMessage)
+    }, ALERT_MESSAGE_DURATION)
   }, [message.show])
 
   return (

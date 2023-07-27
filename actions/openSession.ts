@@ -2,6 +2,7 @@ import createNewWindow from "./createNewWindow";
 import type { Session, Tab } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
 import { Storage as store } from '@plasmohq/storage'
+import refreshUnsavedWindows from "./refreshUnsavedWindows";
 
 
 const storage = new store({ area: 'local' })
@@ -11,9 +12,10 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
   const session = sessions.find(s => { return s.id === sessionId })
   const newWindowId = await createNewWindow(session.tabs.map(t => { return t.url }))
   const tabs = await getTabsByWindowId(newWindowId)
-  const openedTabs = tabs.map((tab, i) => {
+  const openedTabs = []
+  tabs.forEach((tab, i) => {
     if (i < tabs.length - 1) {
-      return { id: tab.id, discarded: false }
+      openedTabs.push({ id: tab.id, discarded: false })
     }
   })
 
@@ -44,13 +46,17 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
 
   const newSessions = sessions.map(s => {
     if (s.id === sessionId) {
-      s.windowId = newWindowId;
-      s.tabs = tabs;
+      s.windowId = newWindowId
+      s.tabs = tabs
+      s.isOpen = true
     }
-    return s;
+    return s
   })
 
   storage.set('sessions', newSessions)
+    .then(() => {
+      refreshUnsavedWindows(newSessions)
+    })
 
   chrome.tabs.query({ windowId: newWindowId })
     .then(tabs => {
