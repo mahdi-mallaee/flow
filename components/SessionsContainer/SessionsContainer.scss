@@ -2,18 +2,22 @@
   display: flex;
   flex-direction: column;
   max-height: 250px;
-  overflow-y: scroll;
 
-  &::-webkit-scrollbar {
-    background-color: transparent;
-    width: 6px;
-    border-radius: 8px;
+  .sessions {
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 6px;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(200, 200, 200);
+      border-radius: 8px;
+    }
   }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: rgb(200, 200, 200);
-    border-radius: 8px;
-  }
 
   .new-session-button {
     display: flex;

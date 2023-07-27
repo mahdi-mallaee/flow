@@ -4,7 +4,8 @@ export type Session = {
   tabs: Tab[],
   title: string,
   main: boolean,
-  isOpen: boolean
+  isOpen: boolean,
+  colorCode: number
 }
 
 export type Tab = {

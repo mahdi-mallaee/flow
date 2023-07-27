@@ -15,6 +15,28 @@
     height: 40px;
     align-items: center;
 
+    .tabs-count {
+      &.color-1 {
+        background-color: rgb(255, 156, 156);
+      }
+
+      &.color-2 {
+        background-color: #98FF96;
+      }
+
+      &.color-3 {
+        background-color: #8699FF;
+      }
+
+      &.color-4 {
+        background-color: rgb(232, 132, 255);
+      }
+
+      &.color-5 {
+        background-color: rgb(243, 243, 118);
+      }
+    }
+
     .tabs-count,
     .main-indicator {
       flex-shrink: 0;

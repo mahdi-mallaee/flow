@@ -30,6 +30,7 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
             {unsavedWindows.map(window => {
               return <div key={window.id} className='unsaved-window'>
                 <div className="title">Unsaved Window ( {window.id} )</div>
+                {window.id === currentWindowId && <span>open</span>}
                 <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>
                   Add<MdAdd />
                 </div>

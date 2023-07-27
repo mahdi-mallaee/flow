@@ -84,32 +84,34 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
 
       <div className='sessions-container'>
         <div className='session-title'>Sessions</div>
-        {gettingSessionName ?
-          <div className="get-session-title-container">
-            <input autoFocus type="text" value={sessionTitleInput} onChange={e => {
-              setSessionTitleInput(e.target.value)
-            }} name="session-title-input" placeholder={new Date().toUTCString()} onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                _createNewSession()
-              }
-            }} />
-            <div className='close-get-title-button' onClick={() => setGettingSessionName(false)}><MdClose /></div>
-            <div className='confirm-title-button' onClick={() => _createNewSession()}><MdDone /></div>
-          </div>
-          :
-          <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
-        }
-        {sessions.map(session => {
-          return <SessionCard
-            key={session.id}
-            session={session}
-            sessionClickHandler={sessionClickHandler}
-            mainButtonClickHandler={mainButtonClickHandler}
-            deleteSession={deleteSession}
-            editSession={(id: string, title: string, callBack: Function) => {
-              editSession(id, title, callBack)
-            }} />
-        })}
+        <div className="sessions">
+          {gettingSessionName ?
+            <div className="get-session-title-container">
+              <input autoFocus type="text" value={sessionTitleInput} onChange={e => {
+                setSessionTitleInput(e.target.value)
+              }} name="session-title-input" placeholder={new Date().toUTCString()} onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  _createNewSession()
+                }
+              }} />
+              <div className='close-get-title-button' onClick={() => setGettingSessionName(false)}><MdClose /></div>
+              <div className='confirm-title-button' onClick={() => _createNewSession()}><MdDone /></div>
+            </div>
+            :
+            <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
+          }
+          {sessions.map(session => {
+            return <SessionCard
+              key={session.id}
+              session={session}
+              sessionClickHandler={sessionClickHandler}
+              mainButtonClickHandler={mainButtonClickHandler}
+              deleteSession={deleteSession}
+              editSession={(id: string, title: string, callBack: Function) => {
+                editSession(id, title, callBack)
+              }} />
+          })}
+        </div>
       </div>
     </>
   )

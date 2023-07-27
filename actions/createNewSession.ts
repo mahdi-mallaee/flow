@@ -16,7 +16,8 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
     title: title || new Date().toUTCString(),
     tabs,
     main: false,
-    isOpen: true
+    isOpen: true,
+    colorCode: Math.floor(Math.random() * 5) + 1
   }
 
   return session
