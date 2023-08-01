@@ -24,27 +24,23 @@ const openMainSession = async () => {
       })
       await storage.set('sessions', newSessions)
       refreshLastClosedWindow()
-      refreshUnsavedWindows()
-      refreshOpenSessions()
+      refreshUnsavedWindows(newSessions)
+      refreshOpenSessions(newSessions)
     }
   } else if (mainSession) {
     const newSessions = await openSession(sessions, mainSession.id, true)
-    storage.set('sessions', newSessions)
-      .then(() => {
-        chrome.windows.getAll()
-          .then(windows => {
-            windows.forEach(window => {
-              if (window.id !== mainSession.windowId) {
-                chrome.windows.remove(window.id)
-                  .then(() => {
-                    refreshUnsavedWindows()
-                    refreshLastClosedWindow()
-                    refreshOpenSessions()
-                  })
-              }
-            })
+    await storage.set('sessions', newSessions)
+    const windows = await chrome.windows.getAll()
+    windows.forEach(window => {
+      if (window.id !== mainSession.windowId) {
+        chrome.windows.remove(window.id)
+          .then(() => {
+            refreshUnsavedWindows(newSessions)
+            refreshLastClosedWindow()
+            refreshOpenSessions(newSessions)
           })
-      })
+      }
+    })
   } else if (lastSession) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
@@ -56,8 +52,8 @@ const openMainSession = async () => {
       })
       await storage.set('sessions', newSessions)
       refreshLastClosedWindow()
-      refreshUnsavedWindows()
-      refreshOpenSessions()
+      refreshUnsavedWindows(newSessions)
+      refreshOpenSessions(newSessions)
     }
   }
 }

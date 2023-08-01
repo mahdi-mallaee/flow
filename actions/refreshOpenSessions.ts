@@ -1,10 +1,10 @@
 import { Storage } from "@plasmohq/storage"
 import type { Session } from "~utils/types"
 
-const refreshOpenSessions = async () => {
+const refreshOpenSessions = async (sessions?: Session[]) => {
   const store = new Storage({ area: 'local' })
 
-  const sessions: Session[] = await store.get('sessions')
+  sessions = sessions || await store.get('sessions')
   const windows = await chrome.windows.getAll()
 
   sessions.forEach(session => {
