@@ -14,16 +14,16 @@
 }
 
 #theme-provider[data-theme='dark'] {
-  --background-color: #323e54;
-  --on-background-color: #ffffff;
+  --background-color: #1e2127;
+  --on-background-color: #fff;
   --on-background-variant-color: #c1c1c1;
   --on-background-disabled-color: #9e9e9e;
   --primary-color: #45fff4;
   --on-primary-color: #4c4c4c;
-  --surface-color: #31312c;
+  --surface-color: #21241f;
   --on-surface-color: #d5d5d5;
-  --surface-hover-color: #836944;
-  --outline-color: #525252;
-  --session-hover-color: rgb(105, 110, 118);
-  --icon-button-hover: #a4b26b;
+  --surface-hover-color: #343224;
+  --outline-color: #4c4c4c;
+  --session-hover-color: #33363a;
+  --icon-button-hover: #5f673c;
 }
