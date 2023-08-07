@@ -1,15 +1,19 @@
 .sessions-container {
   display: flex;
   flex-direction: column;
-  max-height: 250px;
+  flex: 2;
+  overflow: hidden;
 
   .sessions {
     overflow-y: scroll;
+    padding-left: 1px;
+    margin-right: 2px;
 
     &::-webkit-scrollbar {
       background-color: transparent;
       width: 6px;
       border-radius: 8px;
+      padding: 2px;
     }
 
     &::-webkit-scrollbar-thumb {

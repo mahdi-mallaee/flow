@@ -4,9 +4,10 @@ import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import type { AlertMessage, Session } from "~utils/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
+import { AnimatePresence, motion } from "framer-motion"
 
 const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -16,6 +17,8 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
     text: '',
     type: 'info'
   })
+
+  const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {
     const newSessions = sessions.map(session => {
@@ -54,11 +57,18 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
 
   const _createNewSession = async () => {
     const duplicateSession = sessions.find(s => s.title === sessionTitleInput)
-    if (duplicateSession) { return }
+    if (duplicateSession) {
+      setMessage({
+        show: true,
+        text: 'Another session with this name already exists.',
+        type: 'info'
+      })
+      return
+    }
 
     const newSession = await createNewSession(0, [], sessionTitleInput)
     await setSessions(current => {
-      return [...current, newSession]
+      return [newSession, ...current]
     })
     setGettingSessionName(false)
     setSessionTitleInput('')
@@ -78,6 +88,12 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
       })
     }
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setInitialAnimation(true)
+    }, 200)
+  }, [])
 
   return (
     <>
@@ -101,17 +117,29 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
             :
             <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
           }
-          {sessions.map(session => {
-            return <SessionCard
-              key={session.id}
-              session={session}
-              sessionClickHandler={sessionClickHandler}
-              mainButtonClickHandler={mainButtonClickHandler}
-              deleteSession={deleteSession}
-              editSession={(id: string, title: string, callBack: Function) => {
-                editSession(id, title, callBack)
-              }} />
-          })}
+          <AnimatePresence>
+            {sessions.map(session => {
+              return (
+                <motion.div
+                  key={session.id}
+                  initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ overflow: 'hidden' }}>
+                  <SessionCard
+                    key={session.id}
+                    session={session}
+                    sessionClickHandler={sessionClickHandler}
+                    mainButtonClickHandler={mainButtonClickHandler}
+                    deleteSession={deleteSession}
+                    editSession={(id: string, title: string, callBack: Function) => {
+                      editSession(id, title, callBack)
+                    }} />
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
         </div>
       </div>
     </>

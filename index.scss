@@ -13,8 +13,6 @@ body {
 
 .main-view {
   width: 320px;
-  min-height: 300px;
-  padding-bottom: 16px;
   font-family: "Lexend";
   display: flex;
   flex-direction: column;
@@ -60,6 +58,15 @@ body {
     border: 1px solid var(--outline-color);
     background-color: var(--surface-color);
     color: var(--on-surface-color);
+  }
+
+  .height-container {
+    max-height: 530px;
+    min-height: 300px;
+    resize: vertical;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
   }
 
 }

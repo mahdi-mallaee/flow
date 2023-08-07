@@ -8,7 +8,7 @@ import Logo from "~components/Logo"
 import ThemeProvider from "~components/ThemeProvider"
 import SessionsContainer from "~components/SessionsContainer"
 import UnsavedWindowsContainer from '~components/UnsavedWindowsContainer'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SettignsView from '~components/SettingsView'
 
 const IndexPopup = () => {
@@ -19,7 +19,37 @@ const IndexPopup = () => {
     })
   }, [])
 
-  const [showPasswordView, setShowPasswordView] = useState(false)
+  const [showSettingsView, setShowSettingsView] = useState(false)
+
+  const defaultContainerHeight = 350
+  const [containerHeight, setContainerHeight] = useState(defaultContainerHeight)
+
+  const [mainViewHeight, setMainViewHeight] = useStorage<number>({
+    key: "mainheight",
+    instance: new Storage({
+      area: "local"
+    })
+  }, defaultContainerHeight)
+
+  const ref = useRef(null)
+  useEffect(() => {
+    const observer = new ResizeObserver(entries => {
+      const height = entries[0].target.clientHeight
+      if (height != defaultContainerHeight) {
+        setContainerHeight(height)
+      }
+    })
+    observer.observe(ref.current)
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (containerHeight !== defaultContainerHeight) {
+      setMainViewHeight(containerHeight)
+    }
+  }, [containerHeight])
 
   return (
     <ThemeProvider>
@@ -29,19 +59,19 @@ const IndexPopup = () => {
           <div className="logo"><Logo /></div>
           <div className='title'>Future Tabs</div>
           <div className="settings-button" onClick={() => {
-            setShowPasswordView(current => !current)
+            setShowSettingsView(current => !current)
           }}>
-            {showPasswordView ? <MdArrowBack /> : <MdTune />}
+            {showSettingsView ? <MdArrowBack /> : <MdTune />}
           </div>
         </div>
 
-        {showPasswordView ?
+        {showSettingsView ?
           <SettignsView />
           :
-          <>
+          <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
             <SessionsContainer sessions={sessions} setSessions={setSessions} />
             <UnsavedWindowsContainer sessions={sessions} setSessions={setSessions} />
-          </>
+          </div>
         }
 
       </div >
