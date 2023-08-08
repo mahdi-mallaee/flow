@@ -1,17 +1,9 @@
 const createNewWindow = async (urls?: string[]): Promise<number> => {
-  let id: number
-  await chrome.windows.create()
-    .then(res => {
-      if (res.id) {
-        id = res.id
-      } else {
-        id = -1
-      }
-
-    })
-    .catch(() => {
-      id = -1
-    })
+  let id: number = -1
+  const window = await chrome.windows.create()
+  if (window.id) {
+    id = window.id
+  }
 
   if (urls && id !== -1) {
     urls.forEach(url => {

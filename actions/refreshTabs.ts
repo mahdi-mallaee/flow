@@ -2,7 +2,7 @@ import type { Session, Tab } from "~utils/types"
 import { Storage } from '@plasmohq/storage'
 
 const refreshTabs = async () => {
-  const storage = new Storage({ area: 'local' })
+  const store = new Storage({ area: 'local' })
 
   const browserTabs = await chrome.tabs.query({})
   const localTabs: Tab[] = browserTabs.map(tab => {
@@ -15,7 +15,7 @@ const refreshTabs = async () => {
     }
   })
 
-  const sessions: Session[] = await storage.get('sessions')
+  const sessions: Session[] = await store.get('sessions')
   if (sessions) {
     const newSessions = sessions.map((session: Session) => {
       const sessionTabs = []
@@ -29,7 +29,7 @@ const refreshTabs = async () => {
       }
       return session
     })
-    await storage.set('sessions', newSessions)
+    await store.set('sessions', newSessions)
   }
 }
 

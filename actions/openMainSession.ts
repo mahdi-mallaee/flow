@@ -6,11 +6,11 @@ import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
 
 const openMainSession = async () => {
-  const storage = new Storage({ area: 'local' })
+  const store = new Storage({ area: 'local' })
 
-  const sessions: Session[] = await storage.get('sessions')
+  const sessions: Session[] = await store.get('sessions')
   const mainSession: Session = sessions.find(session => session.main === true)
-  const lastClosedWindowId: number = await storage.get('lastClosedWindowId')
+  const lastClosedWindowId: number = await store.get('lastClosedWindowId')
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
 
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
@@ -22,19 +22,20 @@ const openMainSession = async () => {
         }
         return session
       })
-      await storage.set('sessions', newSessions)
+      await store.set('sessions', newSessions)
       refreshLastClosedWindow()
       refreshUnsavedWindows(newSessions)
       refreshOpenSessions(newSessions)
     }
   } else if (mainSession) {
     const newSessions = await openSession(sessions, mainSession.id, true)
-    await storage.set('sessions', newSessions)
+    await store.set('sessions', newSessions)
     const windows = await chrome.windows.getAll()
     windows.forEach(window => {
       if (window.id !== mainSession.windowId) {
         chrome.windows.remove(window.id)
           .then(() => {
+            console.log(newSessions)
             refreshUnsavedWindows(newSessions)
             refreshLastClosedWindow()
             refreshOpenSessions(newSessions)
@@ -50,7 +51,7 @@ const openMainSession = async () => {
         }
         return session
       })
-      await storage.set('sessions', newSessions)
+      await store.set('sessions', newSessions)
       refreshLastClosedWindow()
       refreshUnsavedWindows(newSessions)
       refreshOpenSessions(newSessions)

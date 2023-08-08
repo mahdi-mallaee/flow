@@ -10,6 +10,10 @@ import SessionsContainer from "~components/SessionsContainer"
 import UnsavedWindowsContainer from '~components/UnsavedWindowsContainer'
 import { useEffect, useRef, useState } from 'react'
 import SettignsView from '~components/SettingsView'
+import refreshOpenSessions from '~actions/refreshOpenSessions'
+import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
+import refreshTabs from '~actions/refreshTabs'
+import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
 
 const IndexPopup = () => {
   const [sessions, setSessions] = useStorage<Session[]>({
@@ -51,6 +55,13 @@ const IndexPopup = () => {
     }
   }, [containerHeight])
 
+  useEffect(() => {
+    refreshOpenSessions()
+    refreshUnsavedWindows()
+    refreshTabs()
+    refreshLastClosedWindow()
+  })
+
   return (
     <ThemeProvider>
       <div className="main-view">
@@ -65,14 +76,16 @@ const IndexPopup = () => {
           </div>
         </div>
 
-        {showSettingsView ?
-          <SettignsView />
-          :
-          <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
-            <SessionsContainer sessions={sessions} setSessions={setSessions} />
-            <UnsavedWindowsContainer sessions={sessions} setSessions={setSessions} />
-          </div>
-        }
+        <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
+          {showSettingsView ?
+            <SettignsView />
+            :
+            <>
+              <SessionsContainer sessions={sessions} setSessions={setSessions} />
+              <UnsavedWindowsContainer sessions={sessions} setSessions={setSessions} />
+            </>
+          }
+        </div>
 
       </div >
     </ThemeProvider>

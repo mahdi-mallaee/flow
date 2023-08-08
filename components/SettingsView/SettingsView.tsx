@@ -3,7 +3,6 @@ import './SettingsView.scss'
 import { Theme, type Settings } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
-import { useState } from 'react'
 
 const SettignsView = () => {
   const [settings, setSettings] = useStorage<Settings>({

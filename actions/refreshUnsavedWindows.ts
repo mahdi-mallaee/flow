@@ -3,11 +3,11 @@ import getUnsavedWindows from "../actions/getUnsavedWindows"
 import type { Session } from "~utils/types"
 
 const refreshUnsavedWindows = async (sessions?: Session[]) => {
-  const storage = new Storage({ area: 'local' })
+  const store = new Storage({ area: 'local' })
 
-  sessions = sessions || await storage.get('sessions')
+  sessions = sessions || await store.get('sessions')
   const windows = await getUnsavedWindows(sessions)
-  await storage.set('unsaved-windows', windows)
+  await store.set('unsaved-windows', windows)
 }
 
 export default refreshUnsavedWindows

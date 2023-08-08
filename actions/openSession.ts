@@ -1,12 +1,10 @@
 import createNewWindow from "./createNewWindow";
-import type { Session, Tab } from "~utils/types";
+import type { Session } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
-import { Storage as store } from '@plasmohq/storage'
-
-
-const storage = new store({ area: 'local' })
+import { Storage } from '@plasmohq/storage'
 
 const openSession = async (sessions: Session[], sessionId: string, removeHistory?: boolean): Promise<Session[]> => {
+  const store = new Storage({ area: 'local' })
   const startTime = Date.now()
   const session = sessions.find(s => { return s.id === sessionId })
   const newWindowId = await createNewWindow(session.tabs.map(t => { return t.url }))
@@ -18,7 +16,7 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     }
   })
 
-  storage.set('openedTabs', openedTabs)
+  store.set('openedTabs', openedTabs)
 
   const groups = {}
 
@@ -52,7 +50,7 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     return s
   })
 
-  storage.set('sessions', newSessions)
+  store.set('sessions', newSessions)
 
   const windowTabs = await chrome.tabs.query({ windowId: newWindowId })
   if (windowTabs && windowTabs[0] && windowTabs[0].id) {
