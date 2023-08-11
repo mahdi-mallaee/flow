@@ -24,8 +24,9 @@ export type AlertMessage = {
 
 export type Settings = {
   theme: Theme,
-  newSessionWindowState: WindowState
-  createWindowForNewSession: boolean
+  newSessionWindowState: WindowState,
+  createWindowForNewSession: boolean,
+  openingBlankWindowOnStratup: boolean,
 }
 
 export type WindowState = chrome.windows.windowStateEnum
@@ -40,4 +41,5 @@ export const DefaultSettings: Settings = {
   theme: Theme.light,
   createWindowForNewSession: true,
   newSessionWindowState: "normal",
+  openingBlankWindowOnStratup: false,
 }

@@ -1,14 +1,24 @@
 import { Storage } from "@plasmohq/storage"
 import openSession from "~actions/openSession"
-import type { Session } from "~utils/types"
+import type { Session, Settings } from "~utils/types"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
 
-const openMainSession = async () => {
+const openFirstSession = async () => {
   const store = new Storage({ area: 'local' })
-
   const sessions: Session[] = await store.get('sessions')
+  const settings: Settings = await store.get('settings')
+
+  if (settings.openingBlankWindowOnStratup) {
+    console.log('blank window')
+    const windows = await chrome.windows.getAll()
+    await chrome.windows.create({ state: settings.newSessionWindowState })
+    await chrome.windows.remove(windows[0].id)
+    return
+  }
+
+
   const mainSession: Session = sessions.find(session => session.main === true)
   const lastClosedWindowId: number = await store.get('lastClosedWindowId')
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
@@ -59,4 +69,4 @@ const openMainSession = async () => {
   }
 }
 
-export default openMainSession
+export default openFirstSession

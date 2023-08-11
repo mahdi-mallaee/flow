@@ -1,6 +1,6 @@
 import refreshTabs from "~actions/refreshTabs"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import openMainSession from "~actions/openMainSession"
+import openFirstSession from "~actions/openFirstSession"
 import refreshLastClosedWindow from "~actions/refreshLastClosedWindow"
 import discardOpenedTab from "~actions/discardOpenedTab"
 import refreshOpenSessions from "~actions/refreshOpenSessions"
@@ -47,5 +47,5 @@ chrome.windows.onCreated.addListener(() => {
 })
 
 chrome.runtime.onStartup.addListener(() => {
-  openMainSession()
+  openFirstSession()
 })

@@ -43,8 +43,8 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">New sessions window size.</div>
-          <div className="new-session-window-state">
+          <div className="title">Window size</div>
+          <div className="new-window-state">
             <Dropdown
               value={settings.newSessionWindowState}
               options={newSessionWindowStateDropdownOptions}
@@ -58,10 +58,27 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Creating window for new sessions.</div>
+          <div className="title">Creating window for new sessions</div>
           <div className="create-window-for-new-session">
             <ToggleSwitch checked={settings.createWindowForNewSession}
               onChange={(checked: boolean) => { setSettings(current => { return ({ ...current, createWindowForNewSession: checked }) }) }} />
+          </div>
+        </div>
+
+        <div className="item">
+          <div className="title">Opening a blank window on startup</div>
+          <div className="create-window-for-new-session">
+            <ToggleSwitch checked={settings.openingBlankWindowOnStratup}
+              onChange={(checked: boolean) => {
+                setSettings(current => { return ({ ...current, openingBlankWindowOnStratup: checked }) })
+              }} />
+          </div>
+        </div>
+        
+        <div className="item">
+          <div className="title">Reset settings to default</div>
+          <div className="reset-button" onClick={() => { setSettings(DefaultSettings) }}>
+            Reset
           </div>
         </div>
       </div>

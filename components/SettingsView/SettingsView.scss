@@ -7,7 +7,7 @@
     flex-direction: column;
 
     .item {
-      padding: 12px;
+      padding: 0 12px;
       font-size: 11px;
       display: flex;
       gap: 8px;
@@ -21,6 +21,23 @@
       .selector {
         flex-shrink: 0;
       }
+
+      .reset-button {
+        background-color: var(--surface-color);
+        border: 1px solid var(--outline-color);
+        width: 64px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--surface-hover-color);
+        }
+      }
+
     }
   }
 }
