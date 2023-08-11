@@ -23,11 +23,21 @@ export type AlertMessage = {
 }
 
 export type Settings = {
-  theme: Theme
+  theme: Theme,
+  newSessionWindowState: WindowState
+  createWindowForNewSession: boolean
 }
+
+export type WindowState = chrome.windows.windowStateEnum
 
 export enum Theme {
   light = 'light',
   dark = 'dark',
   osDefault = 'os-default'
+}
+
+export const DefaultSettings: Settings = {
+  theme: Theme.light,
+  createWindowForNewSession: true,
+  newSessionWindowState: "normal",
 }

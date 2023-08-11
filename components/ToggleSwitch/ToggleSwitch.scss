@@ -1,0 +1,67 @@
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  text-align: left;
+  &-checkbox {
+    display: none;
+  }
+  &-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+    margin: 0;
+  }
+  &-inner {
+    display: block;
+    width: 200%;
+    background-color: var(--surface-color);
+    transition: margin 0.3s ease-in 0s;
+    &:before {
+      display: block;
+      float: left;
+      width: 50%;
+      height: 24px;
+      padding: 0;
+      line-height: 24px;
+      font-size: 14px;
+      font-weight: bold;
+      box-sizing: border-box;
+      text-transform: uppercase;
+      padding-left: 10px;
+      background-color: var(--surface-color);
+      transition: background-color 0.25s;
+      content: "";
+    }
+  }
+  &-switch {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: var(--on-surface-color);
+    position: absolute;
+    top: 2px;
+    bottom: 0;
+    right: 26px;
+    border-radius: 20px;
+    transition: all 0.2s ease-in-out 0s;
+  }
+  &-checkbox:checked + &-label {
+    .toggle-switch-switch {
+      background-color: var(--on-primary-color);
+    }
+    .toggle-switch-inner::before {
+      background-color: var(--primary-color);
+    }
+    .toggle-switch-switch {
+      right: 2px;
+    }
+  }
+}

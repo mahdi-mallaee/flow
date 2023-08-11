@@ -53,7 +53,7 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
   store.set('sessions', newSessions)
 
   const windowTabs = await chrome.tabs.query({ windowId: newWindowId })
-  if (windowTabs && windowTabs[0] && windowTabs[0].id) {
+  if (windowTabs && windowTabs[0] && windowTabs[0].id && windowTabs.length > 1) {
     chrome.tabs.remove(tabs[0].id)
   }
 

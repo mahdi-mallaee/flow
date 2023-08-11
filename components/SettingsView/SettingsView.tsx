@@ -1,8 +1,9 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type Settings } from '~utils/types'
+import { Theme, type Settings, DefaultSettings, type WindowState } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
+import ToggleSwitch from '~components/ToggleSwitch'
 
 const SettignsView = () => {
   const [settings, setSettings] = useStorage<Settings>({
@@ -10,21 +11,58 @@ const SettignsView = () => {
     instance: new Storage({
       area: "local"
     })
-  }, {
-    theme: Theme.light
+  }, DefaultSettings)
+
+  const newSessionWindowStateDropdownOptions = [
+    { value: 'normal', label: "Normal" },
+    { value: 'minimized', label: "Minimized" },
+    { value: 'maximized', label: "Maximized" },
+  ]
+
+  const themeOptions = []
+  Object.values(Theme).forEach((value, id) => {
+    themeOptions.push({
+      label: Object.keys(Theme)[id].toString(),
+      value: value
+    })
   })
 
   return (
     <div className="settings-view">
       <div className='settings-title'>Settings</div>
       <div className="items-container">
+
         <div className="item">
           <div className="title">Theme</div>
-          <Dropdown value={settings.theme} options={Object.values(Theme)} onChange={((option: Theme) => {
-            setSettings(current => {
-              return ({ ...current, theme: option })
-            })
-          })} />
+          <Dropdown value={settings.theme} options={themeOptions}
+            onChange={((option: Theme) => {
+              setSettings(current => {
+                return ({ ...current, theme: option })
+              })
+            })} />
+        </div>
+
+        <div className="item">
+          <div className="title">New sessions window size.</div>
+          <div className="new-session-window-state">
+            <Dropdown
+              value={settings.newSessionWindowState}
+              options={newSessionWindowStateDropdownOptions}
+              onChange={(option: WindowState) => {
+                setSettings(current => {
+                  return ({ ...current, newSessionWindowState: option })
+                })
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="item">
+          <div className="title">Creating window for new sessions.</div>
+          <div className="create-window-for-new-session">
+            <ToggleSwitch checked={settings.createWindowForNewSession}
+              onChange={(checked: boolean) => { setSettings(current => { return ({ ...current, createWindowForNewSession: checked }) }) }} />
+          </div>
         </div>
       </div>
     </div>

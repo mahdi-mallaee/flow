@@ -3,15 +3,21 @@ import './Dropdown.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { MdArrowDropDown } from "react-icons/md"
 
-const Dropdown = ({ options, value, onChange }: { options: string[], value: string, onChange: Function }) => {
+type Option = {
+  value: string,
+  label: string
+}
+
+const Dropdown = ({ options, value, onChange }: { options: Option[], value: string, onChange: Function }) => {
   const [isActive, setIsActive] = useState(false)
-  const maxWidth = Math.max(...options.map(option => option.length)) + 7
+  const maxWidth = Math.max(...options.map(option => option.label.length)) + 5
   const dropdownWidth = { width: maxWidth + 'ch' }
+  const selectedOption = options.find(option => option.value === value)
   return (
     <>
-      <div className="dropdown" style={dropdownWidth}>
-        <div className="value-container" onClick={() => { setIsActive(!isActive) }}>
-          <div className="value">{value}</div>
+      <div className="dropdown" style={dropdownWidth} onClick={() => { setIsActive(!isActive) }}>
+        <div className="value-container">
+          <div className="value">{selectedOption.label}</div>
           <MdArrowDropDown />
         </div>
         <AnimatePresence>
@@ -21,12 +27,12 @@ const Dropdown = ({ options, value, onChange }: { options: string[], value: stri
               animate={{ height: 'auto' }}
               exit={{ height: 0 }}
               transition={{ duration: 0.19 }}>
-              {options.map(option => {
-                if (option !== value) {
-                  return <div className="option" key={option} onClick={() => {
+              {options.map((option, id) => {
+                if (option.value !== selectedOption.value) {
+                  return <div className="option" key={option.value} onClick={() => {
                     setIsActive(false)
-                    onChange(option)
-                  }}>{option}</div>
+                    onChange(option.value)
+                  }}>{option.label}</div>
                 }
               })}
             </motion.div>}

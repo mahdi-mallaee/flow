@@ -60,7 +60,7 @@ const IndexPopup = () => {
     refreshUnsavedWindows()
     refreshTabs()
     refreshLastClosedWindow()
-  })
+  }, [])
 
   return (
     <ThemeProvider>
