@@ -8,15 +8,16 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
   const store = new Storage({ area: 'local' })
   const settings: Settings = await store.get('settings')
   const createWindow = settings.createWindowForNewSession
+  windowId = -1
   if (createWindow && !(windowId && windowId > 1)) {
     windowId = await createNewWindow(urls || [])
   }
 
   const tabs = await getTabsByWindowId(windowId) || []
 
-  const session = {
+  const session: Session = {
     id: v4(),
-    windowId: createWindow ? windowId : -1,
+    windowId: windowId,
     title: title || new Date().toUTCString(),
     tabs,
     main: false,

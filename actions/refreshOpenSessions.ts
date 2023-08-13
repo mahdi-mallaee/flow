@@ -4,7 +4,7 @@ import type { Session } from "~utils/types"
 const refreshOpenSessions = async (sessions?: Session[]) => {
   const store = new Storage({ area: 'local' })
 
-  sessions = sessions || await store.get('sessions')
+  sessions = sessions || await store.get('sessions') || []
   const windows = await chrome.windows.getAll()
 
   sessions.forEach(session => {

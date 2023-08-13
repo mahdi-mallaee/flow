@@ -8,7 +8,7 @@ const refreshTabs = async () => {
   const localTabs: Tab[] = browserTabs.map(tab => {
     return {
       id: tab.id,
-      url: tab.pendingUrl || tab.url || '',
+      url: tab.pendingUrl || tab.url || 'chrome://newtab',
       windowId: tab.windowId,
       index: tab.index,
       groupId: tab.groupId
