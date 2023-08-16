@@ -88,7 +88,7 @@ const SessionCard = (
           setSessionCardState('default')
         }}><MdClose /></div>
         <div className="accept-confirmation-button" onClick={() => {
-          deleteSession(session.id)
+          deleteSession(session)
         }}><MdDone /></div>
       </div>
     )

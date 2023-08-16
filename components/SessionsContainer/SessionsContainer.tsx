@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
+import createNewBackup from "~actions/createNewBackup"
 
 const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -32,11 +33,19 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
     setSessions(newSessions)
   }
 
-  const deleteSession = (id: string) => {
-    const newSessions = sessions
-    const index = newSessions.findIndex(s => s.id === id)
+  const deleteSession = (session: Session) => {
+    createNewBackup({
+      status: 'before deleting session',
+      relatedItem: {
+        title: session.title,
+        type: 'session'
+      },
+      sessions
+    })
+    const newSessions = [...sessions]
+    const index = newSessions.findIndex(s => s.id === session.id)
     newSessions.splice(index, 1)
-    setSessions([...newSessions])
+    setSessions(newSessions)
     refreshUnsavedWindows(newSessions)
   }
 

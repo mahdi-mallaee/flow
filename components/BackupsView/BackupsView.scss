@@ -22,7 +22,9 @@
           font-size: 12px;
         }
 
-        .date {
+        .date,
+        .status,
+        .related-item {
           font-size: 10px;
           color: var(--on-background-variant-color);
         }

@@ -50,5 +50,12 @@ export type Backup = {
   id: string,
   title: string,
   sessions: Session[],
-  date: string
+  date: string,
+  status: BackupStatus
+  relatedItem?: {
+    title: string,
+    type: 'session' | 'backup'
+  }
 }
+
+export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' 

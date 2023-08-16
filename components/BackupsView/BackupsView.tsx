@@ -1,13 +1,13 @@
 import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import type { Backup, Session } from "~utils/types"
-import { v4 as uuidv4 } from "uuid"
 import './BackupsView.scss'
 import { useState } from "react"
 import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
+import createNewBackup from "~actions/createNewBackup"
 
 const BackupsView = ({ }) => {
-  const [sessions, setSessions] = useStorage<Session[]>({
+  const [_, setSessions] = useStorage<Session[]>({
     key: "sessions",
     instance: new Storage({
       area: "local"
@@ -25,14 +25,10 @@ const BackupsView = ({ }) => {
   const [backupTitleInput, setBackupTitleInput] = useState('')
   const [loadedBackupId, setLoadedBackupId] = useState('')
 
-  const createNewBackup = async () => {
-    await setBackups(current => {
-      return ([{
-        id: uuidv4(),
-        title: backupTitleInput || new Date().toUTCString(),
-        sessions,
-        date: new Date().toUTCString()
-      }, ...current])
+  const _createNewBackup = async () => {
+    await createNewBackup({
+      status: 'manual',
+      title: backupTitleInput
     })
     setGetBackupName(false)
     setBackupTitleInput('')
@@ -41,6 +37,13 @@ const BackupsView = ({ }) => {
   const loadBackup = async (id: string) => {
     const backup = backups.find(b => b.id === id)
     if (backup) {
+      await createNewBackup({
+        status: 'before loading backup',
+        relatedItem: {
+          title: backup.title,
+          type: 'backup'
+        }
+      })
       await setSessions(backup.sessions)
     }
   }
@@ -62,11 +65,11 @@ const BackupsView = ({ }) => {
               setBackupTitleInput(e.target.value)
             }} name="backup-title-input" placeholder={new Date().toUTCString()} onKeyDown={(e) => {
               if (e.key === "Enter") {
-                createNewBackup()
+                _createNewBackup()
               }
             }} />
             <div className='close-get-title-button' onClick={() => setGetBackupName(false)}><MdClose /></div>
-            <div className='confirm-title-button' onClick={() => createNewBackup()}><MdDone /></div>
+            <div className='confirm-title-button' onClick={() => _createNewBackup()}><MdDone /></div>
           </div>
           :
           <div className="new-backup-button" onClick={() => setGetBackupName(true)}><MdAdd /> <span>create new backup</span></div>
@@ -77,6 +80,8 @@ const BackupsView = ({ }) => {
               <div key={backup.id} className="backup-card">
                 <div className="details">
                   <div className="title">{backup.title}</div>
+                  <div className="status">{backup.status}</div>
+                  {backup.relatedItem && <div className="related-item">related {backup.relatedItem.type === 'session' ? 'session' : 'backup'}: {backup.relatedItem.title}</div>}
                   <div className="date">{backup.date}</div>
                 </div>
                 <div className="buttons">
