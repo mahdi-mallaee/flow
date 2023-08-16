@@ -34,7 +34,7 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
     <AnimatePresence>
       {unsavedWindows.length >= 1 &&
         <motion.div
-          className="unsaved-windows-container"
+          className="view-title unsaved-windows-container"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

@@ -2,28 +2,20 @@ import './index.scss'
 import './utils/colors.scss'
 import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
-import type { Session } from "~utils/types"
+import type { MainContentState } from "~utils/types"
 import { MdArrowBack, MdTune } from 'react-icons/md'
 import Logo from "~components/Logo"
 import ThemeProvider from "~components/ThemeProvider"
-import SessionsContainer from "~components/SessionsContainer"
-import UnsavedWindowsContainer from '~components/UnsavedWindowsContainer'
 import { useEffect, useRef, useState } from 'react'
-import SettignsView from '~components/SettingsView'
 import refreshOpenSessions from '~actions/refreshOpenSessions'
 import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
 import refreshTabs from '~actions/refreshTabs'
 import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
+import MainContent from '~components/MainContent/MainContent'
 
 const IndexPopup = () => {
-  const [sessions, setSessions] = useStorage<Session[]>({
-    key: "sessions",
-    instance: new Storage({
-      area: "local"
-    })
-  }, [])
 
-  const [showSettingsView, setShowSettingsView] = useState(false)
+  const [mainContentState, setMainContentState] = useState<MainContentState>('sessions')
 
   const defaultContainerHeight = 350
   const [containerHeight, setContainerHeight] = useState(defaultContainerHeight)
@@ -62,6 +54,27 @@ const IndexPopup = () => {
     refreshLastClosedWindow()
   }, [])
 
+  const settingsButtonClickHandler = () => {
+    switch (mainContentState) {
+      case 'sessions': {
+        setMainContentState('settings')
+        break
+      }
+      case 'settings': {
+        setMainContentState('sessions')
+        break
+      }
+      case 'backups': {
+        setMainContentState('settings')
+        break
+      }
+      default: {
+        setMainContentState('sessions')
+        break
+      }
+    }
+  }
+
   return (
     <ThemeProvider>
       <div className="main-view">
@@ -69,22 +82,13 @@ const IndexPopup = () => {
         <div className="header">
           <div className="logo"><Logo /></div>
           <div className='title'>Future Tabs</div>
-          <div className="settings-button" onClick={() => {
-            setShowSettingsView(current => !current)
-          }}>
-            {showSettingsView ? <MdArrowBack /> : <MdTune />}
+          <div className="settings-button" onClick={settingsButtonClickHandler}>
+            {mainContentState !== 'sessions' ? <MdArrowBack /> : <MdTune />}
           </div>
         </div>
 
         <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
-          {showSettingsView ?
-            <SettignsView />
-            :
-            <>
-              <SessionsContainer sessions={sessions} setSessions={setSessions} />
-              <UnsavedWindowsContainer sessions={sessions} setSessions={setSessions} />
-            </>
-          }
+          <MainContent mainContentState={mainContentState} setMainContentState={setMainContentState} />
         </div>
 
       </div >

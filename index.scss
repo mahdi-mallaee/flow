@@ -11,6 +11,18 @@ body {
   font-weight: 400;
 }
 
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 6px;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(200, 200, 200);
+  border-radius: 8px;
+}
+
 .main-view {
   width: 320px;
   min-height: 360px;
@@ -50,9 +62,7 @@ body {
     }
   }
 
-  .session-title,
-  .unsaved-windows-title,
-  .settings-title {
+  .view-title {
     font-size: 12px;
     padding: 8px 12px;
     font-weight: 700;

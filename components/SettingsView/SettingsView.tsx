@@ -1,11 +1,12 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type Settings, DefaultSettings, type WindowState } from '~utils/types'
+import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
+import { MdChevronRight } from 'react-icons/md'
 
-const SettignsView = () => {
+const SettignsView = ({ setMainContentState }: { setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
   const [settings, setSettings] = useStorage<Settings>({
     key: "settings",
     instance: new Storage({
@@ -29,7 +30,7 @@ const SettignsView = () => {
 
   return (
     <div className="settings-view">
-      <div className='settings-title'>Settings</div>
+      <div className='view-title settings-title'>Settings</div>
       <div className="items-container">
 
         <div className="item">
@@ -74,7 +75,12 @@ const SettignsView = () => {
               }} />
           </div>
         </div>
-        
+
+        <div className="item backups-nav" onClick={() => setMainContentState('backups')}>
+          <div className="title">Backups</div>
+          <div className="backups-view-button"><MdChevronRight /></div>
+        </div>
+
         <div className="item">
           <div className="title">Reset settings to default</div>
           <div className="reset-button" onClick={() => { setSettings(DefaultSettings) }}>

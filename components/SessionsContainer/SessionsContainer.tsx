@@ -100,7 +100,7 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
       <AlertMessageView message={message} setMessage={setMessage} />
 
       <div className='sessions-container'>
-        <div className='session-title'>Sessions</div>
+        <div className='view-title session-title'>Sessions</div>
         <div className="sessions">
           {gettingSessionName ?
             <div className="get-session-title-container">

@@ -43,3 +43,12 @@ export const DefaultSettings: Settings = {
   newSessionWindowState: "normal",
   openingBlankWindowOnStratup: false,
 }
+
+export type MainContentState = "sessions" | 'settings' | 'backups'
+
+export type Backup = {
+  id: string,
+  title: string,
+  sessions: Session[],
+  date: string
+}

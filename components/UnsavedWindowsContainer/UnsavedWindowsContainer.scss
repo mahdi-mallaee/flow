@@ -6,29 +6,6 @@
 
   .unsaved-windows {
     overflow-y: scroll;
-
-    &::-webkit-scrollbar {
-      background-color: transparent;
-      width: 6px;
-      border-radius: 8px;
-      padding: 2px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: rgb(200, 200, 200);
-      border-radius: 8px;
-    }
-  }
-
-  &::-webkit-scrollbar {
-    background-color: transparent;
-    width: 6px;
-    border-radius: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: rgb(200, 200, 200);
   }
 
   .unsaved-window {
