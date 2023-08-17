@@ -4,6 +4,7 @@ import openFirstSession from "~actions/openFirstSession"
 import refreshLastClosedWindow from "~actions/refreshLastClosedWindow"
 import discardOpenedTab from "~actions/discardOpenedTab"
 import refreshOpenSessions from "~actions/refreshOpenSessions"
+import runIntervalBakcups from "~actions/runIntervalBackups"
 
 export { }
 
@@ -48,4 +49,5 @@ chrome.windows.onCreated.addListener(() => {
 
 chrome.runtime.onStartup.addListener(() => {
   openFirstSession()
+  runIntervalBakcups()
 })

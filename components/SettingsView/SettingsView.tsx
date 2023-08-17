@@ -1,10 +1,11 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState } from '~utils/types'
+import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState, type BackupIntervalTime } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight } from 'react-icons/md'
+import runIntervalBakcups from '~actions/runIntervalBackups'
 
 const SettignsView = ({ setMainContentState }: { setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
   const [settings, setSettings] = useStorage<Settings>({
@@ -14,10 +15,24 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
     })
   }, DefaultSettings)
 
+  const [autoBackupIntervalId] = useStorage({
+    key: "autoBackupIntervalId",
+    instance: new Storage({
+      area: "local"
+    })
+  })
+
   const newSessionWindowStateDropdownOptions = [
     { value: 'normal', label: "Normal" },
     { value: 'minimized', label: "Minimized" },
     { value: 'maximized', label: "Maximized" },
+  ]
+  const autoBackupsIntervalDropdownOptions = [
+    { value: '0', label: "Never" },
+    { value: '10', label: "10 min" },
+    { value: '30', label: "30 min" },
+    { value: '60', label: "1 hour" },
+    { value: '120', label: "2 hour" },
   ]
 
   const themeOptions = []
@@ -52,6 +67,27 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
               onChange={(option: WindowState) => {
                 setSettings(current => {
                   return ({ ...current, newSessionWindowState: option })
+                })
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="item">
+          <div className="title">Automatic backups interval</div>
+          <div className="auto-backups-interval">
+            <Dropdown
+              value={settings.autoBackupsInterval}
+              options={autoBackupsIntervalDropdownOptions}
+              onChange={(option: BackupIntervalTime) => {
+                setSettings(current => {
+                  return ({ ...current, autoBackupsInterval: option })
+                }).then(() => {
+                  console.log(autoBackupIntervalId)
+                  if (autoBackupIntervalId) {
+                    clearInterval(autoBackupIntervalId)
+                    runIntervalBakcups()
+                  }
                 })
               }}
             />

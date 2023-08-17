@@ -27,8 +27,10 @@ export type Settings = {
   newSessionWindowState: WindowState,
   createWindowForNewSession: boolean,
   openingBlankWindowOnStratup: boolean,
+  autoBackupsInterval: BackupIntervalTime
 }
 
+export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'
 export type WindowState = chrome.windows.windowStateEnum
 
 export enum Theme {
@@ -42,6 +44,7 @@ export const DefaultSettings: Settings = {
   createWindowForNewSession: true,
   newSessionWindowState: "normal",
   openingBlankWindowOnStratup: false,
+  autoBackupsInterval: '30'
 }
 
 export type MainContentState = "sessions" | 'settings' | 'backups'
@@ -58,4 +61,4 @@ export type Backup = {
   }
 }
 
-export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' 
+export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session'  | 'interval backups'

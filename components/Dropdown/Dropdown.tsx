@@ -27,7 +27,7 @@ const Dropdown = ({ options, value, onChange }: { options: Option[], value: stri
               animate={{ height: 'auto' }}
               exit={{ height: 0 }}
               transition={{ duration: 0.19 }}>
-              {options.map((option, id) => {
+              {options.map(option => {
                 if (option.value !== selectedOption.value) {
                   return <div className="option" key={option.value} onClick={() => {
                     setIsActive(false)
