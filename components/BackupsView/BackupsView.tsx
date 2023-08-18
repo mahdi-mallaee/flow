@@ -5,6 +5,8 @@ import './BackupsView.scss'
 import { useState } from "react"
 import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
 import createNewBackup from "~actions/createNewBackup"
+import refreshOpenSessions from "~actions/refreshOpenSessions"
+import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 
 const BackupsView = ({ }) => {
   const [_, setSessions] = useStorage<Session[]>({
@@ -45,6 +47,8 @@ const BackupsView = ({ }) => {
         }
       })
       await setSessions(backup.sessions)
+      refreshOpenSessions()
+      refreshUnsavedWindows()
     }
   }
 

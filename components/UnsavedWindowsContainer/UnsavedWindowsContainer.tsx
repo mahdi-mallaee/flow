@@ -34,12 +34,12 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
     <AnimatePresence>
       {unsavedWindows.length >= 1 &&
         <motion.div
-          className="view-title unsaved-windows-container"
+          className="unsaved-windows-container"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}>
-          <div className="unsaved-windows-title">Unsaved Windows</div>
+          <div className="view-title unsaved-windows-title">Unsaved Windows</div>
 
           <div className="unsaved-windows">
             {unsavedWindows.map(window => {

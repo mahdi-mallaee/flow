@@ -8,12 +8,19 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
   const store = new Storage({ area: 'local' })
   const settings: Settings = await store.get('settings')
   const createWindow = settings.createWindowForNewSession
-  windowId = -1
   let tabs: Tab[] = []
+  let isSessionOpen = false
 
-  if (createWindow && !(windowId && windowId > 1)) {
-    windowId = await createNewWindow(urls || [])
+  if (windowId && windowId > 0) {
     tabs = await getTabsByWindowId(windowId) || []
+    isSessionOpen = true
+  } else {
+    if (createWindow) {
+      windowId = await createNewWindow(urls || [])
+      isSessionOpen = true
+    } else {
+      windowId = -1
+    }
   }
 
   const session: Session = {
@@ -22,7 +29,7 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
     title: title || new Date().toUTCString(),
     tabs,
     main: false,
-    isOpen: createWindow,
+    isOpen: isSessionOpen,
     colorCode: Math.floor(Math.random() * 5) + 1
   }
 
