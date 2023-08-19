@@ -4,7 +4,7 @@ import BackupsView from "~components/BackupsView"
 import SessionsContainer from "~components/SessionsContainer"
 import SettignsView from "~components/SettingsView"
 import UnsavedWindowsContainer from "~components/UnsavedWindowsContainer"
-import type { MainContentState, Session } from "~utils/types"
+import { DefaultSettings, type MainContentState, type Session, type Settings } from "~utils/types"
 
 const MainContent = ({ mainContentState, setMainContentState }:
   { mainContentState: MainContentState, setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
@@ -14,12 +14,18 @@ const MainContent = ({ mainContentState, setMainContentState }:
       area: "local"
     })
   }, [])
+  const [settings] = useStorage<Settings>({
+    key: "settings",
+    instance: new Storage({
+      area: "local"
+    })
+  }, DefaultSettings)
 
   switch (mainContentState) {
     case 'sessions': {
       return (
         <>
-          <SessionsContainer sessions={sessions} setSessions={setSessions} />
+          <SessionsContainer sessions={sessions} setSessions={setSessions} settings={settings} />
           <UnsavedWindowsContainer sessions={sessions} setSessions={setSessions} />
         </>
       )

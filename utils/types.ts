@@ -27,7 +27,9 @@ export type Settings = {
   newSessionWindowState: WindowState,
   createWindowForNewSession: boolean,
   openingBlankWindowOnStratup: boolean,
-  autoBackupsInterval: BackupIntervalTime
+  autoBackupsInterval: BackupIntervalTime,
+  createBackupBeforeLoad: boolean,
+  createBackupBeforeSessionDelete: boolean,
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'
@@ -44,7 +46,9 @@ export const DefaultSettings: Settings = {
   createWindowForNewSession: true,
   newSessionWindowState: "normal",
   openingBlankWindowOnStratup: false,
-  autoBackupsInterval: '30'
+  autoBackupsInterval: '30',
+  createBackupBeforeLoad: false,
+  createBackupBeforeSessionDelete: true,
 }
 
 export type MainContentState = "sessions" | 'settings' | 'backups'
@@ -61,4 +65,4 @@ export type Backup = {
   }
 }
 
-export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session'  | 'interval backups'
+export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups'

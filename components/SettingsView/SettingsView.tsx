@@ -112,6 +112,26 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
           </div>
         </div>
 
+        <div className="item">
+          <div className="title">Create a new backup before deleting a session</div>
+          <div className="create-window-for-new-session">
+            <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
+              onChange={(checked: boolean) => {
+                setSettings(current => { return ({ ...current, createBackupBeforeSessionDelete: checked }) })
+              }} />
+          </div>
+        </div>
+
+        <div className="item">
+          <div className="title">Create a new backup before loading a backup</div>
+          <div className="create-window-for-new-session">
+            <ToggleSwitch checked={settings.createBackupBeforeLoad}
+              onChange={(checked: boolean) => {
+                setSettings(current => { return ({ ...current, createBackupBeforeLoad: checked }) })
+              }} />
+          </div>
+        </div>
+
         <div className="item backups-nav" onClick={() => setMainContentState('backups')}>
           <div className="title">Backups</div>
           <div className="backups-view-button"><MdChevronRight /></div>

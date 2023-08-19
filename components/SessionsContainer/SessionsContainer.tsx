@@ -3,14 +3,14 @@ import createNewSession from "~actions/createNewSession"
 import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import type { AlertMessage, Session } from "~utils/types"
+import type { AlertMessage, Session, Settings } from "~utils/types"
 import { useEffect, useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import createNewBackup from "~actions/createNewBackup"
 
-const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
+const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Session[], setSessions: Function, settings: Settings }) => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [gettingSessionName, setGettingSessionName] = useState(false)
   const [message, setMessage] = useState<AlertMessage>({
@@ -18,6 +18,8 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
     text: '',
     type: 'info'
   })
+
+
 
   const [initialAnimation, setInitialAnimation] = useState(false)
 
@@ -34,14 +36,16 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
   }
 
   const deleteSession = (session: Session) => {
-    createNewBackup({
-      status: 'before deleting session',
-      relatedItem: {
-        title: session.title,
-        type: 'session'
-      },
-      sessions
-    })
+    if (settings.createBackupBeforeSessionDelete) {
+      createNewBackup({
+        status: 'before deleting session',
+        relatedItem: {
+          title: session.title,
+          type: 'session'
+        },
+        sessions
+      })
+    }
     const newSessions = [...sessions]
     const index = newSessions.findIndex(s => s.id === session.id)
     newSessions.splice(index, 1)
