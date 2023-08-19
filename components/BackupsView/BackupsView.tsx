@@ -5,8 +5,7 @@ import './BackupsView.scss'
 import { useState } from "react"
 import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
 import createNewBackup from "~actions/createNewBackup"
-import refreshOpenSessions from "~actions/refreshOpenSessions"
-import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
+import loadBackup from "~actions/loadBackup"
 
 const BackupsView = ({ }) => {
   const [_, setSessions] = useStorage<Session[]>({
@@ -36,22 +35,6 @@ const BackupsView = ({ }) => {
     setBackupTitleInput('')
   }
 
-  const loadBackup = async (id: string) => {
-    const backup = backups.find(b => b.id === id)
-    if (backup) {
-      await createNewBackup({
-        status: 'before loading backup',
-        relatedItem: {
-          title: backup.title,
-          type: 'backup'
-        }
-      })
-      await setSessions(backup.sessions)
-      refreshOpenSessions()
-      refreshUnsavedWindows()
-    }
-  }
-
   const removeBackup = (id: string) => {
     const index = backups.findIndex(b => b.id === id)
     const newBackups = backups
@@ -67,7 +50,7 @@ const BackupsView = ({ }) => {
           <div className="get-backup-title-container">
             <input autoFocus type="text" value={backupTitleInput} onChange={e => {
               setBackupTitleInput(e.target.value)
-            }} name="backup-title-input" placeholder={new Date().toUTCString()} onKeyDown={(e) => {
+            }} name="backup-title-input" placeholder={new Date().toLocaleString()} onKeyDown={(e) => {
               if (e.key === "Enter") {
                 _createNewBackup()
               }
@@ -90,7 +73,7 @@ const BackupsView = ({ }) => {
                 </div>
                 <div className="buttons">
                   <div className={backup.id === loadedBackupId ? "load-backup loaded" : "load-backup"} onClick={() => {
-                    loadBackup(backup.id)
+                    loadBackup(backup.id, backups)
                       .then(() => setLoadedBackupId(backup.id))
                   }}>{backup.id === loadedBackupId ? 'Loaded !' : 'Load'}</div>
                   <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>

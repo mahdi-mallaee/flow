@@ -115,7 +115,7 @@ const SessionsContainer = ({ sessions, setSessions }: { sessions: Session[], set
             <div className="get-session-title-container">
               <input autoFocus type="text" value={sessionTitleInput} onChange={e => {
                 setSessionTitleInput(e.target.value)
-              }} name="session-title-input" placeholder={new Date().toUTCString()} onKeyDown={(e) => {
+              }} name="session-title-input" placeholder={new Date().toLocaleString()} onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   _createNewSession()
                 }

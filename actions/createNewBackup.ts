@@ -22,9 +22,9 @@ const createNewBackup = async (inputs: NewBackupInput): Promise<Backup[]> => {
 
   const newBackup: Backup = {
     id: uuidv4(),
-    title: title || new Date().toUTCString(),
+    title: title || new Date().toLocaleString(),
     sessions,
-    date: new Date().toUTCString(),
+    date: new Date().toLocaleString(),
     status,
     relatedItem
   }
