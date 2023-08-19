@@ -1,10 +1,10 @@
 import { Storage } from "@plasmohq/storage"
-import type { Settings } from "~utils/types"
+import { StoreKeys, type Settings } from "~utils/types"
 import createNewBackup from "./createNewBackup"
 
 const runIntervalBakcups = async () => {
   const store = new Storage({ area: 'local' })
-  const settings: Settings = await store.get('settings')
+  const settings: Settings = await store.get(StoreKeys.settings)
   const interval = Number.parseInt(settings.autoBackupsInterval) * 60 * 1000
 
   if (interval > 0) {
@@ -14,7 +14,7 @@ const runIntervalBakcups = async () => {
       })
     }, interval)
 
-    await store.set('autoBackupIntervalId', intervalId)
+    await store.set(StoreKeys.autoBackupIntervalId, intervalId)
   }
 
 }

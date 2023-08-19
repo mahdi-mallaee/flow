@@ -1,6 +1,6 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState, type BackupIntervalTime } from '~utils/types'
+import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState, type BackupIntervalTime, StoreKeys } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
@@ -9,14 +9,14 @@ import runIntervalBakcups from '~actions/runIntervalBackups'
 
 const SettignsView = ({ setMainContentState }: { setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
   const [settings, setSettings] = useStorage<Settings>({
-    key: "settings",
+    key: StoreKeys.settings,
     instance: new Storage({
       area: "local"
     })
   }, DefaultSettings)
 
   const [autoBackupIntervalId] = useStorage({
-    key: "autoBackupIntervalId",
+    key: StoreKeys.autoBackupIntervalId,
     instance: new Storage({
       area: "local"
     })
@@ -114,7 +114,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
 
         <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
-          <div className="create-window-for-new-session">
+          <div>
             <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
               onChange={(checked: boolean) => {
                 setSettings(current => { return ({ ...current, createBackupBeforeSessionDelete: checked }) })
@@ -124,7 +124,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
 
         <div className="item">
           <div className="title">Create a new backup before loading a backup</div>
-          <div className="create-window-for-new-session">
+          <div>
             <ToggleSwitch checked={settings.createBackupBeforeLoad}
               onChange={(checked: boolean) => {
                 setSettings(current => { return ({ ...current, createBackupBeforeLoad: checked }) })

@@ -1,12 +1,12 @@
 import { Storage } from "@plasmohq/storage"
-import type { Session } from "~utils/types"
+import { StoreKeys, type Session } from "~utils/types"
 
 const refreshUnsavedWindows = async (sessions?: Session[]) => {
   const store = new Storage({ area: 'local' })
 
-  sessions = sessions || await store.get('sessions')
+  sessions = sessions || await store.get(StoreKeys.sessions)
   const windows = await getUnsavedWindows(sessions)
-  await store.set('unsaved-windows', windows)
+  await store.set(StoreKeys.unsavedWindows, windows)
 }
 
 const getUnsavedWindows = async (sessions: Session[]): Promise<chrome.windows.Window[]> => {

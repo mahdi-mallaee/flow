@@ -66,3 +66,14 @@ export type Backup = {
 }
 
 export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups'
+
+export enum StoreKeys {
+  sessions = 'sessions',
+  settings = 'settings',
+  unsavedWindows = 'unsavedWindows',
+  backups = 'backups',
+  openedTabs = 'openedTabs',
+  lastClosedWindowId = 'lastClosedWindowId',
+  autoBackupIntervalId = 'autoBackupIntervalId',
+  mainHeight = 'mainheight'
+}

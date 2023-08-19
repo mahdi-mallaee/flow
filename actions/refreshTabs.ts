@@ -1,4 +1,4 @@
-import type { Session, Tab } from "~utils/types"
+import { StoreKeys, type Session, type Tab } from "~utils/types"
 import { Storage } from '@plasmohq/storage'
 
 const refreshTabs = async () => {
@@ -15,7 +15,7 @@ const refreshTabs = async () => {
     }
   })
 
-  const sessions: Session[] = await store.get('sessions')
+  const sessions: Session[] = await store.get(StoreKeys.sessions)
   if (sessions) {
     const newSessions = sessions.map((session: Session) => {
       const sessionTabs = []
@@ -29,7 +29,7 @@ const refreshTabs = async () => {
       }
       return session
     })
-    await store.set('sessions', newSessions)
+    await store.set(StoreKeys.sessions, newSessions)
   }
 }
 

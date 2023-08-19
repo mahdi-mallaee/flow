@@ -1,12 +1,12 @@
 import { v4 } from "uuid";
-import type { Session, Settings, Tab } from "../utils/types";
+import { StoreKeys, type Session, type Settings, type Tab } from "../utils/types";
 import createNewWindow from "./createNewWindow";
 import getTabsByWindowId from "./getTabsByWindowId";
 import { Storage } from "@plasmohq/storage";
 
 const createNewSession = async (windowId?: number, urls?: string[], title?: string): Promise<Session> => {
   const store = new Storage({ area: 'local' })
-  const settings: Settings = await store.get('settings')
+  const settings: Settings = await store.get(StoreKeys.settings)
   const createWindow = settings.createWindowForNewSession
   let tabs: Tab[] = []
   let isSessionOpen = false

@@ -1,5 +1,5 @@
 import createNewWindow from "./createNewWindow";
-import type { Session } from "~utils/types";
+import { StoreKeys, type Session } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
 import { Storage } from '@plasmohq/storage'
 
@@ -16,7 +16,7 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     }
   })
 
-  store.set('openedTabs', openedTabs)
+  store.set(StoreKeys.openedTabs, openedTabs)
 
   const groups = {}
 
@@ -50,7 +50,7 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     return s
   })
 
-  store.set('sessions', newSessions)
+  store.set(StoreKeys.sessions, newSessions)
 
   if (removeHistory) {
     chrome.history.deleteRange({ startTime, endTime: Date.now() })

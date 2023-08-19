@@ -3,14 +3,14 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import type { Session } from "~utils/types"
+import { StoreKeys, type Session } from "~utils/types"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 
 const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
   const [unsavedWindows] = useStorage<chrome.windows.Window[]>({
-    key: "unsaved-windows",
+    key: StoreKeys.unsavedWindows,
     instance: new Storage({
       area: "local"
     })

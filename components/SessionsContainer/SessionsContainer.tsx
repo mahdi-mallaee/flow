@@ -19,8 +19,6 @@ const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Sess
     type: 'info'
   })
 
-
-
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {

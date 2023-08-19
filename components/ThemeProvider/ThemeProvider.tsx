@@ -1,17 +1,15 @@
 import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useEffect, type ReactNode, useState } from "react"
-import { Theme, type Settings } from "~utils/types"
+import { Theme, type Settings, DefaultSettings, StoreKeys } from "~utils/types"
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [settings, setSettings] = useStorage<Settings>({
-    key: "settings",
+  const [settings] = useStorage<Settings>({
+    key: StoreKeys.settings,
     instance: new Storage({
       area: "local"
     })
-  }, {
-    theme: Theme.light
-  })
+  }, DefaultSettings)
 
   const [theme, setTheme] = useState<Theme>(settings.theme)
 

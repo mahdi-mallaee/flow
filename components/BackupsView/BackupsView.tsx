@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
-import type { Backup, Session } from "~utils/types"
+import { StoreKeys, type Backup, type Session } from "~utils/types"
 import './BackupsView.scss'
 import { useState } from "react"
 import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
@@ -8,15 +8,9 @@ import createNewBackup from "~actions/createNewBackup"
 import loadBackup from "~actions/loadBackup"
 
 const BackupsView = ({ }) => {
-  const [_, setSessions] = useStorage<Session[]>({
-    key: "sessions",
-    instance: new Storage({
-      area: "local"
-    })
-  }, [])
 
   const [backups, setBackups] = useStorage<Backup[]>({
-    key: "backups",
+    key: StoreKeys.backups,
     instance: new Storage({
       area: "local"
     })
