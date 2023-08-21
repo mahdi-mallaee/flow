@@ -26,6 +26,20 @@
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: 11px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .tabs-count {
+        border: 1px solid var(--outline-color);
+        border-radius: 4px;
+        padding: 4px 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 700;
+      }
     }
 
     .add-as-session-button {

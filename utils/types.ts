@@ -77,3 +77,8 @@ export enum StoreKeys {
   autoBackupIntervalId = 'autoBackupIntervalId',
   mainHeight = 'mainheight'
 }
+
+export type UnsavedWindow = {
+  id: number,
+  tabsCount: number
+}

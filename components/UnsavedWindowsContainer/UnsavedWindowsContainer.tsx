@@ -3,13 +3,13 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import { StoreKeys, type Session } from "~utils/types"
+import { StoreKeys, type Session, type UnsavedWindow } from "~utils/types"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 
 const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
-  const [unsavedWindows] = useStorage<chrome.windows.Window[]>({
+  const [unsavedWindows] = useStorage<UnsavedWindow[]>({
     key: StoreKeys.unsavedWindows,
     instance: new Storage({
       area: "local"
@@ -18,7 +18,7 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
 
   const [initialAnimation, setInitialAnimation] = useState(false)
 
-  const addAsSessionButtonClickHandler = async (window: chrome.windows.Window) => {
+  const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
     const newSession = await createNewSession(window.id)
     await setSessions(current => { return [newSession, ...current] })
     refreshUnsavedWindows([newSession, ...sessions])
@@ -52,7 +52,7 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
                   transition={{ duration: 0.2 }}
                   style={{ overflow: 'hidden' }}>
                   <div key={window.id} className='unsaved-window'>
-                    <div className="title">Unsaved Window ( {window.id} )</div>
+                    <div className="title"><span className="tabs-count">{window.tabsCount}</span>Unsaved Window ( {window.id} )</div>
                     <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>
                       Add<MdAdd />
                     </div>
