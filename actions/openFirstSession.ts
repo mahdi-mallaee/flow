@@ -43,7 +43,6 @@ const openFirstSession = async () => {
       if (window.id !== mainSession.windowId) {
         chrome.windows.remove(window.id)
           .then(() => {
-            console.log(newSessions)
             refreshUnsavedWindows(newSessions)
             refreshLastClosedWindow()
             refreshOpenSessions(newSessions)

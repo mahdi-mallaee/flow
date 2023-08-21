@@ -12,8 +12,8 @@ chrome.tabs.onCreated.addListener(() => {
   refreshTabs()
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
-  refreshTabs()
   if (info.url) {
+    refreshTabs()
     discardOpenedTab(id)
   }
 })
