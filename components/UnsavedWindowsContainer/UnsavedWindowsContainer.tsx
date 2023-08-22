@@ -16,6 +16,8 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
     })
   }, [])
 
+  const [currentWindowId, setCurrentWindowId] = useState(-1)
+
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
@@ -24,7 +26,15 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
     refreshUnsavedWindows([newSession, ...sessions])
   }
 
+  const setCurrentWindow = async () => {
+    const currentWindow = await chrome.windows.getCurrent()
+    if (currentWindow.id && currentWindow.id > 0) {
+      setCurrentWindowId(currentWindow.id)
+    }
+  }
+
   useEffect(() => {
+    setCurrentWindow()
     setTimeout(() => {
       setInitialAnimation(true)
     }, 200)
@@ -51,8 +61,11 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
                   style={{ overflow: 'hidden' }}>
-                  <div key={window.id} className='unsaved-window'>
-                    <div className="title"><span className="tabs-count">{window.tabsCount}</span>Unsaved Window ( {window.id} )</div>
+                  <div key={window.id} className={'unsaved-window' + ' ' + (window.id === currentWindowId && 'current')}>
+                    <div className="title">
+                      <span className="tabs-count">{window.tabsCount}</span>
+                      Unsaved Window ( {window.id} )
+                    </div>
                     <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>
                       Add<MdAdd />
                     </div>
