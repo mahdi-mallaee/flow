@@ -1,22 +1,22 @@
 import './ToggleSwitch.scss'
+import { useState, useEffect } from 'react'
 
-const ToggleSwitch = ({ checked, onChange }: { checked: boolean, onChange: Function }) => {
-    return (
-        <div className="toggle-switch" onClick={() => { onChange(!checked) }}>
-            <input
-                type="checkbox"
-                className="toggle-switch-checkbox"
-                checked={checked}
-                onChange={() => {
+const ToggleSwitch = ({ checked, onChange }: { checked: boolean, onChange: (checked: boolean) => void }) => {
+  const [transition, setTransition] = useState(false)
 
-                }}
-            />
-            <label className="toggle-switch-label">
-                <span className="toggle-switch-inner" />
-                <span className="toggle-switch-switch" />
-            </label>
-        </div>
-    )
+  useEffect(() => {
+    setTimeout(() => {
+      setTransition(true)
+    }, 200)
+  }, [])
+  
+  return (
+    <div className="toggle-switch-container" aria-transition={transition} aria-checked={checked} onClick={() => {
+      onChange(!checked)
+    }}>
+      <div className="switch"></div>
+    </div>
+  )
 }
 
 export default ToggleSwitch

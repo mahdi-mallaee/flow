@@ -98,7 +98,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
           <div className="title">Creating window for new sessions</div>
           <div className="create-window-for-new-session">
             <ToggleSwitch checked={settings.createWindowForNewSession}
-              onChange={(checked: boolean) => { setSettings(current => { return ({ ...current, createWindowForNewSession: checked }) }) }} />
+              onChange={(checked) => { setSettings(current => { return ({ ...current, createWindowForNewSession: checked }) }) }} />
           </div>
         </div>
 
@@ -106,7 +106,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
           <div className="title">Opening a blank window on startup</div>
           <div className="create-window-for-new-session">
             <ToggleSwitch checked={settings.openingBlankWindowOnStratup}
-              onChange={(checked: boolean) => {
+              onChange={(checked) => {
                 setSettings(current => { return ({ ...current, openingBlankWindowOnStratup: checked }) })
               }} />
           </div>
@@ -116,7 +116,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
           <div className="title">Create a new backup before deleting a session</div>
           <div>
             <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-              onChange={(checked: boolean) => {
+              onChange={(checked) => {
                 setSettings(current => { return ({ ...current, createBackupBeforeSessionDelete: checked }) })
               }} />
           </div>
@@ -126,7 +126,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
           <div className="title">Create a new backup before loading a backup</div>
           <div>
             <ToggleSwitch checked={settings.createBackupBeforeLoad}
-              onChange={(checked: boolean) => {
+              onChange={(checked) => {
                 setSettings(current => { return ({ ...current, createBackupBeforeLoad: checked }) })
               }} />
           </div>
