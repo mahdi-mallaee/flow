@@ -20,7 +20,6 @@ const refreshTabs = async () => {
 
   for (const window of unsavedWindows) {
     const tabs = await getTabsByWindowId(window.id)
-    console.log(tabs)
     if (tabs && tabs.length > 0) {
       window.tabsCount = tabs.length
     }

@@ -83,7 +83,6 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
                 setSettings(current => {
                   return ({ ...current, autoBackupsInterval: option })
                 }).then(() => {
-                  console.log(autoBackupIntervalId)
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
                     runIntervalBakcups()

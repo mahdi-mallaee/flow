@@ -24,9 +24,9 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     const key = tab.groupId.toString()
     if (tab.groupId > 0) {
       if (groups[key]) {
-        groups[key].push(tabs[tab.index].id + 1)
+        groups[key].push(tabs[tab.index].id)
       } else {
-        groups[key] = [tabs[tab.index].id + 1]
+        groups[key] = [tabs[tab.index].id]
       }
     }
   })
