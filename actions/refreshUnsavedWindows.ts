@@ -5,8 +5,8 @@ import getUnsavedWindows from "./getUnsavedWindows"
 const refreshUnsavedWindows = async (sessions?: Session[]) => {
   const store = new Storage({ area: 'local' })
 
-  sessions = sessions || await store.get(StoreKeys.sessions)
-  const windows: UnsavedWindow[] = await getUnsavedWindows(sessions)
+  sessions = sessions || await store.get(StoreKeys.sessions) || []
+  const windows: UnsavedWindow[] = await getUnsavedWindows(sessions) || []
   await store.set(StoreKeys.unsavedWindows, windows)
 }
 

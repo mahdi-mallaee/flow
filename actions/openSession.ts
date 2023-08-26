@@ -2,6 +2,8 @@ import createNewWindow from "./createNewWindow";
 import { StoreKeys, type Session } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
 import { Storage } from '@plasmohq/storage'
+import refreshOpenSessions from "./refreshOpenSessions";
+import refreshUnsavedWindows from "./refreshUnsavedWindows";
 
 const openSession = async (sessions: Session[], sessionId: string, removeHistory?: boolean): Promise<Session[]> => {
   const store = new Storage({ area: 'local' })
@@ -56,6 +58,8 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     chrome.history.deleteRange({ startTime, endTime: Date.now() })
   }
 
+  refreshOpenSessions(newSessions)
+  refreshUnsavedWindows(newSessions)
   return newSessions
 }
 

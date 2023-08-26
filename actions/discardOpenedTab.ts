@@ -12,7 +12,12 @@ const discardOpenedTab = async (id: number,) => {
   if (openedTabs && openedTabs.length >= 1) {
     const tab = openedTabs.find(ot => ot.id === id)
     if (tab && id && !tab.discarded) {
-      await chrome.tabs.discard(id)
+      try {
+        await chrome.tabs.discard(id)
+      }
+      catch (error) {
+        console.log(error)
+      }
       tab.discarded = true
     }
     await store.set(StoreKeys.openedTabs, openedTabs)

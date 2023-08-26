@@ -5,7 +5,10 @@ const getUnsavedWindows = async (sessions: Session[]): Promise<UnsavedWindow[]> 
   const windows = await chrome.windows.getAll()
 
   for (const window of windows) {
-    const index = sessions.findIndex(session => { return session.windowId === window.id })
+    let index = -1
+    if (sessions) {
+      index = sessions.findIndex(session => { return session.windowId === window.id })
+    }
     if (index === -1) {
       const tabsCount = (await chrome.tabs.query({ windowId: window.id })).length
       unsavevdWindows.push({

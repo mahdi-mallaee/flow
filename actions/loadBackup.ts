@@ -1,15 +1,15 @@
 import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type Backup, type Session, type Settings } from "~utils/types"
+import { StoreKeys, type Backup, type Session, type Settings, DefaultSettings } from "~utils/types"
 import refreshOpenSessions from "./refreshOpenSessions"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import createNewBackup from "./createNewBackup"
 
 const loadBackup = async (backupId: string, backups?: Backup[]) => {
   const store = new Storage({ area: 'local' })
-  backups = backups || await store.get(StoreKeys.backups)
-  const sessions: Session[] = await store.get(StoreKeys.sessions)
-  const settings: Settings = await store.get(StoreKeys.settings)
-  const openSessions = sessions.filter(session => session.isOpen)
+  backups = backups || await store.get(StoreKeys.backups) || []
+  const sessions: Session[] = await store.get(StoreKeys.sessions) || []
+  const settings: Settings = await store.get(StoreKeys.settings) || DefaultSettings
+  const openSessions = sessions.filter(session => session.isOpen) || []
 
   const backup = backups.find(backup => backup.id === backupId)
 

@@ -63,7 +63,7 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
                   style={{ overflow: 'hidden' }}>
                   <div key={window.id} className={'unsaved-window' + ' ' + (window.id === currentWindowId && 'current')}>
                     <div className="title">
-                      <span className="tabs-count">{window.tabsCount}</span>
+                      {/* <span className="tabs-count">{window.tabsCount}</span> */}
                       Unsaved Window ( {window.id} )
                     </div>
                     <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>

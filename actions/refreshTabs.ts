@@ -7,8 +7,7 @@ const refreshTabs = async () => {
   const store = new Storage({ area: 'local' })
 
   const sessions: Session[] = await store.get(StoreKeys.sessions)
-  const unsavedWindows: UnsavedWindow[] = await getUnsavedWindows(sessions)
-
+  
   for (const session of sessions) {
     if (session.isOpen) {
       const tabs = await getTabsByWindowId(session.windowId)
@@ -17,16 +16,17 @@ const refreshTabs = async () => {
       }
     }
   }
-
-  for (const window of unsavedWindows) {
-    const tabs = await getTabsByWindowId(window.id)
-    if (tabs && tabs.length > 0) {
-      window.tabsCount = tabs.length
-    }
-  }
-
   await store.set(StoreKeys.sessions, sessions)
-  await store.set(StoreKeys.unsavedWindows, unsavedWindows)
+
+  // const unsavedWindows: UnsavedWindow[] = await getUnsavedWindows(sessions)
+  // for (const window of unsavedWindows) {
+  //   const tabs = await getTabsByWindowId(window.id)
+  //   if (tabs && tabs.length > 0) {
+  //     window.tabsCount = tabs.length
+  //   }
+  // }
+
+  // await store.set(StoreKeys.unsavedWindows, unsavedWindows)
 
 }
 

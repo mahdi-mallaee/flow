@@ -1,9 +1,9 @@
 import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type Settings } from "~utils/types"
+import { StoreKeys, type Settings, DefaultSettings } from "~utils/types"
 
 const createNewWindow = async (urls?: string[]): Promise<number> => {
   const store = new Storage({ area: 'local' })
-  const settings: Settings = await store.get(StoreKeys.settings)
+  const settings: Settings = await store.get(StoreKeys.settings) || DefaultSettings
   let id: number = -1
   const window = await chrome.windows.create({ state: settings.newSessionWindowState, url: urls })
   if (window.id) {

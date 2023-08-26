@@ -17,8 +17,8 @@ const createNewBackup = async (inputs: NewBackupInput): Promise<Backup[]> => {
   const store = new Storage({ area: 'local' })
   let { status, title, relatedItem, sessions, backups } = inputs
 
-  backups = backups || await store.get(StoreKeys.backups)
-  sessions = sessions || await store.get(StoreKeys.sessions)
+  backups = backups || await store.get(StoreKeys.backups) || []
+  sessions = sessions || await store.get(StoreKeys.sessions) || []
 
   const newBackup: Backup = {
     id: uuidv4(),
