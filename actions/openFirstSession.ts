@@ -9,7 +9,7 @@ import Store from "~store"
 const openFirstSession = async () => {
   const store = new Storage({ area: 'local' })
   const sessions: Session[] = await Store.sessions.getAll()
-  const settings: Settings = await store.get(StoreKeys.settings) || DefaultSettings
+  const settings: Settings = await Store.settings.getAll()
 
   if (settings.openingBlankWindowOnStratup) {
     const windows = await chrome.windows.getAll()

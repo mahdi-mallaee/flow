@@ -105,3 +105,8 @@ export type UnsavedWindow = {
   id: number,
   tabsCount: number
 }
+
+export type OpenedTab = {
+  id: number,
+  discarded: boolean
+}

@@ -44,7 +44,6 @@ chrome.windows.onRemoved.addListener(() => {
 })
 
 chrome.windows.onCreated.addListener(() => {
-  // refreshOpenSessions()
   refreshUnsavedWindows()
 })
 

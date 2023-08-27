@@ -1,10 +1,11 @@
 import createNewWindow from "./createNewWindow";
-import { type Tab } from "~utils/types";
+import { type OpenedTab, type Tab } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
 import Store from "~store";
+import refreshUnsavedWindows from "./refreshUnsavedWindows";
 
 const openSession = async (sessionId: string) => {
-  // const startTime = Date.now()
+  const startTime = Date.now()
 
   let tabs: Tab[] = await Store.sessions.getTabs(sessionId)
   const newWindowId = await createNewWindow(tabs.map(t => { return t.url }))
@@ -13,38 +14,37 @@ const openSession = async (sessionId: string) => {
   await Store.sessions.saveTabs(sessionId, tabs)
   await Store.sessions.changeOpenStatus(sessionId, true)
   await Store.sessions.changeWindowId(sessionId, newWindowId)
+  refreshUnsavedWindows()
 
-  // const openedTabs = []
-  // tabs.forEach((tab, i) => {
-  //   if (i < tabs.length - 1) {
-  //     openedTabs.push({ id: tab.id, discarded: false })
-  //   }
-  // })
-  // store.set(StoreKeys.openedTabs, openedTabs)
-  // const groups = {}
+  const openedTabs: OpenedTab[] = []
+  tabs.forEach((tab, i) => {
+    if (i < tabs.length - 1) {
+      openedTabs.push({ id: tab.id, discarded: false })
+    }
+  })
+  Store.openedTabs.set(openedTabs)
 
-  // session.tabs.forEach(tab => {
-  //   const key = tab.groupId.toString()
-  //   if (tab.groupId > 0) {
-  //     if (groups[key]) {
-  //       groups[key].push(tabs[tab.index].id)
-  //     } else {
-  //       groups[key] = [tabs[tab.index].id]
-  //     }
-  //   }
-  // })
 
-  // Object.keys(groups).forEach(group => {
-  //   const tabIds: number[] = groups[group]
-  //   chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
-  //     .then(() => {
-  //       if (removeHistory) {
-  //         chrome.history.deleteRange({ startTime, endTime: Date.now() })
-  //       }
-  //     })
-  // })
+  const groups = {}
+  tabs.forEach(tab => {
+    const key = tab.groupId.toString()
+    if (tab.groupId > 0) {
+      if (groups[key]) {
+        groups[key].push(tabs[tab.index].id)
+      } else {
+        groups[key] = [tabs[tab.index].id]
+      }
+    }
+  })
 
-  // chrome.history.deleteRange({ startTime, endTime: Date.now() })
+  Object.keys(groups).forEach(group => {
+    const tabIds: number[] = groups[group]
+    chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
+      .then(() => {
+        chrome.history.deleteRange({ startTime, endTime: Date.now() })
+      })
+  })
+
 }
 
 export default openSession

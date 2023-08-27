@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import { v4 as uuidv4 } from "uuid"
+import Store from "~store"
 import { StoreKeys, type Backup, type BackupStatus, type Session } from "~utils/types"
 
 type NewBackupInput = {
@@ -18,7 +19,7 @@ const createNewBackup = async (inputs: NewBackupInput): Promise<Backup[]> => {
   let { status, title, relatedItem, sessions, backups } = inputs
 
   backups = backups || await store.get(StoreKeys.backups) || []
-  sessions = sessions || await store.get(StoreKeys.sessions) || []
+  sessions = await Store.sessions.getAll()
 
   const newBackup: Backup = {
     id: uuidv4(),

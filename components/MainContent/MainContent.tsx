@@ -21,7 +21,7 @@ const MainContent = ({ mainContentState, setMainContentState }:
       return (
         <>
           <SessionsContainer settings={settings} />
-          {/* <UnsavedWindowsContainer /> */}
+          <UnsavedWindowsContainer />
         </>
       )
     }

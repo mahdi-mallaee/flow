@@ -6,14 +6,11 @@ import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight } from 'react-icons/md'
 import runIntervalBakcups from '~actions/runIntervalBackups'
+import Store from '~store'
+import useSettings from '~hooks/useSettings'
 
 const SettignsView = ({ setMainContentState }: { setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
-  const [settings, setSettings] = useStorage<Settings>({
-    key: StoreKeys.settings,
-    instance: new Storage({
-      area: "local"
-    })
-  }, DefaultSettings)
+  const settings = useSettings()
 
   const [autoBackupIntervalId] = useStorage({
     key: StoreKeys.autoBackupIntervalId,
@@ -50,27 +47,18 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
 
         <div className="item">
           <div className="title">Theme</div>
-          <Dropdown value={settings.theme} options={themeOptions}
-            onChange={((option: Theme) => {
-              setSettings(current => {
-                return ({ ...current, theme: option })
-              })
-            })} />
+          <Dropdown
+            value={settings.theme}
+            options={themeOptions}
+            onChange={((option: Theme) => Store.settings.setTheme(option))} />
         </div>
 
         <div className="item">
           <div className="title">Window size</div>
-          <div className="new-window-state">
-            <Dropdown
-              value={settings.newSessionWindowState}
-              options={newSessionWindowStateDropdownOptions}
-              onChange={(option: WindowState) => {
-                setSettings(current => {
-                  return ({ ...current, newSessionWindowState: option })
-                })
-              }}
-            />
-          </div>
+          <Dropdown
+            value={settings.newSessionWindowState}
+            options={newSessionWindowStateDropdownOptions}
+            onChange={(option: WindowState) => Store.settings.setWindowState(option)} />
         </div>
 
         <div className="item">
@@ -80,14 +68,13 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
               value={settings.autoBackupsInterval}
               options={autoBackupsIntervalDropdownOptions}
               onChange={(option: BackupIntervalTime) => {
-                setSettings(current => {
-                  return ({ ...current, autoBackupsInterval: option })
-                }).then(() => {
-                  if (autoBackupIntervalId) {
-                    clearInterval(autoBackupIntervalId)
-                    runIntervalBakcups()
-                  }
-                })
+                Store.settings.backups.setInterval(option)
+                  .then(() => {
+                    if (autoBackupIntervalId) {
+                      clearInterval(autoBackupIntervalId)
+                      runIntervalBakcups()
+                    }
+                  })
               }}
             />
           </div>
@@ -95,40 +82,26 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
 
         <div className="item">
           <div className="title">Creating window for new sessions</div>
-          <div className="create-window-for-new-session">
-            <ToggleSwitch checked={settings.createWindowForNewSession}
-              onChange={(checked) => { setSettings(current => { return ({ ...current, createWindowForNewSession: checked }) }) }} />
-          </div>
+          <ToggleSwitch checked={settings.createWindowForNewSession}
+            onChange={(checked) => Store.settings.setCreateWindowForNewSession(checked)} />
         </div>
 
         <div className="item">
           <div className="title">Opening a blank window on startup</div>
-          <div className="create-window-for-new-session">
-            <ToggleSwitch checked={settings.openingBlankWindowOnStratup}
-              onChange={(checked) => {
-                setSettings(current => { return ({ ...current, openingBlankWindowOnStratup: checked }) })
-              }} />
-          </div>
+          <ToggleSwitch checked={settings.openingBlankWindowOnStratup}
+            onChange={(checked) => Store.settings.setOpenBlankWindowOnStartup(checked)} />
         </div>
 
         <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
-          <div>
-            <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-              onChange={(checked) => {
-                setSettings(current => { return ({ ...current, createBackupBeforeSessionDelete: checked }) })
-              }} />
-          </div>
+          <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
+            onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
         </div>
 
         <div className="item">
           <div className="title">Create a new backup before loading a backup</div>
-          <div>
-            <ToggleSwitch checked={settings.createBackupBeforeLoad}
-              onChange={(checked) => {
-                setSettings(current => { return ({ ...current, createBackupBeforeLoad: checked }) })
-              }} />
-          </div>
+          <ToggleSwitch checked={settings.createBackupBeforeLoad}
+            onChange={(checked) => Store.settings.backups.setCreateBeforeLoad(checked)} />
         </div>
 
         <div className="item backups-nav" onClick={() => setMainContentState('backups')}>
@@ -138,9 +111,7 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
 
         <div className="item">
           <div className="title">Reset settings to default</div>
-          <div className="reset-button" onClick={() => { setSettings(DefaultSettings) }}>
-            Reset
-          </div>
+          <div className="reset-button" onClick={() => { Store.settings.reset() }}>Reset</div>
         </div>
       </div>
     </div>

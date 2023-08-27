@@ -7,7 +7,7 @@ const loadBackup = async (backupId: string, backups?: Backup[]) => {
   const store = new Storage({ area: 'local' })
   backups = backups || await store.get(StoreKeys.backups) || []
   const sessions: Session[] = await Store.sessions.getAll()
-  const settings: Settings = await store.get(StoreKeys.settings) || DefaultSettings
+  const settings = await Store.settings.getAll()
   const openSessions = sessions.filter(session => session.isOpen) || []
 
   const backup = backups.find(backup => backup.id === backupId)
