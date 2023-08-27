@@ -19,6 +19,8 @@ import setCreateBackupBeforeBackupLoad from "./settings/setCreateBackupBeforeBac
 import setBackupInterval from "./settings/setBackupInterval"
 import setOpenedTabs from "./openedTabs/setOpenedTabs"
 import getOpenedTabs from "./openedTabs/getOpenedTabs"
+import setSessionAsMain from "./sessions/setSessionAsMain"
+import editSessionTitle from "./sessions/editSessionTitle"
 
 const Store = {
   sessions: {
@@ -30,7 +32,9 @@ const Store = {
     async refreshStatus() { await refreshSessionsStatus() },
     async delete(sessionId: string) { await deleteSession(sessionId) },
     async changeWindowId(sessionId: string, windowId: number) { await changeSessionWindowId(sessionId, windowId) },
-    async deleteAll() { await deleteAllSessions() }
+    async deleteAll() { await deleteAllSessions() },
+    async setAsMain(sessionId: string) { await setSessionAsMain(sessionId) },
+    async editTitle(sessionId: string, title: string) { await editSessionTitle(sessionId, title) }
   },
   settings: {
     async setTheme(theme: Theme) { await setTheme(theme) },

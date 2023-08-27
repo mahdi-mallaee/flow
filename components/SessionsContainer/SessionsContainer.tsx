@@ -2,15 +2,12 @@ import { MdAdd, MdClose, MdDone } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
-import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import { StoreKeys, type AlertMessage, type Session, type Settings, SessionsKeys, type BasicSession } from "~utils/types"
+import { type AlertMessage, type Session, type Settings } from "~utils/types"
 import { useEffect, useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import createNewBackup from "~actions/createNewBackup"
-import { Storage } from "@plasmohq/storage"
-import { useStorage } from "@plasmohq/storage/hook"
 import Store from "~store"
 import useSessions from "~hooks/useSessions"
 
@@ -28,14 +25,7 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {
-    // const newSessions = sessions.map(session => {
-    //   if (session.id === id) {
-    //     session.main = !session.main
-    //   } else {
-    //     session.main = false
-    //   }
-    //   return session
-    // })
+    Store.sessions.setAsMain(id)
   }
 
   const deleteSession = (session: Session) => {
@@ -53,13 +43,8 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
   }
 
   const editSession = async (id: string, title: string, callBack: Function) => {
-    // const newSesssions = sessions.map(s => {
-    //   if (s.id === id) {
-    //     s.title = title
-    //   }
-    //   return s
-    // })
-    // callBack()
+    await Store.sessions.editTitle(id, title)
+    callBack()
   }
 
   const newSessionClickHandler = () => {
