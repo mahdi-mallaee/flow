@@ -48,6 +48,6 @@ chrome.windows.onCreated.addListener(() => {
 })
 
 chrome.runtime.onStartup.addListener(() => {
-  // openFirstSession()
+  openFirstSession()
   runIntervalBakcups()
 })

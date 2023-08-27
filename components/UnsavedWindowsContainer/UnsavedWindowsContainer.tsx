@@ -7,6 +7,7 @@ import { StoreKeys, type Session, type UnsavedWindow } from "~utils/types"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import refreshOpenSessions from "~actions/refreshOpenSessions"
 
 const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
@@ -22,6 +23,8 @@ const UnsavedWindowsContainer = () => {
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
     await createNewSession(window.id)
+    refreshUnsavedWindows()
+    refreshOpenSessions()
   }
 
   const setCurrentWindow = async () => {

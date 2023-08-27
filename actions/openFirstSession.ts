@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import openSession from "~actions/openSession"
-import { StoreKeys, type Session, type Settings, DefaultSettings } from "~utils/types"
+import { StoreKeys, type Session, type Settings } from "~utils/types"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
@@ -25,23 +25,16 @@ const openFirstSession = async () => {
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      const newSessions = sessions.map(session => {
-        if (session.windowId === lastSession.windowId) {
-          session.windowId = windows[0].id
-        }
-        return session
-      })
-      // await store.set(StoreKeys.sessions, newSessions)
+      await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
       refreshLastClosedWindow()
-      refreshUnsavedWindows(newSessions)
+      refreshUnsavedWindows()
       refreshOpenSessions()
     }
   } else if (mainSession) {
-    const newSessions = await openSession(mainSession.id)
-    // await store.set(StoreKeys.sessions, newSessions)
+    const newWindowId = await openSession(mainSession.id)
     const windows = await chrome.windows.getAll()
     windows.forEach(window => {
-      if (window.id !== mainSession.windowId) {
+      if (window.id !== newWindowId) {
         chrome.windows.remove(window.id)
           .then(() => {
             refreshUnsavedWindows()
@@ -53,16 +46,10 @@ const openFirstSession = async () => {
   } else if (lastSession) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      const newSessions = sessions.map(session => {
-        if (session.windowId === lastSession.windowId) {
-          session.windowId = windows[0].id
-        }
-        return session
-      })
-      // await store.set(StoreKeys.sessions, newSessions)
-      refreshLastClosedWindow()
-      refreshUnsavedWindows(newSessions)
-      refreshOpenSessions()
+      await Store.sessions.changeWindowId(lastSession.id, windows[0].id)
+      await refreshLastClosedWindow()
+      await refreshOpenSessions()
+      await refreshUnsavedWindows()
     }
   }
 }

@@ -1,10 +1,10 @@
 import createNewWindow from "./createNewWindow";
-import { type OpenedTab, type Tab } from "~utils/types";
+import { type OpenedTab, type Session, type Tab } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
 import Store from "~store";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
 
-const openSession = async (sessionId: string) => {
+const openSession = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
 
   let tabs: Tab[] = await Store.sessions.getTabs(sessionId)
@@ -14,7 +14,6 @@ const openSession = async (sessionId: string) => {
   await Store.sessions.saveTabs(sessionId, tabs)
   await Store.sessions.changeOpenStatus(sessionId, true)
   await Store.sessions.changeWindowId(sessionId, newWindowId)
-  refreshUnsavedWindows()
 
   const openedTabs: OpenedTab[] = []
   tabs.forEach((tab, i) => {
@@ -45,6 +44,9 @@ const openSession = async (sessionId: string) => {
       })
   })
 
+  refreshUnsavedWindows()
+
+  return newWindowId
 }
 
 export default openSession

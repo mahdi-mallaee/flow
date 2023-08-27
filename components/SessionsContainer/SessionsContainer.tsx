@@ -43,6 +43,16 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
   }
 
   const editSession = async (id: string, title: string, callBack: Function) => {
+    const duplicateSession = sessions.find(s => s.title === title)
+    if (duplicateSession) {
+      setMessage({
+        show: true,
+        text: 'Another session with this name already exists',
+        type: 'info'
+      })
+      return
+    }
+
     await Store.sessions.editTitle(id, title)
     callBack()
   }
@@ -56,7 +66,7 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
     if (duplicateSession) {
       setMessage({
         show: true,
-        text: 'Another session with this name already exists.',
+        text: 'Another session with this name already exists',
         type: 'info'
       })
       return
@@ -69,7 +79,15 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
   }
 
   const sessionClickHandler = async (session: Session) => {
-    await openSession(session.id)
+    if (!session.isOpen) {
+      await openSession(session.id)
+    } else {
+      setMessage({
+        show: true,
+        text: 'This session is already open',
+        type: 'info'
+      })
+    }
   }
 
   useEffect(() => {
