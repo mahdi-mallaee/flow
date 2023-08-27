@@ -78,7 +78,7 @@ const IndexPopup = () => {
           </div>
         </div>
 
-        <div onClick={() => {
+        {/* <div onClick={() => {
           Store.sessions.getAll()
             .then(sessions => {
               console.log(sessions)
@@ -89,7 +89,7 @@ const IndexPopup = () => {
         }}>delete sessions</div>
         <div onClick={() => {
           refreshOpenSessions()
-        }}>refresh open sessions</div>
+        }}>refresh open sessions</div> */}
 
         <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
           <MainContent mainContentState={mainContentState} setMainContentState={setMainContentState} />

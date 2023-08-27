@@ -1,4 +1,4 @@
-import type { BackupIntervalTime, OpenedTab, Session, Settings, Tab, Theme, WindowState } from "~utils/types"
+import type { Backup, BackupIntervalTime, OpenedTab, Session, Settings, Tab, Theme, WindowState } from "~utils/types"
 import saveSessionsTabs from "./sessions/saveSessionsTabs"
 import createNewSession from "./sessions/createNewSession"
 import getAllSessions from "./sessions/getAllSessions"
@@ -21,6 +21,10 @@ import setOpenedTabs from "./openedTabs/setOpenedTabs"
 import getOpenedTabs from "./openedTabs/getOpenedTabs"
 import setSessionAsMain from "./sessions/setSessionAsMain"
 import editSessionTitle from "./sessions/editSessionTitle"
+import createNewBackup from "./backups/createNewBackup"
+import deleteBackup from "./backups/deleteBackup"
+import setAllSessions from "./sessions/setAllSessions"
+import loadBackup from "./backups/loadBackup"
 
 const Store = {
   sessions: {
@@ -34,7 +38,8 @@ const Store = {
     async changeWindowId(sessionId: string, windowId: number) { await changeSessionWindowId(sessionId, windowId) },
     async deleteAll() { await deleteAllSessions() },
     async setAsMain(sessionId: string) { await setSessionAsMain(sessionId) },
-    async editTitle(sessionId: string, title: string) { await editSessionTitle(sessionId, title) }
+    async editTitle(sessionId: string, title: string) { await editSessionTitle(sessionId, title) },
+    async setAll(sessions: Session[]) { await setAllSessions(sessions) }
   },
   settings: {
     async setTheme(theme: Theme) { await setTheme(theme) },
@@ -50,8 +55,13 @@ const Store = {
     },
   },
   openedTabs: {
-    async set(tabs: OpenedTab[]) { setOpenedTabs(tabs) },
+    async set(tabs: OpenedTab[]) { await setOpenedTabs(tabs) },
     async get() { return await getOpenedTabs() }
+  },
+  backups: {
+    async create(backup: Backup) { await createNewBackup(backup) },
+    async delete(id: string) { await deleteBackup(id) },
+    async load(id: string) { await loadBackup(id) }
   }
 }
 

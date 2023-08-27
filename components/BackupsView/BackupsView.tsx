@@ -1,15 +1,15 @@
 import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
-import { StoreKeys, type Backup, type Session } from "~utils/types"
+import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
 import { useState } from "react"
 import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
 import createNewBackup from "~actions/createNewBackup"
-import loadBackup from "~actions/loadBackup"
+import Store from "~store"
 
 const BackupsView = ({ }) => {
 
-  const [backups, setBackups] = useStorage<Backup[]>({
+  const [backups] = useStorage<Backup[]>({
     key: StoreKeys.backups,
     instance: new Storage({
       area: "local"
@@ -30,10 +30,12 @@ const BackupsView = ({ }) => {
   }
 
   const removeBackup = (id: string) => {
-    const index = backups.findIndex(b => b.id === id)
-    const newBackups = backups
-    newBackups.splice(index, 1)
-    setBackups([...newBackups])
+    Store.backups.delete(id)
+  }
+
+  const _loadBackup = async (id: string) => {
+    await Store.backups.load(id)
+    setLoadedBackupId(id)
   }
 
   return (
@@ -66,10 +68,10 @@ const BackupsView = ({ }) => {
                   <div className="date">{backup.date}</div>
                 </div>
                 <div className="buttons">
-                  <div className={backup.id === loadedBackupId ? "load-backup loaded" : "load-backup"} onClick={() => {
-                    loadBackup(backup.id, backups)
-                      .then(() => setLoadedBackupId(backup.id))
-                  }}>{backup.id === loadedBackupId ? 'Loaded !' : 'Load'}</div>
+                  <div className={backup.id === loadedBackupId ? "load-backup loaded" : "load-backup"}
+                    onClick={() => _loadBackup(backup.id)}>
+                    {backup.id === loadedBackupId ? 'Loaded !' : 'Load'}
+                  </div>
                   <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>
                 </div>
               </div>

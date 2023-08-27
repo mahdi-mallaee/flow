@@ -35,8 +35,7 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
         relatedItem: {
           title: session.title,
           type: 'session'
-        },
-        sessions
+        }
       })
     }
     Store.sessions.delete(session.id)
