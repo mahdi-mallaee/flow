@@ -44,11 +44,11 @@ chrome.windows.onRemoved.addListener(() => {
 })
 
 chrome.windows.onCreated.addListener(() => {
-  refreshOpenSessions()
+  // refreshOpenSessions()
   refreshUnsavedWindows()
 })
 
 chrome.runtime.onStartup.addListener(() => {
-  openFirstSession()
+  // openFirstSession()
   runIntervalBakcups()
 })

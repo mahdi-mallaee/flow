@@ -3,14 +3,18 @@ import createNewSession from "~actions/createNewSession"
 import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import type { AlertMessage, Session, Settings } from "~utils/types"
+import { StoreKeys, type AlertMessage, type Session, type Settings, SessionsKeys, type BasicSession } from "~utils/types"
 import { useEffect, useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import createNewBackup from "~actions/createNewBackup"
+import { Storage } from "@plasmohq/storage"
+import { useStorage } from "@plasmohq/storage/hook"
+import Store from "~store"
+import useSessions from "~hooks/useSessions"
 
-const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Session[], setSessions: Function, settings: Settings }) => {
+const SessionsContainer = ({ settings }: { settings: Settings }) => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [gettingSessionName, setGettingSessionName] = useState(false)
   const [message, setMessage] = useState<AlertMessage>({
@@ -19,18 +23,19 @@ const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Sess
     type: 'info'
   })
 
+  const sessions = useSessions()
+
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {
-    const newSessions = sessions.map(session => {
-      if (session.id === id) {
-        session.main = !session.main
-      } else {
-        session.main = false
-      }
-      return session
-    })
-    setSessions(newSessions)
+    // const newSessions = sessions.map(session => {
+    //   if (session.id === id) {
+    //     session.main = !session.main
+    //   } else {
+    //     session.main = false
+    //   }
+    //   return session
+    // })
   }
 
   const deleteSession = (session: Session) => {
@@ -44,22 +49,17 @@ const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Sess
         sessions
       })
     }
-    const newSessions = [...sessions]
-    const index = newSessions.findIndex(s => s.id === session.id)
-    newSessions.splice(index, 1)
-    setSessions(newSessions)
-    refreshUnsavedWindows(newSessions)
+    Store.sessions.delete(session.id)
   }
 
   const editSession = async (id: string, title: string, callBack: Function) => {
-    const newSesssions = sessions.map(s => {
-      if (s.id === id) {
-        s.title = title
-      }
-      return s
-    })
-    await setSessions(newSesssions)
-    callBack()
+    // const newSesssions = sessions.map(s => {
+    //   if (s.id === id) {
+    //     s.title = title
+    //   }
+    //   return s
+    // })
+    // callBack()
   }
 
   const newSessionClickHandler = () => {
@@ -77,27 +77,14 @@ const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Sess
       return
     }
 
-    const newSession = await createNewSession(0, [], sessionTitleInput)
-    await setSessions(current => {
-      return [newSession, ...current]
-    })
+    await createNewSession(0, [], sessionTitleInput)
+
     setGettingSessionName(false)
     setSessionTitleInput('')
-    refreshUnsavedWindows([...sessions, newSession])
   }
 
   const sessionClickHandler = async (session: Session) => {
-    if (!session.isOpen) {
-      const newSessions = await openSession(sessions, session.id, true)
-      await setSessions(newSessions)
-      await refreshUnsavedWindows(newSessions)
-    } else {
-      setMessage({
-        show: true,
-        text: 'This session is already open.',
-        type: 'info'
-      })
-    }
+    await openSession(session.id)
   }
 
   useEffect(() => {
@@ -128,6 +115,7 @@ const SessionsContainer = ({ sessions, setSessions, settings }: { sessions: Sess
             :
             <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
           }
+
           <AnimatePresence>
             {sessions.map(session => {
               return (

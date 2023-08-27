@@ -3,6 +3,7 @@ import { StoreKeys, type Session, type Settings, type Tab, DefaultSettings } fro
 import createNewWindow from "./createNewWindow";
 import getTabsByWindowId from "./getTabsByWindowId";
 import { Storage } from "@plasmohq/storage";
+import Store from "~store";
 
 const createNewSession = async (windowId?: number, urls?: string[], title?: string): Promise<Session> => {
   const store = new Storage({ area: 'local' })
@@ -32,6 +33,8 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
     isOpen: isSessionOpen,
     colorCode: Math.floor(Math.random() * 5) + 1
   }
+
+  Store.sessions.create(session)
 
   return session
 }

@@ -8,7 +8,7 @@ import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 
-const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
+const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
     key: StoreKeys.unsavedWindows,
     instance: new Storage({
@@ -21,9 +21,7 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
-    const newSession = await createNewSession(window.id)
-    await setSessions(current => { return [newSession, ...current] })
-    refreshUnsavedWindows([newSession, ...sessions])
+    await createNewSession(window.id)
   }
 
   const setCurrentWindow = async () => {

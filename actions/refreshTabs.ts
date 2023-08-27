@@ -1,22 +1,16 @@
-import { StoreKeys, type Session, type Tab, type UnsavedWindow } from "~utils/types"
-import { Storage } from '@plasmohq/storage'
 import getTabsByWindowId from "./getTabsByWindowId"
-import getUnsavedWindows  from "./getUnsavedWindows"
+import Store from "~store"
 
 const refreshTabs = async () => {
-  const store = new Storage({ area: 'local' })
+  const sessions = await Store.sessions.getAll()
 
-  const sessions: Session[] = await store.get(StoreKeys.sessions)
-  
   for (const session of sessions) {
-    if (session.isOpen) {
-      const tabs = await getTabsByWindowId(session.windowId)
-      if (tabs && tabs.length > 0) {
-        session.tabs = tabs
-      }
+    const tabs = await getTabsByWindowId(session.windowId)
+    if (tabs && tabs.length > 0) {
+      session.tabs = tabs
+      Store.sessions.saveTabs(session.id, tabs)
     }
   }
-  await store.set(StoreKeys.sessions, sessions)
 
   // const unsavedWindows: UnsavedWindow[] = await getUnsavedWindows(sessions)
   // for (const window of unsavedWindows) {

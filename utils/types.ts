@@ -1,11 +1,27 @@
-export type Session = {
-  id: string,
+export interface Session extends BasicSession {
   windowId: number,
   tabs: Tab[],
+  isOpen: boolean,
+}
+
+export interface BasicSession {
+  id: string,
   title: string,
   main: boolean,
-  isOpen: boolean,
   colorCode: number
+}
+
+export interface WindowIdStore {
+  windowId: number,
+  sessionId: string
+}
+export interface OpenSessionStore {
+  isOpen: boolean,
+  sessionId: string
+}
+export interface SessionTabsStore {
+  tabs: Tab[],
+  sessionId: string
 }
 
 export type Tab = {
@@ -67,8 +83,15 @@ export type Backup = {
 
 export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups'
 
+export enum SessionsKeys {
+  basic = 'basicSessions',
+  open = 'openSessions',
+  windowId = 'sessionsWindowIds',
+  tab = 'sessionsTabs'
+}
+
 export enum StoreKeys {
-  sessions = 'sessions',
+  sessionsStatusId = 'sessionsStatusId',
   settings = 'settings',
   unsavedWindows = 'unsavedWindows',
   backups = 'backups',

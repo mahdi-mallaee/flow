@@ -1,22 +1,17 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type Session } from "~utils/types"
+import Store from "~store"
 
-const refreshOpenSessions = async (sessions?: Session[]) => {
-  const store = new Storage({ area: 'local' })
-
-  sessions = sessions || await store.get(StoreKeys.sessions) || []
+const refreshOpenSessions = async () => {
+  const sessions = await Store.sessions.getAll()
   const windows = await chrome.windows.getAll()
 
-  sessions.forEach(session => {
-    const index = windows.findIndex(window => window.id === session.windowId)
-    if (index >= 0) {
-      session.isOpen = true
+  for (const session of sessions) {
+    const openWindowIndex = windows.findIndex(w => w.id === session.windowId)
+    if (openWindowIndex >= 0) {
+      await Store.sessions.changeOpenStatus(session.id, true)
     } else {
-      session.isOpen = false
+      await Store.sessions.changeOpenStatus(session.id, false)
     }
-  })
-
-  await store.set(StoreKeys.sessions, sessions)
+  }
 
 }
 

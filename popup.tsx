@@ -7,11 +7,9 @@ import { MdArrowBack, MdTune } from 'react-icons/md'
 import Logo from "~components/Logo"
 import ThemeProvider from "~components/ThemeProvider"
 import { useEffect, useRef, useState } from 'react'
-import refreshOpenSessions from '~actions/refreshOpenSessions'
-import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
-import refreshTabs from '~actions/refreshTabs'
-import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
 import MainContent from '~components/MainContent/MainContent'
+import Store from '~store'
+import refreshOpenSessions from '~actions/refreshOpenSessions'
 
 const IndexPopup = () => {
 
@@ -47,13 +45,6 @@ const IndexPopup = () => {
     }
   }, [containerHeight])
 
-  useEffect(() => {
-    refreshOpenSessions()
-    refreshUnsavedWindows()
-    refreshTabs()
-    refreshLastClosedWindow()
-  }, [])
-
   const settingsButtonClickHandler = () => {
     switch (mainContentState) {
       case 'sessions': {
@@ -86,6 +77,19 @@ const IndexPopup = () => {
             {mainContentState !== 'sessions' ? <MdArrowBack /> : <MdTune />}
           </div>
         </div>
+
+        <div onClick={() => {
+          Store.sessions.getAll()
+            .then(sessions => {
+              console.log(sessions)
+            })
+        }}>get sessions</div>
+        <div onClick={() => {
+          Store.sessions.deleteAll()
+        }}>delete sessions</div>
+        <div onClick={() => {
+          refreshOpenSessions()
+        }}>refresh open sessions</div>
 
         <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
           <MainContent mainContentState={mainContentState} setMainContentState={setMainContentState} />

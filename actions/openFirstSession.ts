@@ -4,10 +4,11 @@ import { StoreKeys, type Session, type Settings, DefaultSettings } from "~utils/
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
+import Store from "~store"
 
 const openFirstSession = async () => {
   const store = new Storage({ area: 'local' })
-  const sessions: Session[] = await store.get(StoreKeys.sessions) || []
+  const sessions: Session[] = await Store.sessions.getAll()
   const settings: Settings = await store.get(StoreKeys.settings) || DefaultSettings
 
   if (settings.openingBlankWindowOnStratup) {
@@ -30,22 +31,22 @@ const openFirstSession = async () => {
         }
         return session
       })
-      await store.set(StoreKeys.sessions, newSessions)
+      // await store.set(StoreKeys.sessions, newSessions)
       refreshLastClosedWindow()
       refreshUnsavedWindows(newSessions)
-      refreshOpenSessions(newSessions)
+      refreshOpenSessions()
     }
   } else if (mainSession) {
-    const newSessions = await openSession(sessions, mainSession.id, true)
-    await store.set(StoreKeys.sessions, newSessions)
+    const newSessions = await openSession(mainSession.id)
+    // await store.set(StoreKeys.sessions, newSessions)
     const windows = await chrome.windows.getAll()
     windows.forEach(window => {
       if (window.id !== mainSession.windowId) {
         chrome.windows.remove(window.id)
           .then(() => {
-            refreshUnsavedWindows(newSessions)
+            refreshUnsavedWindows()
             refreshLastClosedWindow()
-            refreshOpenSessions(newSessions)
+            refreshOpenSessions()
           })
       }
     })
@@ -58,10 +59,10 @@ const openFirstSession = async () => {
         }
         return session
       })
-      await store.set(StoreKeys.sessions, newSessions)
+      // await store.set(StoreKeys.sessions, newSessions)
       refreshLastClosedWindow()
       refreshUnsavedWindows(newSessions)
-      refreshOpenSessions(newSessions)
+      refreshOpenSessions()
     }
   }
 }
