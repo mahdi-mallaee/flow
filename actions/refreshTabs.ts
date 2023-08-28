@@ -14,15 +14,15 @@ const refreshTabs = async () => {
     }
   }
 
-  // const unsavedWindows: UnsavedWindow[] = await refreshUnsavedWindows()
-  // for (const window of unsavedWindows) {
-  //   const tabs = await getTabsByWindowId(window.id)
-  //   if (tabs && tabs.length > 0) {
-  //     window.tabsCount = tabs.length
-  //   }
-  // }
+  const unsavedWindows: UnsavedWindow[] = await refreshUnsavedWindows()
+  for (const window of unsavedWindows) {
+    const tabs = await getTabsByWindowId(window.id)
+    if (tabs && tabs.length > 0) {
+      window.tabsCount = tabs.length
+    }
+  }
 
-  // await Store.unsavedWindows.setAll(unsavedWindows)
+  await Store.unsavedWindows.setAll(unsavedWindows)
 }
 
 export default refreshTabs
