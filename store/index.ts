@@ -1,4 +1,4 @@
-import type { Backup, BackupIntervalTime, OpenedTab, Session, Settings, Tab, Theme, WindowState } from "~utils/types"
+import type { Backup, BackupIntervalTime, OpenedTab, Session, Settings, Tab, Theme, UnsavedWindow, WindowState } from "~utils/types"
 import saveSessionsTabs from "./sessions/saveSessionsTabs"
 import createNewSession from "./sessions/createNewSession"
 import getAllSessions from "./sessions/getAllSessions"
@@ -25,6 +25,10 @@ import createNewBackup from "./backups/createNewBackup"
 import deleteBackup from "./backups/deleteBackup"
 import setAllSessions from "./sessions/setAllSessions"
 import loadBackup from "./backups/loadBackup"
+import getAllSessionsOpenStatus from "./sessions/getAllSessionsOpenStatus"
+import setAllUnsavedWindows from "./unsavedWindows/setAllUnsavedWindows"
+import getLastClosedWindowId from "./lastClosedWindow/getLastClosedWindowId"
+import setLastClosedWindowId from "./lastClosedWindow/setLastClosedWindowId"
 
 const Store = {
   sessions: {
@@ -39,7 +43,8 @@ const Store = {
     async deleteAll() { await deleteAllSessions() },
     async setAsMain(sessionId: string) { await setSessionAsMain(sessionId) },
     async editTitle(sessionId: string, title: string) { await editSessionTitle(sessionId, title) },
-    async setAll(sessions: Session[]) { await setAllSessions(sessions) }
+    async setAll(sessions: Session[]) { await setAllSessions(sessions) },
+    async getAllOpenStatus() { return await getAllSessionsOpenStatus() }
   },
   settings: {
     async setTheme(theme: Theme) { await setTheme(theme) },
@@ -62,6 +67,13 @@ const Store = {
     async create(backup: Backup) { await createNewBackup(backup) },
     async delete(id: string) { await deleteBackup(id) },
     async load(id: string) { await loadBackup(id) }
+  },
+  unsavedWindows: {
+    async setAll(windows: UnsavedWindow[]) { await setAllUnsavedWindows(windows) }
+  },
+  lastClosedWindow: {
+    async getId() { return await getLastClosedWindowId() },
+    async setId(id: number) { await setLastClosedWindowId(id) },
   }
 }
 

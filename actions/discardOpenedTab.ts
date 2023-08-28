@@ -1,14 +1,8 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys } from "~utils/types"
-
-type OpenedTabs = {
-  id: number,
-  discarded: boolean
-}
+import Store from "~store"
+import type { OpenedTab } from "~utils/types"
 
 const discardOpenedTab = async (id: number,) => {
-  const store = new Storage({ area: 'local' })
-  const openedTabs: OpenedTabs[] = await store.get(StoreKeys.openedTabs) || []
+  const openedTabs: OpenedTab[] = await Store.openedTabs.get()
   if (openedTabs && openedTabs.length >= 1) {
     const tab = openedTabs.find(ot => ot.id === id)
     if (tab && id && !tab.discarded) {
@@ -20,7 +14,7 @@ const discardOpenedTab = async (id: number,) => {
       }
       tab.discarded = true
     }
-    await store.set(StoreKeys.openedTabs, openedTabs)
+    await Store.openedTabs.set(openedTabs)
   }
 }
 

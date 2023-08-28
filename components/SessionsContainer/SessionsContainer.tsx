@@ -2,7 +2,7 @@ import { MdAdd, MdClose, MdDone } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
-import { type AlertMessage, type Session, type Settings } from "~utils/types"
+import { type AlertMessage, type Session } from "~utils/types"
 import { useEffect, useState } from "react"
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
@@ -10,8 +10,9 @@ import { AnimatePresence, motion } from "framer-motion"
 import createNewBackup from "~actions/createNewBackup"
 import Store from "~store"
 import useSessions from "~hooks/useSessions"
+import useSettings from "~hooks/useSettings"
 
-const SessionsContainer = ({ settings }: { settings: Settings }) => {
+const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [gettingSessionName, setGettingSessionName] = useState(false)
   const [message, setMessage] = useState<AlertMessage>({
@@ -20,6 +21,7 @@ const SessionsContainer = ({ settings }: { settings: Settings }) => {
     type: 'info'
   })
 
+  const settings = useSettings()
   const sessions = useSessions()
 
   const [initialAnimation, setInitialAnimation] = useState(false)

@@ -11,13 +11,10 @@ export interface BasicSession {
   colorCode: number
 }
 
-export interface WindowIdStore {
-  windowId: number,
-  sessionId: string
-}
-export interface OpenSessionStore {
+export interface SessionOpenStatus {
   isOpen: boolean,
-  sessionId: string
+  sessionId: string,
+  windowId: number
 }
 export interface SessionTabsStore {
   tabs: Tab[],
@@ -86,7 +83,6 @@ export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting
 export enum SessionsKeys {
   basic = 'basicSessions',
   open = 'openSessions',
-  windowId = 'sessionsWindowIds',
   tab = 'sessionsTabs'
 }
 

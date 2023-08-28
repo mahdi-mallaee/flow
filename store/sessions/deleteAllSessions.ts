@@ -7,7 +7,6 @@ const deleteAllSessions = async () => {
   await store.set(SessionsKeys.basic, [])
   await store.set(SessionsKeys.open, [])
   await store.set(SessionsKeys.tab, [])
-  await store.set(SessionsKeys.windowId, [])
   await Store.sessions.refreshStatus()
 }
 

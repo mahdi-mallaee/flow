@@ -1,13 +1,11 @@
-import { Storage } from "@plasmohq/storage"
 import openSession from "~actions/openSession"
-import { StoreKeys, type Session, type Settings } from "~utils/types"
+import { type Session, type Settings } from "~utils/types"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
 import Store from "~store"
 
 const openFirstSession = async () => {
-  const store = new Storage({ area: 'local' })
   const sessions: Session[] = await Store.sessions.getAll()
   const settings: Settings = await Store.settings.getAll()
 
@@ -19,7 +17,7 @@ const openFirstSession = async () => {
   }
 
   const mainSession: Session = sessions.find(session => session.main === true)
-  const lastClosedWindowId: number = await store.get(StoreKeys.lastClosedWindowId) || -1
+  const lastClosedWindowId = await Store.lastClosedWindow.getId()
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
 
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {

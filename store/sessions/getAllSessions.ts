@@ -1,26 +1,22 @@
 import { Storage } from "@plasmohq/storage";
-import { SessionsKeys, type BasicSession, type OpenSessionStore, type Session, type WindowIdStore, type SessionTabsStore } from "~utils/types";
+import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types";
 
 const getAllSessions = async (): Promise<Session[]> => {
   const store = new Storage({ area: 'local' })
   let basics: BasicSession[] = await store.get(SessionsKeys.basic) || []
-  let windowIds: WindowIdStore[] = await store.get(SessionsKeys.windowId) || []
-  let opens: OpenSessionStore[] = await store.get(SessionsKeys.open) || []
+  let opens: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
   let sessionsTabs: SessionTabsStore[] = await store.get(SessionsKeys.tab) || []
 
   const sessions: Session[] = []
 
   for (const basicSession of basics) {
-    const windowIdStore = windowIds.find(w => w.sessionId === basicSession.id)
-    let windowId = -1
-    if (windowIdStore && windowIdStore.windowId && windowIdStore.windowId > 0) {
-      windowId = windowIdStore.windowId
-    }
 
     let isOpen = false
+    let windowId = -1
     const isOpenStore = opens.find(o => o.sessionId === basicSession.id)
-    if (isOpenStore && typeof isOpenStore.isOpen === 'boolean') {
+    if (isOpenStore && typeof isOpenStore.isOpen === 'boolean' && isOpenStore.windowId >= -1) {
       isOpen = isOpenStore.isOpen
+      windowId = isOpenStore.windowId
     }
 
     let tabs = []

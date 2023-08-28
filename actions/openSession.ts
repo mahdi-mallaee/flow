@@ -1,5 +1,5 @@
 import createNewWindow from "./createNewWindow";
-import { type OpenedTab, type Session, type Tab } from "~utils/types";
+import { type OpenedTab, type Tab } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
 import Store from "~store";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
@@ -23,7 +23,7 @@ const openSession = async (sessionId: string): Promise<number> => {
   })
   Store.openedTabs.set(openedTabs)
 
-
+  //TODO: extraction part below to new action (createSessionGroups)
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
@@ -43,6 +43,7 @@ const openSession = async (sessionId: string): Promise<number> => {
         chrome.history.deleteRange({ startTime, endTime: Date.now() })
       })
   })
+  //TODO: end
 
   refreshUnsavedWindows()
 

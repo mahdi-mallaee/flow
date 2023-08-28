@@ -1,14 +1,26 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type Session, type UnsavedWindow } from "~utils/types"
-import getUnsavedWindows from "./getUnsavedWindows"
+import { type UnsavedWindow, type SessionOpenStatus } from "~utils/types"
 import Store from "~store"
 
-const refreshUnsavedWindows = async (sessions?: Session[]) => {
-  const store = new Storage({ area: 'local' })
+const refreshUnsavedWindows = async (): Promise<UnsavedWindow[]> => {
+  const sessions: SessionOpenStatus[] = await Store.sessions.getAllOpenStatus()
+  let unsavevdWindows: UnsavedWindow[] = []
+  const windows = await chrome.windows.getAll()
 
-  sessions = await Store.sessions.getAll()
-  const windows: UnsavedWindow[] = await getUnsavedWindows(sessions) || []
-  await store.set(StoreKeys.unsavedWindows, windows)
+  for (const window of windows) {
+    let index = -1
+    if (sessions) {
+      index = sessions.findIndex(session => { return session.windowId === window.id })
+    }
+    if (index === -1) {
+      const tabsCount = (await chrome.tabs.query({ windowId: window.id })).length
+      unsavevdWindows.push({
+        id: window.id,
+        tabsCount
+      })
+    }
+  }
+  await Store.unsavedWindows.setAll(unsavevdWindows)
+  return unsavevdWindows
 }
 
 export default refreshUnsavedWindows

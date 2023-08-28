@@ -1,9 +1,8 @@
 import { Storage } from "@plasmohq/storage"
-import { SessionsKeys, type BasicSession, type OpenSessionStore, type Session, type SessionTabsStore, type WindowIdStore } from "~utils/types"
+import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types"
 import refreshSessionsStatus from "./refreshSessionsStatus"
 
 const setAllSessions = async (sessions: Session[]) => {
-
   if (!sessions) {
     return
   }
@@ -26,16 +25,10 @@ const setAllSessions = async (sessions: Session[]) => {
     }
   })
 
-  const openSessions: OpenSessionStore[] = sessions.map(s => {
+  const openSessions: SessionOpenStatus[] = sessions.map(s => {
     return {
       sessionId: s.id,
-      isOpen: s.isOpen
-    }
-  })
-
-  const windowIds: WindowIdStore[] = sessions.map(s => {
-    return {
-      sessionId: s.id,
+      isOpen: s.isOpen,
       windowId: s.windowId
     }
   })
@@ -43,7 +36,6 @@ const setAllSessions = async (sessions: Session[]) => {
   await store.set(SessionsKeys.basic, basicSessions)
   await store.set(SessionsKeys.open, openSessions)
   await store.set(SessionsKeys.tab, sessionsTabs)
-  await store.set(SessionsKeys.windowId, windowIds)
   await refreshSessionsStatus()
 }
 export default setAllSessions

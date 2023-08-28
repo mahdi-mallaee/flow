@@ -3,6 +3,7 @@ import { type Session, type Tab } from "../utils/types";
 import createNewWindow from "./createNewWindow";
 import getTabsByWindowId from "./getTabsByWindowId";
 import Store from "~store";
+import refreshUnsavedWindows from "./refreshUnsavedWindows";
 
 const createNewSession = async (windowId?: number, urls?: string[], title?: string): Promise<Session> => {
   const settings = await Store.settings.getAll()
@@ -33,6 +34,7 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
   }
 
   await Store.sessions.create(session)
+  await refreshUnsavedWindows()
 
   return session
 }
