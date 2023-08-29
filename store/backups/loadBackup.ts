@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import createNewBackup from "~actions/createNewBackup"
+import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import Store from "~store"
 import { StoreKeys, type Backup } from "~utils/types"
 
@@ -9,11 +10,9 @@ const loadBackup = async (id: string) => {
   let backups: Backup[] = await store.get(StoreKeys.backups) || []
   const index = backups.findIndex(b => b.id === id)
   const settings = await Store.settings.getAll()
-  const openSessions = await Store.sessions.getAllOpenStatus()
-  console.log(openSessions)
+  const backup = index >= 0 ? backups[index] : undefined
 
-  if (index >= 0 && backups[index].sessions) {
-    const backup = backups[index]
+  if (backup && backup.sessions) {
     if (settings.createBackupBeforeLoad) {
       await createNewBackup({
         status: 'before loading backup',
@@ -23,16 +22,12 @@ const loadBackup = async (id: string) => {
         }
       })
     }
-    backup.sessions.forEach(backupSession => {
-      const openSession = openSessions.find(s => s.sessionId === backupSession.id)
-      if (openSession && openSession.isOpen === true) {
-        backupSession.isOpen = true
-        backupSession.windowId = openSession.windowId
-      } else {
-        backupSession.isOpen = false
-      }
+    backup.sessions.forEach(session => {
+      session.isOpen = false
+      session.windowId = -1
     })
-    await Store.sessions.setAll(backups[index].sessions)
+    await Store.sessions.setAll(backup.sessions)
+    await refreshUnsavedWindows()
   }
 }
 

@@ -12,10 +12,15 @@ const deleteSession = async (sessionId: string) => {
   const opensIndex = opens.findIndex(o => o.sessionId === sessionId)
   const sessionsTabsIndex = sessionsTabs.findIndex(s => s.sessionId === sessionId)
 
-  if (basicsIndex >= 0 && opensIndex >= 0 && sessionsTabsIndex >= 0) {
+  if (basicsIndex >= 0) {
     basics.splice(basicsIndex, 1)
-    opens.splice(opensIndex, 1)
+  }
+  if (sessionsTabsIndex >= 0) {
     sessionsTabs.splice(sessionsTabsIndex, 1)
+  }
+
+  if (opensIndex >= 0) {
+    opens.splice(opensIndex, 1)
   }
 
   await store.set(SessionsKeys.basic, basics)

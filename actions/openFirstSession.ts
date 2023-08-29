@@ -24,32 +24,33 @@ const openFirstSession = async () => {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
       await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
-      refreshLastClosedWindow()
-      refreshUnsavedWindows()
-      refreshOpenSessions()
+      await refresh()
     }
   } else if (mainSession) {
     const newWindowId = await openSession(mainSession.id)
     const windows = await chrome.windows.getAll()
-    windows.forEach(window => {
+    for (const window of windows) {
       if (window.id !== newWindowId) {
-        chrome.windows.remove(window.id)
-          .then(() => {
-            refreshUnsavedWindows()
-            refreshLastClosedWindow()
-            refreshOpenSessions()
-          })
+        await chrome.windows.remove(window.id)
       }
-    })
+    }
+    await refresh()
+
   } else if (lastSession) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
       await Store.sessions.changeWindowId(lastSession.id, windows[0].id)
-      await refreshLastClosedWindow()
-      await refreshOpenSessions()
-      await refreshUnsavedWindows()
+      await refresh()
     }
+  } else {
+    await refresh()
   }
+}
+
+const refresh = async () => {
+  await refreshLastClosedWindow()
+  await refreshOpenSessions()
+  await refreshUnsavedWindows()
 }
 
 export default openFirstSession

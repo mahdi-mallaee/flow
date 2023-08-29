@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid"
 import Store from "~store"
-import { type Backup, type BackupStatus, type Session } from "~utils/types"
+import { type Backup, type BackupStatus } from "~utils/types"
 
 type NewBackupInput = {
   status: BackupStatus,

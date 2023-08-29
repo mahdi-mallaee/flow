@@ -4,22 +4,19 @@ import type { AlertMessage } from "~utils/types"
 
 const useAlertMessage = () => {
   const ALERT_MESSAGE_DURATION = 3000
-  const returnMessage: AlertMessage = {
+  const defaultMessage: AlertMessage = {
     text: '',
     type: "info"
   }
 
   const [show, setShow] = useState(false)
 
-  const [message, setMessage] = useState<AlertMessage>({
-    text: '',
-    type: 'info'
-  })
+  const [message, setMessage] = useState<AlertMessage>(defaultMessage)
 
   useEffect(() => {
     if (show) {
       setTimeout(() => {
-        setMessage(returnMessage)
+        setMessage(defaultMessage)
       }, ALERT_MESSAGE_DURATION)
     }
   }, [show])

@@ -4,13 +4,14 @@ import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import type { UnsavedWindow } from "~utils/types"
 
 const refreshTabs = async () => {
-  const sessions = await Store.sessions.getAll()
+  const sessions = await Store.sessions.getAllOpenStatus()
 
   for (const session of sessions) {
-    const tabs = await getTabsByWindowId(session.windowId)
-    if (tabs && tabs.length > 0) {
-      session.tabs = tabs
-      await Store.sessions.saveTabs(session.id, tabs)
+    if (session.isOpen) {
+      const tabs = await getTabsByWindowId(session.windowId)
+      if (tabs && tabs.length > 0) {
+        await Store.sessions.saveTabs(session.sessionId, tabs)
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type Settings, DefaultSettings } from "~utils/types"
+import { StoreKeys } from "~utils/types"
 import createNewBackup from "./createNewBackup"
 import Store from "~store"
 
