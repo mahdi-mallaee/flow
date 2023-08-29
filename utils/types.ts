@@ -30,7 +30,6 @@ export type Tab = {
 }
 
 export type AlertMessage = {
-  show: boolean,
   text: string,
   type: 'error' | 'warning' | 'info'
 }

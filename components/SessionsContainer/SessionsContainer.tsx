@@ -2,24 +2,20 @@ import { MdAdd, MdClose, MdDone } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
-import { type AlertMessage, type Session } from "~utils/types"
+import { type Session } from "~utils/types"
 import { useEffect, useState } from "react"
-import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import createNewBackup from "~actions/createNewBackup"
 import Store from "~store"
 import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
+import useAlertMessage from "~hooks/useAlertMessage"
 
 const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [gettingSessionName, setGettingSessionName] = useState(false)
-  const [message, setMessage] = useState<AlertMessage>({
-    show: false,
-    text: '',
-    type: 'info'
-  })
+  const { showAlert, renderAlert } = useAlertMessage()
 
   const settings = useSettings()
   const sessions = useSessions()
@@ -46,8 +42,7 @@ const SessionsContainer = () => {
   const editSession = async (id: string, title: string, callBack: Function) => {
     const duplicateSession = sessions.find(s => s.title === title)
     if (duplicateSession) {
-      setMessage({
-        show: true,
+      showAlert({
         text: 'Another session with this name already exists',
         type: 'info'
       })
@@ -65,8 +60,7 @@ const SessionsContainer = () => {
   const _createNewSession = async () => {
     const duplicateSession = sessions.find(s => s.title === sessionTitleInput)
     if (duplicateSession) {
-      setMessage({
-        show: true,
+      showAlert({
         text: 'Another session with this name already exists',
         type: 'info'
       })
@@ -83,8 +77,7 @@ const SessionsContainer = () => {
     if (!session.isOpen) {
       await openSession(session.id)
     } else {
-      setMessage({
-        show: true,
+      showAlert({
         text: 'This session is already open',
         type: 'info'
       })
@@ -99,7 +92,7 @@ const SessionsContainer = () => {
 
   return (
     <>
-      <AlertMessageView message={message} setMessage={setMessage} />
+      {renderAlert()}
 
       <div className='sessions-container'>
         <div className='view-title session-title'>Sessions</div>
