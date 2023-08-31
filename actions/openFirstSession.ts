@@ -1,21 +1,13 @@
 import openSession from "~actions/openSession"
-import { type Session, type Settings } from "~utils/types"
+import { type Session } from "~utils/types"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
 import Store from "~store"
+import getTabsByWindowId from "./getTabsByWindowId"
 
 const openFirstSession = async () => {
   const sessions: Session[] = await Store.sessions.getAll()
-  const settings: Settings = await Store.settings.getAll()
-
-  if (settings.openingBlankWindowOnStratup) {
-    const windows = await chrome.windows.getAll()
-    await chrome.windows.create({ state: settings.newSessionWindowState })
-    await chrome.windows.remove(windows[0].id)
-    return
-  }
-
   const mainSession: Session = sessions.find(session => session.main === true)
   const lastClosedWindowId = await Store.lastClosedWindow.getId()
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
@@ -23,27 +15,31 @@ const openFirstSession = async () => {
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
-      await refresh()
+      const windowTabs = await getTabsByWindowId(windows[0].id)
+      if (windowTabs.length === mainSession.tabs.length && windowTabs[0].url === mainSession.tabs[0].url) {
+        await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
+        refresh()
+      } else {
+        await openMainSession(mainSession)
+      }
+    } else {
+      refresh()
     }
   } else if (mainSession) {
-    const newWindowId = await openSession(mainSession.id)
-    const windows = await chrome.windows.getAll()
-    for (const window of windows) {
-      if (window.id !== newWindowId) {
-        await chrome.windows.remove(window.id)
-      }
-    }
-    await refresh()
-
+    await openMainSession(mainSession)
   } else if (lastSession) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      await Store.sessions.changeWindowId(lastSession.id, windows[0].id)
-      await refresh()
+      const windowTabs = await getTabsByWindowId(windows[0].id)
+      if (windowTabs.length === lastSession.tabs.length && windowTabs[0].url === lastSession.tabs[0].url) {
+        await Store.sessions.changeWindowId(lastSession.id, windows[0].id)
+      }
+      refresh()
+    } else {
+      refresh()
     }
   } else {
-    await refresh()
+    refresh()
   }
 }
 
@@ -51,6 +47,17 @@ const refresh = async () => {
   await refreshLastClosedWindow()
   await refreshOpenSessions()
   await refreshUnsavedWindows()
+}
+
+const openMainSession = async (mainSession: Session) => {
+  const newWindowId = await openSession(mainSession.id)
+  const windows = await chrome.windows.getAll()
+  for (const window of windows) {
+    if (window.id !== newWindowId) {
+      await chrome.windows.remove(window.id)
+    }
+  }
+  refresh()
 }
 
 export default openFirstSession

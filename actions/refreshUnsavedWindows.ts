@@ -1,7 +1,7 @@
 import { type UnsavedWindow, type SessionOpenStatus } from "~utils/types"
 import Store from "~store"
 
-const refreshUnsavedWindows = async (): Promise<UnsavedWindow[]> => {
+const refreshUnsavedWindows = async (onlyGet = false): Promise<UnsavedWindow[]> => {
   const sessions: SessionOpenStatus[] = await Store.sessions.getAllOpenStatus()
   let unsavevdWindows: UnsavedWindow[] = []
   const windows = await chrome.windows.getAll()
@@ -19,7 +19,10 @@ const refreshUnsavedWindows = async (): Promise<UnsavedWindow[]> => {
       })
     }
   }
-  await Store.unsavedWindows.setAll(unsavevdWindows)
+  if (!onlyGet) {
+    await Store.unsavedWindows.setAll(unsavevdWindows)
+  }
+
   return unsavevdWindows
 }
 

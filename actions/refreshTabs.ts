@@ -15,7 +15,7 @@ const refreshTabs = async () => {
     }
   }
 
-  const unsavedWindows: UnsavedWindow[] = await refreshUnsavedWindows()
+  const unsavedWindows: UnsavedWindow[] = await refreshUnsavedWindows(true)
   for (const window of unsavedWindows) {
     const tabs = await getTabsByWindowId(window.id)
     if (tabs && tabs.length > 0) {

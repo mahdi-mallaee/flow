@@ -44,10 +44,16 @@ chrome.windows.onRemoved.addListener(() => {
 })
 
 chrome.windows.onCreated.addListener(() => {
-  refreshUnsavedWindows()
+  chrome.windows.getAll()
+    .then(win => {
+      if (win.length === 1) {
+        openFirstSession()
+      } else {
+        refreshUnsavedWindows()
+      }
+    })
 })
 
 chrome.runtime.onStartup.addListener(() => {
-  openFirstSession()
   runIntervalBakcups()
 })

@@ -42,7 +42,7 @@ const SessionCard = (
 
   const titleEditState = () => {
     const _editSession = () => {
-      editSession(session.id, sessionTitleInput || session.title, () => {
+      editSession(session.id, sessionTitleInput, () => {
         setSessionCardState('default')
         setSessionTitleInput('')
       })

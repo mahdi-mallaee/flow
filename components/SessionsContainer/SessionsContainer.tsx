@@ -11,6 +11,7 @@ import Store from "~store"
 import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
 import useAlertMessage from "~hooks/useAlertMessage"
+import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 
 const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -26,7 +27,7 @@ const SessionsContainer = () => {
     Store.sessions.setAsMain(id)
   }
 
-  const deleteSession = (session: Session) => {
+  const deleteSession = async (session: Session) => {
     if (settings.createBackupBeforeSessionDelete) {
       createNewBackup({
         status: 'before deleting session',
@@ -36,20 +37,23 @@ const SessionsContainer = () => {
         }
       })
     }
-    Store.sessions.delete(session.id)
+    await Store.sessions.delete(session.id)
+    refreshUnsavedWindows()
   }
 
   const editSession = async (id: string, title: string, callBack: Function) => {
-    const duplicateSession = sessions.find(s => s.title === title)
-    if (duplicateSession) {
-      showAlert({
-        text: 'Another session with this name already exists',
-        type: 'info'
-      })
-      return
-    }
+    if (title) {
+      const duplicateSession = sessions.find(s => s.title === title)
+      if (duplicateSession) {
+        showAlert({
+          text: 'Another session with this name already exists',
+          type: 'info'
+        })
+        return
+      }
 
-    await Store.sessions.editTitle(id, title)
+      await Store.sessions.editTitle(id, title)
+    }
     callBack()
   }
 

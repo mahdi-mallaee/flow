@@ -8,6 +8,9 @@ import Logo from "~components/Logo"
 import ThemeProvider from "~components/ThemeProvider"
 import { useEffect, useRef, useState } from 'react'
 import MainContent from '~components/MainContent/MainContent'
+import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
+import refreshOpenSessions from '~actions/refreshOpenSessions'
+import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
 
 const IndexPopup = () => {
 
@@ -25,6 +28,7 @@ const IndexPopup = () => {
 
   const ref = useRef(null)
   useEffect(() => {
+
     const observer = new ResizeObserver(entries => {
       const height = entries[0].target.clientHeight
       if (height != defaultContainerHeight) {
@@ -32,6 +36,10 @@ const IndexPopup = () => {
       }
     })
     observer.observe(ref.current)
+
+    refreshLastClosedWindow()
+    refreshOpenSessions()
+    refreshUnsavedWindows()
     return () => {
       observer.disconnect()
     }
