@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage";
-import { StoreKeys, type Settings, type Theme, type WindowState } from "~utils/types";
+import { StoreKeys, type Settings } from "~utils/types";
 
 const setCreateWindowForNewSession = async (createWindow: boolean) => {
   const store = new Storage({ area: "local" })

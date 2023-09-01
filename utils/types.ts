@@ -38,9 +38,7 @@ export type Settings = {
   theme: Theme,
   newSessionWindowState: WindowState,
   createWindowForNewSession: boolean,
-  openingBlankWindowOnStratup: boolean,
   autoBackupsInterval: BackupIntervalTime,
-  createBackupBeforeLoad: boolean,
   createBackupBeforeSessionDelete: boolean,
 }
 
@@ -54,12 +52,10 @@ export enum Theme {
 }
 
 export const DefaultSettings: Settings = {
-  theme: Theme.light,
+  theme: Theme.osDefault,
   createWindowForNewSession: true,
   newSessionWindowState: "normal",
-  openingBlankWindowOnStratup: false,
   autoBackupsInterval: '30',
-  createBackupBeforeLoad: false,
   createBackupBeforeSessionDelete: true,
 }
 

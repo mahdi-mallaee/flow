@@ -13,9 +13,7 @@ import getAllSettings from "./settings/getAllSettings"
 import resetAllSettings from "./settings/resetAllSettings"
 import setWindowState from "./settings/setWindowState"
 import setCreateWindowForNewSession from "./settings/setCreateWindowForNewSession"
-import setOpenBlankWindowOnStartup from "./settings/setOpenBlankWindowOnStartup"
 import setCreateBackupBeforeSessionDelete from "./settings/setBackupCreationBeforeSessionDelete"
-import setCreateBackupBeforeBackupLoad from "./settings/setCreateBackupBeforeBackupLoad"
 import setBackupInterval from "./settings/setBackupInterval"
 import setOpenedTabs from "./openedTabs/setOpenedTabs"
 import getOpenedTabs from "./openedTabs/getOpenedTabs"
@@ -52,11 +50,9 @@ const Store = {
     async reset() { await resetAllSettings() },
     async setWindowState(windowState: WindowState) { await setWindowState(windowState) },
     async setCreateWindowForNewSession(createWindow: boolean) { await setCreateWindowForNewSession(createWindow) },
-    async setOpenBlankWindowOnStartup(openWindow: boolean) { await setOpenBlankWindowOnStartup(openWindow) },
     backups: {
       async setInterval(interval: BackupIntervalTime) { await setBackupInterval(interval) },
       async setCreateBeforeSessionDelete(createBackup: boolean) { await setCreateBackupBeforeSessionDelete(createBackup) },
-      async setCreateBeforeLoad(createBackup: boolean) { await setCreateBackupBeforeBackupLoad(createBackup) },
     },
   },
   openedTabs: {

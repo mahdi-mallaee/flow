@@ -7,7 +7,7 @@
   transition: 0.2s;
   border: 1px solid var(--outline-color);
 
-  &[aria-checked="true"][aria-transition="true"] {
+  &[data-checked="true"][data-transition="true"] {
     background-color: var(--primary-color);
 
     .switch {

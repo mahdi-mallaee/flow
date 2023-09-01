@@ -1,6 +1,6 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState, type BackupIntervalTime, StoreKeys } from '~utils/types'
+import { Theme, type WindowState, type MainContentState, type BackupIntervalTime, StoreKeys } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
@@ -87,21 +87,9 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
         </div>
 
         <div className="item">
-          <div className="title">Opening a blank window on startup</div>
-          <ToggleSwitch checked={settings.openingBlankWindowOnStratup}
-            onChange={(checked) => Store.settings.setOpenBlankWindowOnStartup(checked)} />
-        </div>
-
-        <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
           <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
             onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
-        </div>
-
-        <div className="item">
-          <div className="title">Create a new backup before loading a backup</div>
-          <ToggleSwitch checked={settings.createBackupBeforeLoad}
-            onChange={(checked) => Store.settings.backups.setCreateBeforeLoad(checked)} />
         </div>
 
         <div className="item backups-nav" onClick={() => setMainContentState('backups')}>
