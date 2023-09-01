@@ -2,10 +2,11 @@ import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
 import createNewBackup from "~actions/createNewBackup"
 import Store from "~store"
+import { AnimatePresence, motion } from "framer-motion"
 
 const BackupsView = ({ }) => {
 
@@ -38,6 +39,14 @@ const BackupsView = ({ }) => {
     setLoadedBackupId(id)
   }
 
+  const [initialAnimation, setInitialAnimation] = useState(false)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setInitialAnimation(true)
+    }, 200)
+  }, [])
+
   return (
     <div className="backups-view">
       <div className='view-title backups-title'>Backups</div>
@@ -57,27 +66,35 @@ const BackupsView = ({ }) => {
           :
           <div className="new-backup-button" onClick={() => setGetBackupName(true)}><MdAdd /> <span>create new backup</span></div>
         }
-        {
-          backups.map(backup => {
-            return (
-              <div key={backup.id} className="backup-card">
-                <div className="details">
-                  <div className="title">{backup.title}</div>
-                  <div className="status">{backup.status}</div>
-                  {backup.relatedItem && <div className="related-item">related {backup.relatedItem.type === 'session' ? 'session' : 'backup'}: {backup.relatedItem.title}</div>}
-                  <div className="date">{backup.date}</div>
-                </div>
-                <div className="buttons">
-                  <div className={backup.id === loadedBackupId ? "load-backup loaded" : "load-backup"}
-                    onClick={() => _loadBackup(backup.id)}>
-                    {backup.id === loadedBackupId ? 'Loaded !' : 'Load'}
+        <AnimatePresence>
+          {
+            backups.map(backup => {
+              return (
+                <motion.div key={backup.id} className="backup-card"
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
+                  transition={{ duration: 0.2 }}>
+                  <div className="container">
+                    <div className="details">
+                      <div className="title">{backup.title}</div>
+                      <div className="status">{backup.status}</div>
+                      {backup.relatedItem && <div className="related-item">related {backup.relatedItem.type === 'session' ? 'session' : 'backup'}: {backup.relatedItem.title}</div>}
+                      <div className="date">{backup.date}</div>
+                    </div>
+                    <div className="buttons">
+                      <div className={backup.id === loadedBackupId ? "load-backup loaded" : "load-backup"}
+                        onClick={() => _loadBackup(backup.id)}>
+                        {backup.id === loadedBackupId ? 'Loaded !' : 'Load'}
+                      </div>
+                      <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>
+                    </div>
                   </div>
-                  <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>
-                </div>
-              </div>
-            )
-          })
-        }
+                </motion.div>
+              )
+            })
+          }
+        </AnimatePresence>
       </div>
     </div>
   )

@@ -4,14 +4,18 @@
   flex-direction: column;
 
   .backups-container {
-    display: flex;
     flex-direction: column;
-    gap: 16px;
     overflow-y: scroll;
+    display: flex;
 
     .backup-card {
-      padding: 0 8px;
       display: flex;
+
+      .container {
+        padding: 8px;
+        display: flex;
+        width: 100%;
+      }
 
       .details {
         flex-grow: 1;
