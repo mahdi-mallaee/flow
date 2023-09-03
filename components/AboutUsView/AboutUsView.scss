@@ -1,0 +1,13 @@
+.about-us-view {
+  .items-container {
+    display: flex;
+    gap: 16px;
+    padding: 8px;
+    flex-direction: column;
+
+    .item {
+      display: flex;
+      gap: 8px;
+    }
+  }
+}

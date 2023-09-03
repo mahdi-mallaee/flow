@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom"
+import AboutUsView from "~components/AboutUsView"
 import BackupsView from "~components/BackupsView"
 import Header from "~components/Header"
 import SessionsContainer from "~components/SessionsContainer"
@@ -9,28 +10,33 @@ const MainContent = () => {
 
   return (
     <Routes>
-      <Route path="/" element={
-        <>
-          <Header settingsButtonPath="/settings" />
-          <SessionsContainer />
-          <UnsavedWindowsContainer />
-        </>
-      }>
-      </Route>
-      <Route path="/settings" element={
-        <>
-          <Header settingsButtonPath="/" />
-          <SettignsView />
-        </>
-      }>
-      </Route>
-      <Route path="/backups" element={
-        <>
-          <Header settingsButtonPath="/settings" />
-          <BackupsView />
-        </>
-      }>
-      </Route>
+
+      <Route path="/" element={<>
+        <Header settingsButtonPath="/settings" />
+        <SessionsContainer />
+        <UnsavedWindowsContainer />
+      </>} />
+
+      <Route path="/settings" element={<>
+        <Header settingsButtonPath="/" />
+        <SettignsView />
+      </>} />
+
+      <Route path="/backups" element={<>
+        <Header settingsButtonPath="/settings" />
+        <BackupsView />
+      </>} />
+
+      <Route path="/backups" element={<>
+        <Header settingsButtonPath="/settings" />
+        <BackupsView />
+      </>} />
+
+      <Route path="/about-us" element={<>
+        <Header settingsButtonPath="/settings" />
+        <AboutUsView />
+      </>} />
+
     </Routes>
   )
 }

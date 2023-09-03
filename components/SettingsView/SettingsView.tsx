@@ -44,7 +44,7 @@ const SettignsView = () => {
 
   return (
     <div className="settings-view">
-      <div className='view-title settings-title'>Settings</div>
+      <div className='view-title'>Settings</div>
       <div className="items-container">
 
         <div className="item">
@@ -65,21 +65,19 @@ const SettignsView = () => {
 
         <div className="item">
           <div className="title">Automatic backups interval</div>
-          <div className="auto-backups-interval">
-            <Dropdown
-              value={settings.autoBackupsInterval}
-              options={autoBackupsIntervalDropdownOptions}
-              onChange={(option: BackupIntervalTime) => {
-                Store.settings.backups.setInterval(option)
-                  .then(() => {
-                    if (autoBackupIntervalId) {
-                      clearInterval(autoBackupIntervalId)
-                      runIntervalBakcups()
-                    }
-                  })
-              }}
-            />
-          </div>
+          <Dropdown
+            value={settings.autoBackupsInterval}
+            options={autoBackupsIntervalDropdownOptions}
+            onChange={(option: BackupIntervalTime) => {
+              Store.settings.backups.setInterval(option)
+                .then(() => {
+                  if (autoBackupIntervalId) {
+                    clearInterval(autoBackupIntervalId)
+                    runIntervalBakcups()
+                  }
+                })
+            }}
+          />
         </div>
 
         <div className="item">
@@ -94,16 +92,19 @@ const SettignsView = () => {
             onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
         </div>
 
-        <div className="item backups-nav" onClick={() => {
-          nav('/backups')
-        }}>
+        <div className="item nav" onClick={() => nav('/backups')}>
           <div className="title">Backups</div>
-          <div className="backups-view-button"><MdChevronRight /></div>
+          <MdChevronRight />
+        </div>
+
+        <div className="item nav" onClick={() => nav('/about-us')}>
+          <div className="title">About Us</div>
+          <MdChevronRight />
         </div>
 
         <div className="item">
           <div className="title">Reset settings to default</div>
-          <div className="reset-button" onClick={() => { Store.settings.reset() }}>Reset</div>
+          <div className="reset-button" onClick={() => Store.settings.reset()}>Reset</div>
         </div>
       </div>
     </div>
