@@ -3,6 +3,7 @@
 body {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 * {
@@ -38,7 +39,6 @@ body {
     padding: 12px 12px 16px 8px;
     align-items: center;
     height: 60px;
-    user-select: none;
 
     .logo {
       svg {
