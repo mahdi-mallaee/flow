@@ -59,7 +59,7 @@ export const DefaultSettings: Settings = {
   createBackupBeforeSessionDelete: true,
 }
 
-export type MainContentState = "sessions" | 'settings' | 'backups'
+export type Path = "/" | '/settings' | '/backups'
 
 export type Backup = {
   id: string,

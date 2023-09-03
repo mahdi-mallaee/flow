@@ -1,35 +1,38 @@
+import { Routes, Route } from "react-router-dom"
 import BackupsView from "~components/BackupsView"
+import Header from "~components/Header"
 import SessionsContainer from "~components/SessionsContainer"
 import SettignsView from "~components/SettingsView"
 import UnsavedWindowsContainer from "~components/UnsavedWindowsContainer"
-import { type MainContentState } from "~utils/types"
 
-const MainContent = ({ mainContentState, setMainContentState }:
-  { mainContentState: MainContentState, setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
+const MainContent = () => {
 
-  switch (mainContentState) {
-    case 'sessions': {
-      return (
+  return (
+    <Routes>
+      <Route path="/" element={
         <>
+          <Header settingsButtonPath="/settings" />
           <SessionsContainer />
           <UnsavedWindowsContainer />
         </>
-      )
-    }
-    case "settings": {
-      return (
-        <SettignsView setMainContentState={setMainContentState} />
-      )
-    }
-    case "backups": {
-      return (
-        <BackupsView />
-      )
-    }
-    default: {
-      setMainContentState('sessions')
-    }
-  }
+      }>
+      </Route>
+      <Route path="/settings" element={
+        <>
+          <Header settingsButtonPath="/" />
+          <SettignsView />
+        </>
+      }>
+      </Route>
+      <Route path="/backups" element={
+        <>
+          <Header settingsButtonPath="/settings" />
+          <BackupsView />
+        </>
+      }>
+      </Route>
+    </Routes>
+  )
 }
 
 export default MainContent

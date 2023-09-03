@@ -1,6 +1,6 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type WindowState, type MainContentState, type BackupIntervalTime, StoreKeys } from '~utils/types'
+import { Theme, type WindowState, type BackupIntervalTime, StoreKeys } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
@@ -8,9 +8,11 @@ import { MdChevronRight } from 'react-icons/md'
 import runIntervalBakcups from '~actions/runIntervalBackups'
 import Store from '~store'
 import useSettings from '~hooks/useSettings'
+import { useNavigate } from 'react-router-dom'
 
-const SettignsView = ({ setMainContentState }: { setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
+const SettignsView = () => {
   const settings = useSettings()
+  const nav = useNavigate()
 
   const [autoBackupIntervalId] = useStorage({
     key: StoreKeys.autoBackupIntervalId,
@@ -92,7 +94,9 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
             onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
         </div>
 
-        <div className="item backups-nav" onClick={() => setMainContentState('backups')}>
+        <div className="item backups-nav" onClick={() => {
+          nav('/backups')
+        }}>
           <div className="title">Backups</div>
           <div className="backups-view-button"><MdChevronRight /></div>
         </div>
