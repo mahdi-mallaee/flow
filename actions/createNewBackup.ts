@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid"
 import Store from "~store"
-import { type Backup, type BackupStatus } from "~utils/types"
+import { type Backup, type BackupStatus, type Session } from "~utils/types"
 
 type NewBackupInput = {
   status: BackupStatus,
@@ -8,13 +8,14 @@ type NewBackupInput = {
   relatedItem?: {
     title: string,
     type: 'session' | 'backup'
-  }
+  },
+  sessions?: Session[]
 }
 
 const createNewBackup = async (inputs: NewBackupInput) => {
-  let { status, title, relatedItem } = inputs
+  let { status, title, relatedItem, sessions } = inputs
 
-  const sessions = await Store.sessions.getAll()
+  sessions = sessions || await Store.sessions.getAll()
 
   const newBackup: Backup = {
     id: uuidv4(),

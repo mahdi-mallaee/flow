@@ -62,7 +62,8 @@
           }
         }
 
-        .remove-backup {
+        .remove-backup,
+        .download-backup {
           flex-shrink: 0;
           padding: 6px 4px;
           border-radius: 8px;
@@ -83,7 +84,57 @@
       }
     }
 
+    .file-input-container {
+
+      #file-input {
+        display: none;
+      }
+
+      .custom-file-input {
+        cursor: pointer;
+        gap: 8px;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        width: 100%;
+        padding: 0 8px;
+
+        &:hover {
+          background-color: var(--background-hover-color);
+        }
+
+
+        svg {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .new-backup-button {
+      flex-grow: 1;
+      display: flex;
+      padding: 12px 8px;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 12px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        background-color: var(--background-hover-color);
+
+        span {
+          text-decoration: underline;
+        }
+      }
+    }
+
     .get-backup-title-container {
+      flex-grow: 1;
       display: flex;
       padding: 12px;
       align-items: center;
@@ -114,28 +165,6 @@
 
         &:hover {
           background-color: var(--icon-button-hover);
-        }
-      }
-    }
-
-    .new-backup-button {
-      display: flex;
-      padding: 12px 8px;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-size: 12px;
-
-      svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      &:hover {
-        background-color: var(--background-hover-color);
-
-        span {
-          text-decoration: underline;
         }
       }
     }

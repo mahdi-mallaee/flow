@@ -73,7 +73,7 @@ export type Backup = {
   }
 }
 
-export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups'
+export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups' | 'upload'
 
 export enum SessionsKeys {
   basic = 'basicSessions',

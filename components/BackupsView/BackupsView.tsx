@@ -3,10 +3,12 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
 import { useEffect, useState } from "react"
-import { MdAdd, MdClose, MdDelete, MdDone } from "react-icons/md"
+import { MdAdd, MdClose, MdDelete, MdDone, MdDownload, MdUploadFile } from "react-icons/md"
 import createNewBackup from "~actions/createNewBackup"
 import Store from "~store"
 import { AnimatePresence, motion } from "framer-motion"
+import downloadBackupSessions from "~actions/downloadBackupSessions"
+import uploadBackup from "~actions/uploadBackup"
 
 const BackupsView = ({ }) => {
 
@@ -66,6 +68,10 @@ const BackupsView = ({ }) => {
           :
           <div className="new-backup-button" onClick={() => setGetBackupName(true)}><MdAdd /> <span>create new backup</span></div>
         }
+        <div className="file-input-container">
+          <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
+          <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackup(event.target.files[0])} />
+        </div>
         <AnimatePresence>
           {
             backups.map(backup => {
@@ -87,6 +93,7 @@ const BackupsView = ({ }) => {
                         onClick={() => _loadBackup(backup.id)}>
                         {backup.id === loadedBackupId ? 'Loaded !' : 'Load'}
                       </div>
+                      <div className="download-backup" onClick={() => downloadBackupSessions(backup)}><MdDownload /></div>
                       <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>
                     </div>
                   </div>
