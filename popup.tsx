@@ -12,7 +12,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 const IndexPopup = () => {
 
-  const defaultContainerHeight = 350
+  const defaultContainerHeight = 400
   const [containerHeight, setContainerHeight] = useState(defaultContainerHeight)
 
   const [mainViewHeight, setMainViewHeight] = useStorage<number>({

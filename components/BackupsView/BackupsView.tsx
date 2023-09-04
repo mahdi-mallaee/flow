@@ -55,14 +55,17 @@ const BackupsView = ({ }) => {
       <div className="backups-container">
         {getBackupName ?
           <div className="get-backup-title-container">
-            <input autoFocus type="text" value={backupTitleInput} onChange={e => {
+            <input maxLength={25} autoFocus type="text" value={backupTitleInput} onChange={e => {
               setBackupTitleInput(e.target.value)
             }} name="backup-title-input" placeholder={new Date().toLocaleString()} onKeyDown={(e) => {
               if (e.key === "Enter") {
                 _createNewBackup()
               }
             }} />
-            <div className='close-get-title-button' onClick={() => setGetBackupName(false)}><MdClose /></div>
+            <div className='close-get-title-button' onClick={() => {
+              setGetBackupName(false)
+              setBackupTitleInput('')
+            }}><MdClose /></div>
             <div className='confirm-title-button' onClick={() => _createNewBackup()}><MdDone /></div>
           </div>
           :

@@ -103,7 +103,7 @@ const SessionsContainer = () => {
         <div className="sessions">
           {gettingSessionName ?
             <div className="get-session-title-container">
-              <input autoFocus type="text" value={sessionTitleInput} onChange={e => {
+              <input maxLength={25} autoFocus type="text" value={sessionTitleInput} onChange={e => {
                 setSessionTitleInput(e.target.value)
               }} name="session-title-input" placeholder={new Date().toLocaleString()} onKeyDown={(e) => {
                 if (e.key === "Enter") {

@@ -11,7 +11,7 @@ const downloadBackupSessions = async (backup: Backup) => {
 
   await chrome.downloads.download({
     url: url,
-    filename: title
+    filename: title + '.json'
   })
 }
 

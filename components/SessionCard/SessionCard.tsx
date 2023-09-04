@@ -49,7 +49,7 @@ const SessionCard = (
     }
     return (
       <div className="edit-session-title-container">
-        <input autoFocus onKeyDown={(e) => {
+        <input autoFocus maxLength={25} onKeyDown={(e) => {
           if (e.key === "Enter") {
             _editSession()
           }
