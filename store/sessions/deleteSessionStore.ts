@@ -1,8 +1,8 @@
 import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type SessionTabsStore } from "~utils/types"
-import refreshSessionsStatus from "./refreshSessionsStatus"
+import refreshSessionsStatusStore from "./refreshSessionsStatusStore"
 
-const deleteSession = async (sessionId: string) => {
+const deleteSessionStore = async (sessionId: string) => {
   const store = new Storage({ area: 'local' })
   let basics: BasicSession[] = await store.get(SessionsKeys.basic) || []
   let opens: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
@@ -26,7 +26,7 @@ const deleteSession = async (sessionId: string) => {
   await store.set(SessionsKeys.basic, basics)
   await store.set(SessionsKeys.open, opens)
   await store.set(SessionsKeys.tab, sessionsTabs)
-  await refreshSessionsStatus()
+  await refreshSessionsStatusStore()
 }
 
-export default deleteSession
+export default deleteSessionStore

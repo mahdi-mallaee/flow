@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage";
 import { StoreKeys, type Settings, type Theme, DefaultSettings } from "~utils/types";
 
-const setTheme = async (theme: Theme) => {
+const setThemeStore = async (theme: Theme) => {
   const store = new Storage({ area: "local" })
   const settings: Settings = await store.get(StoreKeys.settings) || DefaultSettings
   const newSettings: Settings = { ...settings, theme }
@@ -10,4 +10,4 @@ const setTheme = async (theme: Theme) => {
   await store.set(StoreKeys.settings, newSettings)
 }
 
-export default setTheme
+export default setThemeStore

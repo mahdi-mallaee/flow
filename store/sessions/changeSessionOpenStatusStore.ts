@@ -1,8 +1,8 @@
 import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type SessionOpenStatus } from "~utils/types"
-import refreshSessionsStatus from "./refreshSessionsStatus"
+import refreshSessionsStatusStore from "./refreshSessionsStatusStore"
 
-const changeSessionOpenStatus = async (sessionId: string, isOpen: boolean) => {
+const changeSessionOpenStatusStore = async (sessionId: string, isOpen: boolean) => {
   const store = new Storage({ area: "local" })
   let opens: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
 
@@ -11,7 +11,7 @@ const changeSessionOpenStatus = async (sessionId: string, isOpen: boolean) => {
     opens[openSessionIndex].isOpen = isOpen
   }
   await store.set(SessionsKeys.open, opens)
-  await refreshSessionsStatus()
+  await refreshSessionsStatusStore()
 }
 
-export default changeSessionOpenStatus
+export default changeSessionOpenStatusStore

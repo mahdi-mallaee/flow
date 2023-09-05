@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type SessionTabsStore, type Tab } from "~utils/types"
 
-const getSessionTabs = async (sessionId: string): Promise<Tab[]> => {
+const getSessionTabsStore = async (sessionId: string): Promise<Tab[]> => {
   const store = new Storage({ area: 'local' })
   const sessionsTabs: SessionTabsStore[] = await store.get(SessionsKeys.tab) || []
   const index = sessionsTabs.findIndex(st => st.sessionId === sessionId)
@@ -13,4 +13,4 @@ const getSessionTabs = async (sessionId: string): Promise<Tab[]> => {
   return tabs
 }
 
-export default getSessionTabs
+export default getSessionTabsStore

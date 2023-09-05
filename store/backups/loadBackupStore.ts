@@ -3,7 +3,7 @@ import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import Store from "~store"
 import { StoreKeys, type Backup } from "~utils/types"
 
-const loadBackup = async (id: string) => {
+const loadBackupStore = async (id: string) => {
   const store = new Storage({ area: 'local' })
   let backups: Backup[] = await store.get(StoreKeys.backups) || []
   const index = backups.findIndex(b => b.id === id)
@@ -20,4 +20,4 @@ const loadBackup = async (id: string) => {
   }
 }
 
-export default loadBackup
+export default loadBackupStore

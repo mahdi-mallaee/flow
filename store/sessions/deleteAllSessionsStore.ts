@@ -2,7 +2,7 @@ import { Storage } from "@plasmohq/storage"
 import Store from "~store"
 import { SessionsKeys } from "~utils/types"
 
-const deleteAllSessions = async () => {
+const deleteAllSessionsStore = async () => {
   const store = new Storage({ area: 'local' })
   await store.set(SessionsKeys.basic, [])
   await store.set(SessionsKeys.open, [])
@@ -10,4 +10,4 @@ const deleteAllSessions = async () => {
   await Store.sessions.refreshStatus()
 }
 
-export default deleteAllSessions
+export default deleteAllSessionsStore

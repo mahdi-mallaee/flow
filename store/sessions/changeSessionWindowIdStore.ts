@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type SessionOpenStatus } from "~utils/types"
 
-const changeSessionWindowId = async (sessionId: string, windowId: number) => {
+const changeSessionWindowIdStore = async (sessionId: string, windowId: number) => {
   const store = new Storage({ area: 'local' })
   const sessionsOpenStatus: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
   const index = sessionsOpenStatus.findIndex(session => session.sessionId === sessionId)
@@ -11,4 +11,4 @@ const changeSessionWindowId = async (sessionId: string, windowId: number) => {
   }
 }
 
-export default changeSessionWindowId
+export default changeSessionWindowIdStore

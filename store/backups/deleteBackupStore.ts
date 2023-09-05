@@ -1,13 +1,14 @@
 import { Storage } from "@plasmohq/storage"
 import { StoreKeys, type Backup } from "~utils/types"
 
-const createNewBackup = async (backup: Backup) => {
+const deleteBackupStore = async (id: string) => {
   const store = new Storage({ area: 'local' })
   let backups: Backup[] = await store.get(StoreKeys.backups) || []
-  if (backup) {
-    backups = [backup, ...backups]
+  const index = backups.findIndex(b => b.id === id)
+  if (index >= 0) {
+    backups.splice(index, 1)
     await store.set(StoreKeys.backups, backups)
   }
 }
 
-export default createNewBackup
+export default deleteBackupStore
