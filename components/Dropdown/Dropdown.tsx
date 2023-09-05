@@ -12,7 +12,10 @@ const Dropdown = ({ options, value, onChange }: { options: Option[], value: stri
   const [isActive, setIsActive] = useState(false)
   const maxWidth = Math.max(...options.map(option => option.label.length)) + 5
   const dropdownWidth = { width: maxWidth + 'ch' }
-  const selectedOption = options.find(option => option.value === value)
+  let selectedOption = options.find(option => option.value === value)
+  if (!selectedOption) {
+    selectedOption = options[0]
+  }
   return (
     <>
       <div className="dropdown" style={dropdownWidth} onClick={() => { setIsActive(!isActive) }}>

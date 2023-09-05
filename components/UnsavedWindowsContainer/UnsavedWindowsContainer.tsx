@@ -3,12 +3,13 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
 import createNewSession from "~actions/createNewSession"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import { StoreKeys, type Session, type UnsavedWindow } from "~utils/types"
+import { StoreKeys, type UnsavedWindow } from "~utils/types"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import refreshOpenSessions from "~actions/refreshOpenSessions"
 
-const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[], setSessions: Function }) => {
+const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
     key: StoreKeys.unsavedWindows,
     instance: new Storage({
@@ -21,9 +22,9 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
-    const newSession = await createNewSession(window.id)
-    await setSessions(current => { return [newSession, ...current] })
-    refreshUnsavedWindows([newSession, ...sessions])
+    await createNewSession(window.id)
+    refreshUnsavedWindows()
+    refreshOpenSessions()
   }
 
   const setCurrentWindow = async () => {
@@ -52,27 +53,29 @@ const UnsavedWindowsContainer = ({ sessions, setSessions }: { sessions: Session[
           <div className="view-title unsaved-windows-title">Unsaved Windows</div>
 
           <div className="unsaved-windows">
-            {unsavedWindows.map(window => {
-              return (
-                <motion.div
-                  key={window.id}
-                  initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ overflow: 'hidden' }}>
-                  <div key={window.id} className={'unsaved-window' + ' ' + (window.id === currentWindowId && 'current')}>
-                    <div className="title">
-                      <span className="tabs-count">{window.tabsCount}</span>
-                      Unsaved Window ( {window.id} )
+            <AnimatePresence>
+              {unsavedWindows.map(window => {
+                return (
+                  <motion.div
+                    key={window.id}
+                    initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ overflow: 'hidden' }}>
+                    <div key={window.id} className={'unsaved-window' + ' ' + (window.id === currentWindowId && 'current')}>
+                      <div className="title">
+                        <span className="tabs-count">{window.tabsCount}</span>
+                        Unsaved Window ( {window.id} )
+                      </div>
+                      <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>
+                        Add<MdAdd />
+                      </div>
                     </div>
-                    <div className='add-as-session-button' onClick={() => { addAsSessionButtonClickHandler(window) }}>
-                      Add<MdAdd />
-                    </div>
-                  </div>
-                </motion.div>
-              )
-            })}
+                  </motion.div>
+                )
+              })}
+            </AnimatePresence>
           </div>
         </motion.div>
       }

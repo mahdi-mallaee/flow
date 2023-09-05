@@ -1,19 +1,18 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type Settings, DefaultSettings, type WindowState, type MainContentState, type BackupIntervalTime, StoreKeys } from '~utils/types'
+import { Theme, type WindowState, type BackupIntervalTime, StoreKeys } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight } from 'react-icons/md'
 import runIntervalBakcups from '~actions/runIntervalBackups'
+import Store from '~store'
+import useSettings from '~hooks/useSettings'
+import { useNavigate } from 'react-router-dom'
 
-const SettignsView = ({ setMainContentState }: { setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
-  const [settings, setSettings] = useStorage<Settings>({
-    key: StoreKeys.settings,
-    instance: new Storage({
-      area: "local"
-    })
-  }, DefaultSettings)
+const SettignsView = () => {
+  const settings = useSettings()
+  const nav = useNavigate()
 
   const [autoBackupIntervalId] = useStorage({
     key: StoreKeys.autoBackupIntervalId,
@@ -45,102 +44,67 @@ const SettignsView = ({ setMainContentState }: { setMainContentState: React.Disp
 
   return (
     <div className="settings-view">
-      <div className='view-title settings-title'>Settings</div>
+      <div className='view-title'>Settings</div>
       <div className="items-container">
 
         <div className="item">
           <div className="title">Theme</div>
-          <Dropdown value={settings.theme} options={themeOptions}
-            onChange={((option: Theme) => {
-              setSettings(current => {
-                return ({ ...current, theme: option })
-              })
-            })} />
+          <Dropdown
+            value={settings.theme}
+            options={themeOptions}
+            onChange={((option: Theme) => Store.settings.setTheme(option))} />
         </div>
 
         <div className="item">
           <div className="title">Window size</div>
-          <div className="new-window-state">
-            <Dropdown
-              value={settings.newSessionWindowState}
-              options={newSessionWindowStateDropdownOptions}
-              onChange={(option: WindowState) => {
-                setSettings(current => {
-                  return ({ ...current, newSessionWindowState: option })
-                })
-              }}
-            />
-          </div>
+          <Dropdown
+            value={settings.newSessionWindowState}
+            options={newSessionWindowStateDropdownOptions}
+            onChange={(option: WindowState) => Store.settings.setWindowState(option)} />
         </div>
 
         <div className="item">
           <div className="title">Automatic backups interval</div>
-          <div className="auto-backups-interval">
-            <Dropdown
-              value={settings.autoBackupsInterval}
-              options={autoBackupsIntervalDropdownOptions}
-              onChange={(option: BackupIntervalTime) => {
-                setSettings(current => {
-                  return ({ ...current, autoBackupsInterval: option })
-                }).then(() => {
+          <Dropdown
+            value={settings.autoBackupsInterval}
+            options={autoBackupsIntervalDropdownOptions}
+            onChange={(option: BackupIntervalTime) => {
+              Store.settings.backups.setInterval(option)
+                .then(() => {
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
                     runIntervalBakcups()
                   }
                 })
-              }}
-            />
-          </div>
+            }}
+          />
         </div>
 
         <div className="item">
           <div className="title">Creating window for new sessions</div>
-          <div className="create-window-for-new-session">
-            <ToggleSwitch checked={settings.createWindowForNewSession}
-              onChange={(checked) => { setSettings(current => { return ({ ...current, createWindowForNewSession: checked }) }) }} />
-          </div>
-        </div>
-
-        <div className="item">
-          <div className="title">Opening a blank window on startup</div>
-          <div className="create-window-for-new-session">
-            <ToggleSwitch checked={settings.openingBlankWindowOnStratup}
-              onChange={(checked) => {
-                setSettings(current => { return ({ ...current, openingBlankWindowOnStratup: checked }) })
-              }} />
-          </div>
+          <ToggleSwitch checked={settings.createWindowForNewSession}
+            onChange={(checked) => Store.settings.setCreateWindowForNewSession(checked)} />
         </div>
 
         <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
-          <div>
-            <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-              onChange={(checked) => {
-                setSettings(current => { return ({ ...current, createBackupBeforeSessionDelete: checked }) })
-              }} />
-          </div>
+          <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
+            onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
         </div>
 
-        <div className="item">
-          <div className="title">Create a new backup before loading a backup</div>
-          <div>
-            <ToggleSwitch checked={settings.createBackupBeforeLoad}
-              onChange={(checked) => {
-                setSettings(current => { return ({ ...current, createBackupBeforeLoad: checked }) })
-              }} />
-          </div>
-        </div>
-
-        <div className="item backups-nav" onClick={() => setMainContentState('backups')}>
+        <div className="item nav" onClick={() => nav('/backups')}>
           <div className="title">Backups</div>
-          <div className="backups-view-button"><MdChevronRight /></div>
+          <MdChevronRight />
+        </div>
+
+        <div className="item nav" onClick={() => nav('/about-us')}>
+          <div className="title">About Us</div>
+          <MdChevronRight />
         </div>
 
         <div className="item">
           <div className="title">Reset settings to default</div>
-          <div className="reset-button" onClick={() => { setSettings(DefaultSettings) }}>
-            Reset
-          </div>
+          <div className="reset-button" onClick={() => Store.settings.reset()}>Reset</div>
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ const getTabsByWindowId = async (windowId: number): Promise<Tab[]> => {
       index: tab.index
     }
   })
-  return tabs
+  return tabs || []
 }
 
 export default getTabsByWindowId

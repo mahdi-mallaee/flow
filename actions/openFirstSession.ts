@@ -1,69 +1,63 @@
-import { Storage } from "@plasmohq/storage"
 import openSession from "~actions/openSession"
-import { StoreKeys, type Session, type Settings } from "~utils/types"
+import { type Session } from "~utils/types"
 import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import refreshLastClosedWindow from "./refreshLastClosedWindow"
 import refreshOpenSessions from "./refreshOpenSessions"
+import Store from "~store"
+import getTabsByWindowId from "./getTabsByWindowId"
 
 const openFirstSession = async () => {
-  const store = new Storage({ area: 'local' })
-  const sessions: Session[] = await store.get(StoreKeys.sessions)
-  const settings: Settings = await store.get(StoreKeys.settings)
-
-  if (settings.openingBlankWindowOnStratup) {
-    const windows = await chrome.windows.getAll()
-    await chrome.windows.create({ state: settings.newSessionWindowState })
-    await chrome.windows.remove(windows[0].id)
-    return
-  }
-
+  const sessions: Session[] = await Store.sessions.getAll()
   const mainSession: Session = sessions.find(session => session.main === true)
-  const lastClosedWindowId: number = await store.get(StoreKeys.lastClosedWindowId)
+  const lastClosedWindowId = await Store.lastClosedWindow.getId()
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
 
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      const newSessions = sessions.map(session => {
-        if (session.windowId === lastSession.windowId) {
-          session.windowId = windows[0].id
-        }
-        return session
-      })
-      await store.set(StoreKeys.sessions, newSessions)
-      refreshLastClosedWindow()
-      refreshUnsavedWindows(newSessions)
-      refreshOpenSessions(newSessions)
+      const windowTabs = await getTabsByWindowId(windows[0].id)
+      if (windowTabs.length === mainSession.tabs.length && windowTabs[0].url === mainSession.tabs[0].url) {
+        await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
+        refresh()
+      } else {
+        await openMainSession(mainSession)
+      }
+    } else {
+      refresh()
     }
   } else if (mainSession) {
-    const newSessions = await openSession(sessions, mainSession.id, true)
-    await store.set(StoreKeys.sessions, newSessions)
-    const windows = await chrome.windows.getAll()
-    windows.forEach(window => {
-      if (window.id !== mainSession.windowId) {
-        chrome.windows.remove(window.id)
-          .then(() => {
-            refreshUnsavedWindows(newSessions)
-            refreshLastClosedWindow()
-            refreshOpenSessions(newSessions)
-          })
-      }
-    })
+    await openMainSession(mainSession)
   } else if (lastSession) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      const newSessions = sessions.map(session => {
-        if (session.windowId === lastSession.windowId) {
-          session.windowId = windows[0].id
-        }
-        return session
-      })
-      await store.set(StoreKeys.sessions, newSessions)
-      refreshLastClosedWindow()
-      refreshUnsavedWindows(newSessions)
-      refreshOpenSessions(newSessions)
+      const windowTabs = await getTabsByWindowId(windows[0].id)
+      if (windowTabs.length === lastSession.tabs.length && windowTabs[0].url === lastSession.tabs[0].url) {
+        await Store.sessions.changeWindowId(lastSession.id, windows[0].id)
+      }
+      refresh()
+    } else {
+      refresh()
+    }
+  } else {
+    refresh()
+  }
+}
+
+const refresh = async () => {
+  await refreshLastClosedWindow()
+  await refreshOpenSessions()
+  await refreshUnsavedWindows()
+}
+
+const openMainSession = async (mainSession: Session) => {
+  const newWindowId = await openSession(mainSession.id)
+  const windows = await chrome.windows.getAll()
+  for (const window of windows) {
+    if (window.id !== newWindowId) {
+      await chrome.windows.remove(window.id)
     }
   }
+  refresh()
 }
 
 export default openFirstSession

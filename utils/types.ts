@@ -1,11 +1,24 @@
-export type Session = {
-  id: string,
+export interface Session extends BasicSession {
   windowId: number,
   tabs: Tab[],
+  isOpen: boolean,
+}
+
+export interface BasicSession {
+  id: string,
   title: string,
   main: boolean,
-  isOpen: boolean,
   colorCode: number
+}
+
+export interface SessionOpenStatus {
+  isOpen: boolean,
+  sessionId: string,
+  windowId: number
+}
+export interface SessionTabsStore {
+  tabs: Tab[],
+  sessionId: string
 }
 
 export type Tab = {
@@ -17,7 +30,6 @@ export type Tab = {
 }
 
 export type AlertMessage = {
-  show: boolean,
   text: string,
   type: 'error' | 'warning' | 'info'
 }
@@ -26,9 +38,7 @@ export type Settings = {
   theme: Theme,
   newSessionWindowState: WindowState,
   createWindowForNewSession: boolean,
-  openingBlankWindowOnStratup: boolean,
   autoBackupsInterval: BackupIntervalTime,
-  createBackupBeforeLoad: boolean,
   createBackupBeforeSessionDelete: boolean,
 }
 
@@ -42,16 +52,14 @@ export enum Theme {
 }
 
 export const DefaultSettings: Settings = {
-  theme: Theme.light,
+  theme: Theme.osDefault,
   createWindowForNewSession: true,
   newSessionWindowState: "normal",
-  openingBlankWindowOnStratup: false,
   autoBackupsInterval: '30',
-  createBackupBeforeLoad: false,
   createBackupBeforeSessionDelete: true,
 }
 
-export type MainContentState = "sessions" | 'settings' | 'backups'
+export type Path = "/" | '/settings' | '/backups'
 
 export type Backup = {
   id: string,
@@ -65,10 +73,16 @@ export type Backup = {
   }
 }
 
-export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups'
+export type BackupStatus = 'manual' | 'before loading backup' | 'before deleting session' | 'interval backups' | 'upload'
+
+export enum SessionsKeys {
+  basic = 'basicSessions',
+  open = 'openSessions',
+  tab = 'sessionsTabs'
+}
 
 export enum StoreKeys {
-  sessions = 'sessions',
+  sessionsStatusId = 'sessionsStatusId',
   settings = 'settings',
   unsavedWindows = 'unsavedWindows',
   backups = 'backups',
@@ -81,4 +95,9 @@ export enum StoreKeys {
 export type UnsavedWindow = {
   id: number,
   tabsCount: number
+}
+
+export type OpenedTab = {
+  id: number,
+  discarded: boolean
 }

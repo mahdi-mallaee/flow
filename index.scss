@@ -3,6 +3,7 @@
 body {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 * {
@@ -13,7 +14,7 @@ body {
 
 
 ::-webkit-scrollbar {
-  background-color: transparent;
+  background-color: var(--surface-color);
   width: 6px;
   border-radius: 8px;
 }
@@ -25,7 +26,6 @@ body {
 
 .main-view {
   width: 320px;
-  min-height: 360px;
   font-family: "Lexend";
   display: flex;
   flex-direction: column;
@@ -38,7 +38,6 @@ body {
     padding: 12px 12px 16px 8px;
     align-items: center;
     height: 60px;
-    user-select: none;
 
     .logo {
       svg {
@@ -73,7 +72,7 @@ body {
 
   .height-container {
     max-height: 530px;
-    min-height: 300px;
+    min-height: 360px;
     resize: vertical;
     overflow: auto;
     display: flex;

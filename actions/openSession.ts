@@ -1,26 +1,31 @@
 import createNewWindow from "./createNewWindow";
-import { StoreKeys, type Session } from "~utils/types";
+import { type OpenedTab, type Tab } from "~utils/types";
 import getTabsByWindowId from "./getTabsByWindowId";
-import { Storage } from '@plasmohq/storage'
+import Store from "~store";
+import refreshUnsavedWindows from "./refreshUnsavedWindows";
 
-const openSession = async (sessions: Session[], sessionId: string, removeHistory?: boolean): Promise<Session[]> => {
-  const store = new Storage({ area: 'local' })
+const openSession = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
-  const session = sessions.find(s => { return s.id === sessionId })
-  const newWindowId = await createNewWindow(session.tabs.map(t => { return t.url }))
-  const tabs = await getTabsByWindowId(newWindowId)
-  const openedTabs = []
+
+  let tabs: Tab[] = await Store.sessions.getTabs(sessionId)
+  const newWindowId = await createNewWindow(tabs.map(t => { return t.url }))
+  tabs = await getTabsByWindowId(newWindowId)
+
+  await Store.sessions.saveTabs(sessionId, tabs)
+  await Store.sessions.changeOpenStatus(sessionId, true)
+  await Store.sessions.changeWindowId(sessionId, newWindowId)
+
+  const openedTabs: OpenedTab[] = []
   tabs.forEach((tab, i) => {
     if (i < tabs.length - 1) {
       openedTabs.push({ id: tab.id, discarded: false })
     }
   })
+  Store.openedTabs.set(openedTabs)
 
-  store.set(StoreKeys.openedTabs, openedTabs)
-
+  //TODO: extraction part below to new action (createSessionGroups)
   const groups = {}
-
-  session.tabs.forEach(tab => {
+  tabs.forEach(tab => {
     const key = tab.groupId.toString()
     if (tab.groupId > 0) {
       if (groups[key]) {
@@ -35,28 +40,14 @@ const openSession = async (sessions: Session[], sessionId: string, removeHistory
     const tabIds: number[] = groups[group]
     chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
       .then(() => {
-        if (removeHistory) {
-          chrome.history.deleteRange({ startTime, endTime: Date.now() })
-        }
+        chrome.history.deleteRange({ startTime, endTime: Date.now() })
       })
   })
+  //TODO: end
 
-  const newSessions = sessions.map(s => {
-    if (s.id === sessionId) {
-      s.windowId = newWindowId
-      s.tabs = tabs
-      s.isOpen = true
-    }
-    return s
-  })
+  refreshUnsavedWindows()
 
-  store.set(StoreKeys.sessions, newSessions)
-
-  if (removeHistory) {
-    chrome.history.deleteRange({ startTime, endTime: Date.now() })
-  }
-
-  return newSessions
+  return newWindowId
 }
 
 export default openSession

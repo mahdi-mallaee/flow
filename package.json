@@ -1,6 +1,6 @@
 {
-  "name": "future-pass",
-  "displayName": "Future Pass",
+  "name": "future-tabs",
+  "displayName": "Future Tabs",
   "version": "0.0.1",
   "description": "New way to manage chrome tabs.",
   "author": "Mahdi",
@@ -17,6 +17,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-router-dom": "^6.15.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -35,7 +36,8 @@
     "permissions": [
       "storage",
       "tabs",
-      "history"
+      "history",
+      "downloads"
     ]
   }
 }

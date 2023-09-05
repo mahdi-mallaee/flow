@@ -1,15 +1,12 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys } from "~utils/types"
+import Store from "~store"
 
 const refreshLastClosedWindow = async () => {
-  const store = new Storage({ area: 'local' })
-
   const windows = await chrome.windows.getAll()
   if (windows) {
     if (windows.length === 1) {
-      store.set(StoreKeys.lastClosedWindowId, windows[0].id)
+      await Store.lastClosedWindow.setId(windows[0].id)
     } else {
-      store.remove(StoreKeys.lastClosedWindowId)
+      await Store.lastClosedWindow.setId(-1)
     }
   }
 }

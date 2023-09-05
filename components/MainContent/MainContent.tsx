@@ -1,49 +1,44 @@
-import { Storage } from "@plasmohq/storage"
-import { useStorage } from "@plasmohq/storage/hook"
+import { Routes, Route } from "react-router-dom"
+import AboutUsView from "~components/AboutUsView"
 import BackupsView from "~components/BackupsView"
+import Header from "~components/Header"
 import SessionsContainer from "~components/SessionsContainer"
 import SettignsView from "~components/SettingsView"
 import UnsavedWindowsContainer from "~components/UnsavedWindowsContainer"
-import { DefaultSettings, StoreKeys, type MainContentState, type Session, type Settings } from "~utils/types"
 
-const MainContent = ({ mainContentState, setMainContentState }:
-  { mainContentState: MainContentState, setMainContentState: React.Dispatch<React.SetStateAction<MainContentState>> }) => {
-  const [sessions, setSessions] = useStorage<Session[]>({
-    key: StoreKeys.sessions,
-    instance: new Storage({
-      area: "local"
-    })
-  }, [])
-  const [settings] = useStorage<Settings>({
-    key: StoreKeys.settings,
-    instance: new Storage({
-      area: "local"
-    })
-  }, DefaultSettings)
+const MainContent = () => {
 
-  switch (mainContentState) {
-    case 'sessions': {
-      return (
-        <>
-          <SessionsContainer sessions={sessions} setSessions={setSessions} settings={settings} />
-          <UnsavedWindowsContainer sessions={sessions} setSessions={setSessions} />
-        </>
-      )
-    }
-    case "settings": {
-      return (
-        <SettignsView setMainContentState={setMainContentState} />
-      )
-    }
-    case "backups": {
-      return (
+  return (
+    <Routes>
+
+      <Route path="/" element={<>
+        <Header settingsButtonPath="/settings" />
+        <SessionsContainer />
+        <UnsavedWindowsContainer />
+      </>} />
+
+      <Route path="/settings" element={<>
+        <Header settingsButtonPath="/" />
+        <SettignsView />
+      </>} />
+
+      <Route path="/backups" element={<>
+        <Header settingsButtonPath="/settings" />
         <BackupsView />
-      )
-    }
-    default: {
-      setMainContentState('sessions')
-    }
-  }
+      </>} />
+
+      <Route path="/backups" element={<>
+        <Header settingsButtonPath="/settings" />
+        <BackupsView />
+      </>} />
+
+      <Route path="/about-us" element={<>
+        <Header settingsButtonPath="/settings" />
+        <AboutUsView />
+      </>} />
+
+    </Routes>
+  )
 }
 
 export default MainContent
