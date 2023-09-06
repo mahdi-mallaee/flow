@@ -51,14 +51,6 @@ export enum Theme {
   osDefault = 'os-default'
 }
 
-export const DefaultSettings: Settings = {
-  theme: Theme.osDefault,
-  createWindowForNewSession: true,
-  newSessionWindowState: "normal",
-  autoBackupsInterval: '30',
-  createBackupBeforeSessionDelete: true,
-}
-
 export type Path = "/" | '/settings' | '/backups'
 
 export type Backup = {

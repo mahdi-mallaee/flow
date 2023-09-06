@@ -25,7 +25,7 @@ const setAllSessionsStore = async (sessions: Session[]) => {
     }
   })
 
-  const openSessions: SessionOpenStatus[] = sessions.map(s => {
+  const sessionsOpenStatus: SessionOpenStatus[] = sessions.map(s => {
     return {
       sessionId: s.id,
       isOpen: s.isOpen,
@@ -34,7 +34,7 @@ const setAllSessionsStore = async (sessions: Session[]) => {
   })
 
   await store.set(SessionsKeys.basic, basicSessions)
-  await store.set(SessionsKeys.open, openSessions)
+  await store.set(SessionsKeys.open, sessionsOpenStatus)
   await store.set(SessionsKeys.tab, sessionsTabs)
   await refreshSessionsStatusStore()
 }

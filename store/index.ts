@@ -7,12 +7,11 @@ import refreshSessionsStatusStore from "./sessions/refreshSessionsStatusStore"
 import deleteSessionStore from "./sessions/deleteSessionStore"
 import changeSessionWindowIdStore from "./sessions/changeSessionWindowIdStore"
 import getSessionTabsStore from "./sessions/getSessionTabsStore"
-import deleteAllSessionsStore from "./sessions/deleteAllSessionsStore"
 import setThemeStore from "./settings/setThemeStore"
 import getAllSettingsStore from "./settings/getAllSettingsStore"
 import resetAllSettingsStore from "./settings/resetAllSettingsStore"
 import setWindowStateStore from "./settings/setWindowStateStore"
-import setCreateWindowForNewSessionStore.ts from "./settings/setCreateWindowForNewSessionStore"
+import setCreateWindowForNewSessionStore from "./settings/setCreateWindowForNewSessionStore"
 import setCreateBackupBeforeSessionDeleteStore from "./settings/setBackupCreationBeforeSessionDeleteStore"
 import setBackupIntervalStore from "./settings/setBackupIntervalStore"
 import setOpenedTabsStore from "./openedTabs/setOpenedTabsStore"
@@ -38,7 +37,6 @@ const Store = {
     async refreshStatus() { await refreshSessionsStatusStore() },
     async delete(sessionId: string) { await deleteSessionStore(sessionId) },
     async changeWindowId(sessionId: string, windowId: number) { await changeSessionWindowIdStore(sessionId, windowId) },
-    async deleteAll() { await deleteAllSessionsStore() },
     async setAsMain(sessionId: string) { await setSessionAsMainStore(sessionId) },
     async editTitle(sessionId: string, title: string) { await editSessionTitleStore(sessionId, title) },
     async setAll(sessions: Session[]) { await setAllSessionsStore(sessions) },
@@ -49,7 +47,7 @@ const Store = {
     async getAll(): Promise<Settings> { return await getAllSettingsStore() },
     async reset() { await resetAllSettingsStore() },
     async setWindowState(windowState: WindowState) { await setWindowStateStore(windowState) },
-    async setCreateWindowForNewSession(createWindow: boolean) { await setCreateWindowForNewSessionStore.ts(createWindow) },
+    async setCreateWindowForNewSession(createWindow: boolean) { await setCreateWindowForNewSessionStore(createWindow) },
     backups: {
       async setInterval(interval: BackupIntervalTime) { await setBackupIntervalStore(interval) },
       async setCreateBeforeSessionDelete(createBackup: boolean) { await setCreateBackupBeforeSessionDeleteStore(createBackup) },

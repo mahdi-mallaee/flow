@@ -1,9 +1,10 @@
 import AlertMessageView from "~components/AlertMessage/AlertMessage"
 import { useState, useEffect } from 'react'
 import type { AlertMessage } from "~utils/types"
+import { ALERT_MESSAGE_DURATION_MS } from "~utils/constants"
 
 const useAlertMessage = () => {
-  const ALERT_MESSAGE_DURATION = 3000
+  
   const defaultMessage: AlertMessage = {
     text: '',
     type: "info"
@@ -17,7 +18,7 @@ const useAlertMessage = () => {
     if (show) {
       setTimeout(() => {
         setMessage(defaultMessage)
-      }, ALERT_MESSAGE_DURATION)
+      }, ALERT_MESSAGE_DURATION_MS)
     }
   }, [show])
 

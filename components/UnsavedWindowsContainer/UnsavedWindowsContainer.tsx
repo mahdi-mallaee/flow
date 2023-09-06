@@ -8,6 +8,7 @@ import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import refreshOpenSessions from "~actions/refreshOpenSessions"
+import { WINDOWID_NONE } from "~utils/constants"
 
 const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
@@ -17,7 +18,7 @@ const UnsavedWindowsContainer = () => {
     })
   }, [])
 
-  const [currentWindowId, setCurrentWindowId] = useState(-1)
+  const [currentWindowId, setCurrentWindowId] = useState(WINDOWID_NONE)
 
   const [initialAnimation, setInitialAnimation] = useState(false)
 

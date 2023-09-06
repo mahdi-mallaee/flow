@@ -12,6 +12,7 @@ import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
 import useAlertMessage from "~hooks/useAlertMessage"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
+import { INPUT_MAX_LENGTH } from "~utils/constants"
 
 const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -103,7 +104,7 @@ const SessionsContainer = () => {
         <div className="sessions">
           {gettingSessionName ?
             <div className="get-session-title-container">
-              <input maxLength={25} autoFocus type="text" value={sessionTitleInput} onChange={e => {
+              <input maxLength={INPUT_MAX_LENGTH} autoFocus type="text" value={sessionTitleInput} onChange={e => {
                 setSessionTitleInput(e.target.value)
               }} name="session-title-input" placeholder={new Date().toLocaleString()} onKeyDown={(e) => {
                 if (e.key === "Enter") {

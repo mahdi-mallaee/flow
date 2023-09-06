@@ -4,6 +4,7 @@ import createNewWindow from "./createNewWindow";
 import getTabsByWindowId from "./getTabsByWindowId";
 import Store from "~store";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
+import { WINDOWID_NONE } from "~utils/constants";
 
 const createNewSession = async (windowId?: number, urls?: string[], title?: string): Promise<Session> => {
   const settings = await Store.settings.getAll()
@@ -17,7 +18,7 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
       windowId = await createNewWindow(urls || [])
       isSessionOpen = true
     } else {
-      windowId = -1
+      windowId = WINDOWID_NONE
     }
   }
   const tabs = await getTabsByWindowId(windowId)

@@ -9,6 +9,7 @@ import Store from "~store"
 import { AnimatePresence, motion } from "framer-motion"
 import downloadBackupSessions from "~actions/downloadBackupSessions"
 import uploadBackup from "~actions/uploadBackup"
+import { INPUT_MAX_LENGTH } from "~utils/constants"
 
 const BackupsView = ({ }) => {
 
@@ -55,7 +56,7 @@ const BackupsView = ({ }) => {
       <div className="backups-container">
         {getBackupName ?
           <div className="get-backup-title-container">
-            <input maxLength={25} autoFocus type="text" value={backupTitleInput} onChange={e => {
+            <input maxLength={INPUT_MAX_LENGTH} autoFocus type="text" value={backupTitleInput} onChange={e => {
               setBackupTitleInput(e.target.value)
             }} name="backup-title-input" placeholder={new Date().toLocaleString()} onKeyDown={(e) => {
               if (e.key === "Enter") {

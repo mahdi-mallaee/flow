@@ -1,6 +1,7 @@
 import { Storage } from "@plasmohq/storage"
 import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import Store from "~store"
+import { WINDOWID_NONE } from "~utils/constants"
 import { StoreKeys, type Backup } from "~utils/types"
 
 const loadBackupStore = async (id: string) => {
@@ -13,7 +14,7 @@ const loadBackupStore = async (id: string) => {
 
     backup.sessions.forEach(session => {
       session.isOpen = false
-      session.windowId = -1
+      session.windowId = WINDOWID_NONE
     })
     await Store.sessions.setAll(backup.sessions)
     await refreshUnsavedWindows()

@@ -1,5 +1,6 @@
 import { type UnsavedWindow, type SessionOpenStatus } from "~utils/types"
 import Store from "~store"
+import { WINDOWID_NONE } from "~utils/constants"
 
 const refreshUnsavedWindows = async (onlyGet = false): Promise<UnsavedWindow[]> => {
   const sessions: SessionOpenStatus[] = await Store.sessions.getAllOpenStatus()
@@ -7,11 +8,11 @@ const refreshUnsavedWindows = async (onlyGet = false): Promise<UnsavedWindow[]> 
   const windows = await chrome.windows.getAll()
 
   for (const window of windows) {
-    let index = -1
+    let index = WINDOWID_NONE
     if (sessions) {
       index = sessions.findIndex(session => { return session.windowId === window.id })
     }
-    if (index === -1) {
+    if (index === WINDOWID_NONE) {
       const tabsCount = (await chrome.tabs.query({ windowId: window.id })).length
       unsavevdWindows.push({
         id: window.id,

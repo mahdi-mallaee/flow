@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
 import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
+import { INPUT_MAX_LENGTH } from "~utils/constants";
 
 type SessionCardArgs = {
   session: Session,
@@ -49,7 +50,7 @@ const SessionCard = (
     }
     return (
       <div className="edit-session-title-container">
-        <input autoFocus maxLength={25} onKeyDown={(e) => {
+        <input autoFocus maxLength={INPUT_MAX_LENGTH} onKeyDown={(e) => {
           if (e.key === "Enter") {
             _editSession()
           }

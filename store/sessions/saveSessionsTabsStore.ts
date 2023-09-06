@@ -1,6 +1,7 @@
 import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type SessionTabsStore, type Tab } from "~utils/types"
 import refreshSessionsStatusStore from "./refreshSessionsStatusStore"
+import Store from "~store"
 
 const saveSessionsTabsStore = async (sessionId: string, tabs: Tab[]) => {
   const store = new Storage({ area: 'local' })

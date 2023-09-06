@@ -9,25 +9,24 @@ import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
 import refreshOpenSessions from '~actions/refreshOpenSessions'
 import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
 import { MemoryRouter } from 'react-router-dom'
+import { DEFAULT_MAIN_CONTAINER_HEIGHT } from '~utils/constants'
 
 const IndexPopup = () => {
-
-  const defaultContainerHeight = 400
-  const [containerHeight, setContainerHeight] = useState(defaultContainerHeight)
+  const [containerHeight, setContainerHeight] = useState(DEFAULT_MAIN_CONTAINER_HEIGHT)
 
   const [mainViewHeight, setMainViewHeight] = useStorage<number>({
     key: "mainheight",
     instance: new Storage({
       area: "local"
     })
-  }, defaultContainerHeight)
+  }, DEFAULT_MAIN_CONTAINER_HEIGHT)
 
   const ref = useRef(null)
   useEffect(() => {
 
     const observer = new ResizeObserver(entries => {
       const height = entries[0].target.clientHeight
-      if (height != defaultContainerHeight) {
+      if (height != DEFAULT_MAIN_CONTAINER_HEIGHT) {
         setContainerHeight(height)
       }
     })
@@ -42,7 +41,7 @@ const IndexPopup = () => {
   }, [])
 
   useEffect(() => {
-    if (containerHeight !== defaultContainerHeight) {
+    if (containerHeight !== DEFAULT_MAIN_CONTAINER_HEIGHT) {
       setMainViewHeight(containerHeight)
     }
   }, [containerHeight])
