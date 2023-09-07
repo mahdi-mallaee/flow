@@ -5,6 +5,7 @@ const uploadBackup = (file: File) => {
   const reader = new FileReader()
   reader.onload = function (event) {
     const data: Backup = JSON.parse(event.target.result.toString())
+    // TODO: making sure date is in right format
     createNewBackup({ status: 'upload', sessions: data.sessions, title: data.title })
   }
   reader.readAsText(file)

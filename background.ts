@@ -8,12 +8,17 @@ import runIntervalBakcups from "~actions/runIntervalBackups"
 
 export { }
 
+//TODO: checking if all of the group events run and save
+
 chrome.tabs.onCreated.addListener(() => {
   refreshTabs()
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
   if (info.url) {
     refreshTabs()
+    /*
+      discarding tabs when they have url ensures that their icon and title is loaded before discarding
+    */
     discardOpenedTab(id)
   }
 })
@@ -47,6 +52,10 @@ chrome.windows.onCreated.addListener(() => {
   chrome.windows.getAll()
     .then(win => {
       if (win.length === 1) {
+        /*
+          sometime the browser wont be closed completely so the runtime.onStartup wont run
+          when there is only one window (happend on Mac OS) so I just run the openFirstSession here.
+        */
         openFirstSession()
       } else {
         refreshUnsavedWindows()

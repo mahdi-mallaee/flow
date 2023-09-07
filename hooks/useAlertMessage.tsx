@@ -4,7 +4,7 @@ import type { AlertMessage } from "~utils/types"
 import { ALERT_MESSAGE_DURATION_MS } from "~utils/constants"
 
 const useAlertMessage = () => {
-  
+
   const defaultMessage: AlertMessage = {
     text: '',
     type: "info"
@@ -23,6 +23,11 @@ const useAlertMessage = () => {
   }, [show])
 
   const alertView = <AlertMessageView message={message} show={show}></AlertMessageView>
+
+  /*
+    for using this hook renderAlert should be called in component return
+    and using showAlert for showing the alert when there is a need
+  */
 
   return {
     showAlert: (message: AlertMessage) => {

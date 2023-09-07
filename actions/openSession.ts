@@ -23,7 +23,7 @@ const openSession = async (sessionId: string): Promise<number> => {
   })
   Store.openedTabs.set(openedTabs)
 
-  //TODO: extraction part below to new action (createSessionGroups)
+  //TODO: extraction part below to new action (createSessionGroups) or a new function in this file
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
@@ -43,7 +43,6 @@ const openSession = async (sessionId: string): Promise<number> => {
         chrome.history.deleteRange({ startTime, endTime: Date.now() })
       })
   })
-  //TODO: end
 
   refreshUnsavedWindows()
 

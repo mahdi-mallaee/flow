@@ -1,4 +1,3 @@
-import { WINDOWID_NONE } from "~utils/constants"
 import type { Tab } from "~utils/types"
 
 const getTabsByWindowId = async (windowId: number): Promise<Tab[]> => {
@@ -8,7 +7,7 @@ const getTabsByWindowId = async (windowId: number): Promise<Tab[]> => {
       id: tab.id,
       url: tab.pendingUrl || tab.url || 'chrome://newtab',
       windowId: tab.windowId,
-      groupId: tab.groupId || WINDOWID_NONE,
+      groupId: tab.groupId || -1,
       index: tab.index
     }
   })

@@ -11,11 +11,10 @@ const getAllSessionsStore = async (): Promise<Session[]> => {
   const sessions: Session[] = []
 
   for (const basicSession of basics) {
-
     let isOpen = false
     let windowId = WINDOWID_NONE
     const isOpenStore = opens.find(o => o.sessionId === basicSession.id)
-    if (isOpenStore && typeof isOpenStore.isOpen === 'boolean' && isOpenStore.windowId >= WINDOWID_NONE) {
+    if (isOpenStore && typeof isOpenStore.isOpen === 'boolean' && isOpenStore.windowId > 0) {
       isOpen = isOpenStore.isOpen
       windowId = isOpenStore.windowId
     }

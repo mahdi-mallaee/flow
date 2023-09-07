@@ -6,6 +6,14 @@ import refreshOpenSessions from "./refreshOpenSessions"
 import Store from "~store"
 import getTabsByWindowId from "./getTabsByWindowId"
 
+/*
+  it runs after windows.onCreated event when there is only on window. (the reason is in background script)
+  first checks if the last closed window was main session, if it was, it assigns the windows id to the session.
+  if the first condition wasn't satisfied it will check if there is a main session if that's the case main session
+  will be opened and any other window will be closed.
+  if there is not a main session but the last closed window was a session the id of the opened winodw will be assigned to the session. 
+*/
+
 const openFirstSession = async () => {
   const sessions: Session[] = await Store.sessions.getAll()
   const mainSession: Session = sessions.find(session => session.main === true)
@@ -16,6 +24,13 @@ const openFirstSession = async () => {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
       const windowTabs = await getTabsByWindowId(windows[0].id)
+      /* 
+      this condition below ensures that the opened window is same as the last closed window.
+      sometime even though in browsers settings it is set to open the last window onStartup
+      the OS (happend on Mac OS) doesn't let the browser to open the last closed window.
+      */
+
+      // TODO: making a more reliable check
       if (windowTabs.length === mainSession.tabs.length && windowTabs[0].url === mainSession.tabs[0].url) {
         await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
         refresh()
