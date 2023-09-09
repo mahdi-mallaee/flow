@@ -6,18 +6,19 @@ import { INPUT_MAX_LENGTH } from "~utils/constants";
 
 type SessionCardArgs = {
   session: Session,
-  sessionClickHandler: Function,
-  mainButtonClickHandler: Function,
-  deleteSession: Function,
-  editSession: Function
+  sessionClickHandler: (session: Session) => void,
+  mainButtonClickHandler: (id: string) => void,
+  deleteSession: (session: Session) => void,
+  editSession: (id: string, title: string, callBack: Function) => void
 }
+type State = 'default' | 'title-edit' | 'delete-confirmation' | 'menu'
 
 const SessionCard = (
   { session, sessionClickHandler, mainButtonClickHandler, deleteSession, editSession }: SessionCardArgs
 ) => {
 
   const [sessionTitleInput, setSessionTitleInput] = useState('')
-  const [sessionCardState, setSessionCardState] = useState('default')
+  const [sessionCardState, setSessionCardState] = useState<State>('default')
 
 
   const defaultState = () => {
@@ -95,7 +96,7 @@ const SessionCard = (
     )
   }
 
-  const getCurrentState = (state: string) => {
+  const getCurrentState = (state: State) => {
     switch (state) {
       case 'default': {
         return defaultState()

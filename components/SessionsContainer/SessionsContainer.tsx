@@ -72,7 +72,7 @@ const SessionsContainer = () => {
       return
     }
 
-    await createNewSession(0, [], sessionTitleInput)
+    await createNewSession({ title: sessionTitleInput })
 
     setGettingSessionName(false)
     setSessionTitleInput('')

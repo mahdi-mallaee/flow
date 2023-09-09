@@ -4,9 +4,8 @@ import refreshUnsavedWindows from "./refreshUnsavedWindows"
 import type { UnsavedWindow } from "~utils/types"
 
 /*
-  this function will be called in background in tab events like onCreated, onRemoved, onUpdated and etc.
   runs through sessions and unsavedWindows and by their windowId get the tabs and saves them in their appropriate place.
-  saving tabs indivisualy by their event made a lot of problems so I just save them all after every event.
+  saving tabs individualy by their event made a lot of problems so I just save them all after every event.
 */
 
 const refreshTabs = async () => {

@@ -3,13 +3,12 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
 import { useEffect, useState } from "react"
-import { MdAdd, MdClose, MdDelete, MdDone, MdDownload, MdUploadFile } from "react-icons/md"
+import { MdAdd, MdClose, MdDone, MdUploadFile } from "react-icons/md"
 import createNewBackup from "~actions/createNewBackup"
-import Store from "~store"
 import { AnimatePresence, motion } from "framer-motion"
-import downloadBackupSessions from "~actions/downloadBackupSessions"
 import uploadBackup from "~actions/uploadBackup"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
+import BackupCard from "~components/BackupCard"
 
 const BackupsView = ({ }) => {
 
@@ -31,15 +30,6 @@ const BackupsView = ({ }) => {
     })
     setGetBackupName(false)
     setBackupTitleInput('')
-  }
-
-  const removeBackup = (id: string) => {
-    Store.backups.delete(id)
-  }
-
-  const _loadBackup = async (id: string) => {
-    await Store.backups.load(id)
-    setLoadedBackupId(id)
   }
 
   const [initialAnimation, setInitialAnimation] = useState(false)
@@ -80,27 +70,12 @@ const BackupsView = ({ }) => {
           {
             backups.map(backup => {
               return (
-                <motion.div key={backup.id} className="backup-card"
+                <motion.div key={backup.id}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
                   transition={{ duration: 0.2 }}>
-                  <div className="container">
-                    <div className="details">
-                      <div className="title">{backup.title}</div>
-                      <div className="status">{backup.status}</div>
-                      {backup.relatedItem && <div className="related-item">related {backup.relatedItem.type === 'session' ? 'session' : 'backup'}: {backup.relatedItem.title}</div>}
-                      <div className="date">{backup.date}</div>
-                    </div>
-                    <div className="buttons">
-                      <div className={backup.id === loadedBackupId ? "load-backup loaded" : "load-backup"}
-                        onClick={() => _loadBackup(backup.id)}>
-                        {backup.id === loadedBackupId ? 'Loaded !' : 'Load'}
-                      </div>
-                      <div className="download-backup" onClick={() => downloadBackupSessions(backup)}><MdDownload /></div>
-                      <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>
-                    </div>
-                  </div>
+                  <BackupCard backup={backup} loaded={loadedBackupId === backup.id} setLoadedBackupId={setLoadedBackupId} />
                 </motion.div>
               )
             })
@@ -110,5 +85,7 @@ const BackupsView = ({ }) => {
     </div>
   )
 }
+
+
 
 export default BackupsView

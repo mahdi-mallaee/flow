@@ -10,12 +10,7 @@ const AboutUsView = () => {
           <div className="title">Developer :</div>
           <div>Mahdi Mallaee</div>
         </div>
-
-        <div className="item">
-          <div className="title">Support :</div>
-          <div>futuretabs@gmail.com</div>
-        </div>
-
+        
       </div>
     </div>
   )

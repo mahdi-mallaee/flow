@@ -6,7 +6,7 @@ import Store from "~store";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
 import { WINDOWID_NONE } from "~utils/constants";
 
-const createNewSession = async (windowId?: number, urls?: string[], title?: string): Promise<Session> => {
+const createNewSession = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<Session> => {
   const settings = await Store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
@@ -15,7 +15,7 @@ const createNewSession = async (windowId?: number, urls?: string[], title?: stri
     isSessionOpen = true
   } else {
     if (createWindow) {
-      windowId = await createNewWindow(urls || [])
+      windowId = await createNewWindow()
       isSessionOpen = true
     } else {
       windowId = WINDOWID_NONE

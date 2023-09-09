@@ -23,7 +23,7 @@ const UnsavedWindowsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
-    await createNewSession(window.id)
+    await createNewSession({ windowId: window.id })
     refreshUnsavedWindows()
     refreshOpenSessions()
   }

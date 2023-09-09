@@ -23,7 +23,12 @@ const openSession = async (sessionId: string): Promise<number> => {
   })
   Store.openedTabs.set(openedTabs)
 
-  //TODO: extraction part below to new action (createSessionGroups) or a new function in this file
+  groupTabs(tabs, newWindowId, startTime)
+  refreshUnsavedWindows()
+  return newWindowId
+}
+
+const groupTabs = (tabs: Tab[], newWindowId: number, startTime: number) => {
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
@@ -43,10 +48,6 @@ const openSession = async (sessionId: string): Promise<number> => {
         chrome.history.deleteRange({ startTime, endTime: Date.now() })
       })
   })
-
-  refreshUnsavedWindows()
-
-  return newWindowId
 }
 
 export default openSession

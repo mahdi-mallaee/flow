@@ -8,12 +8,8 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(settings.theme)
 
   const getOSTheme = (): Theme => {
-    if (window.matchMedia) {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return Theme.dark
-      } else {
-        return Theme.light
-      }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return Theme.dark
     } else {
       return Theme.light
     }

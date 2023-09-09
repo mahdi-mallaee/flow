@@ -12,9 +12,7 @@ type NewBackupInput = {
   sessions?: Session[]
 }
 
-const createNewBackup = async (inputs: NewBackupInput) => {
-  let { status, title, relatedItem, sessions } = inputs
-
+const createNewBackup = async ({ status, title, relatedItem, sessions }: NewBackupInput) => {
   sessions = sessions || await Store.sessions.getAll()
 
   const newBackup: Backup = {
