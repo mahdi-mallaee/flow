@@ -15,15 +15,15 @@
     border: 1px solid var(--outline-color);
 
     &.info {
-      background-color: var(--surface-color);
+      background-color: var(--alert-info);
     }
 
     &.warning {
-      background-color: rgb(237, 213, 191);
+      background-color: var(--alert-warning);
     }
 
     &.error {
-      background-color: rgb(244, 201, 201);
+      background-color: var(--alert-error);
     }
   }
 }

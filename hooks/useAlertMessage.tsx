@@ -18,6 +18,7 @@ const useAlertMessage = () => {
     if (show) {
       setTimeout(() => {
         setMessage(defaultMessage)
+        setShow(false)
       }, ALERT_MESSAGE_DURATION_MS)
     }
   }, [show])

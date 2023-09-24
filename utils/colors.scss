@@ -11,6 +11,9 @@
   --outline-color: #DCDCDC;
   --background-hover-color: #ededed;
   --icon-button-hover: #dce1c8;
+  --alert-info: #f7f7ec;
+  --alert-warning: #edd5bf;
+  --alert-error: #f4c9c9;
 }
 
 #theme-provider[data-theme='dark'] {
@@ -26,4 +29,7 @@
   --outline-color: #515151;
   --background-hover-color: #33363a;
   --icon-button-hover: #5f673c;
+  --alert-info: #21241f;
+  --alert-warning: #48382a;
+  --alert-error: #4a3030;
 }

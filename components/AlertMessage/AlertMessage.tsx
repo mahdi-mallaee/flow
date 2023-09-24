@@ -6,19 +6,19 @@ const AlertMessageView = ({ message, show }: { message: AlertMessage, show: bool
 
   return (
     <>
-      {show &&
-        <div className="alert-message-container">
-          <AnimatePresence>
+      <div className="alert-message-container">
+        <AnimatePresence>
+          {show &&
             <motion.div className={`message ${message.type}`}
               initial={{ scaleX: 0.1, opacity: 0.4 }}
               animate={{ scaleX: 1, opacity: 1 }}
               exit={{ scaleX: 0.1, opacity: 0.4 }}
-              transition={{ ease: 'easeOut', duration: 0.2 }}>
+              transition={{ ease: 'easeOut', duration: 0.12 }}>
               {message.text}
             </motion.div>
-          </AnimatePresence>
-        </div>
-      }
+          }
+        </AnimatePresence>
+      </div>
     </>
   )
 }

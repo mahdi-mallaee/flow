@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import uploadBackup from "~actions/uploadBackup"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
 import BackupCard from "~components/BackupCard"
+import useAlertMessage from "~hooks/useAlertMessage"
 
 const BackupsView = ({ }) => {
 
@@ -18,6 +19,8 @@ const BackupsView = ({ }) => {
       area: "local"
     })
   }, [])
+
+  const { renderAlert, showAlert } = useAlertMessage()
 
   const [getBackupName, setGetBackupName] = useState(false)
   const [backupTitleInput, setBackupTitleInput] = useState('')
@@ -32,6 +35,10 @@ const BackupsView = ({ }) => {
     setBackupTitleInput('')
   }
 
+  const onUploadError = (msg: string) => {
+    showAlert({ text: msg, type: 'error' })
+  }
+
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   useEffect(() => {
@@ -42,6 +49,7 @@ const BackupsView = ({ }) => {
 
   return (
     <div className="backups-view">
+      {renderAlert()}
       <div className='view-title backups-title'>Backups</div>
       <div className="backups-container">
         {getBackupName ?
@@ -64,7 +72,7 @@ const BackupsView = ({ }) => {
         }
         <div className="file-input-container">
           <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
-          <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackup(event.target.files[0])} />
+          <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackup(event.target.files[0], onUploadError)} />
         </div>
         <AnimatePresence>
           {
