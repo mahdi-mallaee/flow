@@ -37,7 +37,8 @@
       "storage",
       "tabs",
       "history",
-      "downloads"
+      "downloads",
+      "tabGroups"
     ]
   }
 }

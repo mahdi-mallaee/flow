@@ -7,9 +7,7 @@ const downloadBackupSessions = async (backup: Backup) => {
 
   const downloadUrl = URL.createObjectURL(blob)
 
-  // TODO: handling all illegal characters for using in file name
-  let fileName = backup.title.replaceAll('/', '_')
-  fileName = fileName.replaceAll(':', '_')
+  const fileName = 'Backup_' + backup.id
 
   await chrome.downloads.download({
     url: downloadUrl,

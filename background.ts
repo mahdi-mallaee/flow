@@ -8,18 +8,31 @@ import runIntervalBakcups from "~actions/runIntervalBackups"
 
 export { }
 
-//TODO: checking if all of the group events run and save
+chrome.tabGroups.onCreated.addListener(() => {
+  refreshTabs()
+})
+chrome.tabGroups.onRemoved.addListener(() => {
+  refreshTabs()
+})
+chrome.tabGroups.onMoved.addListener(() => {
+  refreshTabs()
+})
+chrome.tabGroups.onUpdated.addListener(() => {
+  refreshTabs()
+})
 
 chrome.tabs.onCreated.addListener(() => {
   refreshTabs()
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
   if (info.url) {
-    refreshTabs()
     /*
-      discarding tabs when they have url ensures that their icon and title is loaded before discarding
+    discarding tabs when they have url ensures that their icon and title is loaded before discarding
     */
     discardOpenedTab(id)
+  }
+  if (info.url || info.groupId) {
+    refreshTabs()
   }
 })
 chrome.tabs.onRemoved.addListener((_, info) => {

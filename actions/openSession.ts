@@ -7,36 +7,36 @@ import refreshUnsavedWindows from "./refreshUnsavedWindows";
 const openSession = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
 
-  let tabs: Tab[] = await Store.sessions.getTabs(sessionId)
+  const tabs: Tab[] = await Store.sessions.getTabs(sessionId)
   const newWindowId = await createNewWindow(tabs.map(t => { return t.url }))
-  tabs = await getTabsByWindowId(newWindowId)
+  const windowTabs = await getTabsByWindowId(newWindowId)
 
-  await Store.sessions.saveTabs(sessionId, tabs)
+  await Store.sessions.saveTabs(sessionId, windowTabs)
   await Store.sessions.changeOpenStatus(sessionId, true)
   await Store.sessions.changeWindowId(sessionId, newWindowId)
 
   const openedTabs: OpenedTab[] = []
-  tabs.forEach((tab, i) => {
-    if (i < tabs.length - 1) {
+  windowTabs.forEach((tab, i) => {
+    if (i < windowTabs.length - 1) {
       openedTabs.push({ id: tab.id, discarded: false })
     }
   })
   Store.openedTabs.set(openedTabs)
 
-  groupTabs(tabs, newWindowId, startTime)
+  groupTabs(tabs, windowTabs, newWindowId, startTime)
   refreshUnsavedWindows()
   return newWindowId
 }
 
-const groupTabs = (tabs: Tab[], newWindowId: number, startTime: number) => {
+const groupTabs = (tabs: Tab[], windowTabs: Tab[], newWindowId: number, startTime: number) => {
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
     if (tab.groupId > 0) {
       if (groups[key]) {
-        groups[key].push(tabs[tab.index].id)
+        groups[key].push(windowTabs[tab.index].id)
       } else {
-        groups[key] = [tabs[tab.index].id]
+        groups[key] = [windowTabs[tab.index].id]
       }
     }
   })
