@@ -11,6 +11,11 @@ const AboutUsView = () => {
           <div>Mahdi Mallaee</div>
         </div>
         
+        <div className="item">
+          <div className="title">Email :</div>
+          <div>flow.extension@gmail.com</div>
+        </div>
+        
       </div>
     </div>
   )

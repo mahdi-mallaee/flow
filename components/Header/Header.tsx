@@ -10,7 +10,7 @@ const Header = ({ settingsButtonPath }: { settingsButtonPath: Path }) => {
   return (
     <div className="header">
       <div className="logo"><Logo /></div>
-      <div className='title'>Future Tabs</div>
+      <div className='title'>Flow</div>
       <div className="settings-button" onClick={() => nav(settingsButtonPath)}>
         {location.pathname !== '/' ? <MdArrowBack /> : <MdTune />}
       </div>

@@ -15,20 +15,14 @@ const openSession = async (sessionId: string): Promise<number> => {
   await Store.sessions.changeOpenStatus(sessionId, true)
   await Store.sessions.changeWindowId(sessionId, newWindowId)
 
-  const openedTabs: OpenedTab[] = []
-  windowTabs.forEach((tab, i) => {
-    if (i < windowTabs.length - 1) {
-      openedTabs.push({ id: tab.id, discarded: false })
-    }
-  })
-  Store.openedTabs.set(openedTabs)
-
-  groupTabs(tabs, windowTabs, newWindowId, startTime)
+  setOpenTabs(windowTabs)
+  await groupTabs(tabs, windowTabs, newWindowId, startTime)
   refreshUnsavedWindows()
+  chrome.history.deleteRange({ startTime, endTime: Date.now() })
   return newWindowId
 }
 
-const groupTabs = (tabs: Tab[], windowTabs: Tab[], newWindowId: number, startTime: number) => {
+const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number, startTime: number) => {
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
@@ -41,13 +35,24 @@ const groupTabs = (tabs: Tab[], windowTabs: Tab[], newWindowId: number, startTim
     }
   })
 
-  Object.keys(groups).forEach(group => {
+  for (const group of Object.keys(groups)) {
     const tabIds: number[] = groups[group]
-    chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
-      .then(() => {
-        chrome.history.deleteRange({ startTime, endTime: Date.now() })
-      })
+    try {
+      await chrome.tabs.group({ tabIds: tabIds, createProperties: { windowId: newWindowId } })
+    } catch (erorr) {
+      console.log(erorr)
+    }
+  }
+}
+
+const setOpenTabs = (windowTabs: Tab[]) => {
+  const openedTabs: OpenedTab[] = []
+  windowTabs.forEach((tab, i) => {
+    if (i < windowTabs.length - 1) {
+      openedTabs.push({ id: tab.id, discarded: false })
+    }
   })
+  Store.openedTabs.set(openedTabs)
 }
 
 export default openSession

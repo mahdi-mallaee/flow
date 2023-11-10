@@ -1,6 +1,6 @@
 ## Hey there!
 
-### ***Future Tabs*** is a chrome extension for keeping your tabs and windows clean.
+### ***Flow*** is a chrome extension for keeping your tabs and windows clean.
 
 ### In this file I explain:
 - how to start the project 
@@ -18,10 +18,10 @@ then install the packages
 > npm i
 
 dev server command
->npm run dev
+> npm run dev
 
-building an upacked chrome extenstion
->npm run build
+building an unpacked chrome extenstion
+> npm run build
 
 extension should be loaded in chrome dev mode afterward by clicking on load unpacked button and selecting on of the below directories in extensions page
 
@@ -69,6 +69,19 @@ refreshTabs and refreshUnsavedWindows actions make sure that saved data is updat
 refreshTabs gets all the tabs from all open windows and save them in their session and refreshUnsavedWindows get all open windows and by comparing their ids to sessions window ids sets usnaved windows.
 
 ---
+
+### Chrome Description
+Flow is the best way to organize your tabs and windows in Chrome and access them whenever you want. It is simple, fast, and reliable.
+
+You need Flow if you have too many tabs and windows open in Chrome and feel overwhelmed by them or want to close a window without worry of losing your journey.
+
+• Flow allows you to create and save sessions that represent a window in Chrome.
+• You can open a session anytime and it will create a new window with the saved tabs. 
+• You can also see the open windows as unsaved sessions and save them as new sessions.
+• You can backup your sessions manually or automatically and restore them if you lose them. 
+• You can also set a main session that will always open when you start Chrome, regardless of the last closed window.
+
+Wil be thankful of your feedbacks for improving.
 
 ### Refrences
 <a href="https://docs.plasmo.com/">Plasmo Docs</a>

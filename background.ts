@@ -26,12 +26,14 @@ chrome.tabs.onCreated.addListener(() => {
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
   if (info.url) {
-    /*
-    discarding tabs when they have url ensures that their icon and title is loaded before discarding
-    */
+    /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
     discardOpenedTab(id)
   }
   if (info.url || info.groupId) {
+    /*
+    onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
+    no other information is needed for refreshing tabs
+    */
     refreshTabs()
   }
 })
@@ -60,7 +62,6 @@ chrome.windows.onRemoved.addListener(() => {
   refreshLastClosedWindow()
   refreshOpenSessions()
 })
-
 chrome.windows.onCreated.addListener(() => {
   chrome.windows.getAll()
     .then(win => {
