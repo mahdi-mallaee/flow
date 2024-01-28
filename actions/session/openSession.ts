@@ -14,13 +14,13 @@ const openSession = async (sessionId: string): Promise<number> => {
   await store.sessions.changeWindowId(sessionId, newWindowId)
 
   setOpenTabs(windowTabs)
-  await groupTabs(tabs, windowTabs, newWindowId, startTime)
+  await groupTabs(tabs, windowTabs, newWindowId)
   actions.window.refreshUnsavedWindows()
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   return newWindowId
 }
 
-const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number, startTime: number) => {
+const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number) => {
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()

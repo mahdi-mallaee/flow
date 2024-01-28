@@ -104,5 +104,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             })
         }
       })
+  } else if (message.action === 'save-session') {
+    if (message.windowId && message.windowId > 0) {
+      actions.session.create({ windowId: message.windowId })
+      sendResponse({ message: 'saved' })
+    } else {
+      sendResponse({ message: 'not-saved' })
+    }
   }
 })

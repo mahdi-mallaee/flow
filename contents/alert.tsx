@@ -3,6 +3,7 @@ import { useStorage } from '@plasmohq/storage/hook';
 import css from 'data-text:./alert.css'
 import React, { useState, useEffect } from 'react';
 import { StoreKeys, type unsavedWindowAlertStatus } from '~utils/types';
+import { AnimatePresence, motion } from 'framer-motion'
 
 export const getStyle = () => {
   const style = document.createElement("style")
@@ -11,7 +12,8 @@ export const getStyle = () => {
 }
 
 const alert = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  type state = 'default' | 'saved-session' | 'error' | 'closed'
+  const [UIState, setUIState] = useState<state>('closed')
   const [alertStatus, setAlertStatus] = useStorage<unsavedWindowAlertStatus>(
     {
       instance: new Storage({ area: 'local' }),
@@ -22,16 +24,86 @@ const alert = () => {
   useEffect(() => {
     chrome.runtime.sendMessage({ action: 'alert-ready' }, (response) => {
       if (response.action === 'alert-go') {
-        setIsOpen(true)
+        setUIState('default')
         setAlertStatus(c => { return { ...c, alertShown: true } })
+        setTimeout(() => {
+          setUIState('closed')
+        }, 10000)
       }
     })
   }, [alertStatus.windowId])
 
+  const saveSessionHandler = () => {
+    chrome.runtime.sendMessage({ action: 'save-session', windowId: alertStatus.windowId }, (res) => {
+      if (res.message === 'saved') {
+        setUIState('saved-session')
+        setTimeout(() => {
+          setUIState('closed')
+        }, 3000)
+      } else {
+        setUIState('error')
+        setTimeout(() => {
+          setUIState('closed')
+        }, 3000)
+      }
+    })
+  }
+
+  const defaultUI = () => {
+    return (
+      <>
+        <div>This window is not saved you may wanna catch it!</div>
+        <div className="buttons">
+          <div className="close-alert" onClick={() => setUIState('closed')}>No thanks!</div>
+          <div className="save-session" onClick={saveSessionHandler}>Yes please!</div>
+        </div>
+      </>
+    )
+  }
+
+  const savedSessionUI = () => {
+    return (
+      <>
+        <div>Session is now saved.</div>
+        <div>You can see it in extension popup.</div>
+      </>
+    )
+  }
+
+  const errorUI = () => {
+    return (
+      <>
+        <div>Could not save the session for some reason!</div>
+        <div>You can do it manually in extension popup.</div>
+      </>
+    )
+  }
+
+  const getCurrentUI = (state: state) => {
+    switch (state) {
+      case 'default':
+        return defaultUI()
+      case 'saved-session':
+        return savedSessionUI()
+      case 'error':
+        return errorUI()
+      default:
+        return defaultUI()
+    }
+  }
+
   return (
-    <div className={`newwindow-alert ${isOpen ? 'open' : 'closed'}`}>
-      <div>This window is not saved you may wanna catch it!</div>
-    </div>
+    <AnimatePresence>
+      {(UIState !== 'closed') &&
+        <motion.div className='newwindow-alert'
+          initial={{ scaleY: 0.2, opacity: 0.4 }}
+          animate={{ scaleY: 1, opacity: 1 }}
+          exit={{ scaleY: 0, opacity: 0.2 }}
+          transition={{ ease: 'easeOut', duration: 0.12 }}>
+          {getCurrentUI(UIState)}
+        </motion.div>
+      }
+    </AnimatePresence>
   )
 }
 

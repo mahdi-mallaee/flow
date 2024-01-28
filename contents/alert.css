@@ -1,9 +1,9 @@
-.newwindow-alert.open {
-  background-color: rgb(218, 173, 173);
-  color: black;
+.newwindow-alert {
+  background-color: #fcfcfc;
+  color: #101010;
   right: 20px;
   top: 20px;
-  padding: 5px 10px;
+  padding: 15px;
   border-radius: 5px;
   position: fixed;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,6 +17,15 @@
   justify-content: space-evenly;
 }
 
-.newwindow-alert.closed {
-  display: none;
+.close-alert,
+.save-session {
+  background-color: #f7f7ec;
+  border: 1px solid #DCDCDC;
+  cursor: pointer;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  width: 98px;
+  height: 28px;
+  display: flex;
 }
