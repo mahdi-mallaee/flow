@@ -9,5 +9,32 @@
       display: flex;
       gap: 8px;
     }
+
+    .email {
+      justify-content: space-between;
+      align-items: center;
+
+      .text {
+        display: flex;
+        gap: 8px;
+      }
+
+      .email-copy-button {
+        background-color: var(--surface-color);
+        border: 1px solid var(--outline-color);
+        width: 56px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        align-self: flex-end;
+
+        &:hover {
+          background-color: var(--surface-hover-color);
+        }
+      }
+    }
   }
 }
