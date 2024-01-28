@@ -1,7 +1,7 @@
-import getTabsByWindowId from "./getTabsByWindowId"
+import actions from "~actions"
 
 const doesWindowIncludesTab = async (windowId: number, tabId: number): Promise<boolean> => {
-  const tabs = windowId ? await getTabsByWindowId(windowId) : []
+  const tabs = windowId ? await actions.window.getTabs(windowId) : []
   if (tabs) {
     const ids = tabs.map(tab => { return tab.id })
     if (ids.includes(tabId)) {

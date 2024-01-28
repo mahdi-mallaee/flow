@@ -1,20 +1,24 @@
 import { MdDelete, MdDownload } from "react-icons/md"
-import downloadBackupSessions from "~actions/downloadBackupSessions"
-import Store from "~store"
+import store from "~store"
 import type { Backup } from "~utils/types"
 import './BackupCard.scss'
+import actions from "~actions"
 
 const BackupCard = (
   { backup, loaded, setLoadedBackupId }:
     { backup: Backup, loaded: boolean, setLoadedBackupId: React.Dispatch<React.SetStateAction<string>> }
 ) => {
   const removeBackup = (id: string) => {
-    Store.backups.delete(id)
+    store.backups.delete(id)
   }
 
   const _loadBackup = async (id: string) => {
-    await Store.backups.load(id)
+    await store.backups.load(id)
     setLoadedBackupId(backup.id)
+  }
+
+  const downloadBackupHandler = (backup: Backup) => {
+    actions.backup.download(backup)
   }
 
   return (
@@ -30,7 +34,7 @@ const BackupCard = (
           onClick={() => _loadBackup(backup.id)}>
           {loaded ? 'Loaded !' : 'Load'}
         </div>
-        <div className="download-backup" onClick={() => downloadBackupSessions(backup)}><MdDownload /></div>
+        <div className="download-backup" onClick={() => downloadBackupHandler(backup)}><MdDownload /></div>
         <div className="remove-backup" onClick={() => removeBackup(backup.id)}><MdDelete /></div>
       </div>
     </div>

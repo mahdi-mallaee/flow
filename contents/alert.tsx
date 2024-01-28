@@ -2,7 +2,7 @@ import { Storage } from '@plasmohq/storage';
 import { useStorage } from '@plasmohq/storage/hook';
 import css from 'data-text:./alert.css'
 import React, { useState, useEffect } from 'react';
-import { StoreKeys, type unsavedWindowAlertStatusId } from '~utils/types';
+import { StoreKeys, type unsavedWindowAlertStatus } from '~utils/types';
 
 export const getStyle = () => {
   const style = document.createElement("style")
@@ -12,10 +12,10 @@ export const getStyle = () => {
 
 const alert = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [alertStatusId, setAlertStatusId] = useStorage<unsavedWindowAlertStatusId>(
+  const [alertStatus, setAlertStatus] = useStorage<unsavedWindowAlertStatus>(
     {
       instance: new Storage({ area: 'local' }),
-      key: StoreKeys.unsavedWindowAlertStatusId
+      key: StoreKeys.unsavedWindowAlertStatus
     },
     { windowId: -1, alertShown: false })
 
@@ -23,10 +23,10 @@ const alert = () => {
     chrome.runtime.sendMessage({ action: 'alert-ready' }, (response) => {
       if (response.action === 'alert-go') {
         setIsOpen(true)
-        setAlertStatusId(c => { return { ...c, alertShown: true } })
+        setAlertStatus(c => { return { ...c, alertShown: true } })
       }
     })
-  }, [alertStatusId.windowId])
+  }, [alertStatus.windowId])
 
   return (
     <div className={`newwindow-alert ${isOpen ? 'open' : 'closed'}`}>

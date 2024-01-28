@@ -1,13 +1,11 @@
 import { v4 } from "uuid";
-import { type Session } from "../utils/types";
-import createNewWindow from "./createNewWindow";
-import getTabsByWindowId from "./getTabsByWindowId";
-import Store from "~store";
-import refreshUnsavedWindows from "./refreshUnsavedWindows";
+import { type Session } from "../../utils/types";
+import store from "~store";
 import { WINDOWID_NONE } from "~utils/constants";
+import actions from "~actions";
 
 const createNewSession = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<Session> => {
-  const settings = await Store.settings.getAll()
+  const settings = await store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
 
@@ -15,13 +13,13 @@ const createNewSession = async ({ windowId, title }: { windowId?: number, title?
     isSessionOpen = true
   } else {
     if (createWindow) {
-      windowId = await createNewWindow()
+      windowId = await actions.window.create()
       isSessionOpen = true
     } else {
       windowId = WINDOWID_NONE
     }
   }
-  const tabs = await getTabsByWindowId(windowId)
+  const tabs = await actions.window.getTabs(windowId)
 
   const session: Session = {
     id: v4(),
@@ -33,8 +31,8 @@ const createNewSession = async ({ windowId, title }: { windowId?: number, title?
     colorCode: Math.floor(Math.random() * 5) + 1
   }
 
-  await Store.sessions.create(session)
-  await refreshUnsavedWindows()
+  await store.sessions.create(session)
+  await actions.window.refreshUnsavedWindows()
 
   return session
 }
