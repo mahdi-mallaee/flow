@@ -4,7 +4,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
 import ThemeProvider from "~components/ThemeProvider"
 import { useEffect, useRef, useState } from 'react'
-import ViewRouter from '~components/ViewRouter/ViewRouter'
+import ViewRouter from '~views/ViewRouter'
 import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
 import refreshOpenSessions from '~actions/refreshOpenSessions'
 import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'

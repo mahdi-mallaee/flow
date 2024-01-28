@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom"
-import AboutUsView from "~components/AboutUsView"
-import BackupsView from "~components/BackupsView"
-import DonationView from "~components/DontationView"
+import AboutUsView from "~views/AboutUsView"
+import BackupsView from "~views/BackupsView"
+import DonationView from "~views/DontationView"
 import Header from "~components/Header"
-import SessionsContainer from "~components/SessionsContainer"
-import SettignsView from "~components/SettingsView"
-import UnsavedWindowsContainer from "~components/UnsavedWindowsContainer"
+import SessionsContainer from "~views/SessionsContainer"
+import SettignsView from "~views/SettingsView"
+import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer"
 
 const ViewRouter = () => {
 
