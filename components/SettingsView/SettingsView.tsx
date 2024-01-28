@@ -102,6 +102,11 @@ const SettignsView = () => {
           <MdChevronRight />
         </div>
 
+        <div className="item nav" onClick={() => nav('/donation')}>
+          <div className="title">Donation</div>
+          <MdChevronRight />
+        </div>
+
         <div className="item">
           <div className="title">Reset settings to default</div>
           <div className="reset-button" onClick={() => Store.settings.reset()}>Reset</div>

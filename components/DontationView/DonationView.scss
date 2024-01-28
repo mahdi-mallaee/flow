@@ -1,0 +1,30 @@
+.donation-view .container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .wallet-address {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .copy-button {
+    background-color: var(--surface-color);
+    border: 1px solid var(--outline-color);
+    width: 56px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    align-self: flex-end;
+
+    &:hover {
+      background-color: var(--surface-hover-color);
+    }
+  }
+}
