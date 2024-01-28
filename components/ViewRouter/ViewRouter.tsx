@@ -7,39 +7,39 @@ import SessionsContainer from "~components/SessionsContainer"
 import SettignsView from "~components/SettingsView"
 import UnsavedWindowsContainer from "~components/UnsavedWindowsContainer"
 
-const MainContent = () => {
+const ViewRouter = () => {
 
   return (
     <Routes>
 
       <Route path="/" element={<>
-        <Header settingsButtonPath="/settings" />
+        <Header headerButtonPath="/settings" />
         <SessionsContainer />
         <UnsavedWindowsContainer />
       </>} />
 
       <Route path="/settings" element={<>
-        <Header settingsButtonPath="/" />
+        <Header headerButtonPath="/" />
         <SettignsView />
       </>} />
 
       <Route path="/backups" element={<>
-        <Header settingsButtonPath="/settings" />
+        <Header headerButtonPath="/settings" />
         <BackupsView />
       </>} />
 
       <Route path="/backups" element={<>
-        <Header settingsButtonPath="/settings" />
+        <Header headerButtonPath="/settings" />
         <BackupsView />
       </>} />
 
       <Route path="/about-us" element={<>
-        <Header settingsButtonPath="/settings" />
+        <Header headerButtonPath="/settings" />
         <AboutUsView />
       </>} />
       
       <Route path="/donation" element={<>
-        <Header settingsButtonPath="/settings" />
+        <Header headerButtonPath="/settings" />
         <DonationView />
       </>} />
 
@@ -47,4 +47,4 @@ const MainContent = () => {
   )
 }
 
-export default MainContent
+export default ViewRouter

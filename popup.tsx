@@ -4,7 +4,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
 import ThemeProvider from "~components/ThemeProvider"
 import { useEffect, useRef, useState } from 'react'
-import MainContent from '~components/MainContent/MainContent'
+import ViewRouter from '~components/ViewRouter/ViewRouter'
 import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
 import refreshOpenSessions from '~actions/refreshOpenSessions'
 import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
@@ -51,7 +51,7 @@ const IndexPopup = () => {
       <MemoryRouter>
         <div className="main-view">
           <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
-            <MainContent />
+            <ViewRouter />
           </div>
         </div >
       </MemoryRouter>

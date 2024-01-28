@@ -3,7 +3,7 @@ import Logo from "~components/Logo"
 import { useNavigate, useLocation } from 'react-router-dom'
 import type { Path } from "~utils/types"
 
-const Header = ({ settingsButtonPath }: { settingsButtonPath: Path }) => {
+const Header = ({ headerButtonPath }: { headerButtonPath: Path }) => {
   const nav = useNavigate()
   const location = useLocation()
 
@@ -11,7 +11,7 @@ const Header = ({ settingsButtonPath }: { settingsButtonPath: Path }) => {
     <div className="header">
       <div className="logo"><Logo /></div>
       <div className='title'>Flow</div>
-      <div className="settings-button" onClick={() => nav(settingsButtonPath)}>
+      <div className="header-button" onClick={() => nav(headerButtonPath)}>
         {location.pathname !== '/' ? <MdArrowBack /> : <MdTune />}
       </div>
     </div>
