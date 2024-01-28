@@ -75,6 +75,7 @@ export enum SessionsKeys {
 
 export enum StoreKeys {
   sessionsStatusId = 'sessionsStatusId',
+  unsavedWindowAlertStatusId = 'unsavedWindowAlertStatusId',
   settings = 'settings',
   unsavedWindows = 'unsavedWindows',
   backups = 'backups',
@@ -82,6 +83,11 @@ export enum StoreKeys {
   lastClosedWindowId = 'lastClosedWindowId',
   autoBackupIntervalId = 'autoBackupIntervalId',
   mainHeight = 'mainheight'
+}
+
+export type unsavedWindowAlertStatusId = {
+  windowId: number,
+  alertShown: boolean
 }
 
 export type UnsavedWindow = {

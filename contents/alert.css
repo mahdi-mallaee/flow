@@ -1,0 +1,22 @@
+.newwindow-alert.open {
+  background-color: rgb(218, 173, 173);
+  color: black;
+  right: 20px;
+  top: 20px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: fixed;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.newwindow-alert.closed {
+  display: none;
+}

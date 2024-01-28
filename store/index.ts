@@ -26,13 +26,15 @@ import getAllSessionsOpenStatusStore from "./sessions/getAllSessionsOpenStatusSt
 import setAllUnsavedWindowsStore from "./unsavedWindows/setAllUnsavedWindowsStore"
 import getLastClosedWindowIdStore from "./lastClosedWindow/getLastClosedWindowIdStore"
 import setLastClosedWindowIdStore from "./lastClosedWindow/setLastClosedWindowIdStore"
+import changeUnsavedWindowStatusIdStore from "./unsavedWindows/changeUnsavedWindowAlertStatusId"
+import getUnsavedWindowStatusIdStore from "./unsavedWindows/getUnsavedWindowStatusIdStore"
 
 const Store = {
   sessions: {
     async saveTabs(sessionId: string, tabs: Tab[]) { await saveSessionsTabsStore(sessionId, tabs) },
     async getTabs(sessionId: string): Promise<Tab[]> { return await getSessionTabsStore(sessionId) },
     async create(session: Session) { await createNewSessionStore(session) },
-    async getAll(): Promise<Session[]> { return await getAllSessionsStore() },
+    async getAll() { return await getAllSessionsStore() },
     async changeOpenStatus(sessionId: string, isOpen: boolean) { await changeSessionOpenStatusStore(sessionId, isOpen) },
     async refreshStatus() { await refreshSessionsStatusStore() },
     async delete(sessionId: string) { await deleteSessionStore(sessionId) },
@@ -63,7 +65,9 @@ const Store = {
     async load(id: string) { await loadBackupStore(id) }
   },
   unsavedWindows: {
-    async setAll(windows: UnsavedWindow[]) { await setAllUnsavedWindowsStore(windows) }
+    async setAll(windows: UnsavedWindow[]) { await setAllUnsavedWindowsStore(windows) },
+    async changeAlertId(windowId: number, alertShown: boolean) { await changeUnsavedWindowStatusIdStore(windowId, alertShown) },
+    async getAlertId() { return await getUnsavedWindowStatusIdStore() }
   },
   lastClosedWindow: {
     async getId() { return await getLastClosedWindowIdStore() },

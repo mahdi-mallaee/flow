@@ -5,6 +5,9 @@ import refreshLastClosedWindow from "~actions/refreshLastClosedWindow"
 import discardOpenedTab from "~actions/discardOpenedTab"
 import refreshOpenSessions from "~actions/refreshOpenSessions"
 import runIntervalBakcups from "~actions/runIntervalBackups"
+import Store from "~store"
+import doesWindowIncludesTab from "~actions/doesWindowIncludesTab"
+import isWindowUnsaved from "~actions/isWindowUnsaved"
 
 export { }
 
@@ -62,7 +65,7 @@ chrome.windows.onRemoved.addListener(() => {
   refreshLastClosedWindow()
   refreshOpenSessions()
 })
-chrome.windows.onCreated.addListener(() => {
+chrome.windows.onCreated.addListener((window) => {
   chrome.windows.getAll()
     .then(win => {
       if (win.length === 1) {
@@ -71,12 +74,44 @@ chrome.windows.onCreated.addListener(() => {
           when there is only one window (happend on Mac OS) so I just run the openFirstSession here.
         */
         openFirstSession()
+          .then(() => {
+            isWindowUnsaved(window.id)
+              .then(res => {
+                if (res) {
+                  Store.unsavedWindows.changeAlertId(window.id, false)
+                }
+              })
+          })
       } else {
         refreshUnsavedWindows()
+          .then(() => {
+            isWindowUnsaved(window.id)
+              .then(res => {
+                if (res) {
+                  Store.unsavedWindows.changeAlertId(window.id, false)
+                }
+              })
+          })
       }
     })
 })
 
 chrome.runtime.onStartup.addListener(() => {
   runIntervalBakcups()
+})
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'alert-ready' && sender.tab) {
+    Store.unsavedWindows.getAlertId()
+      .then(res => {
+        if (!res.alertShown) {
+          doesWindowIncludesTab(res.windowId, sender.tab.id)
+            .then(include => {
+              if (include) {
+                sendResponse({ action: 'alert-go' })
+              }
+            })
+        }
+      })
+  }
 })

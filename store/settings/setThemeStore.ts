@@ -6,7 +6,6 @@ const setThemeStore = async (theme: Theme) => {
   const store = new Storage({ area: "local" })
   const settings: Settings = await store.get(StoreKeys.settings) || DEFAULT_SETTINGS
   const newSettings: Settings = { ...settings, theme }
-  console.log(newSettings)
 
   await store.set(StoreKeys.settings, newSettings)
 }
