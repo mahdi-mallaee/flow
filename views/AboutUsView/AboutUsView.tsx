@@ -29,6 +29,11 @@ const AboutUsView = () => {
           <div>Mahdi Mallaee</div>
         </div>
 
+        <div className="item">
+          <div className="title">Designer :</div>
+          <div>Mohammad Mallaee</div>
+        </div>
+
         <div className="item email">
           <div className='text'>
             <div className="title">Email :</div>

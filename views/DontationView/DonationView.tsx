@@ -4,6 +4,7 @@ import './DonationView.scss'
 const DonationView = () => {
   const [btcButtonText, setBtcButtonText] = useState('copy')
   const [ethButtonText, setEthButtonText] = useState('copy')
+  const [ltcButtonText, setLtcButtonText] = useState('copy')
 
   const copyBtcAddress = () => {
     const btcAddress = "bc1qs57qa2urys0d8wxgjsprwa5xjqqscs8q9ek98n"
@@ -15,6 +16,11 @@ const DonationView = () => {
     navigator.clipboard.writeText(ethAddress)
     setEthButtonText('copied!')
   }
+  const copyLtcAddress = () => {
+    const ltcAddress = "ltc1qskd2deamjaqv3fupap4ckv5n5zpg5j4y8q6z66"
+    navigator.clipboard.writeText(ltcAddress)
+    setLtcButtonText('copied!')
+  }
 
   return (
     <div className='donation-view'>
@@ -24,13 +30,18 @@ const DonationView = () => {
         <div>Your donations will ensure constant updates and improvements.</div>
 
         <div className='wallet-address'>
-          <span>BTC wallet address</span>
+          <span>Bitcoin (BTC) wallet address</span>
           <div className='copy-button' onClick={() => copyBtcAddress()}>{btcButtonText}</div>
         </div>
 
         <div className='wallet-address'>
-          <span>ETH wallet address</span>
+          <span>Etherium (ETH) wallet address</span>
           <div className='copy-button' onClick={() => copyEthAddress()}>{ethButtonText}</div>
+        </div>
+
+        <div className='wallet-address'>
+          <span>LiteCoin (LTC) wallet address</span>
+          <div className='copy-button' onClick={() => copyLtcAddress()}>{ltcButtonText}</div>
         </div>
 
         <div>Currently other payment methods are not available.</div>

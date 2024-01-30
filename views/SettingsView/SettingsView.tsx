@@ -4,7 +4,7 @@ import { Theme, type WindowState, type BackupIntervalTime, StoreKeys } from '~ut
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
-import { MdChevronRight } from 'react-icons/md'
+import { MdChevronRight, MdFavoriteBorder } from 'react-icons/md'
 import runIntervalBakcups from '~actions/runIntervalBackups'
 import Store from '~store'
 import useSettings from '~hooks/useSettings'
@@ -46,6 +46,12 @@ const SettignsView = () => {
     <div className="settings-view">
       <div className='view-title'>Settings</div>
       <div className="items-container">
+
+        <div className="item nav" onClick={() => nav('/donation')}>
+          <MdFavoriteBorder className='heart-icon'/>
+          <div className="title">Donation</div>
+          <MdChevronRight />
+        </div>
 
         <div className="item">
           <div className="title">Theme</div>
@@ -99,11 +105,6 @@ const SettignsView = () => {
 
         <div className="item nav" onClick={() => nav('/about-us')}>
           <div className="title">About Us</div>
-          <MdChevronRight />
-        </div>
-
-        <div className="item nav" onClick={() => nav('/donation')}>
-          <div className="title">Donation</div>
           <MdChevronRight />
         </div>
 
