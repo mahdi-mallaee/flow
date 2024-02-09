@@ -1,13 +1,16 @@
 import { Storage } from '@plasmohq/storage';
 import { useStorage } from '@plasmohq/storage/hook';
 import css from 'data-text:./alert.css'
+import colors from 'data-text:./../utils/colors.css'
 import React, { useState, useEffect } from 'react';
 import { StoreKeys, type unsavedWindowAlertStatus } from '~utils/types';
 import { AnimatePresence, motion } from 'framer-motion'
+import ThemeProvider from '~components/ThemeProvider';
 
 export const getStyle = () => {
   const style = document.createElement("style")
-  style.textContent = css
+  style.textContent = colors
+  style.textContent += css
   return style
 }
 
@@ -44,7 +47,7 @@ const alert = () => {
         setUIState('error')
         setTimeout(() => {
           setUIState('closed')
-        }, 3000)
+        }, 6000)
       }
     })
   }
@@ -93,17 +96,19 @@ const alert = () => {
   }
 
   return (
-    <AnimatePresence>
-      {(UIState !== 'closed') &&
-        <motion.div className='newwindow-alert'
-          initial={{ scaleY: 0.2, opacity: 0.4 }}
-          animate={{ scaleY: 1, opacity: 1 }}
-          exit={{ scaleY: 0, opacity: 0.2 }}
-          transition={{ ease: 'easeOut', duration: 0.12 }}>
-          {getCurrentUI(UIState)}
-        </motion.div>
-      }
-    </AnimatePresence>
+    <ThemeProvider>
+      <AnimatePresence>
+        {(UIState !== 'closed') &&
+          <motion.div className='newwindow-alert'
+            initial={{ scaleY: 0.2, opacity: 0.4 }}
+            animate={{ scaleY: 1, opacity: 1 }}
+            exit={{ scaleY: 0, opacity: 0.2 }}
+            transition={{ ease: 'easeOut', duration: 0.12 }}>
+            {getCurrentUI(UIState)}
+          </motion.div>
+        }
+      </AnimatePresence>
+    </ThemeProvider>
   )
 }
 

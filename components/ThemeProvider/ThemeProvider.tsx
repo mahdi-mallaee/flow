@@ -1,6 +1,7 @@
 import { useEffect, type ReactNode, useState } from "react"
 import useSettings from "~hooks/useSettings"
 import { Theme } from "~utils/types"
+import '../../utils/colors.css'
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const settings = useSettings()

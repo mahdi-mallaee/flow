@@ -1,5 +1,4 @@
 import './index.scss'
-import './utils/colors.scss'
 import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
 import ThemeProvider from "~components/ThemeProvider"
