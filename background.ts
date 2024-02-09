@@ -67,12 +67,12 @@ chrome.windows.onCreated.addListener((window) => {
         */
         actions.session.openFirst()
           .then(() => {
-            changeRecentWindowId(window)
+            actions.window.changeRecentWindowId(window.id)
           })
       } else {
         actions.window.refreshUnsavedWindows()
           .then(() => {
-            changeRecentWindowId(window)
+            actions.window.changeRecentWindowId(window.id)
           })
       }
     })
@@ -82,14 +82,6 @@ chrome.runtime.onStartup.addListener(() => {
   actions.backup.runInterval()
 })
 
-const changeRecentWindowId = (window: chrome.windows.Window) => {
-  actions.window.isUnsaved(window.id)
-    .then(res => {
-      if (res) {
-        store.unsavedWindows.changeAlertStatus(window.id, false)
-      }
-    })
-}
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'alert-ready' && sender.tab) {

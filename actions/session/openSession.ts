@@ -15,8 +15,9 @@ const openSession = async (sessionId: string): Promise<number> => {
 
   setOpenTabs(windowTabs)
   await groupTabs(tabs, windowTabs, newWindowId)
-  actions.window.refreshUnsavedWindows()
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
+  await actions.window.refreshUnsavedWindows()
+  await actions.window.changeRecentWindowId(newWindowId)
   return newWindowId
 }
 
