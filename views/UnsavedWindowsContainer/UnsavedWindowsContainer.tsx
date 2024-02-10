@@ -1,14 +1,12 @@
 import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
-import createNewSession from "~actions/createNewSession"
-import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import { StoreKeys, type UnsavedWindow } from "~utils/types"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import refreshOpenSessions from "~actions/refreshOpenSessions"
 import { WINDOWID_NONE } from "~utils/constants"
+import actions from "~actions"
 
 const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
@@ -23,9 +21,9 @@ const UnsavedWindowsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
-    await createNewSession({ windowId: window.id })
-    refreshUnsavedWindows()
-    refreshOpenSessions()
+    await actions.session.create({ windowId: window.id })
+    actions.window.refreshUnsavedWindows()
+    actions.session.refreshOpens()
   }
 
   const setCurrentWindow = async () => {

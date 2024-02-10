@@ -4,11 +4,11 @@ import { Theme, type WindowState, type BackupIntervalTime, StoreKeys } from '~ut
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
-import { MdChevronRight, MdFavoriteBorder } from 'react-icons/md'
-import runIntervalBakcups from '~actions/runIntervalBackups'
+import { MdChevronRight } from 'react-icons/md'
 import Store from '~store'
 import useSettings from '~hooks/useSettings'
 import { useNavigate } from 'react-router-dom'
+import actions from '~actions'
 
 const SettignsView = () => {
   const settings = useSettings()
@@ -47,12 +47,6 @@ const SettignsView = () => {
       <div className='view-title'>Settings</div>
       <div className="items-container">
 
-        <div className="item nav" onClick={() => nav('/donation')}>
-          <MdFavoriteBorder className='heart-icon'/>
-          <div className="title">Donation</div>
-          <MdChevronRight />
-        </div>
-
         <div className="item">
           <div className="title">Theme</div>
           <Dropdown
@@ -79,7 +73,7 @@ const SettignsView = () => {
                 .then(() => {
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
-                    runIntervalBakcups()
+                    actions.backup.runInterval()
                   }
                 })
             }}

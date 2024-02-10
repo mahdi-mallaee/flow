@@ -1,24 +1,20 @@
-import openSession from "~actions/openSession"
 import { type Session, type Tab } from "~utils/types"
-import refreshUnsavedWindows from "./refreshUnsavedWindows"
-import refreshLastClosedWindow from "./refreshLastClosedWindow"
-import refreshOpenSessions from "./refreshOpenSessions"
-import Store from "~store"
-import getTabsByWindowId from "./getTabsByWindowId"
+import store from "~store"
+import actions from "~actions"
 
 const openFirstSession = async () => {
-  const sessions = await Store.sessions.getAll()
+  const sessions = await store.sessions.getAll()
   const mainSession = sessions.find(session => session.main === true)
-  const lastClosedWindowId = await Store.lastClosedWindow.getId()
+  const lastClosedWindowId = await store.lastClosedWindow.getId()
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
 
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      const windowTabs = await getTabsByWindowId(windows[0].id)
-      
+      const windowTabs = await actions.window.getTabs(windows[0].id)
+
       if (compareTabs(windowTabs, mainSession.tabs)) {
-        await Store.sessions.changeWindowId(mainSession.id, windows[0].id)
+        await store.sessions.changeWindowId(mainSession.id, windows[0].id)
       } else {
         await openMainSession(mainSession)
       }
@@ -28,20 +24,20 @@ const openFirstSession = async () => {
   } else if (lastSession) {
     const windows = await chrome.windows.getAll()
     if (windows && windows.length === 1) {
-      const windowTabs = await getTabsByWindowId(windows[0].id)
+      const windowTabs = await actions.window.getTabs(windows[0].id)
       if (compareTabs(windowTabs, lastSession.tabs)) {
-        await Store.sessions.changeWindowId(lastSession.id, windows[0].id)
+        await store.sessions.changeWindowId(lastSession.id, windows[0].id)
       }
     }
   }
-  
-  await refreshLastClosedWindow()
-  await refreshOpenSessions()
-  await refreshUnsavedWindows()
+
+  await actions.window.refreshLastClosedWindow()
+  await actions.session.refreshOpens()
+  await actions.window.refreshUnsavedWindows()
 }
 
 const openMainSession = async (mainSession: Session) => {
-  const newWindowId = await openSession(mainSession.id)
+  const newWindowId = await actions.session.open(mainSession.id)
   const windows = await chrome.windows.getAll()
   for (const window of windows) {
     if (window.id !== newWindowId) {

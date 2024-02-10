@@ -1,12 +1,12 @@
+import actions from "~actions"
 import type { Backup } from "~utils/types"
-import createNewBackup from "./createNewBackup"
 
 const uploadBackup = (file: File, onError: (msg: string) => void) => {
   const reader = new FileReader()
   reader.onload = function (event) {
     const data: Backup = JSON.parse(event.target.result.toString())
     if (checkFile(data, onError)) {
-      createNewBackup({ status: 'upload', sessions: data.sessions, title: data.title })
+      actions.backup.create({ status: 'upload', sessions: data.sessions, title: data.title })
     }
 
   }

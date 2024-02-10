@@ -3,8 +3,8 @@ import { WINDOWID_NONE } from "~utils/constants"
 import { StoreKeys } from "~utils/types"
 
 const getLastClosedWindowIdStore = async (): Promise<number> => {
-  const store = new Storage({ area: "local" })
-  const id: number = await store.get(StoreKeys.lastClosedWindowId) || WINDOWID_NONE
+  const localStorage = new Storage({ area: "local" })
+  const id: number = await localStorage.get(StoreKeys.lastClosedWindowId) || WINDOWID_NONE
   return id
 }
 

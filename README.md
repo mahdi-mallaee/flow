@@ -15,7 +15,7 @@ first clone the project
 > git clone https://github.com/mahdi-mallaee/future-tabs.git
 
 then install the packages
-> npm i
+> pnpm i
 
 dev server command
 > npm run dev

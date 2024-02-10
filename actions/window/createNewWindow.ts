@@ -1,8 +1,8 @@
-import Store from "~store"
+import store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
 
 const createNewWindow = async (urls?: string[]): Promise<number> => {
-  const settings = await Store.settings.getAll()
+  const settings = await store.settings.getAll()
   let id: number = WINDOWID_NONE
   const window = await chrome.windows.create({ state: settings.newSessionWindowState, url: urls })
   if (window.id) {

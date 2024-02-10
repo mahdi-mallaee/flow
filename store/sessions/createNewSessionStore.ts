@@ -3,11 +3,11 @@ import { type Session, SessionsKeys, type BasicSession, type SessionOpenStatus, 
 import refreshSessionsStatusStore from "./refreshSessionsStatusStore";
 
 const createNewSessionStore = async (session: Session) => {
-  const store = new Storage({ area: "local" })
+  const localStorage = new Storage({ area: "local" })
 
-  let basicSessions: BasicSession[] = await store.get(SessionsKeys.basic) || []
-  let sessionsOpenStatus: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
-  let sessionsTabs: SessionTabsStore[] = await store.get(SessionsKeys.tab) || []
+  let basicSessions: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
+  let sessionsOpenStatus: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
+  let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
 
   const newBasicSessions = {
     id: session.id,
@@ -30,9 +30,9 @@ const createNewSessionStore = async (session: Session) => {
   }
   sessionsTabs = [newSessionsTabs, ...sessionsTabs]
 
-  await store.set(SessionsKeys.basic, basicSessions)
-  await store.set(SessionsKeys.open, sessionsOpenStatus)
-  await store.set(SessionsKeys.tab, sessionsTabs)
+  await localStorage.set(SessionsKeys.basic, basicSessions)
+  await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
+  await localStorage.set(SessionsKeys.tab, sessionsTabs)
   await refreshSessionsStatusStore()
 }
 
