@@ -3,8 +3,8 @@ import { DEFAULT_SETTINGS } from "~utils/constants"
 import { StoreKeys } from "~utils/types"
 
 const resetAllSettingsStore = async () => {
-  const store = new Storage({ area: 'local' })
-  await store.set(StoreKeys.settings, DEFAULT_SETTINGS)
+  const localStorage = new Storage({ area: 'local' })
+  await localStorage.set(StoreKeys.settings, DEFAULT_SETTINGS)
 }
 
 export default resetAllSettingsStore

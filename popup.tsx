@@ -1,15 +1,12 @@
 import './index.scss'
-import './utils/colors.scss'
 import { useStorage } from "@plasmohq/storage/hook"
 import { Storage } from "@plasmohq/storage"
 import ThemeProvider from "~components/ThemeProvider"
 import { useEffect, useRef, useState } from 'react'
 import MainContent from '~components/MainContent/MainContent'
-import refreshLastClosedWindow from '~actions/refreshLastClosedWindow'
-import refreshOpenSessions from '~actions/refreshOpenSessions'
-import refreshUnsavedWindows from '~actions/refreshUnsavedWindows'
 import { MemoryRouter } from 'react-router-dom'
 import { DEFAULT_MAIN_CONTAINER_HEIGHT } from '~utils/constants'
+import actions from '~actions'
 
 const IndexPopup = () => {
   const [containerHeight, setContainerHeight] = useState(DEFAULT_MAIN_CONTAINER_HEIGHT)
@@ -32,9 +29,9 @@ const IndexPopup = () => {
     })
     observer.observe(ref.current)
 
-    refreshLastClosedWindow()
-    refreshOpenSessions()
-    refreshUnsavedWindows()
+    actions.window.refreshLastClosedWindow()
+    actions.session.refreshOpens()
+    actions.window.refreshUnsavedWindows()
     return () => {
       observer.disconnect()
     }

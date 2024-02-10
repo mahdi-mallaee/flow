@@ -4,12 +4,11 @@ import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
 import { useEffect, useState } from "react"
 import { MdAdd, MdClose, MdDone, MdUploadFile } from "react-icons/md"
-import createNewBackup from "~actions/createNewBackup"
 import { AnimatePresence, motion } from "framer-motion"
-import uploadBackup from "~actions/uploadBackup"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
 import BackupCard from "~components/BackupCard"
 import useAlertMessage from "~hooks/useAlertMessage"
+import actions from "~actions"
 
 const BackupsView = ({ }) => {
 
@@ -27,7 +26,7 @@ const BackupsView = ({ }) => {
   const [loadedBackupId, setLoadedBackupId] = useState('')
 
   const _createNewBackup = async () => {
-    await createNewBackup({
+    await actions.backup.create({
       status: 'manual',
       title: backupTitleInput
     })
@@ -37,6 +36,10 @@ const BackupsView = ({ }) => {
 
   const onUploadError = (msg: string) => {
     showAlert({ text: msg, type: 'error' })
+  }
+
+  const uploadBackupHandler = (file: File) => {
+    actions.backup.upload(file, onUploadError)
   }
 
   const [initialAnimation, setInitialAnimation] = useState(false)
@@ -72,7 +75,7 @@ const BackupsView = ({ }) => {
         }
         <div className="file-input-container">
           <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
-          <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackup(event.target.files[0], onUploadError)} />
+          <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackupHandler(event.target.files[0])} />
         </div>
         <AnimatePresence>
           {

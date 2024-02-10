@@ -7,7 +7,7 @@ const setAllSessionsStore = async (sessions: Session[]) => {
     return
   }
 
-  const store = new Storage({ area: 'local' })
+  const localStorage = new Storage({ area: 'local' })
 
   const basicSessions: BasicSession[] = sessions.map(s => {
     return {
@@ -33,9 +33,9 @@ const setAllSessionsStore = async (sessions: Session[]) => {
     }
   })
 
-  await store.set(SessionsKeys.basic, basicSessions)
-  await store.set(SessionsKeys.open, sessionsOpenStatus)
-  await store.set(SessionsKeys.tab, sessionsTabs)
+  await localStorage.set(SessionsKeys.basic, basicSessions)
+  await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
+  await localStorage.set(SessionsKeys.tab, sessionsTabs)
   await refreshSessionsStatusStore()
 }
 export default setAllSessionsStore

@@ -1,6 +1,5 @@
-import getTabsByWindowId from "./getTabsByWindowId"
-import Store from "~store"
-import refreshUnsavedWindows from "./refreshUnsavedWindows"
+import actions from "~actions"
+import store from "~store"
 import type { UnsavedWindow } from "~utils/types"
 
 /*
@@ -9,26 +8,26 @@ import type { UnsavedWindow } from "~utils/types"
 */
 
 const refreshTabs = async () => {
-  const sessions = await Store.sessions.getAllOpenStatus()
+  const sessions = await store.sessions.getAllOpenStatus()
 
   for (const session of sessions) {
     if (session.isOpen) {
-      const tabs = await getTabsByWindowId(session.windowId)
+      const tabs = await actions.window.getTabs(session.windowId)
       if (tabs && tabs.length > 0) {
-        await Store.sessions.saveTabs(session.sessionId, tabs)
+        await store.sessions.saveTabs(session.sessionId, tabs)
       }
     }
   }
 
-  const unsavedWindows: UnsavedWindow[] = await refreshUnsavedWindows(true)
+  const unsavedWindows: UnsavedWindow[] = await actions.window.refreshUnsavedWindows(true)
   for (const window of unsavedWindows) {
-    const tabs = await getTabsByWindowId(window.id)
+    const tabs = await actions.window.getTabs(window.id)
     if (tabs && tabs.length > 0) {
       window.tabsCount = tabs.length
     }
   }
 
-  await Store.unsavedWindows.setAll(unsavedWindows)
+  await store.unsavedWindows.setAll(unsavedWindows)
 }
 
 export default refreshTabs

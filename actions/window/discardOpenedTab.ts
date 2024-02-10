@@ -1,4 +1,4 @@
-import Store from "~store"
+import store from "~store"
 import type { OpenedTab } from "~utils/types"
 
 /*
@@ -7,7 +7,7 @@ import type { OpenedTab } from "~utils/types"
 */
 
 const discardOpenedTab = async (id: number,) => {
-  const openedTabs: OpenedTab[] = await Store.openedTabs.get()
+  const openedTabs: OpenedTab[] = await store.openedTabs.get()
   if (openedTabs && openedTabs.length >= 1) {
     const tab = openedTabs.find(ot => ot.id === id)
     if (tab && id && !tab.discarded) {
@@ -25,7 +25,7 @@ const discardOpenedTab = async (id: number,) => {
       }
       tab.discarded = true
     }
-    await Store.openedTabs.set(openedTabs)
+    await store.openedTabs.set(openedTabs)
   }
 }
 

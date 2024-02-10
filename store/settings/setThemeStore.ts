@@ -3,12 +3,11 @@ import { DEFAULT_SETTINGS } from "~utils/constants";
 import { StoreKeys, type Settings, type Theme } from "~utils/types";
 
 const setThemeStore = async (theme: Theme) => {
-  const store = new Storage({ area: "local" })
-  const settings: Settings = await store.get(StoreKeys.settings) || DEFAULT_SETTINGS
+  const localStorage = new Storage({ area: "local" })
+  const settings: Settings = await localStorage.get(StoreKeys.settings) || DEFAULT_SETTINGS
   const newSettings: Settings = { ...settings, theme }
-  console.log(newSettings)
 
-  await store.set(StoreKeys.settings, newSettings)
+  await localStorage.set(StoreKeys.settings, newSettings)
 }
 
 export default setThemeStore
