@@ -1,12 +1,12 @@
 import { Storage } from "@plasmohq/storage"
-import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
-import Store from "~store"
+import actions from "~actions"
+import store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
 import { StoreKeys, type Backup } from "~utils/types"
 
 const loadBackupStore = async (id: string) => {
-  const store = new Storage({ area: 'local' })
-  let backups: Backup[] = await store.get(StoreKeys.backups) || []
+  const localStorage = new Storage({ area: 'local' })
+  let backups: Backup[] = await localStorage.get(StoreKeys.backups) || []
   const index = backups.findIndex(b => b.id === id)
   const backup = index >= 0 ? backups[index] : undefined
 
@@ -16,8 +16,8 @@ const loadBackupStore = async (id: string) => {
       session.isOpen = false
       session.windowId = WINDOWID_NONE
     })
-    await Store.sessions.setAll(backup.sessions)
-    await refreshUnsavedWindows()
+    await store.sessions.setAll(backup.sessions)
+    await actions.window.refreshUnsavedWindows()
   }
 }
 

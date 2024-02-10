@@ -3,8 +3,8 @@ import { v4 } from "uuid"
 import { StoreKeys } from "~utils/types"
 
 const refreshSessionsStatusStore = async () => {
-  const store = new Storage({ area: 'local' })
-  await store.set(StoreKeys.sessionsStatusId, v4())
+  const localStorage = new Storage({ area: 'local' })
+  await localStorage.set(StoreKeys.sessionsStatusId, v4())
 }
 
 export default refreshSessionsStatusStore

@@ -3,10 +3,10 @@ import { SessionsKeys, type BasicSession, type SessionOpenStatus, type SessionTa
 import refreshSessionsStatusStore from "./refreshSessionsStatusStore"
 
 const deleteSessionStore = async (sessionId: string) => {
-  const store = new Storage({ area: 'local' })
-  let basics: BasicSession[] = await store.get(SessionsKeys.basic) || []
-  let opens: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
-  let sessionsTabs: SessionTabsStore[] = await store.get(SessionsKeys.tab) || []
+  const localStorage = new Storage({ area: 'local' })
+  let basics: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
+  let opens: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
+  let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
 
   const basicsIndex = basics.findIndex(b => b.id === sessionId)
   const opensIndex = opens.findIndex(o => o.sessionId === sessionId)
@@ -23,9 +23,9 @@ const deleteSessionStore = async (sessionId: string) => {
     opens.splice(opensIndex, 1)
   }
 
-  await store.set(SessionsKeys.basic, basics)
-  await store.set(SessionsKeys.open, opens)
-  await store.set(SessionsKeys.tab, sessionsTabs)
+  await localStorage.set(SessionsKeys.basic, basics)
+  await localStorage.set(SessionsKeys.open, opens)
+  await localStorage.set(SessionsKeys.tab, sessionsTabs)
   await refreshSessionsStatusStore()
 }
 

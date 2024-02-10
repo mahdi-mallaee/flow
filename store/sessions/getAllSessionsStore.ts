@@ -3,10 +3,10 @@ import { WINDOWID_NONE } from "~utils/constants";
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types";
 
 const getAllSessionsStore = async (): Promise<Session[]> => {
-  const store = new Storage({ area: 'local' })
-  let basics: BasicSession[] = await store.get(SessionsKeys.basic) || []
-  let opens: SessionOpenStatus[] = await store.get(SessionsKeys.open) || []
-  let sessionsTabs: SessionTabsStore[] = await store.get(SessionsKeys.tab) || []
+  const localStorage = new Storage({ area: 'local' })
+  let basics: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
+  let opens: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
+  let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
 
   const sessions: Session[] = []
 

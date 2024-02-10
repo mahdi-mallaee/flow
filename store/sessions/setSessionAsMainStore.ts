@@ -3,8 +3,8 @@ import { SessionsKeys, type BasicSession } from "~utils/types"
 import refreshSessionsStatusStore from "./refreshSessionsStatusStore"
 
 const setSessionAsMainStore = async (sessionId: string) => {
-  const store = new Storage({ area: 'local' })
-  const basicSessions: BasicSession[] = await store.get(SessionsKeys.basic) || []
+  const localStorage = new Storage({ area: 'local' })
+  const basicSessions: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
   const newBasicSessions = basicSessions.map(session => {
     if (session.id === sessionId) {
       session.main = !session.main
@@ -14,7 +14,7 @@ const setSessionAsMainStore = async (sessionId: string) => {
     return session
   })
 
-  await store.set(SessionsKeys.basic, newBasicSessions)
+  await localStorage.set(SessionsKeys.basic, newBasicSessions)
   await refreshSessionsStatusStore()
 
 }

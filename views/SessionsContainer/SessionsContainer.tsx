@@ -1,18 +1,15 @@
 import { MdAdd, MdClose, MdDone } from "react-icons/md"
-import createNewSession from "~actions/createNewSession"
-import openSession from "~actions/openSession"
 import SessionCard from "~components/SessionCard"
 import { type Session } from "~utils/types"
 import { useEffect, useState } from "react"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
-import createNewBackup from "~actions/createNewBackup"
-import Store from "~store"
+import store from "~store"
 import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
 import useAlertMessage from "~hooks/useAlertMessage"
-import refreshUnsavedWindows from "~actions/refreshUnsavedWindows"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
+import actions from "~actions"
 
 const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -25,12 +22,12 @@ const SessionsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {
-    Store.sessions.setAsMain(id)
+    store.sessions.setAsMain(id)
   }
 
   const deleteSession = async (session: Session) => {
     if (settings.createBackupBeforeSessionDelete) {
-      createNewBackup({
+      actions.backup.create({
         status: 'before deleting session',
         relatedItem: {
           title: session.title,
@@ -38,8 +35,8 @@ const SessionsContainer = () => {
         }
       })
     }
-    await Store.sessions.delete(session.id)
-    refreshUnsavedWindows()
+    await store.sessions.delete(session.id)
+    actions.window.refreshUnsavedWindows()
   }
 
   const editSession = async (id: string, title: string, callBack: Function) => {
@@ -53,7 +50,7 @@ const SessionsContainer = () => {
         return
       }
 
-      await Store.sessions.editTitle(id, title)
+      await store.sessions.editTitle(id, title)
     }
     callBack()
   }
@@ -72,7 +69,7 @@ const SessionsContainer = () => {
       return
     }
 
-    await createNewSession({ title: sessionTitleInput })
+    await actions.session.create({ title: sessionTitleInput })
 
     setGettingSessionName(false)
     setSessionTitleInput('')
@@ -80,7 +77,7 @@ const SessionsContainer = () => {
 
   const sessionClickHandler = async (session: Session) => {
     if (!session.isOpen) {
-      await openSession(session.id)
+      await actions.session.open(session.id)
     } else {
       showAlert({
         text: 'This session is already open',

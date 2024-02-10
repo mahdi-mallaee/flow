@@ -5,10 +5,10 @@ import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight, MdFavoriteBorder } from 'react-icons/md'
-import runIntervalBakcups from '~actions/runIntervalBackups'
 import Store from '~store'
 import useSettings from '~hooks/useSettings'
 import { useNavigate } from 'react-router-dom'
+import actions from '~actions'
 
 const SettignsView = () => {
   const settings = useSettings()
@@ -79,7 +79,7 @@ const SettignsView = () => {
                 .then(() => {
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
-                    runIntervalBakcups()
+                    actions.backup.runInterval()
                   }
                 })
             }}

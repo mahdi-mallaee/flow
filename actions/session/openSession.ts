@@ -1,28 +1,27 @@
-import createNewWindow from "./createNewWindow";
 import { type OpenedTab, type Tab } from "~utils/types";
-import getTabsByWindowId from "./getTabsByWindowId";
-import Store from "~store";
-import refreshUnsavedWindows from "./refreshUnsavedWindows";
+import store from "~store";
+import actions from "~actions";
 
 const openSession = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
 
-  const tabs: Tab[] = await Store.sessions.getTabs(sessionId)
-  const newWindowId = await createNewWindow(tabs.map(t => { return t.url }))
-  const windowTabs = await getTabsByWindowId(newWindowId)
+  const tabs: Tab[] = await store.sessions.getTabs(sessionId)
+  const newWindowId = await actions.window.create(tabs.map(t => { return t.url }))
+  const windowTabs = await actions.window.getTabs(newWindowId)
 
-  await Store.sessions.saveTabs(sessionId, windowTabs)
-  await Store.sessions.changeOpenStatus(sessionId, true)
-  await Store.sessions.changeWindowId(sessionId, newWindowId)
+  await store.sessions.saveTabs(sessionId, windowTabs)
+  await store.sessions.changeOpenStatus(sessionId, true)
+  await store.sessions.changeWindowId(sessionId, newWindowId)
 
   setOpenTabs(windowTabs)
-  await groupTabs(tabs, windowTabs, newWindowId, startTime)
-  refreshUnsavedWindows()
+  await groupTabs(tabs, windowTabs, newWindowId)
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
+  await actions.window.refreshUnsavedWindows()
+  await actions.window.changeRecentWindowId(newWindowId)
   return newWindowId
 }
 
-const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number, startTime: number) => {
+const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number) => {
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
@@ -52,7 +51,7 @@ const setOpenTabs = (windowTabs: Tab[]) => {
       openedTabs.push({ id: tab.id, discarded: false })
     }
   })
-  Store.openedTabs.set(openedTabs)
+  store.openedTabs.set(openedTabs)
 }
 
 export default openSession
