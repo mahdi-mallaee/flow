@@ -28,7 +28,8 @@ const createNewSession = async ({ windowId, title }: { windowId?: number, title?
     tabs,
     main: false,
     isOpen: isSessionOpen,
-    colorCode: Math.floor(Math.random() * 5) + 1
+    colorCode: Math.floor(Math.random() * 5) + 1,
+    groups: []
   }
 
   await store.sessions.create(session)

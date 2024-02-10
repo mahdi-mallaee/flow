@@ -4,16 +4,16 @@ import store from "~store"
 export { }
 
 chrome.tabGroups.onCreated.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(true)
 })
 chrome.tabGroups.onRemoved.addListener(() => {
   actions.session.refreshTabs()
 })
 chrome.tabGroups.onMoved.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(true)
 })
 chrome.tabGroups.onUpdated.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(true)
 })
 
 chrome.tabs.onCreated.addListener(() => {

@@ -1,4 +1,4 @@
-import { type OpenedTab, type Tab } from "~utils/types";
+import { type OpenedTab, type Tab, type TabGroup } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
 
@@ -8,20 +8,21 @@ const openSession = async (sessionId: string): Promise<number> => {
   const tabs: Tab[] = await store.sessions.getTabs(sessionId)
   const newWindowId = await actions.window.create(tabs.map(t => { return t.url }))
   const windowTabs = await actions.window.getTabs(newWindowId)
+  const groups = await store.sessions.getGroups(sessionId)
 
   await store.sessions.saveTabs(sessionId, windowTabs)
   await store.sessions.changeOpenStatus(sessionId, true)
   await store.sessions.changeWindowId(sessionId, newWindowId)
 
   setOpenTabs(windowTabs)
-  await groupTabs(tabs, windowTabs, newWindowId)
+  await groupTabs(groups, tabs, windowTabs, newWindowId)
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   await actions.window.refreshUnsavedWindows()
   await actions.window.changeRecentWindowId(newWindowId)
   return newWindowId
 }
 
-const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number) => {
+const _groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number) => {
   const groups = {}
   tabs.forEach(tab => {
     const key = tab.groupId.toString()
@@ -41,6 +42,19 @@ const groupTabs = async (tabs: Tab[], windowTabs: Tab[], newWindowId: number) =>
     } catch (erorr) {
       console.log(erorr)
     }
+  }
+}
+
+const groupTabs = async (groups: TabGroup[], tabs: Tab[], windowTabs: Tab[], windowId: number) => {
+  for (const group of groups) {
+    const tabIds: number[] = []
+    for (const tab of tabs) {
+      if (tab.groupId === group.id) {
+        tabIds.push(windowTabs[tab.index].id)
+      }
+    }
+    const groupId = await chrome.tabs.group({ tabIds, createProperties: { windowId } })
+    await chrome.tabGroups.update(groupId, { collapsed: group.collapsed, color: group.color, title: group.title })
   }
 }
 

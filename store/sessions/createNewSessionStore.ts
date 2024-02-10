@@ -14,6 +14,7 @@ const createNewSessionStore = async (session: Session) => {
     title: session.title,
     colorCode: session.colorCode,
     main: session.main,
+    groups: session.groups
   }
   basicSessions = [newBasicSessions, ...basicSessions]
 

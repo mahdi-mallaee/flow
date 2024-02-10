@@ -27,6 +27,8 @@ import getLastClosedWindowIdStore from "./lastClosedWindow/getLastClosedWindowId
 import setLastClosedWindowIdStore from "./lastClosedWindow/setLastClosedWindowIdStore"
 import changeUnsavedWindowAlertStatusStore from "./unsavedWindows/setUnsavedWindowAlertStatusStore"
 import getUnsavedWindowAlertStatusStore from "./unsavedWindows/getUnsavedWindowAlertStatusStore"
+import setSessionGroups from "./sessions/setSessionGroups"
+import getSessionGroups from "./sessions/getSessionGroups"
 
 const store = {
   sessions: {
@@ -41,7 +43,9 @@ const store = {
     setAsMain: setSessionAsMainStore,
     editTitle: editSessionTitleStore,
     setAll: setAllSessionsStore,
-    getAllOpenStatus: getAllSessionsOpenStatusStore
+    getAllOpenStatus: getAllSessionsOpenStatusStore,
+    setGroups: setSessionGroups,
+    getGroups: getSessionGroups
   },
   settings: {
     setTheme: setThemeStore,

@@ -8,7 +8,8 @@ export interface BasicSession {
   id: string,
   title: string,
   main: boolean,
-  colorCode: number
+  colorCode: number,
+  groups: TabGroup[]
 }
 
 export interface SessionOpenStatus {
@@ -27,6 +28,13 @@ export type Tab = {
   windowId: number,
   index: number,
   groupId: number,
+}
+
+export type TabGroup = {
+  id: number,
+  title: string,
+  color: chrome.tabGroups.ColorEnum,
+  collapsed: boolean
 }
 
 export type AlertMessage = {

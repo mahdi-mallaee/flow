@@ -7,11 +7,18 @@ import type { UnsavedWindow } from "~utils/types"
   saving tabs individualy by their event made a lot of problems so I just save them all after every event.
 */
 
-const refreshTabs = async () => {
+const refreshTabs = async (refreshGroups = false) => {
   const sessions = await store.sessions.getAllOpenStatus()
 
   for (const session of sessions) {
     if (session.isOpen) {
+      if (refreshGroups) {
+        const groups = await actions.window.getGroups(session.windowId)
+        if (groups) {
+          await store.sessions.setGroups(session.sessionId, groups)
+        }
+      }
+
       const tabs = await actions.window.getTabs(session.windowId)
       if (tabs && tabs.length > 0) {
         await store.sessions.saveTabs(session.sessionId, tabs)

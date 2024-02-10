@@ -14,7 +14,8 @@ const setAllSessionsStore = async (sessions: Session[]) => {
       id: s.id,
       colorCode: s.colorCode,
       main: s.main,
-      title: s.title
+      title: s.title,
+      groups: s.groups
     }
   })
 

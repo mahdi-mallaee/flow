@@ -15,6 +15,7 @@ import doesWindowIncludesTab from "./window/doesWindowIncludesTab"
 import createNewSession from "./session/createNewSession"
 import runIntervalBakcups from "./backup/runIntervalBackups"
 import changeRecentWindowId from "./window/changeRecentWindowId"
+import getGroupsByWindowId from "./window/getGroupsByWindowId"
 
 const actions = {
   backup: {
@@ -34,6 +35,7 @@ const actions = {
     create: createNewWindow,
     discardOpenedTab: discardOpenedTab,
     getTabs: getTabsByWindowId,
+    getGroups: getGroupsByWindowId,
     refreshUnsavedWindows: refreshUnsavedWindows,
     isUnsaved: isWindowUnsaved,
     refreshLastClosedWindow: refreshLastClosedWindow,
