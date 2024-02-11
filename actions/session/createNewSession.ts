@@ -3,13 +3,14 @@ import { type Session } from "../../utils/types";
 import store from "~store";
 import { WINDOWID_NONE } from "~utils/constants";
 import actions from "~actions";
+import windowIdCheck from "~actions/checkWindowId";
 
 const createNewSession = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<Session> => {
   const settings = await store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
 
-  if (windowId && windowId > 0) {
+  if (windowIdCheck(windowId)) {
     isSessionOpen = true
   } else {
     if (createWindow) {

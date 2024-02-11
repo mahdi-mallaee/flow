@@ -16,7 +16,7 @@ const UnsavedWindowsContainer = () => {
     })
   }, [])
 
-  const [currentWindowId, setCurrentWindowId] = useState(WINDOWID_NONE)
+  const [currentWindowId, setCurrentWindowId] = useState<number>(WINDOWID_NONE)
 
   const [initialAnimation, setInitialAnimation] = useState(false)
 

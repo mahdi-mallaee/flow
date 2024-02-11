@@ -48,6 +48,7 @@ export type Settings = {
   createWindowForNewSession: boolean,
   autoBackupsInterval: BackupIntervalTime,
   createBackupBeforeSessionDelete: boolean,
+  deleteNewTabsWhenOpeningSession: boolean,
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'

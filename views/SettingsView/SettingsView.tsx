@@ -98,6 +98,12 @@ const SettignsView = () => {
             onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
         </div>
 
+        <div className="item">
+          <div className="title">Delete empty tabs when opening a session</div>
+          <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
+            onChange={(checked) => Store.settings.setDeleteNewTabsWhenOpeningSession(checked)} />
+        </div>
+
         <div className="item nav" onClick={() => nav('/backups')}>
           <div className="title">Backups</div>
           <MdChevronRight />

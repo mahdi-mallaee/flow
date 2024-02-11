@@ -29,6 +29,7 @@ import changeUnsavedWindowAlertStatusStore from "./unsavedWindows/setUnsavedWind
 import getUnsavedWindowAlertStatusStore from "./unsavedWindows/getUnsavedWindowAlertStatusStore"
 import setSessionGroups from "./sessions/setSessionGroups"
 import getSessionGroups from "./sessions/getSessionGroups"
+import setDeleteNewTabsWhenOpeningSessionStore from "./settings/setDeleteNewTabsWhenOpeningSessionStore"
 
 const store = {
   sessions: {
@@ -53,6 +54,7 @@ const store = {
     reset: resetAllSettingsStore,
     setWindowState: setWindowStateStore,
     setCreateWindowForNewSession: setCreateWindowForNewSessionStore,
+    setDeleteNewTabsWhenOpeningSession:setDeleteNewTabsWhenOpeningSessionStore,
     backups: {
       setInterval: setBackupIntervalStore,
       setCreateBeforeSessionDelete: setCreateBackupBeforeSessionDeleteStore,
