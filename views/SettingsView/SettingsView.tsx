@@ -75,7 +75,7 @@ const SettignsView = () => {
             value={settings.autoBackupsInterval}
             options={autoBackupsIntervalDropdownOptions}
             onChange={(option: BackupIntervalTime) => {
-              Store.settings.backups.setInterval(option)
+              Store.settings.setBackupInterval(option)
                 .then(() => {
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
@@ -95,7 +95,7 @@ const SettignsView = () => {
         <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
           <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-            onChange={(checked) => Store.settings.backups.setCreateBeforeSessionDelete(checked)} />
+            onChange={(checked) => Store.settings.setBackupCreationBeforeSessionDelete(checked)} />
         </div>
 
         <div className="item">

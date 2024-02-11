@@ -85,7 +85,7 @@ chrome.runtime.onStartup.addListener(() => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'alert-ready' && sender.tab) {
-    store.unsavedWindows.getAlertId()
+    store.windows.getUnsavedWindowAlertStatus()
       .then(res => {
         if (!res.alertShown) {
           actions.window.includesTab(res.windowId, sender.tab.id)

@@ -10,9 +10,9 @@ const open = async (sessionId: string): Promise<number> => {
   const windowTabs = await actions.window.getTabs(newWindowId)
   const groups = await store.sessions.getGroups(sessionId)
 
-  await store.sessions.saveTabs(sessionId, windowTabs)
-  await store.sessions.changeOpenStatus(sessionId, true)
-  await store.sessions.changeWindowId(sessionId, newWindowId)
+  await store.sessions.setTabs(sessionId, windowTabs)
+  await store.sessions.setOpenStatus(sessionId, true)
+  await store.sessions.changeSessionWindowIdStore(sessionId, newWindowId)
 
   setOpenTabs(windowTabs)
   await groupTabs(groups, sessionTabs, windowTabs, newWindowId)
@@ -42,7 +42,7 @@ const setOpenTabs = (windowTabs: Tab[]) => {
       openedTabs.push({ id: tab.id, discarded: false })
     }
   })
-  store.openedTabs.set(openedTabs)
+  store.windows.setOpenedTabs(openedTabs)
 }
 
 export default open

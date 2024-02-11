@@ -11,9 +11,9 @@ const refreshLastClosedWindow = async () => {
   const windows = await chrome.windows.getAll()
   if (windows) {
     if (windows.length === 1) {
-      await store.lastClosedWindow.setId(windows[0].id)
+      await store.windows.setLastClosedWindowId(windows[0].id)
     } else {
-      await store.lastClosedWindow.setId(WINDOWID_NONE)
+      await store.windows.setLastClosedWindowId(WINDOWID_NONE)
     }
   }
 }

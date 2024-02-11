@@ -8,7 +8,7 @@ import type { UnsavedWindow } from "~utils/types"
 */
 
 const refreshTabs = async (refreshGroups = false) => {
-  const sessions = await store.sessions.getAllOpenStatus()
+  const sessions = await store.sessions.getOpenStatus()
 
   for (const session of sessions) {
     if (session.isOpen) {
@@ -21,7 +21,7 @@ const refreshTabs = async (refreshGroups = false) => {
 
       const tabs = await actions.window.getTabs(session.windowId)
       if (tabs && tabs.length > 0) {
-        await store.sessions.saveTabs(session.sessionId, tabs)
+        await store.sessions.setTabs(session.sessionId, tabs)
       }
     }
   }
@@ -34,7 +34,7 @@ const refreshTabs = async (refreshGroups = false) => {
     }
   }
 
-  await store.unsavedWindows.setAll(unsavedWindows)
+  await store.windows.setUnsavedWindows(unsavedWindows)
 }
 
 export default refreshTabs

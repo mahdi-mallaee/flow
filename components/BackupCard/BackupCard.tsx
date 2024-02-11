@@ -9,7 +9,7 @@ const BackupCard = (
     { backup: Backup, loaded: boolean, setLoadedBackupId: React.Dispatch<React.SetStateAction<string>> }
 ) => {
   const removeBackup = (id: string) => {
-    store.backups.delete(id)
+    store.backups.remove(id)
   }
 
   const _loadBackup = async (id: string) => {

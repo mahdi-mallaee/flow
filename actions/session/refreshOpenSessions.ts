@@ -7,9 +7,9 @@ const refreshOpenSessions = async () => {
   for (const session of sessions) {
     const openWindowIndex = windows.findIndex(w => w.id === session.windowId)
     if (openWindowIndex >= 0) {
-      await store.sessions.changeOpenStatus(session.id, true)
+      await store.sessions.setOpenStatus(session.id, true)
     } else {
-      await store.sessions.changeOpenStatus(session.id, false)
+      await store.sessions.setOpenStatus(session.id, false)
     }
   }
 

@@ -35,7 +35,7 @@ const SessionsContainer = () => {
         }
       })
     }
-    await store.sessions.delete(session.id)
+    await store.sessions.remove(session.id)
     actions.window.refreshUnsavedWindows()
   }
 
