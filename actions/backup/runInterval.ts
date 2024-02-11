@@ -3,7 +3,7 @@ import { StoreKeys } from "~utils/types"
 import store from "~store"
 import actions from "~actions"
 
-const runIntervalBakcups = async () => {
+const runInterval = async () => {
   const localStorage = new Storage({ area: 'local' })
   const settings = await store.settings.getAll()
   const interval = Number.parseInt(settings.autoBackupsInterval) * 60 * 1000
@@ -20,4 +20,4 @@ const runIntervalBakcups = async () => {
 
 }
 
-export default runIntervalBakcups
+export default runInterval

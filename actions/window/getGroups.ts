@@ -1,6 +1,6 @@
 import type { TabGroup } from "~utils/types"
 
-const getGroupsByWindowId = async (windowId: number): Promise<TabGroup[]> => {
+const getGroups = async (windowId: number): Promise<TabGroup[]> => {
   const windowGroups = await chrome.tabGroups.query({ windowId })
   const groups: TabGroup[] = windowGroups.map(group => {
     return {
@@ -13,4 +13,4 @@ const getGroupsByWindowId = async (windowId: number): Promise<TabGroup[]> => {
   return groups || []
 }
 
-export default getGroupsByWindowId
+export default getGroups

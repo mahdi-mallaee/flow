@@ -1,8 +1,8 @@
-import windowIdCheck from "~actions/checkWindowId"
+import actions from "~actions"
 import store from "~store"
 import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants"
 
-const createNewWindow = async (urls?: string[]): Promise<number> => {
+const create = async (urls?: string[]): Promise<number> => {
   const settings = await store.settings.getAll()
   let id: number = WINDOWID_NONE
   urls = urls || []
@@ -12,17 +12,17 @@ const createNewWindow = async (urls?: string[]): Promise<number> => {
   }
 
   const window = await chrome.windows.create({ state: settings.newSessionWindowState, url: urls })
-  if (windowIdCheck(window.id)) {
+  if (actions.window.checkId(window.id)) {
     id = window.id
   }
 
   const lastTabId = window.tabs[window.tabs.length - 1].index
 
-  if (windowIdCheck(window.id) && lastTabId && lastTabId > 0) {
+  if (actions.window.checkId(window.id) && lastTabId && lastTabId > 0) {
     chrome.tabs.highlight({ tabs: lastTabId, windowId: window.id })
   }
 
   return id
 }
 
-export default createNewWindow
+export default create

@@ -1,6 +1,6 @@
 import type { Backup } from "~utils/types"
 
-const downloadBackup = async (backup: Backup) => {
+const download = async (backup: Backup) => {
   const backupJsonString = JSON.stringify(backup)
 
   const blob = new Blob([backupJsonString], { type: "application/json" })
@@ -15,4 +15,4 @@ const downloadBackup = async (backup: Backup) => {
   })
 }
 
-export default downloadBackup
+export default download

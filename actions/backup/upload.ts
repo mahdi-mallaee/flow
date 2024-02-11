@@ -1,7 +1,7 @@
 import actions from "~actions"
 import type { Backup } from "~utils/types"
 
-const uploadBackup = (file: File, onError: (msg: string) => void) => {
+const upload = (file: File, onError: (msg: string) => void) => {
   const reader = new FileReader()
   reader.onload = function (event) {
     const data: Backup = JSON.parse(event.target.result.toString())
@@ -44,4 +44,4 @@ const checkFile = (data: Backup, onError: (msg: string) => void): boolean => {
   return true
 }
 
-export default uploadBackup
+export default upload

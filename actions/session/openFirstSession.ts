@@ -32,7 +32,7 @@ const openFirstSession = async () => {
   }
 
   await actions.window.refreshLastClosedWindow()
-  await actions.session.refreshOpens()
+  await actions.session.refreshOpenSessions()
   await actions.window.refreshUnsavedWindows()
 }
 

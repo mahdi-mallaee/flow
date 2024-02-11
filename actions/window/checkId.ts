@@ -1,6 +1,6 @@
 import { WINDOWID_NONE } from "~utils/constants"
 
-const windowIdCheck = (id: number): boolean => {
+const checkId = (id: number): boolean => {
   if (typeof id !== 'number')
     return false
 
@@ -14,4 +14,4 @@ const windowIdCheck = (id: number): boolean => {
   return true
 }
 
-export default windowIdCheck
+export default checkId

@@ -55,7 +55,7 @@ chrome.tabs.onReplaced.addListener(() => {
 chrome.windows.onRemoved.addListener(() => {
   actions.window.refreshUnsavedWindows()
   actions.window.refreshLastClosedWindow()
-  actions.session.refreshOpens()
+  actions.session.refreshOpenSessions()
 })
 chrome.windows.onCreated.addListener((window) => {
   chrome.windows.getAll()
@@ -65,7 +65,7 @@ chrome.windows.onCreated.addListener((window) => {
           sometime the browser wont be closed completely so the runtime.onStartup wont run
           when there is only one window (happend on Mac OS) so I just run the openFirstSession here.
         */
-        actions.session.openFirst()
+        actions.session.openFirstSession()
           .then(() => {
             actions.window.changeRecentWindowId(window.id)
           })

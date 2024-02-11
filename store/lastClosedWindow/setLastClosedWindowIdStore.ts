@@ -1,10 +1,10 @@
 import { Storage } from "@plasmohq/storage"
-import windowIdCheck from "~actions/checkWindowId"
+import actions from "~actions"
 import { StoreKeys } from "~utils/types"
 
 const setLastClosedWindowIdStore = async (id: number) => {
   const localStorage = new Storage({ area: "local" })
-  if (windowIdCheck(id)) {
+  if (actions.window.checkId(id)) {
     await localStorage.set(StoreKeys.lastClosedWindowId, id)
   }
 }

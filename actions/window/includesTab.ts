@@ -1,6 +1,6 @@
 import actions from "~actions"
 
-const doesWindowIncludesTab = async (windowId: number, tabId: number): Promise<boolean> => {
+const includesTab = async (windowId: number, tabId: number): Promise<boolean> => {
   const tabs = windowId ? await actions.window.getTabs(windowId) : []
   if (tabs) {
     const ids = tabs.map(tab => { return tab.id })
@@ -11,4 +11,4 @@ const doesWindowIncludesTab = async (windowId: number, tabId: number): Promise<b
   return false
 }
 
-export default doesWindowIncludesTab
+export default includesTab

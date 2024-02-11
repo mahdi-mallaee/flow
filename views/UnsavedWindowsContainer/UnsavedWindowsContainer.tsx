@@ -23,7 +23,7 @@ const UnsavedWindowsContainer = () => {
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
     await actions.session.create({ windowId: window.id })
     actions.window.refreshUnsavedWindows()
-    actions.session.refreshOpens()
+    actions.session.refreshOpenSessions()
   }
 
   const setCurrentWindow = async () => {

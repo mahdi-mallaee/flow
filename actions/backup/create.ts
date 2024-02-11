@@ -12,7 +12,7 @@ type backupInput = {
   sessions?: Session[]
 }
 
-const createNewBackup = async ({ status, title, relatedItem, sessions }: backupInput) => {
+const create = async ({ status, title, relatedItem, sessions }: backupInput) => {
   sessions = sessions || await store.sessions.getAll()
 
   const newBackup: Backup = {
@@ -28,4 +28,4 @@ const createNewBackup = async ({ status, title, relatedItem, sessions }: backupI
 
 }
 
-export default createNewBackup
+export default create

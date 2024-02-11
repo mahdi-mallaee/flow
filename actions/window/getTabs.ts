@@ -1,6 +1,6 @@
 import type { Tab } from "~utils/types"
 
-const getTabsByWindowId = async (windowId: number): Promise<Tab[]> => {
+const getTabs = async (windowId: number): Promise<Tab[]> => {
   const chromeTabs = await chrome.tabs.query({ windowId })
   const tabs: Tab[] = chromeTabs.map(tab => {
     return {
@@ -14,4 +14,4 @@ const getTabsByWindowId = async (windowId: number): Promise<Tab[]> => {
   return tabs || []
 }
 
-export default getTabsByWindowId
+export default getTabs

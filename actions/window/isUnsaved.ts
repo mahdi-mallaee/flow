@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage"
 import { StoreKeys, type UnsavedWindow } from "~utils/types"
 
-const isWindowUnsaved = async (windowId: number): Promise<boolean> => {
+const isUnsaved = async (windowId: number): Promise<boolean> => {
   const localStorage = new Storage({ area: "local" })
   const unsavedWindows: UnsavedWindow[] = await localStorage.get(StoreKeys.unsavedWindows) || []
   const index = unsavedWindows.findIndex(w => w.id === windowId)
@@ -12,4 +12,4 @@ const isWindowUnsaved = async (windowId: number): Promise<boolean> => {
   return false
 }
 
-export default isWindowUnsaved
+export default isUnsaved

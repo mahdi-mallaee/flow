@@ -2,7 +2,7 @@ import { type OpenedTab, type Tab, type TabGroup } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
 
-const openSession = async (sessionId: string): Promise<number> => {
+const open = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
 
   const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
@@ -45,4 +45,4 @@ const setOpenTabs = (windowTabs: Tab[]) => {
   store.openedTabs.set(openedTabs)
 }
 
-export default openSession
+export default open
