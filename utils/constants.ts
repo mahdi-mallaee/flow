@@ -5,6 +5,7 @@ export const ALERT_MESSAGE_DURATION_MS = 4000
 export const INPUT_MAX_LENGTH = 25
 export const WINDOWID_NONE = chrome.windows.WINDOW_ID_NONE
 export const NEW_TAB_URL = "chrome://newtab/"
+export const EMAIL = "flow.extension@gmail.com"
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: Theme.osDefault,

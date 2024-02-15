@@ -1,15 +1,8 @@
-import { useState } from 'react'
+import CopyButton from '~components/CopyButton'
 import './AboutUsView.scss'
+import { EMAIL } from '~utils/constants'
 
 const AboutUsView = () => {
-  const [buttonText, sestButtonText] = useState('copy')
-
-  const copyEmailddress = () => {
-    const email = "flow.extension@gmail.com"
-    navigator.clipboard.writeText(email)
-    sestButtonText('copied!')
-  }
-
   return (
     <div className="about-us-view">
       <div className='view-title about-us-title'>About Us</div>
@@ -39,7 +32,7 @@ const AboutUsView = () => {
             <div className="title">Email :</div>
             <div>flow.extension@gmail.com</div>
           </div>
-          <div className='email-copy-button' onClick={copyEmailddress}>{buttonText}</div>
+          <CopyButton text={EMAIL}/>
         </div>
 
       </div>
