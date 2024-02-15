@@ -5,7 +5,7 @@
 
   .backups-container {
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
     display: flex;
 
     .file-input-container {

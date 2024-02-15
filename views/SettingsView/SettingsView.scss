@@ -6,7 +6,7 @@
   .items-container {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .item {
       flex-shrink: 0;
