@@ -5,7 +5,7 @@ import actions from "~actions"
 const openFirstSession = async () => {
   const sessions = await store.sessions.getAll()
   const mainSession = sessions.find(session => session.main === true)
-  const lastClosedWindowId = await store.lastClosedWindow.getId()
+  const lastClosedWindowId = await store.windows.getLastClosedWindowId()
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
 
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
@@ -14,7 +14,7 @@ const openFirstSession = async () => {
       const windowTabs = await actions.window.getTabs(windows[0].id)
 
       if (compareTabs(windowTabs, mainSession.tabs)) {
-        await store.sessions.changeWindowId(mainSession.id, windows[0].id)
+        await store.sessions.setWindowId(mainSession.id, windows[0].id)
       } else {
         await openMainSession(mainSession)
       }
@@ -26,7 +26,7 @@ const openFirstSession = async () => {
     if (windows && windows.length === 1) {
       const windowTabs = await actions.window.getTabs(windows[0].id)
       if (compareTabs(windowTabs, lastSession.tabs)) {
-        await store.sessions.changeWindowId(lastSession.id, windows[0].id)
+        await store.sessions.setWindowId(lastSession.id, windows[0].id)
       }
     }
   }

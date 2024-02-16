@@ -1,3 +1,4 @@
+import { NEW_TAB_URL } from "~utils/constants"
 import type { Tab } from "~utils/types"
 
 const getTabs = async (windowId: number): Promise<Tab[]> => {
@@ -5,7 +6,7 @@ const getTabs = async (windowId: number): Promise<Tab[]> => {
   const tabs: Tab[] = chromeTabs.map(tab => {
     return {
       id: tab.id,
-      url: tab.pendingUrl || tab.url || 'chrome://newtab',
+      url: tab.pendingUrl || tab.url || NEW_TAB_URL,
       windowId: tab.windowId,
       groupId: tab.groupId || -1,
       index: tab.index

@@ -31,9 +31,16 @@ const create = async (session: Session) => {
   }
   sessionsTabs = [newSessionsTabs, ...sessionsTabs]
 
+  /*
+    Sessions tabs new value is not set to local storage correctly.
+    Causing 'zero tab window' bug.
+    So for now i set sessionsTabs twice just to be sure
+  */
+  await localStorage.set(SessionsKeys.tab, sessionsTabs)
+  await localStorage.set(SessionsKeys.tab, sessionsTabs)
+
   await localStorage.set(SessionsKeys.basic, basicSessions)
   await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
-  await localStorage.set(SessionsKeys.tab, sessionsTabs)
   await refreshSessionStatus()
 }
 

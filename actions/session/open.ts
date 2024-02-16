@@ -12,7 +12,7 @@ const open = async (sessionId: string): Promise<number> => {
 
   await store.sessions.setTabs(sessionId, windowTabs)
   await store.sessions.setOpenStatus(sessionId, true)
-  await store.sessions.changeSessionWindowIdStore(sessionId, newWindowId)
+  await store.sessions.setWindowId(sessionId, newWindowId)
 
   setOpenTabs(windowTabs)
   await groupTabs(groups, sessionTabs, windowTabs, newWindowId)

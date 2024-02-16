@@ -21,7 +21,7 @@ const sessionsStore = {
   setOpenStatus,
   refreshSessionStatus,
   remove,
-  changeSessionWindowIdStore: setWindowId,
+  setWindowId,
   setAsMain,
   editTitle,
   setAll,
