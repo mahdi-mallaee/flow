@@ -2,6 +2,7 @@ import create from "./create"
 import editTitle from "./editTitle"
 import getAll from "./getAll"
 import getGroups from "./getGroups"
+import getNumbers from "./getNumbers"
 import getOpenStatus from "./getOpenStatus"
 import getTabs from "./getTabs"
 import refreshSessionStatus from "./refreshSessionStatus"
@@ -27,7 +28,8 @@ const sessionsStore = {
   setAll,
   getOpenStatus,
   setGroups,
-  getGroups
+  getGroups,
+  getNumbers
 }
 
 export default sessionsStore

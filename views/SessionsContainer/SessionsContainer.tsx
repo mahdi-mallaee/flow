@@ -10,6 +10,7 @@ import useSettings from "~hooks/useSettings"
 import useAlertMessage from "~hooks/useAlertMessage"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
 import actions from "~actions"
+import checkNumberLimit from "~actions/session/checkNumberLimit"
 
 const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -65,6 +66,14 @@ const SessionsContainer = () => {
       showAlert({
         text: 'Another session with this name already exists',
         type: 'info'
+      })
+      return
+    }
+    const checkLimit = await checkNumberLimit()
+    if (!checkLimit) {
+      showAlert({
+        text: "You've reached session numbers limit!",
+        type: 'warning'
       })
       return
     }
