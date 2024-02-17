@@ -3,12 +3,13 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
 import { useEffect, useState } from "react"
-import { MdAdd, MdClose, MdDone, MdUploadFile } from "react-icons/md"
+import { MdAdd, MdClose, MdDeleteOutline, MdDone, MdUploadFile } from "react-icons/md"
 import { AnimatePresence, motion } from "framer-motion"
-import { INPUT_MAX_LENGTH } from "~utils/constants"
+import { BACKUP_NUMBER_LIMIT, INPUT_MAX_LENGTH } from "~utils/constants"
 import BackupCard from "~components/BackupCard"
 import useAlertMessage from "~hooks/useAlertMessage"
 import actions from "~actions"
+import store from "~store"
 
 const BackupsView = ({ }) => {
 
@@ -22,6 +23,7 @@ const BackupsView = ({ }) => {
   const { renderAlert, showAlert } = useAlertMessage()
 
   const [getBackupName, setGetBackupName] = useState(false)
+  const [showDeleteBackups, setShowDeleteBackups] = useState(true)
   const [backupTitleInput, setBackupTitleInput] = useState('')
   const [loadedBackupId, setLoadedBackupId] = useState('')
 
@@ -40,6 +42,10 @@ const BackupsView = ({ }) => {
 
   const uploadBackupHandler = (file: File) => {
     actions.backup.upload(file, onUploadError)
+  }
+
+  const deleteAllBackupsHandler = () => {
+    store.backups.removeAll()
   }
 
   const [initialAnimation, setInitialAnimation] = useState(false)
@@ -77,6 +83,21 @@ const BackupsView = ({ }) => {
           <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
           <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackupHandler(event.target.files[0])} />
         </div>
+        <div className="delete-all-backups-container">
+          {showDeleteBackups ?
+            <div className="delete-button" onClick={() => setShowDeleteBackups(false)}>
+              <MdDeleteOutline></MdDeleteOutline>
+              Delete All Backups
+            </div>
+            :
+            <div className="confirmation-dialouge">
+              <span>This action is irreversible. Are you sure?</span>
+              <div className='close-delete-button' onClick={() => setShowDeleteBackups(true)}><MdClose /></div>
+              <div className='confirm-delete-button' onClick={deleteAllBackupsHandler}><MdDone /></div>
+            </div>
+          }
+        </div>
+        <div>Only {BACKUP_NUMBER_LIMIT} recent backups will be saved.</div>
         <AnimatePresence>
           {
             backups.map(backup => {

@@ -57,6 +57,65 @@
       }
     }
 
+    .delete-all-backups-container {
+      height: 42px;
+      width: 100%;
+      flex-shrink: 0;
+
+      .delete-button {
+        height: 100%;
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 12px;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          background-color: var(--background-hover-color);
+        }
+      }
+
+      .confirmation-dialouge {
+        height: 100%;
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        span {
+          flex-grow: 1;
+        }
+
+        .confirm-delete-button,
+        .close-delete-button {
+          padding: 6px 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          cursor: pointer;
+          flex-shrink: 0;
+
+          svg {
+            width: 14px;
+            height: 14px;
+          }
+
+          &:hover {
+            background-color: var(--icon-button-hover);
+            color: var(--on-icon-button-hover);
+          }
+        }
+      }
+
+    }
+
     .get-backup-title-container {
       flex-grow: 1;
       display: flex;
