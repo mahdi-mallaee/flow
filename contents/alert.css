@@ -1,6 +1,7 @@
 .newwindow-alert {
-  background-color: var(--background-color);
-  color: var(--on-background-color);
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  border: 1px solid var(--outline-color);
   right: 20px;
   top: 20px;
   padding: 15px;
@@ -19,7 +20,7 @@
 
 .close-alert,
 .save-session {
-  background-color: var(--surface-color);
+  background-color: var(--alert-error);
   color: var(--on-surface-color);
   border: 1px solid var(--outline-color);
   cursor: pointer;

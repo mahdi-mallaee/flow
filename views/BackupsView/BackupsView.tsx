@@ -61,6 +61,7 @@ const BackupsView = ({ }) => {
       {renderAlert()}
       <div className='view-title backups-title'>Backups</div>
       <div className="backups-container">
+      <div className="limit-number">Only {BACKUP_NUMBER_LIMIT} recent backups will be saved.</div>
         {getBackupName ?
           <div className="get-backup-title-container">
             <input maxLength={INPUT_MAX_LENGTH} autoFocus type="text" value={backupTitleInput} onChange={e => {
@@ -97,7 +98,6 @@ const BackupsView = ({ }) => {
             </div>
           }
         </div>
-        <div>Only {BACKUP_NUMBER_LIMIT} recent backups will be saved.</div>
         <AnimatePresence>
           {
             backups.map(backup => {
