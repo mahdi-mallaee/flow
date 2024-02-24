@@ -3,7 +3,7 @@ import { useStorage } from '@plasmohq/storage/hook';
 import css from 'data-text:./alert.css'
 import colors from 'data-text:./../utils/colors.css'
 import React, { useState, useEffect } from 'react';
-import { StoreKeys, type unsavedWindowAlertStatus } from '~utils/types';
+import { Message, StoreKeys, type unsavedWindowAlertStatus } from '~utils/types';
 import { AnimatePresence, motion } from 'framer-motion'
 import ThemeProvider from '~components/ThemeProvider';
 
@@ -25,8 +25,8 @@ const alert = () => {
     { windowId: -1, alertShown: false })
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ action: 'alert-ready' }, (response) => {
-      if (response.action === 'alert-go') {
+    chrome.runtime.sendMessage({ message: Message.alertReady }, ({ message }) => {
+      if (message === Message.alertGo) {
         setUIState('default')
         setAlertStatus(c => { return { ...c, alertShown: true } })
         setTimeout(() => {
@@ -37,8 +37,8 @@ const alert = () => {
   }, [alertStatus.windowId])
 
   const saveSessionHandler = () => {
-    chrome.runtime.sendMessage({ action: 'save-session', windowId: alertStatus.windowId }, (res) => {
-      if (res.message === 'saved') {
+    chrome.runtime.sendMessage({ message: Message.saveSession}, ({ message }) => {
+      if (message === Message.success) {
         setUIState('saved-session')
         setTimeout(() => {
           setUIState('closed')

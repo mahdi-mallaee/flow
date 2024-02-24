@@ -1,5 +1,6 @@
 import actions from "~actions"
 import store from "~store"
+import { Message } from "~utils/types"
 
 export { }
 
@@ -83,32 +84,32 @@ chrome.runtime.onStartup.addListener(() => {
 })
 
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'alert-ready' && sender.tab) {
+chrome.runtime.onMessage.addListener(({ message }: { message: Message }, sender, sendResponse) => {
+  if (message === Message.alertReady && sender.tab) {
     store.windows.getUnsavedWindowAlertStatus()
       .then(res => {
         if (!res.alertShown) {
           actions.window.includesTab(res.windowId, sender.tab.id)
             .then(include => {
               if (include) {
-                sendResponse({ action: 'alert-go' })
+                sendResponse({ message: Message.alertGo })
               }
             })
         }
       })
-  } else if (message.action === 'save-session') {
-    if (message.windowId && message.windowId > 0) {
+  } else if (message === Message.saveSession) {
+    if (actions.window.checkId(sender.tab.windowId)) {
       actions.session.checkNumberLimit()
         .then(res => {
           if (res) {
-            actions.session.create({ windowId: message.windowId })
-            sendResponse({ message: 'saved' })
+            actions.session.create({ windowId: sender.tab.windowId })
+            sendResponse({ message: Message.success })
           } else {
-            sendResponse({ message: 'not-saved' })
+            sendResponse({ message: Message.error })
           }
         })
     } else {
-      sendResponse({ message: 'not-saved' })
+      sendResponse({ message: Message.error })
     }
   }
 })

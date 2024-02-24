@@ -108,3 +108,11 @@ export type OpenedTab = {
   id: number,
   discarded: boolean
 }
+
+export enum Message {
+  alertReady = 'alert-ready',
+  alertGo = 'alert-go',
+  saveSession = 'save-session',
+  success = 'success',
+  error = 'error',
+}
