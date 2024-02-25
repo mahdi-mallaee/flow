@@ -53,16 +53,18 @@ sometime even though in browsers settings it is set to open the last window onSt
 the OS (happend on Mac OS) doesn't let the browser to open the last closed window.
 */
 const compareTabs = (windowTabs: Tab[], sessionTabs: Tab[]): boolean => {
-  // TODO: making a more reliable check
+  let result = true
   if (windowTabs.length !== sessionTabs.length) {
     return false
   }
 
-  if (windowTabs[0].url !== sessionTabs[0].url) {
-    return false
+  for (let i = 0; i < windowTabs.length; i++) {
+    if (windowTabs[i].url !== sessionTabs[i].url) {
+      result = false
+    }
   }
 
-  return true
+  return result
 }
 
 export default openFirstSession
