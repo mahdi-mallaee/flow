@@ -1,5 +1,4 @@
 import store from "~store"
-import { WINDOWID_NONE } from "~utils/constants"
 
 /*
   it runs in windows.onRemoved event and checks if there is only one window open or not
@@ -9,13 +8,9 @@ import { WINDOWID_NONE } from "~utils/constants"
 
 const refreshLastClosedWindow = async () => {
   const windows = await chrome.windows.getAll()
-  if (windows) {
-    if (windows.length === 1) {
-      await store.windows.setLastClosedWindowId(windows[0].id)
-    } else {
-      await store.windows.setLastClosedWindowId(WINDOWID_NONE)
-    }
+  if (windows && windows.length === 1) {
+    await store.windows.setLastClosedWindowId(windows[0].id)
   }
-}
+} 
 
 export default refreshLastClosedWindow
