@@ -25,8 +25,8 @@ const alert = () => {
     { windowId: -1, alertShown: false })
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ message: Message.alertReady }, ({ message }) => {
-      if (message === Message.alertGo) {
+    chrome.runtime.sendMessage({ message: Message.alertReady }, (response) => {
+      if (response && response.message === Message.alertGo) {
         setUIState('default')
         setAlertStatus(c => { return { ...c, alertShown: true } })
         setTimeout(() => {
@@ -37,8 +37,8 @@ const alert = () => {
   }, [alertStatus.windowId])
 
   const saveSessionHandler = () => {
-    chrome.runtime.sendMessage({ message: Message.saveSession}, ({ message }) => {
-      if (message === Message.success) {
+    chrome.runtime.sendMessage({ message: Message.saveSession }, (response) => {
+      if (response && response.message === Message.success) {
         setUIState('saved-session')
         setTimeout(() => {
           setUIState('closed')
