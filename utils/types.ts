@@ -28,6 +28,8 @@ export type Tab = {
   windowId: number,
   index: number,
   groupId: number,
+  title: string,
+  iconUrl: string,
 }
 
 export type TabGroup = {

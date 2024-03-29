@@ -21,6 +21,7 @@ const open = async (sessionId: string): Promise<number> => {
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   await actions.window.refreshUnsavedWindows()
   await actions.window.changeRecentWindowId(newWindowId)
+  await actions.session.openSessionsPage({ windowId: newWindowId })
   return newWindowId
 }
 

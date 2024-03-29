@@ -9,7 +9,9 @@ const getTabs = async (windowId: number): Promise<Tab[]> => {
       url: tab.pendingUrl || tab.url || NEW_TAB_URL,
       windowId: tab.windowId,
       groupId: tab.groupId || -1,
-      index: tab.index
+      index: tab.index,
+      iconUrl: tab.favIconUrl || '',
+      title: tab.title || ''
     }
   })
   return tabs || []
