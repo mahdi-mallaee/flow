@@ -1,6 +1,8 @@
-import { type OpenedTab, type Tab, type TabGroup } from "~utils/types";
+import { type Tab } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
+import groupTabs from "./groupTabs";
+import setOpenTabs from "./setOpenTabs";
 
 const open = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
@@ -20,29 +22,6 @@ const open = async (sessionId: string): Promise<number> => {
   await actions.window.refreshUnsavedWindows()
   await actions.window.changeRecentWindowId(newWindowId)
   return newWindowId
-}
-
-const groupTabs = async (groups: TabGroup[], tabs: Tab[], windowTabs: Tab[], windowId: number) => {
-  for (const group of groups) {
-    const tabIds: number[] = []
-    for (const tab of tabs) {
-      if (tab.groupId === group.id) {
-        tabIds.push(windowTabs[tab.index].id)
-      }
-    }
-    const groupId = await chrome.tabs.group({ tabIds, createProperties: { windowId } })
-    await chrome.tabGroups.update(groupId, { collapsed: group.collapsed, color: group.color, title: group.title })
-  }
-}
-
-const setOpenTabs = (windowTabs: Tab[]) => {
-  const openedTabs: OpenedTab[] = []
-  windowTabs.forEach((tab, i) => {
-    if (i < windowTabs.length - 1) {
-      openedTabs.push({ id: tab.id, discarded: false })
-    }
-  })
-  store.windows.setOpenedTabs(openedTabs)
 }
 
 export default open
