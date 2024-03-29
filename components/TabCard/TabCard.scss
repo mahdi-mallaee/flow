@@ -1,0 +1,38 @@
+.tab-card {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  height: 40px;
+  align-items: center;
+  // justify-content: center;
+  gap: 8px;
+
+  img {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      color: var(--on-background-color);
+      white-space: nowrap;
+      text-align: start;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px;
+    }
+
+    .url {
+      color: var(--on-background-variant-color);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
