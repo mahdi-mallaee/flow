@@ -5,8 +5,9 @@ import TabCard from "~components/TabCard"
 import { useEffect, useState, } from "react"
 import type { Session } from "~utils/types"
 import Logo from "~components/Logo"
-import { MdOutlineDelete, MdOutlineEdit, MdOutlinePushPin, MdSearch, MdTune } from "react-icons/md"
-import TabSearchResults from "~components/tabSearchResults"
+import { MdTune } from "react-icons/md"
+import TabSearchResults from "~components/TabSearchResults"
+import Toolbar from "~components/Toolbar"
 
 const tabSession = () => {
   const sessions = useSessions()
@@ -45,25 +46,10 @@ const tabSession = () => {
               <MdTune />
             </div>
           </div>
-          <div className="toolbar">
-            <div className="searchbar">
-              <MdSearch />
-              <input type="text" placeholder="Search in items ..." onChange={e => setSearchInput(e.target.value)} />
-            </div>
-            <div className="session-menu">
-              <div className="title">
-                {searchInput ?
-                  "Search Results" :
-                  selectedSession ? selectedSession.title : 'Select a session'
-                }
-              </div>
-              <div className="buttons">
-                <MdOutlineEdit />
-                <MdOutlineDelete />
-                <MdOutlinePushPin />
-              </div>
-            </div>
-          </div>
+          <Toolbar
+            title={searchInput ? "Search Results" :
+              selectedSession ? selectedSession.title : 'Select a session'}
+            setSearchInput={setSearchInput} />
           {
             searchInput ?
               <TabSearchResults sessions={sessions} searchInput={searchInput} />
