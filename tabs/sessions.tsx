@@ -2,7 +2,7 @@ import useSessions from "~hooks/useSessions"
 import './sessions.scss'
 import ThemeProvider from "~components/ThemeProvider"
 import TabCard from "~components/TabCard"
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import type { Session } from "~utils/types"
 import Logo from "~components/Logo"
 import { MdOutlineDelete, MdOutlineEdit, MdOutlinePushPin, MdSearch, MdTune } from "react-icons/md"
@@ -30,13 +30,27 @@ const tabSession = () => {
       const result = sessions.map(session => {
         return {
           ...session,
-          tabs: session.tabs.filter(tab => tab.title.toLowerCase().includes(searchInput.toLowerCase()))
+          tabs: session.tabs.filter(tab =>
+            tab.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+            tab.url.toLowerCase().includes(searchInput.toLowerCase()))
         }
       }).filter(session => session.tabs.length > 0)
       setSearchResults(result)
     } else {
       setSearchResults([])
     }
+  }
+
+  const highlightSearchInput = (text: string): ReactNode => {
+    const parts = text.split(new RegExp(`(${searchInput})`, 'gi'));
+    return (
+      parts.map((part, i) =>
+        part.toLowerCase() === searchInput.toLowerCase() ?
+          <b style={{ backgroundColor: 'yellow' }} key={i}>{part}</b>
+          :
+          part
+      )
+    )
   }
 
   return (
@@ -91,7 +105,9 @@ const tabSession = () => {
                       <div className="session">{session.title}</div>
                       <div className="tabs">
                         {session.tabs.map((tab, i) => (
-                          <TabCard key={i} tab={tab} session={session} />
+                          <TabCard key={i} tab={tab} session={session}
+                            title={highlightSearchInput(tab.title)}
+                            url={highlightSearchInput(tab.url)} />
                         ))}
                       </div>
                     </div>

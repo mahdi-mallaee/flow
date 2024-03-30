@@ -2,8 +2,13 @@ import type { Session, Tab } from "~utils/types"
 
 import './TabCard.scss'
 import actions from "~actions"
+import type React from "react"
+import type { ReactNode } from "react"
 
-const TabCard = ({ tab, session }: { tab: Tab, session: Session }) => {
+const TabCard = (
+  { tab, session, title, url }:
+    { tab: Tab, session: Session, title?: ReactNode, url?: ReactNode }
+) => {
 
   const tabCardClickHandler = async () => {
     if (session.isOpen) {
@@ -16,12 +21,13 @@ const TabCard = ({ tab, session }: { tab: Tab, session: Session }) => {
       chrome.tabs.update(tabs[tab.index].id, { active: true, })
     }
   }
+
   return (
     <div className="tab-card" onClick={tabCardClickHandler}>
       <img src={tab.iconUrl} />
       <div className="info">
-        <div className="title">{tab.title || tab.url}</div>
-        <div className="url">{tab.url}</div>
+        <div className="title">{title || tab.title || tab.url || ''}</div>
+        <div className="url">{url || tab.url || ''}</div>
       </div>
     </div>
   )
