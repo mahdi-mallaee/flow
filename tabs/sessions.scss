@@ -14,7 +14,7 @@ html,
 }
 
 input,
-button{
+button {
   font-family: inherit;
 }
 
@@ -215,34 +215,6 @@ button{
       align-items: start;
       row-gap: 16px;
       column-gap: 24px;
-    }
-
-    .search-results {
-      padding: 24px;
-      background-color: var(--background-color);
-      flex-grow: 1;
-      overflow-y: scroll;
-      width: 100%;
-      color: var(--on-background-color);
-      display: flex;
-      gap: 32px;
-      flex-direction: column;
-
-      .session-container {
-        display: flex;
-        gap: 8px;
-        flex-direction: column;
-
-        .session {
-          font-size: 16px;
-        }
-
-        .tabs {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-      }
     }
   }
 }
