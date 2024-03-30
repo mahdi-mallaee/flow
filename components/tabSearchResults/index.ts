@@ -1,2 +1,2 @@
-import TabSearchResults from "./tabSearchResults";
+import TabSearchResults from "./TabSearchResults";
 export default TabSearchResults

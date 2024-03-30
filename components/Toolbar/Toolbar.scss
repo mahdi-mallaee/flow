@@ -1,0 +1,66 @@
+.toolbar {
+  height: 60px;
+  flex-shrink: 0;
+  display: flex;
+  padding: 12px 16px;
+  gap: 12px;
+
+  .searchbar {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    border: 1px solid var(--outline-color);
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 8px;
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      height: 100%;
+    }
+
+    svg {
+      font-size: 20px;
+    }
+  }
+
+  .session-menu {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .title {
+      font-size: 16px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 16px;
+
+      .toolbar-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        cursor: pointer;
+        border-radius: 6px;
+        gap: 4px;
+
+        &:hover {
+          background-color: var(--icon-button-hover);
+        }
+
+        svg {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
