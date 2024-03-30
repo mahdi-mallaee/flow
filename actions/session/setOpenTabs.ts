@@ -10,13 +10,16 @@ import type { OpenedTab, Tab } from "~utils/types"
  * @returns A promise that resolves when the open tabs have been set.
  */
 
-const setOpenTabs = async (windowTabs: Tab[]) => {
-  const openedTabs: OpenedTab[] = []
-  windowTabs.forEach((tab, i) => {
-    if (i < windowTabs.length - 1) {
-      openedTabs.push({ id: tab.id, discarded: false })
-    }
+const setOpenTabs = async(windowTabs: Tab[], exludeTabId?: number) => {
+  const openedTabs: OpenedTab[] = windowTabs.map((tab, i) => {
+    return { id: tab.id, discarded: false }
   })
+
+  if (exludeTabId) {
+    openedTabs.find(ot => ot.id === exludeTabId)!.discarded = true
+  } else {
+    openedTabs[openedTabs.length - 1].discarded = true
+  }
   await store.windows.setOpenedTabs(openedTabs)
 }
 

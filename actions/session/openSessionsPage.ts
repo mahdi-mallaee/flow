@@ -1,3 +1,4 @@
+import actions from "~actions"
 
 type input = {
   windowId: number,
@@ -7,13 +8,18 @@ type input = {
 
 const createSessionsPage = async ({ windowId, pin = true, active = false }: input) => {
   const pageUrl = 'chrome-extension://' + chrome.runtime.id + '/tabs/sessions.html'
-  await chrome.tabs.create({
-    url: pageUrl,
-    pinned: pin,
-    active: active,
-    index: 0,
-    windowId: windowId
-  })
+  const windowTabs = await actions.window.getTabs(windowId)
+  const index = windowTabs.findIndex(tab => tab.url === pageUrl)
+
+  if (windowTabs && index === -1) {
+    await chrome.tabs.create({
+      url: pageUrl,
+      pinned: pin,
+      active: active,
+      index: 0,
+      windowId: windowId
+    })
+  }
 }
 
 export default createSessionsPage

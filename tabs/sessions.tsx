@@ -5,7 +5,7 @@ import TabCard from "~components/TabCard"
 import { useEffect, useState } from "react"
 import type { Session } from "~utils/types"
 import Logo from "~components/Logo"
-import { MdEdit, MdOutlineDelete, MdOutlineEdit, MdOutlinePushPin, MdPushPin, MdSearch, MdTune } from "react-icons/md"
+import { MdOutlineDelete, MdOutlineEdit, MdOutlinePushPin, MdSearch, MdTune } from "react-icons/md"
 
 const tabSession = () => {
   const sessions = useSessions()
@@ -58,7 +58,7 @@ const tabSession = () => {
           <div className="tabs-container">
             {selectedSession &&
               selectedSession.tabs.map((tab, i) => (
-                <TabCard key={tab.id || i} tab={tab} />
+                <TabCard key={i} tab={tab} session={selectedSession} />
               ))
             }
           </div>
