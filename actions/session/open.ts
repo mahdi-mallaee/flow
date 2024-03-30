@@ -4,7 +4,7 @@ import actions from "~actions";
 import groupTabs from "./groupTabs";
 import setOpenTabs from "./setOpenTabs";
 
-const open = async (sessionId: string): Promise<number> => {
+const open = async (sessionId: string, discardExludeTabIndex?: number): Promise<{ windowId: number, tabs: Tab[] }> => {
   const startTime = Date.now()
 
   const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
@@ -16,13 +16,13 @@ const open = async (sessionId: string): Promise<number> => {
   await store.sessions.setOpenStatus(sessionId, true)
   await store.sessions.setWindowId(sessionId, newWindowId)
 
-  setOpenTabs(windowTabs)
+  setOpenTabs(windowTabs, windowTabs[discardExludeTabIndex]?.id)
   await groupTabs(groups, sessionTabs, windowTabs, newWindowId)
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   await actions.window.refreshUnsavedWindows()
   await actions.window.changeRecentWindowId(newWindowId)
   await actions.session.openSessionsPage({ windowId: newWindowId })
-  return newWindowId
+  return { windowId: newWindowId, tabs: windowTabs }
 }
 
 export default open
