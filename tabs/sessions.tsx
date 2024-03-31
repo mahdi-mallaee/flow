@@ -2,25 +2,17 @@ import useSessions from "~hooks/useSessions"
 import './sessions.scss'
 import ThemeProvider from "~components/ThemeProvider"
 import TabCard from "~components/TabCard"
-import { useEffect, useState, } from "react"
-import type { Session } from "~utils/types"
+import { useState, } from "react"
 import Logo from "~components/Logo"
 import { MdTune } from "react-icons/md"
 import TabSearchResults from "~components/TabSearchResults"
 import Toolbar from "~components/Toolbar"
 
-const tabSession = () => {
+const SessionsTabPage = () => {
   const sessions = useSessions()
-  const [selectedSession, setSelectedSession] = useState<Session>(null)
+  const [selectedSessionId, setSelectedSessionId] = useState<string>(null)
+  const selectedSession = sessions.find(session => session.id === selectedSessionId) || sessions[0]
   const [searchInput, setSearchInput] = useState("")
-
-  useEffect(() => {
-    if (!selectedSession) {
-      setSelectedSession(sessions[0])
-    } else {
-      setSelectedSession(sessions.find(session => session.id === selectedSession.id))
-    }
-  }, [sessions])
 
   return (
     <ThemeProvider>
@@ -28,7 +20,7 @@ const tabSession = () => {
         <div className="sidebar">
           <div className="sessions-container">
             {sessions.map(session => (
-              <div className="session" key={session.id} onClick={() => setSelectedSession(session)}>
+              <div className="session" key={session.id} onClick={() => setSelectedSessionId(session.id)}>
                 <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length}</div>
                 {session.main && <div className="main-indicator">M</div>}
                 <div className="title">{session.title}</div>
@@ -57,7 +49,7 @@ const tabSession = () => {
               <div className="tabs-container">
                 {selectedSession &&
                   selectedSession.tabs.map((tab, i) => (
-                    <TabCard key={i} tab={tab} session={selectedSession} />
+                    <TabCard key={tab.id || i} tab={tab} session={selectedSession} />
                   ))
                 }
               </div>
@@ -69,4 +61,4 @@ const tabSession = () => {
   )
 }
 
-export default tabSession
+export default SessionsTabPage
