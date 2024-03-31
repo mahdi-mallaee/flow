@@ -1,33 +1,38 @@
-import { useState, type ReactNode, useEffect } from "react";
-import TabCard from "~components/TabCard";
+import { useState, type ReactNode, useEffect, useMemo } from "react"
+import TabCard from "~components/TabCard"
 import type { Session } from "~utils/types"
 import './TabSearchResults.scss'
 
 const TabSearchResults = ({ sessions, searchInput }: { sessions: Session[], searchInput: string }) => {
-  const [searchResults, setSearchResults] = useState<Session[]>([])
+  const [debouncedSearchInput, setDebouncedSearchInput] = useState(searchInput)
 
   useEffect(() => {
-    search()
+    const handler = setTimeout(() => {
+      setDebouncedSearchInput(searchInput)
+    }, 100)
+
+    return () => {
+      clearTimeout(handler)
+    }
   }, [searchInput])
 
-  const search = () => {
-    if (searchInput) {
-      const result = sessions.map(session => {
+  const searchResults = useMemo(() => {
+    if (debouncedSearchInput) {
+      return sessions.map(session => {
         return {
           ...session,
           tabs: session.tabs.filter(tab =>
-            tab.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-            tab.url.toLowerCase().includes(searchInput.toLowerCase()))
+            tab.title.toLowerCase().includes(debouncedSearchInput.toLowerCase()) ||
+            tab.url.toLowerCase().includes(debouncedSearchInput.toLowerCase()))
         }
       }).filter(session => session.tabs.length > 0)
-      setSearchResults(result)
     } else {
-      setSearchResults([])
+      return []
     }
-  }
+  }, [debouncedSearchInput, sessions])
 
   const highlightSearchInput = (text: string): ReactNode => {
-    const parts = text.split(new RegExp(`(${searchInput})`, 'gi'));
+    const parts = text.split(new RegExp(`(${searchInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'))
     return (
       parts.map((part, i) =>
         part.toLowerCase() === searchInput.toLowerCase() ?
@@ -40,22 +45,24 @@ const TabSearchResults = ({ sessions, searchInput }: { sessions: Session[], sear
 
   return (
     <div className="search-results">
-      {
+      {searchResults.length > 0 ?
         searchResults.map((session) => (
-          <div className="session-container">
+          <div className="session-container" key={session.id}>
             <div className="session">{session.title}</div>
             <div className="tabs">
               {session.tabs.map((tab, i) => (
-                <TabCard key={i} tab={tab} session={session}
+                <TabCard key={tab.id || i} tab={tab} session={session}
                   title={highlightSearchInput(tab.title)}
                   url={highlightSearchInput(tab.url)} />
               ))}
             </div>
           </div>
         ))
+        :
+        <div>Could not find anything!</div>
       }
     </div>
   )
 }
 
-export default TabSearchResults;
+export default TabSearchResults
