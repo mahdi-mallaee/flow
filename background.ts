@@ -1,5 +1,6 @@
 import actions from "~actions"
 import store from "~store"
+import { NEW_TAB_URL } from "~utils/constants"
 import { Message, type Tab } from "~utils/types"
 
 export { }
@@ -21,7 +22,7 @@ chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs()
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
-  if (info.url) {
+  if (info.url && info.url !== NEW_TAB_URL) {
     /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
     actions.window.discardOpenedTab(id)
   }
