@@ -3,25 +3,54 @@ import store from "~store";
 import actions from "~actions";
 import groupTabs from "./groupTabs";
 import setOpenTabs from "./setOpenTabs";
+import { WINDOWID_NONE } from "~utils/constants";
 
 const open = async (sessionId: string): Promise<number> => {
   const startTime = Date.now()
 
+  const settings = await store.settings.getAll()
   const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
-  const newWindowId = await actions.window.create(sessionTabs.map(t => { return t.url }))
-  const windowTabs = await actions.window.getTabs(newWindowId)
-  const groups = await store.sessions.getGroups(sessionId)
+  let windowId = WINDOWID_NONE
 
-  await store.sessions.setTabs(sessionId, windowTabs)
-  await store.sessions.setOpenStatus(sessionId, true)
-  await store.sessions.setWindowId(sessionId, newWindowId)
+  if (settings.openSessionInCurrentWindow) {
+    windowId = (await chrome.windows.getCurrent()).id
 
-  setOpenTabs(windowTabs)
-  await groupTabs(groups, sessionTabs, windowTabs, newWindowId)
+    const openSessions = await store.sessions.getOpenStatus()
+    const currentSessionIndex = openSessions.findIndex(s => s.windowId === windowId)
+    if (currentSessionIndex >= 0) {
+      const currentSessionId = openSessions[currentSessionIndex].sessionId
+      if (currentSessionId) {
+        await store.sessions.setOpenStatus(currentSessionId, false)
+        await store.sessions.setWindowId(currentSessionId, WINDOWID_NONE)
+      }
+    }
+
+    chrome.runtime.sendMessage({
+      message: "open-session",
+      windowId,
+      tabs: sessionTabs
+    })
+
+    await store.sessions.setWindowId(sessionId, windowId)
+    await store.sessions.setOpenStatus(sessionId, true)
+
+
+  } else {
+
+    windowId = await actions.window.create(sessionTabs.map(t => { return t.url }))
+    await store.sessions.setOpenStatus(sessionId, true)
+    await store.sessions.setWindowId(sessionId, windowId)
+    await actions.window.changeRecentWindowId(windowId)
+    const windowTabs = await actions.window.getTabs(windowId)
+    const groups = await store.sessions.getGroups(sessionId)
+    await groupTabs(groups, sessionTabs, windowTabs, windowId)
+    setOpenTabs(windowTabs)
+  }
+
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   await actions.window.refreshUnsavedWindows()
-  await actions.window.changeRecentWindowId(newWindowId)
-  return newWindowId
+
+  return windowId
 }
 
 export default open

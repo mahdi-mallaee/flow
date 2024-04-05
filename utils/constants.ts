@@ -15,5 +15,6 @@ export const DEFAULT_SETTINGS: Settings = {
   newSessionWindowState: "normal",
   autoBackupsInterval: "30",
   createBackupBeforeSessionDelete: true,
-  deleteNewTabsWhenOpeningSession: false
+  deleteNewTabsWhenOpeningSession: false,
+  openSessionInCurrentWindow: false,
 }

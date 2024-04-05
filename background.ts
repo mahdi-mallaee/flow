@@ -1,6 +1,6 @@
 import actions from "~actions"
 import store from "~store"
-import { Message } from "~utils/types"
+import { Message, type Tab } from "~utils/types"
 
 export { }
 
@@ -84,7 +84,7 @@ chrome.runtime.onStartup.addListener(() => {
 })
 
 
-chrome.runtime.onMessage.addListener(({ message }: { message: Message }, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(({ message, windowId, tabs }: { message: Message, windowId: number, tabs: Tab[] }, sender, sendResponse) => {
   if (message === Message.alertReady && sender.tab) {
     store.windows.getUnsavedWindowAlertStatus()
       .then(res => {
@@ -111,5 +111,7 @@ chrome.runtime.onMessage.addListener(({ message }: { message: Message }, sender,
     } else {
       sendResponse({ message: Message.error })
     }
+  } else if (message === Message.openSession) {
+    actions.window.update(windowId, tabs)
   }
 })
