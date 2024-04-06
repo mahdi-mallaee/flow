@@ -9,4 +9,4 @@ const setOpenSessionInCurrentWindow = async (openInCurrentWindow: boolean) => {
   await localStorage.set(StoreKeys.settings, newSettings)
 }
 
-export default setOpenSessionInCurrentWindow``
+export default setOpenSessionInCurrentWindow
