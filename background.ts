@@ -1,7 +1,7 @@
 import actions from "~actions"
 import store from "~store"
 import { NEW_TAB_URL } from "~utils/constants"
-import { Message, type Tab } from "~utils/types"
+import { Message, type Tab, type TabGroup } from "~utils/types"
 
 export { }
 
@@ -85,7 +85,9 @@ chrome.runtime.onStartup.addListener(() => {
 })
 
 
-chrome.runtime.onMessage.addListener(({ message, windowId, tabs }: { message: Message, windowId: number, tabs: Tab[] }, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((
+  { message, windowId, tabs, groups }:
+    { message: Message, windowId: number, tabs: Tab[], groups: TabGroup[] }, sender, sendResponse) => {
   if (message === Message.alertReady && sender.tab) {
     store.windows.getUnsavedWindowAlertStatus()
       .then(res => {
@@ -113,6 +115,6 @@ chrome.runtime.onMessage.addListener(({ message, windowId, tabs }: { message: Me
       sendResponse({ message: Message.error })
     }
   } else if (message === Message.openSession) {
-    actions.window.update(windowId, tabs)
+    actions.window.update(windowId, tabs, groups)
   }
 })

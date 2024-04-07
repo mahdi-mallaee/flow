@@ -1,8 +1,9 @@
 import actions from "~actions"
+import groupTabs from "~actions/session/groupTabs"
 import setOpenTabs from "~actions/session/setOpenTabs"
-import type { Tab } from "~utils/types"
+import type { Tab, TabGroup } from "~utils/types"
 
-const update = async (windowId: number, tabs: Tab[]) => {
+const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
   let currentWindowTabs = await actions.window.getTabs(windowId)
 
   if (currentWindowTabs.length > tabs.length) {
@@ -20,7 +21,10 @@ const update = async (windowId: number, tabs: Tab[]) => {
   for (let i = 0; i < currentWindowTabs.length; i++) {
     chrome.tabs.update(currentWindowTabs[i].id, { url: tabs[i].url })
   }
+  chrome.tabs.update(currentWindowTabs[currentWindowTabs.length - 1].id, { active: true })
 
+  await chrome.tabs.ungroup(currentWindowTabs.map(t => t.id))
+  groupTabs(groups, tabs, currentWindowTabs, windowId)
 }
 
 export default update
