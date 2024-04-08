@@ -14,7 +14,9 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
   } else {
     if (createWindow) {
       windowId = await actions.window.create()
-      isSessionOpen = true
+      if (actions.window.checkId(windowId)) {
+        isSessionOpen = true
+      }
     } else {
       windowId = WINDOWID_NONE
     }
@@ -32,7 +34,14 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
     groups: []
   }
 
-  await store.sessions.create(session)
+  try {
+    await store.sessions.create(session)
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ERROR: could not create the session -> actions/session/create l.38 ', error)
+    }
+  }
+
   await actions.window.refreshUnsavedWindows()
 
   return session
