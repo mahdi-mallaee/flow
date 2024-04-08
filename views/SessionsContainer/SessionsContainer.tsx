@@ -86,7 +86,7 @@ const SessionsContainer = () => {
 
   const sessionClickHandler = async (session: Session) => {
     if (!session.isOpen) {
-      await actions.session.open(session.id)
+      await actions.message.openSession(session.id)
     } else {
       showAlert({
         text: 'This session is already open',
