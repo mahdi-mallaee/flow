@@ -6,12 +6,12 @@ import refreshTabs from "./refreshTabs";
 import checkNumberLimit from "./checkNumberLimit";
 
 const sessionActions = {
-  create,
-  open,
-  refreshTabs,
-  refreshOpenSessions,
-  openFirstSession,
-  checkNumberLimit
+  create: create,
+  open: open,
+  refreshTabs: refreshTabs,
+  refreshOpenSessions: refreshOpenSessions,
+  openFirstSession: openFirstSession,
+  checkNumberLimit: checkNumberLimit
 }
 
 export default sessionActions

@@ -86,8 +86,8 @@ chrome.runtime.onStartup.addListener(() => {
 
 
 chrome.runtime.onMessage.addListener((
-  { message, windowId, tabs, groups }:
-    { message: Message, windowId: number, tabs: Tab[], groups: TabGroup[] }, sender, sendResponse) => {
+  { message, sessionId, currentWindowId }:
+    { message: Message, currentWindowId: number, sessionId: string }, sender, sendResponse) => {
   if (message === Message.alertReady && sender.tab) {
     store.windows.getUnsavedWindowAlertStatus()
       .then(res => {
@@ -115,6 +115,6 @@ chrome.runtime.onMessage.addListener((
       sendResponse({ message: Message.error })
     }
   } else if (message === Message.openSession) {
-    actions.window.update(windowId, tabs, groups)
+    actions.session.open(sessionId, currentWindowId)
   }
 })

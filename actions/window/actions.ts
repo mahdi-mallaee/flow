@@ -11,17 +11,17 @@ import checkId from "./checkId";
 import update from "./update";
 
 const windowActions = {
-  create,
-  discardOpenedTab,
-  getTabs,
-  getGroups,
-  refreshUnsavedWindows,
-  isUnsaved,
-  refreshLastClosedWindow,
-  includesTab,
-  changeRecentWindowId,
-  checkId,
-  update,
+  create: create,
+  discardOpenedTab: discardOpenedTab,
+  getTabs: getTabs,
+  getGroups: getGroups,
+  refreshUnsavedWindows: refreshUnsavedWindows,
+  isUnsaved: isUnsaved,
+  refreshLastClosedWindow: refreshLastClosedWindow,
+  includesTab: includesTab,
+  changeRecentWindowId: changeRecentWindowId,
+  checkId: checkId,
+  update: update,
 }
 
 export default windowActions

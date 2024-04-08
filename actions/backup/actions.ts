@@ -5,9 +5,9 @@ import upload from "./upload";
 
 const backupActions = {
   create: create,
-  download,
-  upload,
-  runInterval
+  download: download,
+  upload: upload,
+  runInterval: runInterval
 }
 
 export default backupActions

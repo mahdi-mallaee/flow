@@ -5,7 +5,7 @@ import groupTabs from "./groupTabs";
 import setOpenTabs from "./setOpenTabs";
 import { WINDOWID_NONE } from "~utils/constants";
 
-const open = async (sessionId: string): Promise<number> => {
+const open = async (sessionId: string, currentWindowId?: number): Promise<number> => {
   const startTime = Date.now()
 
   const settings = await store.settings.getAll()
@@ -14,7 +14,7 @@ const open = async (sessionId: string): Promise<number> => {
   const groups = await store.sessions.getGroups(sessionId)
 
   if (settings.openSessionInCurrentWindow) {
-    windowId = (await chrome.windows.getCurrent()).id
+    windowId = actions.window.checkId(currentWindowId) ? currentWindowId : (await chrome.windows.getCurrent()).id
 
     const openSessions = await store.sessions.getOpenStatus()
     const currentSessionIndex = openSessions.findIndex(s => s.windowId === windowId)
@@ -26,12 +26,7 @@ const open = async (sessionId: string): Promise<number> => {
       }
     }
 
-    chrome.runtime.sendMessage({
-      message: "open-session",
-      windowId,
-      tabs: sessionTabs,
-      groups
-    })
+    await actions.window.update(windowId, sessionTabs, groups)
 
     await store.sessions.setWindowId(sessionId, windowId)
     await store.sessions.setOpenStatus(sessionId, true)
