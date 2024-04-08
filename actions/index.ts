@@ -1,5 +1,5 @@
 import backupActions from "./backup/actions"
-import messageActions from "./message/messageActions"
+import messageActions from "./message/actions"
 import sessionActions from "./session/actions"
 import windowActions from "./window/actions"
 
