@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
 import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
@@ -6,7 +6,7 @@ import { INPUT_MAX_LENGTH } from "~utils/constants";
 
 type SessionCardArgs = {
   session: Session,
-  sessionClickHandler: (session: Session) => void,
+  sessionClickHandler: (session: Session, e: MouseEvent) => void,
   mainButtonClickHandler: (id: string) => void,
   deleteSession: (session: Session) => void,
   editSession: (id: string, title: string, callBack: Function) => void
@@ -24,8 +24,8 @@ const SessionCard = (
   const defaultState = () => {
     return (
       <div className={session.isOpen ? 'session-container open' : 'session-container'}
-        onClick={() => {
-          sessionClickHandler(session)
+        onClick={(e) => {
+          sessionClickHandler(session, e)
         }}>
         <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
         {session.main && <div className="main-indicator">M</div>}

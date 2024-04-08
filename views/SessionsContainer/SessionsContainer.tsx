@@ -1,7 +1,7 @@
 import { MdAdd, MdClose, MdDone } from "react-icons/md"
 import SessionCard from "~components/SessionCard"
 import { type Session } from "~utils/types"
-import { useEffect, useState } from "react"
+import { useEffect, useState, type MouseEvent } from "react"
 import './SessionsContainer.scss'
 import { AnimatePresence, motion } from "framer-motion"
 import store from "~store"
@@ -84,9 +84,9 @@ const SessionsContainer = () => {
     setSessionTitleInput('')
   }
 
-  const sessionClickHandler = async (session: Session) => {
+  const sessionClickHandler = async (session: Session, e: MouseEvent) => {
     if (!session.isOpen) {
-      await actions.message.openSession(session.id)
+      await actions.message.openSession(session.id, e.ctrlKey)
     } else {
       showAlert({
         text: 'This session is already open',
