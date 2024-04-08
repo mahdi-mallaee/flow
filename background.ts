@@ -1,6 +1,7 @@
 import actions from "~actions"
 import store from "~store"
-import { Message } from "~utils/types"
+import { NEW_TAB_URL } from "~utils/constants"
+import { Message, type Tab, type TabGroup } from "~utils/types"
 
 export { }
 
@@ -21,7 +22,7 @@ chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs()
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
-  if (info.url) {
+  if (info.url && info.url !== NEW_TAB_URL) {
     /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
     actions.window.discardOpenedTab(id)
   }
@@ -84,7 +85,9 @@ chrome.runtime.onStartup.addListener(() => {
 })
 
 
-chrome.runtime.onMessage.addListener(({ message }: { message: Message }, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((
+  { message, windowId, tabs, groups }:
+    { message: Message, windowId: number, tabs: Tab[], groups: TabGroup[] }, sender, sendResponse) => {
   if (message === Message.alertReady && sender.tab) {
     store.windows.getUnsavedWindowAlertStatus()
       .then(res => {
@@ -111,5 +114,7 @@ chrome.runtime.onMessage.addListener(({ message }: { message: Message }, sender,
     } else {
       sendResponse({ message: Message.error })
     }
+  } else if (message === Message.openSession) {
+    actions.window.update(windowId, tabs, groups)
   }
 })

@@ -87,6 +87,12 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
+          <div className="title">Open sessions in current window</div>
+          <ToggleSwitch checked={settings.openSessionInCurrentWindow}
+            onChange={(checked) => Store.settings.setOpenSessionInCurrentWindow(checked)} />
+        </div>
+
+        <div className="item">
           <div className="title">Creating window for new sessions</div>
           <ToggleSwitch checked={settings.createWindowForNewSession}
             onChange={(checked) => Store.settings.setCreateWindowForNewSession(checked)} />

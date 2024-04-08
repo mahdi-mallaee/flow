@@ -49,6 +49,7 @@ export type Settings = {
   autoBackupsInterval: BackupIntervalTime,
   createBackupBeforeSessionDelete: boolean,
   deleteNewTabsWhenOpeningSession: boolean,
+  openSessionInCurrentWindow: boolean,
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'
@@ -115,4 +116,5 @@ export enum Message {
   saveSession = 'save-session',
   success = 'success',
   error = 'error',
+  openSession = 'open-session'
 }

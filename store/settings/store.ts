@@ -4,6 +4,7 @@ import setBackupCreationBeforeSessionDelete from "./setBackupCreationBeforeSessi
 import setBackupInterval from "./setBackupInterval"
 import setCreateWindowForNewSession from "./setCreateWindowForNewSession"
 import setDeleteNewTabsWhenOpeningSession from "./setDeleteNewTabsWhenOpeningSession"
+import setOpenSessionInCurrentWindow from "./setOpenSessionInCurrentWindow"
 import setTheme from "./setTheme"
 import setWindowState from "./setWindowState"
 
@@ -16,6 +17,7 @@ const settingsStore = {
   setDeleteNewTabsWhenOpeningSession,
   setBackupInterval,
   setBackupCreationBeforeSessionDelete,
+  setOpenSessionInCurrentWindow,
 }
 
 export default settingsStore

@@ -8,6 +8,7 @@ import isUnsaved from "./isUnsaved";
 import refreshLastClosedWindow from "./refreshLastClosedWindow";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
 import checkId from "./checkId";
+import update from "./update";
 
 const windowActions = {
   create,
@@ -20,6 +21,7 @@ const windowActions = {
   includesTab,
   changeRecentWindowId,
   checkId,
+  update,
 }
 
 export default windowActions
