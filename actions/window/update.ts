@@ -6,25 +6,27 @@ import type { Tab, TabGroup } from "~utils/types"
 const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
   let currentWindowTabs = await actions.window.getTabs(windowId)
 
+  const tabPromises = []
   if (currentWindowTabs.length > tabs.length) {
     for (let i = 0; i < currentWindowTabs.length - tabs.length; i++) {
-      await chrome.tabs.remove(currentWindowTabs[i].id)
+      tabPromises.push(chrome.tabs.remove(currentWindowTabs[i].id))
     }
   } else if (currentWindowTabs.length < tabs.length) {
     for (let i = 0; i < tabs.length - currentWindowTabs.length; i++) {
-      await chrome.tabs.create({ windowId: windowId })
+      tabPromises.push(chrome.tabs.create({ windowId: windowId }))
     }
   }
+  await Promise.all(tabPromises)
 
   currentWindowTabs = await actions.window.getTabs(windowId)
   await setOpenTabs(currentWindowTabs)
-  for (let i = 0; i < currentWindowTabs.length; i++) {
-    chrome.tabs.update(currentWindowTabs[i].id, { url: tabs[i].url })
-  }
+  const updatePromises = currentWindowTabs.map((tab, i) => chrome.tabs.update(tab.id, { url: tabs[i].url }))
+
   chrome.tabs.update(currentWindowTabs[currentWindowTabs.length - 1].id, { active: true })
 
   await chrome.tabs.ungroup(currentWindowTabs.map(t => t.id))
-  groupTabs(groups, tabs, currentWindowTabs, windowId)
+  await groupTabs(groups, tabs, currentWindowTabs, windowId)
+  await Promise.all(updatePromises)
 }
 
 export default update
