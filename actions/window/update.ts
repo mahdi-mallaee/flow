@@ -20,7 +20,9 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
 
   currentWindowTabs = await actions.window.getTabs(windowId)
   await setOpenTabs(currentWindowTabs)
-  const updatePromises = currentWindowTabs.map((tab, i) => chrome.tabs.update(tab.id, { url: tabs[i].url }))
+  const updatePromises = currentWindowTabs.map((tab, i) => chrome.tabs.update(tab.id, {
+    url: tabs[i].url, pinned: tabs[i].pinned
+  }))
 
   chrome.tabs.update(currentWindowTabs[currentWindowTabs.length - 1].id, { active: true })
 

@@ -28,6 +28,7 @@ export type Tab = {
   windowId: number,
   index: number,
   groupId: number,
+  pinned: boolean
 }
 
 export type TabGroup = {

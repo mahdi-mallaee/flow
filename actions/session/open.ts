@@ -1,8 +1,6 @@
 import { type Tab } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
-import groupTabs from "./groupTabs";
-import setOpenTabs from "./setOpenTabs";
 import { WINDOWID_NONE } from "~utils/constants";
 
 const open = async (sessionId: string, currentWindowId?: number): Promise<number> => {
@@ -26,23 +24,14 @@ const open = async (sessionId: string, currentWindowId?: number): Promise<number
       }
     }
 
-    await actions.window.update(windowId, sessionTabs, groups)
-
-    await store.sessions.setWindowId(sessionId, windowId)
-    await store.sessions.setOpenStatus(sessionId, true)
-
-
   } else {
-
-    windowId = await actions.window.create(sessionTabs.map(t => { return t.url }))
-    await store.sessions.setOpenStatus(sessionId, true)
-    await store.sessions.setWindowId(sessionId, windowId)
-    await actions.window.changeRecentWindowId(windowId)
-    const windowTabs = await actions.window.getTabs(windowId)
-    await groupTabs(groups, sessionTabs, windowTabs, windowId)
-    setOpenTabs(windowTabs)
+    windowId = await actions.window.create()
   }
+  
+  await actions.window.update(windowId, sessionTabs, groups)
 
+  await store.sessions.setOpenStatus(sessionId, true)
+  await store.sessions.setWindowId(sessionId, windowId)
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   await actions.window.refreshUnsavedWindows()
 
