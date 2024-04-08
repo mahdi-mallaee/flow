@@ -1,7 +1,7 @@
 import openSession from "./openSession"
 
 const messageActions = {
-  openSession
+  openSession: openSession
 }
 
 export default messageActions
