@@ -28,6 +28,7 @@ export type Tab = {
   windowId: number,
   index: number,
   groupId: number,
+  pinned: boolean
 }
 
 export type TabGroup = {
@@ -50,6 +51,7 @@ export type Settings = {
   createBackupBeforeSessionDelete: boolean,
   deleteNewTabsWhenOpeningSession: boolean,
   openSessionInCurrentWindow: boolean,
+  showLargeSessionWarning: boolean,
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'

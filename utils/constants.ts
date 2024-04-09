@@ -17,4 +17,5 @@ export const DEFAULT_SETTINGS: Settings = {
   createBackupBeforeSessionDelete: true,
   deleteNewTabsWhenOpeningSession: false,
   openSessionInCurrentWindow: false,
+  showLargeSessionWarning: true,
 }

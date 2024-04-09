@@ -1,19 +1,17 @@
 import { type Tab } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
-import groupTabs from "./groupTabs";
-import setOpenTabs from "./setOpenTabs";
 import { WINDOWID_NONE } from "~utils/constants";
 
-const open = async (sessionId: string, currentWindowId?: number): Promise<number> => {
+const open = async (sessionId: string, currentWindowId?: number, alterSettingsBehavior = false): Promise<number> => {
   const startTime = Date.now()
 
-  const settings = await store.settings.getAll()
+  const { openSessionInCurrentWindow } = await store.settings.getAll()
   const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
   let windowId = WINDOWID_NONE
   const groups = await store.sessions.getGroups(sessionId)
-
-  if (settings.openSessionInCurrentWindow) {
+  const openInCurrentWindow = alterSettingsBehavior ? !openSessionInCurrentWindow : openSessionInCurrentWindow
+  if (openInCurrentWindow) {
     windowId = actions.window.checkId(currentWindowId) ? currentWindowId : (await chrome.windows.getCurrent()).id
 
     const openSessions = await store.sessions.getOpenStatus()
@@ -26,23 +24,14 @@ const open = async (sessionId: string, currentWindowId?: number): Promise<number
       }
     }
 
-    await actions.window.update(windowId, sessionTabs, groups)
-
-    await store.sessions.setWindowId(sessionId, windowId)
-    await store.sessions.setOpenStatus(sessionId, true)
-
-
   } else {
-
-    windowId = await actions.window.create(sessionTabs.map(t => { return t.url }))
-    await store.sessions.setOpenStatus(sessionId, true)
-    await store.sessions.setWindowId(sessionId, windowId)
-    await actions.window.changeRecentWindowId(windowId)
-    const windowTabs = await actions.window.getTabs(windowId)
-    await groupTabs(groups, sessionTabs, windowTabs, windowId)
-    setOpenTabs(windowTabs)
+    windowId = await actions.window.create()
   }
 
+  await actions.window.update(windowId, sessionTabs, groups)
+
+  await store.sessions.setOpenStatus(sessionId, true)
+  await store.sessions.setWindowId(sessionId, windowId)
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
   await actions.window.refreshUnsavedWindows()
 
