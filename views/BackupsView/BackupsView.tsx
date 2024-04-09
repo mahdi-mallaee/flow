@@ -28,12 +28,16 @@ const BackupsView = ({ }) => {
   const [loadedBackupId, setLoadedBackupId] = useState('')
 
   const _createNewBackup = async () => {
-    await actions.backup.create({
+    const result = await actions.backup.create({
       status: 'manual',
       title: backupTitleInput
     })
     setGetBackupName(false)
     setBackupTitleInput('')
+
+    if (!result) {
+      showAlert({ text: 'Backup creation failed', type: 'error' })
+    }
   }
 
   const onUploadError = (msg: string) => {
@@ -61,7 +65,7 @@ const BackupsView = ({ }) => {
       {renderAlert()}
       <div className='view-title backups-title'>Backups</div>
       <div className="backups-container">
-      <div className="limit-number">Only {BACKUP_NUMBER_LIMIT} recent backups will be saved.</div>
+        <div className="limit-number">Only {BACKUP_NUMBER_LIMIT} recent backups will be saved.</div>
         {getBackupName ?
           <div className="get-backup-title-container">
             <input maxLength={INPUT_MAX_LENGTH} autoFocus type="text" value={backupTitleInput} onChange={e => {
