@@ -12,8 +12,11 @@ const BackupCard = (
 
   const { showAlert, renderAlert } = useAlertMessage()
 
-  const removeBackup = (id: string) => {
-    store.backups.remove(id)
+  const removeBackup = async (id: string) => {
+    const result = await store.backups.remove(id)
+    if (!result) {
+      showAlert({ text: 'Backup removal failed', type: 'error' })
+    }
   }
 
   const _loadBackup = async (id: string) => {
