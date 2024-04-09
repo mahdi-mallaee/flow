@@ -3,17 +3,25 @@ import store from "~store"
 import type { Backup } from "~utils/types"
 import './BackupCard.scss'
 import actions from "~actions"
+import useAlertMessage from "~hooks/useAlertMessage"
 
 const BackupCard = (
   { backup, loaded, setLoadedBackupId }:
     { backup: Backup, loaded: boolean, setLoadedBackupId: React.Dispatch<React.SetStateAction<string>> }
 ) => {
+
+  const { showAlert, renderAlert } = useAlertMessage()
+
   const removeBackup = (id: string) => {
     store.backups.remove(id)
   }
 
   const _loadBackup = async (id: string) => {
-    await store.backups.load(id)
+    const result = await store.backups.load(id)
+    if (!result) {
+      showAlert({ text: 'Backup loading failed', type: 'error' })
+      return
+    }
     setLoadedBackupId(backup.id)
   }
 
@@ -23,6 +31,7 @@ const BackupCard = (
 
   return (
     <div className="backup-card">
+      {renderAlert()}
       <div className="details">
         <div className="title">{backup.title}</div>
         <div className="status">{backup.status}</div>
