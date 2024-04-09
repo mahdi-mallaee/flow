@@ -1,19 +1,20 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type WindowState, type BackupIntervalTime, StoreKeys } from '~utils/types'
+import { Theme, type WindowState, type BackupIntervalTime, StoreKeys, type Settings } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight, MdFavoriteBorder } from 'react-icons/md'
-import Store from '~store'
+import store from '~store'
 import useSettings from '~hooks/useSettings'
 import { useNavigate } from 'react-router-dom'
 import actions from '~actions'
-import set from '~store/settings/set'
+import useAlertMessage from '~hooks/useAlertMessage'
 
 const SettignsView = () => {
   const settings = useSettings()
   const nav = useNavigate()
+  const { showAlert, renderAlert } = useAlertMessage()
 
   const [autoBackupIntervalId] = useStorage({
     key: StoreKeys.autoBackupIntervalId,
@@ -43,8 +44,18 @@ const SettignsView = () => {
     })
   })
 
+  const setSettingsHandler = async (settings: Partial<Settings>) => {
+    const result = await store.settings.set(settings)
+    if (!result) {
+      showAlert({ text: 'Settings update failed', type: 'error' })
+    }
+  }
+
   return (
     <div className="settings-view">
+
+      {renderAlert()}
+
       <div className='view-title'>Settings</div>
       <div className="items-container">
 
@@ -59,7 +70,7 @@ const SettignsView = () => {
           <Dropdown
             value={settings.theme}
             options={themeOptions}
-            onChange={((option: Theme) => Store.settings.set({ theme: option }))} />
+            onChange={((option: Theme) => setSettingsHandler({ theme: option }))} />
         </div>
 
         <div className="item">
@@ -67,7 +78,7 @@ const SettignsView = () => {
           <Dropdown
             value={settings.newSessionWindowState}
             options={newSessionWindowStateDropdownOptions}
-            onChange={(option: WindowState) => Store.settings.set({ newSessionWindowState: option })} />
+            onChange={(option: WindowState) => setSettingsHandler({ newSessionWindowState: option })} />
         </div>
 
         <div className="item">
@@ -76,7 +87,7 @@ const SettignsView = () => {
             value={settings.autoBackupsInterval}
             options={autoBackupsIntervalDropdownOptions}
             onChange={(option: BackupIntervalTime) => {
-              Store.settings.set({ autoBackupsInterval: option })
+              setSettingsHandler({ autoBackupsInterval: option })
                 .then(() => {
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
@@ -91,26 +102,26 @@ const SettignsView = () => {
           <div className="title">Open sessions in current window</div>
           <ToggleSwitch checked={settings.openSessionInCurrentWindow}
             onChange={(checked) => {
-              Store.settings.set({ openSessionInCurrentWindow: checked })
+              setSettingsHandler({ openSessionInCurrentWindow: checked })
             }} />
         </div>
 
         <div className="item">
           <div className="title">Creating window for new sessions</div>
           <ToggleSwitch checked={settings.createWindowForNewSession}
-            onChange={(checked) => Store.settings.set({ createWindowForNewSession: checked })} />
+            onChange={(checked) => setSettingsHandler({ createWindowForNewSession: checked })} />
         </div>
 
         <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
           <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-            onChange={(checked) => Store.settings.set({ createBackupBeforeSessionDelete: checked })} />
+            onChange={(checked) => setSettingsHandler({ createBackupBeforeSessionDelete: checked })} />
         </div>
 
         <div className="item">
           <div className="title">Delete empty tabs when opening a session</div>
           <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
-            onChange={(checked) => Store.settings.set({ deleteNewTabsWhenOpeningSession: checked })} />
+            onChange={(checked) => setSettingsHandler({ deleteNewTabsWhenOpeningSession: checked })} />
         </div>
 
         <div className="item nav" onClick={() => nav('/backups')}>
@@ -125,7 +136,7 @@ const SettignsView = () => {
 
         <div className="item">
           <div className="title">Reset settings to default</div>
-          <div className="reset-button" onClick={() => Store.settings.reset()}>Reset</div>
+          <div className="reset-button" onClick={() => store.settings.reset()}>Reset</div>
         </div>
       </div>
     </div>
