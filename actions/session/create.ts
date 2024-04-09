@@ -4,7 +4,7 @@ import store from "~store";
 import { WINDOWID_NONE } from "~utils/constants";
 import actions from "~actions";
 
-const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<Session> => {
+const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<boolean> => {
   const settings = await store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
@@ -14,7 +14,9 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
   } else {
     if (createWindow) {
       windowId = await actions.window.create()
-      isSessionOpen = true
+      if (actions.window.checkId(windowId)) {
+        isSessionOpen = true
+      }
     } else {
       windowId = WINDOWID_NONE
     }
@@ -32,10 +34,10 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
     groups: []
   }
 
-  await store.sessions.create(session)
+  const result = await store.sessions.create(session)
   await actions.window.refreshUnsavedWindows()
-
-  return session
+  
+  return result
 }
 
 export default create

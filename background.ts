@@ -106,7 +106,13 @@ chrome.runtime.onMessage.addListener((
         .then(res => {
           if (res) {
             actions.session.create({ windowId: sender.tab.windowId })
-            sendResponse({ message: Message.success })
+              .then(result => {
+                if (result) {
+                  sendResponse({ message: Message.success })
+                } else {
+                  sendResponse({ message: Message.error })
+                }
+              })
           } else {
             sendResponse({ message: Message.error })
           }

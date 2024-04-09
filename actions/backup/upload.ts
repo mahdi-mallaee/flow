@@ -7,6 +7,11 @@ const upload = (file: File, onError: (msg: string) => void) => {
     const data: Backup = JSON.parse(event.target.result.toString())
     if (checkFile(data, onError)) {
       actions.backup.create({ status: 'upload', sessions: data.sessions, title: data.title })
+        .then(result => {
+          if (!result) {
+            onError('Backup creation failed')
+          }
+        })
     }
 
   }

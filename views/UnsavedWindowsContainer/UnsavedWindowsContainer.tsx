@@ -19,9 +19,7 @@ const UnsavedWindowsContainer = () => {
   }, [])
 
   const { showAlert, renderAlert } = useAlertMessage()
-
   const [currentWindowId, setCurrentWindowId] = useState<number>(WINDOWID_NONE)
-
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
@@ -33,7 +31,11 @@ const UnsavedWindowsContainer = () => {
       })
       return
     }
-    await actions.session.create({ windowId: window.id })
+    const result = await actions.session.create({ windowId: window.id })
+    if (!result) {
+      showAlert({ text: 'Session creation failed', type: 'error' })
+    }
+
     actions.window.refreshUnsavedWindows()
     actions.session.refreshOpenSessions()
   }

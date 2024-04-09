@@ -28,13 +28,21 @@ const SessionsContainer = () => {
 
   const deleteSession = async (session: Session) => {
     if (settings.createBackupBeforeSessionDelete) {
-      actions.backup.create({
+      const result = await actions.backup.create({
         status: 'before deleting session',
         relatedItem: {
           title: session.title,
           type: 'session'
         }
       })
+
+      if (!result) {
+        showAlert({
+          text: 'Backup creation failed',
+          type: 'error'
+        })
+        return
+      }
     }
     await store.sessions.remove(session.id)
     actions.window.refreshUnsavedWindows()
@@ -51,7 +59,11 @@ const SessionsContainer = () => {
         return
       }
 
-      await store.sessions.editTitle(id, title)
+      const result = await store.sessions.editTitle(id, title)
+      if (!result) {
+        showAlert({ text: 'Session edit failed', type: 'error' })
+        return
+      }
     }
     callBack()
   }
@@ -78,7 +90,10 @@ const SessionsContainer = () => {
       return
     }
 
-    await actions.session.create({ title: sessionTitleInput })
+    const result = await actions.session.create({ title: sessionTitleInput })
+    if (!result) {
+      showAlert({ text: 'Session creation failed', type: 'error' })
+    }
 
     setGettingSessionName(false)
     setSessionTitleInput('')

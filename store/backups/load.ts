@@ -4,7 +4,7 @@ import store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
 import { StoreKeys, type Backup } from "~utils/types"
 
-const load = async (id: string) => {
+const load = async (id: string): Promise<boolean> => {
   const localStorage = new Storage({ area: 'local' })
   let backups: Backup[] = await localStorage.get(StoreKeys.backups) || []
   const index = backups.findIndex(b => b.id === id)
@@ -16,8 +16,23 @@ const load = async (id: string) => {
       session.isOpen = false
       session.windowId = WINDOWID_NONE
     })
-    await store.sessions.setAll(backup.sessions)
+
+    const result = await store.sessions.setAll(backup.sessions)
+    if (!result) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('ERROR: could not set the backup sessions -> store/backup/load l.21 ')
+      }
+      return false
+    }
+
     await actions.window.refreshUnsavedWindows()
+    return true
+
+  } else {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ERROR: could not find the backup -> store/backup/load l.10 ')
+    }
+    return false
   }
 }
 

@@ -12,19 +12,20 @@ type backupInput = {
   sessions?: Session[]
 }
 
-const create = async ({ status, title, relatedItem, sessions }: backupInput) => {
+const create = async ({ status, title, relatedItem, sessions }: backupInput): Promise<boolean> => {
   sessions = sessions || await store.sessions.getAll()
 
   const newBackup: Backup = {
     id: uuidv4(),
     title: title || new Date().toLocaleString(),
-    sessions,
+    sessions: sessions || [],
     date: new Date().toLocaleString(),
-    status,
+    status: status || 'manual',
     relatedItem
   }
 
-  await store.backups.create(newBackup)
+  const result = await store.backups.create(newBackup)
+  return result
 
 }
 
