@@ -59,7 +59,11 @@ const SessionsContainer = () => {
         return
       }
 
-      await store.sessions.editTitle(id, title)
+      const result = await store.sessions.editTitle(id, title)
+      if (!result) {
+        showAlert({ text: 'Session edit failed', type: 'error' })
+        return
+      }
     }
     callBack()
   }
