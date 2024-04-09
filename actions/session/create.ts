@@ -4,7 +4,7 @@ import store from "~store";
 import { WINDOWID_NONE } from "~utils/constants";
 import actions from "~actions";
 
-const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<Session> => {
+const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<boolean> => {
   const settings = await store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
@@ -34,17 +34,10 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
     groups: []
   }
 
-  try {
-    await store.sessions.create(session)
-  } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: could not create the session -> actions/session/create l.38 ', error)
-    }
-  }
-
+  const result = await store.sessions.create(session)
   await actions.window.refreshUnsavedWindows()
-
-  return session
+  
+  return result
 }
 
 export default create
