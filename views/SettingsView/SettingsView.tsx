@@ -9,6 +9,7 @@ import Store from '~store'
 import useSettings from '~hooks/useSettings'
 import { useNavigate } from 'react-router-dom'
 import actions from '~actions'
+import set from '~store/settings/set'
 
 const SettignsView = () => {
   const settings = useSettings()
@@ -48,7 +49,7 @@ const SettignsView = () => {
       <div className="items-container">
 
         <div className="item nav" onClick={() => nav('/donation')}>
-          <MdFavoriteBorder className='heart-icon'/>
+          <MdFavoriteBorder className='heart-icon' />
           <div className="title">Donation</div>
           <MdChevronRight />
         </div>
@@ -58,7 +59,7 @@ const SettignsView = () => {
           <Dropdown
             value={settings.theme}
             options={themeOptions}
-            onChange={((option: Theme) => Store.settings.setTheme(option))} />
+            onChange={((option: Theme) => Store.settings.set({ theme: option }))} />
         </div>
 
         <div className="item">
@@ -66,7 +67,7 @@ const SettignsView = () => {
           <Dropdown
             value={settings.newSessionWindowState}
             options={newSessionWindowStateDropdownOptions}
-            onChange={(option: WindowState) => Store.settings.setWindowState(option)} />
+            onChange={(option: WindowState) => Store.settings.set({ newSessionWindowState: option })} />
         </div>
 
         <div className="item">
@@ -75,7 +76,7 @@ const SettignsView = () => {
             value={settings.autoBackupsInterval}
             options={autoBackupsIntervalDropdownOptions}
             onChange={(option: BackupIntervalTime) => {
-              Store.settings.setBackupInterval(option)
+              Store.settings.set({ autoBackupsInterval: option })
                 .then(() => {
                   if (autoBackupIntervalId) {
                     clearInterval(autoBackupIntervalId)
@@ -89,25 +90,27 @@ const SettignsView = () => {
         <div className="item">
           <div className="title">Open sessions in current window</div>
           <ToggleSwitch checked={settings.openSessionInCurrentWindow}
-            onChange={(checked) => Store.settings.setOpenSessionInCurrentWindow(checked)} />
+            onChange={(checked) => {
+              Store.settings.set({ openSessionInCurrentWindow: checked })
+            }} />
         </div>
 
         <div className="item">
           <div className="title">Creating window for new sessions</div>
           <ToggleSwitch checked={settings.createWindowForNewSession}
-            onChange={(checked) => Store.settings.setCreateWindowForNewSession(checked)} />
+            onChange={(checked) => Store.settings.set({ createWindowForNewSession: checked })} />
         </div>
 
         <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
           <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-            onChange={(checked) => Store.settings.setBackupCreationBeforeSessionDelete(checked)} />
+            onChange={(checked) => Store.settings.set({ createBackupBeforeSessionDelete: checked })} />
         </div>
 
         <div className="item">
           <div className="title">Delete empty tabs when opening a session</div>
           <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
-            onChange={(checked) => Store.settings.setDeleteNewTabsWhenOpeningSession(checked)} />
+            onChange={(checked) => Store.settings.set({ deleteNewTabsWhenOpeningSession: checked })} />
         </div>
 
         <div className="item nav" onClick={() => nav('/backups')}>
