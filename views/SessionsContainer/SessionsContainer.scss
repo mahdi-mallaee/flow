@@ -4,6 +4,21 @@
   flex: 2;
   overflow: hidden;
 
+  .limit-number {
+    background-color: var(--alert-warning);
+    font-size: 12px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      font-size: 22px;
+      padding: 4px;
+      cursor: pointer;
+    }
+  }
+
   .sessions {
     overflow-y: auto;
     padding-left: 1px;

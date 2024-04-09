@@ -124,6 +124,15 @@ const SessionsContainer = () => {
             <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>
           }
 
+          {
+            settings.showLargeSessionWarning &&
+            sessions.findIndex(s => s.tabs.length > 30) >= 0 &&
+            <div className="limit-number">
+              Sessions with over 30 tabs will be slow!
+              <MdClose onClick={() => store.settings.set({ showLargeSessionWarning: false })} />
+            </div>
+          }
+
           <AnimatePresence>
             {sessions.map(session => {
               return (
@@ -147,7 +156,10 @@ const SessionsContainer = () => {
               )
             })}
           </AnimatePresence>
+
+
         </div>
+
       </div>
     </>
   )
