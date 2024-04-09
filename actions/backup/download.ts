@@ -1,18 +1,32 @@
 import type { Backup } from "~utils/types"
 
-const download = async (backup: Backup) => {
+const download = async (backup: Backup): Promise<boolean> => {
   const backupJsonString = JSON.stringify(backup)
-
-  const blob = new Blob([backupJsonString], { type: "application/json" })
-
-  const downloadUrl = URL.createObjectURL(blob)
+  let downloadUrl: string
+  try {
+    const blob = new Blob([backupJsonString], { type: "application/json" })
+    downloadUrl = URL.createObjectURL(blob)
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ERROR: could not create the backup blob -> store/backup/download l.7', error)
+    }
+    return false
+  }
 
   const fileName = 'Backup_' + backup.id
 
-  await chrome.downloads.download({
-    url: downloadUrl,
-    filename: fileName + '.json'
-  })
+  try {
+    await chrome.downloads.download({
+      url: downloadUrl,
+      filename: fileName + '.json'
+    })
+    return true
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ERROR: could not download the backup -> store/backup/download l.19', error)
+    }
+    return false
+  }
 }
 
 export default download

@@ -28,8 +28,11 @@ const BackupCard = (
     setLoadedBackupId(backup.id)
   }
 
-  const downloadBackupHandler = (backup: Backup) => {
-    actions.backup.download(backup)
+  const downloadBackupHandler = async (backup: Backup) => {
+    const result = await actions.backup.download(backup)
+    if (!result) {
+      showAlert({ text: 'Backup download failed', type: 'error' })
+    }
   }
 
   return (
