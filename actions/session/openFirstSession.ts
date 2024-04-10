@@ -10,10 +10,10 @@ import actions from "~actions"
  * 
  * If there is a main session and it was not the last closed window, it will open that session.
  */
-const openFirstSession = async () => {
+const openFirstSession = async (lastWindowId?: number) => {
   const sessions = await store.sessions.getAll()
   const mainSession = sessions.find(session => session.main === true)
-  const lastClosedWindowId = await store.windows.getLastClosedWindowId()
+  const lastClosedWindowId = lastWindowId || await store.windows.getLastClosedWindowId()
   const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
 
   if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
@@ -35,6 +35,11 @@ const openFirstSession = async () => {
       const windowTabs = await actions.window.getTabs(windows[0].id)
       if (compareTabs(windowTabs, lastSession.tabs)) {
         await store.sessions.setWindowId(lastSession.id, windows[0].id)
+      } else {
+        //sometimes the opend window haven't load completely and makes the compare tab fail 
+        setTimeout(() => {
+          openFirstSession(lastClosedWindowId)
+        }, 500)
       }
     }
   }
