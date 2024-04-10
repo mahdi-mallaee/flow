@@ -2,6 +2,14 @@ import actions from "~actions"
 import store from "~store"
 import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants"
 
+/**
+ * Creates a new browser window with the specified URLs.
+ *
+ * @param urls - An optional array of URLs to open in the new window. If `deleteNewTabsWhenOpeningSession` is true,
+ * any URLs that match `NEW_TAB_URL` will be filtered out.
+ * 
+ * @returns The ID of the newly created window, or `WINDOWID_NONE` if the window could not be created.
+ */
 const create = async (urls?: string[]): Promise<number> => {
   const settings = await store.settings.getAll()
   let id: number = WINDOWID_NONE

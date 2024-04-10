@@ -2,6 +2,11 @@ import { Storage } from "@plasmohq/storage";
 import { type Session, SessionsKeys, type BasicSession, type SessionOpenStatus, type SessionTabsStore } from "~utils/types";
 import refreshSessionStatus from "./refreshSessionStatus";
 
+/**
+ * Creates a new session and stores it in local storage.
+ *
+ * Session are seperated into three different parts to prevent race issues
+ */
 const create = async (session: Session): Promise<boolean> => {
   const localStorage = new Storage({ area: "local" })
 
@@ -35,6 +40,8 @@ const create = async (session: Session): Promise<boolean> => {
     Sessions tabs new value is not set to local storage correctly.
     Causing 'zero tab window' bug.
     So for now i set sessionsTabs twice just to be sure
+
+    Creating the sesison in the background probably will fix the issue.
   */
   try {
     await localStorage.set(SessionsKeys.tab, sessionsTabs)

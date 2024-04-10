@@ -2,6 +2,14 @@ import { type Session, type Tab } from "~utils/types"
 import store from "~store"
 import actions from "~actions"
 
+/**
+ * Runs at the chrome startup and assigns the opened window to its corresponding session.
+ * 
+ * If there is a main session and the last closed window matches the main session's window,
+ * it will assign them together.
+ * 
+ * If there is a main session and it was not the last closed window, it will open that session.
+ */
 const openFirstSession = async () => {
   const sessions = await store.sessions.getAll()
   const mainSession = sessions.find(session => session.main === true)
@@ -47,9 +55,9 @@ const openMainSession = async (mainSession: Session) => {
 }
 
 /* 
-this condition below ensures that the opened window is same as the last closed window.
+This condition below ensures that the opened window is same as the last closed window.
 
-sometime even though in browsers settings it is set to open the last window onStartup
+Sometime even though in browsers settings it is set to open the last window onStartup
 the OS (happend on Mac OS) doesn't let the browser to open the last closed window.
 */
 const compareTabs = (windowTabs: Tab[], sessionTabs: Tab[]): boolean => {

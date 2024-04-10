@@ -4,11 +4,21 @@ import store from "~store";
 import { WINDOWID_NONE } from "~utils/constants";
 import actions from "~actions";
 
+/**
+ * Creates a new session with the specified window ID and title.
+ *
+ * @param {object} [options] - The options for creating the session.
+ * @param {number} [options.windowId] - The ID of the window to associate with the session.
+ * @param {string} [options.title] - The title of the session.
+ * @returns {Promise<boolean>} - A promise that resolves to `true` if the session was created successfully, `false` otherwise.
+ */
 const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<boolean> => {
   const settings = await store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
 
+  // check to wether create a new window if windowId is not provided or 
+  // set the session's windowId to be the provided windowId
   if (actions.window.checkId(windowId)) {
     isSessionOpen = true
   } else {
@@ -36,7 +46,7 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
 
   const result = await store.sessions.create(session)
   await actions.window.refreshUnsavedWindows()
-  
+
   return result
 }
 

@@ -1,6 +1,10 @@
 import actions from "~actions"
 import type { Backup } from "~utils/types"
 
+/**
+ * @param onError - A callback function to handle errors during the upload process.
+ *    It will show alert message in the BackupContainer view
+ */
 const upload = (file: File, onError: (msg: string) => void) => {
   const reader = new FileReader()
   reader.onload = function (event) {
@@ -24,11 +28,13 @@ const checkFile = (data: Backup, onError: (msg: string) => void): boolean => {
     return false
   }
 
+  // checks to see if session is an array and has a title
   if (!(data.sessions || typeof data.sessions.length !== 'number' || typeof data.title !== 'string')) {
     onError("backup format is not correct")
     return false
   }
 
+  // checks to see if every session's data is in the correct format
   let validSessions = true
   for (const session of data.sessions) {
     if (

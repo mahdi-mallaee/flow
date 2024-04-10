@@ -12,6 +12,7 @@ const load = async (id: string): Promise<boolean> => {
 
   if (backup && backup.sessions) {
 
+    // closing sessions in the backup so they don't appear open in the UI although there is no valid windowId assigned to them
     backup.sessions.forEach(session => {
       session.isOpen = false
       session.windowId = WINDOWID_NONE
