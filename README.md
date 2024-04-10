@@ -41,7 +41,7 @@ extension should be loaded in chrome dev mode afterward by clicking on load unpa
 ---
 
 ### How it's made
-I used plasmo for hot reloading and also it's storage api for data sync between background and popup scripts and it's other cool features like out of pocket react and typescript support and automatic manifest  builds.
+I used plasmo for hot reloading and also it's storage api for data sync between background and popup scripts and it's other cool features like out of pocket react and typescript support and automatic manifest builds.
 
 For UI i used react and react-router for navigation and framer-motion for animations.
 
@@ -71,17 +71,29 @@ refreshTabs gets all the tabs from all open windows and save them in their sessi
 ---
 
 ### Chrome Description
-Flow is the best way to organize your tabs and windows in Chrome and access them whenever you want. It is simple, fast, and reliable.
+Flow is your ultimate solution for managing tabs and windows in Chrome. Whether you’re a power user or just someone who wants to keep things tidy, Flow streamlines your browsing experience. Here’s why you’ll love it:
 
-You need Flow if you have too many tabs and windows open in Chrome and feel overwhelmed by them or want to close a window without worry of losing your journey.
+Effortless Tab Management
+• Create Sessions: Start fresh by initiating a new session. A dedicated Chrome window opens, marking the beginning of your focused browsing journey.
+• Automatic Saving: Flow takes care of your tabs in the background. Close a window without hesitation; your tabs are securely saved.
+• Resume Seamlessly: Reopen any session whenever you need to pick up where you left off.
+• Unsaved Windows: Add any open window to your sessions directly from the ‘Unsaved Windows’ section.
 
-• Flow allows you to create and save sessions that represent a window in Chrome.
-• You can open a session anytime and it will create a new window with the saved tabs. 
-• You can also see the open windows as unsaved sessions and save them as new sessions.
-• You can backup your sessions manually or automatically and restore them if you lose them. 
-• You can also set a main session that will always open when you start Chrome, regardless of the last closed window.
+Boost Your Workflow with Additional Features
+• Main Session: Designate a session as your ‘Main Session.’ When you launch Chrome, all other windows close, leaving only your essential workstream active.
+• Backups: Create local backups of your sessions. Flow auto-generates a backup before deleting any session, ensuring you never lose your work.
+• Dark Mode: Enjoy a sleek dark mode that’s easy on the eyes during late-night browsing.
+• Resizable Interface: Customize the extension’s size by simply dragging the bottom right corner to fit your screen and preferences.
 
-Wil be thankful of your feedbacks for improving.
+Why Flow?
+
+• Simplicity: Flow keeps things straightforward.
+• Speed: It’s fast and reliable.
+• Organization: Say goodbye to tab overload.
+
+Give Flow a try and experience a clutter-free browsing environment. Your feedback is invaluable in making Flow even better!
+
+#tab-manager #session #tab-groups #flow
 
 ### Refrences
 <a href="https://docs.plasmo.com/">Plasmo Docs</a>
