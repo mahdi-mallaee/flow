@@ -9,6 +9,7 @@ const set = async (newSettings: Partial<Settings>): Promise<boolean> => {
 
   const updatedSettings: Settings = { ...settings, ...newSettings }
 
+  // input validation
   const validKeys = Object.keys(DEFAULT_SETTINGS)
   if (!Object.keys(newSettings).every(key => validKeys.includes(key))) {
     if (process.env.NODE_ENV === 'development') {
