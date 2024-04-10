@@ -22,8 +22,8 @@ const TabSearchResults = ({ sessions, searchInput }: { sessions: Session[], sear
         return {
           ...session,
           tabs: session.tabs.filter(tab =>
-            tab.title.toLowerCase().includes(debouncedSearchInput.toLowerCase()) ||
-            tab.url.toLowerCase().includes(debouncedSearchInput.toLowerCase()))
+            (tab.title ? tab.title.toLowerCase().includes(debouncedSearchInput.toLowerCase()) : false) ||
+            (tab.url ? tab.url.toLowerCase().includes(debouncedSearchInput.toLowerCase()) : false))
         }
       }).filter(session => session.tabs.length > 0)
     } else {
@@ -32,6 +32,8 @@ const TabSearchResults = ({ sessions, searchInput }: { sessions: Session[], sear
   }, [debouncedSearchInput, sessions])
 
   const highlightSearchInput = (text: string): ReactNode => {
+    if (!text) return
+    
     const parts = text.split(new RegExp(`(${searchInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'))
     return (
       parts.map((part, i) =>
