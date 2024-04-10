@@ -17,15 +17,15 @@ const discardOpenedTab = async (id: number,) => {
     if (tab && id && !tab.discarded) {
       try {
         await chrome.tabs.discard(id)
+        tab.discarded = true
+        await store.windows.setOpenedTabs(openedTabs)
       }
       catch (error) {
         if (process.env.NODE_ENV === "development") {
           console.error('ERROR: tab could not be discarde -> actoins/window/discardedOpenedTab', error)
         }
       }
-      tab.discarded = true
     }
-    await store.windows.setOpenedTabs(openedTabs)
   }
 }
 
