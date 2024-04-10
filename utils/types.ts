@@ -118,5 +118,6 @@ export enum Message {
   saveSession = 'save-session',
   success = 'success',
   error = 'error',
-  openSession = 'open-session'
+  openSession = 'open-session',
+  createSession = "create-session"
 }

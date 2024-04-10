@@ -1,7 +1,9 @@
 import openSession from "./openSession"
+import createSession from "./createSession"
 
 const messageActions = {
-  openSession: openSession
+  openSession: openSession,
+  createSession: createSession,
 }
 
 export default messageActions

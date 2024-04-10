@@ -122,5 +122,8 @@ chrome.runtime.onMessage.addListener((
     }
   } else if (message === Message.openSession) {
     actions.session.open(payload.sessionId, payload.windowId, payload.alterSettingsBehavior)
+  } else if (message === Message.createSession) {
+    actions.session.create(payload)
+      .then(result => { sendResponse(result) })
   }
 })

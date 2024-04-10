@@ -31,7 +31,7 @@ const UnsavedWindowsContainer = () => {
       })
       return
     }
-    const result = await actions.session.create({ windowId: window.id })
+    const result = await actions.message.createSession({ windowId: window.id })
     if (!result) {
       showAlert({ text: 'Session creation failed', type: 'error' })
     }

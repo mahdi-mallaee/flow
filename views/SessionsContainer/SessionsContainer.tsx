@@ -90,7 +90,7 @@ const SessionsContainer = () => {
       return
     }
 
-    const result = await actions.session.create({ title: sessionTitleInput })
+    const result = await actions.message.createSession({ title: sessionTitleInput })
     if (!result) {
       showAlert({ text: 'Session creation failed', type: 'error' })
     }
