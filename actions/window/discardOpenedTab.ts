@@ -1,27 +1,27 @@
 import store from "~store"
 import type { OpenedTab } from "~utils/types"
 
-/*
-  This function uses the provided tab id from background in tabs.onUpdate event for
-  discarding tabs from memory so sessions that have a lot of tabs could be loaded faster
-*/
-
+/**
+ * Discards the tab with the provided ID from memory, if it exists and has not already been discarded.
+ * This function run in the tabs.onUpdated event to ensure tab is loaded partially before deleting.
+ * This helps to load sessions with a large number of tabs faster.
+ * If the tab cannot be discarded due to an error, the error is logged.
+ *
+ * @param id - The ID of the tab to be discarded.
+ * @returns Promise that resolves when the tab has been discarded or an error has occurred.
+ */
 const discardOpenedTab = async (id: number,) => {
   const openedTabs: OpenedTab[] = await store.windows.getOpenedTabs()
   if (openedTabs && openedTabs.length >= 1) {
     const tab = openedTabs.find(ot => ot.id === id)
     if (tab && id && !tab.discarded) {
-      /*
-        sometimes tabs.discard returns error: there is no tabs with id [tab.id (number)] and distrupts 
-        extensions flow like prventing the session from closing or not letting tabs to group so
-        I used try catch so the error wouldn't distrupts the flow and works normal although maybe a tab wont be
-        discarded this way but that is not a huge deal and i didn't know what to do with the error so I just logged it
-      */
       try {
         await chrome.tabs.discard(id)
       }
       catch (error) {
-        console.log(error)
+        if (process.env.NODE_ENV === "development") {
+          console.error('ERROR: tab could not be discarde -> actoins/window/discardedOpenedTab', error)
+        }
       }
       tab.discarded = true
     }
