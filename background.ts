@@ -69,13 +69,17 @@ chrome.windows.onCreated.addListener((window) => {
         */
         actions.session.openFirstSession()
           .then(() => {
-            actions.window.changeRecentWindowId(window.id)
+            if (refreshUnsvavedWindows) {
+              actions.window.changeRecentWindowId(window.id)
+            }
           })
       } else {
-        actions.window.refreshUnsavedWindows()
-          .then(() => {
-            actions.window.changeRecentWindowId(window.id)
-          })
+        if (refreshUnsvavedWindows) {
+          actions.window.refreshUnsavedWindows()
+            .then(() => {
+              actions.window.changeRecentWindowId(window.id)
+            })
+        }
       }
     })
 })
@@ -84,6 +88,7 @@ chrome.runtime.onStartup.addListener(() => {
   actions.backup.runInterval()
 })
 
+let refreshUnsvavedWindows = true
 
 chrome.runtime.onMessage.addListener((
   { message, payload }:
@@ -121,9 +126,17 @@ chrome.runtime.onMessage.addListener((
       sendResponse({ message: Message.error })
     }
   } else if (message === Message.openSession) {
+    refreshUnsvavedWindows = false
     actions.session.open(payload.sessionId, payload.windowId, payload.alterSettingsBehavior)
+      .then(() => { refreshUnsvavedWindows = true })
   } else if (message === Message.createSession) {
+    refreshUnsvavedWindows = false
     actions.session.create(payload)
-      .then(result => { sendResponse(result) })
+      .then(result => {
+        sendResponse(result)
+        refreshUnsvavedWindows = true
+      })
   }
+
+  return true
 })
