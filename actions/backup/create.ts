@@ -13,8 +13,6 @@ type backupInput = {
 }
 
 /**
- * Creates a new backup with the provided input parameters.
- *
  * @param status - The status of the backup.
  * @param title - The title of the backup. If not provided, the current date and time will be used.
  * @param relatedItem - An object containing the title and type of an item related to the backup.

@@ -2,9 +2,6 @@ import actions from "~actions"
 import type { Backup } from "~utils/types"
 
 /**
- * Uploads a backup file to backup store.
- *
- * @param file - The backup file to upload.
  * @param onError - A callback function to handle errors during the upload process.
  *    It will show alert message in the BackupContainer view
  */
