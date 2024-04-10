@@ -1,5 +1,11 @@
 import type { Backup } from "~utils/types"
 
+/**
+ * Downloads a backup file to the user's local machine.
+ *
+ * @param backup - The backup object to be downloaded.
+ * @returns `true` if the download was successful, `false` otherwise.
+ */
 const download = async (backup: Backup): Promise<boolean> => {
   const backupJsonString = JSON.stringify(backup)
   let downloadUrl: string
