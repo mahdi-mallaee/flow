@@ -7,12 +7,26 @@ import Logo from "~components/Logo"
 import { MdTune } from "react-icons/md"
 import TabSearchResults from "~components/TabSearchResults"
 import Toolbar from "~components/Toolbar"
+import type { Tab } from "~utils/types"
+import actions from "~actions"
 
 const SessionsTabPage = () => {
   const sessions = useSessions()
   const [selectedSessionId, setSelectedSessionId] = useState<string>(null)
   const selectedSession = sessions.find(session => session.id === selectedSessionId) || sessions[0]
   const [searchInput, setSearchInput] = useState("")
+
+  const tabCardClickHandler = async (tab: Tab) => {
+    if (selectedSession.isOpen) {
+      chrome.windows.update(tab.windowId, { focused: true, })
+      chrome.tabs.update(tab.id, { active: true, })
+    } else {
+      const windowId = await actions.message.openSession({ sessionId: selectedSessionId, exludedTabIndex: tab.index })
+      chrome.windows.update(windowId, { focused: true, })
+      const tabs = await actions.window.getTabs(windowId)
+      chrome.tabs.update(tabs[tab.index].id, { active: true, })
+    }
+  }
 
   return (
     <ThemeProvider>
@@ -49,7 +63,7 @@ const SessionsTabPage = () => {
               <div className="tabs-container">
                 {selectedSession &&
                   selectedSession.tabs.map((tab, i) => (
-                    <TabCard key={tab.id || i} tab={tab} session={selectedSession} />
+                    <TabCard key={tab.id || i} tab={tab} onClickHandler={() => tabCardClickHandler(tab)} />
                   ))
                 }
               </div>

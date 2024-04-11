@@ -11,9 +11,11 @@ import type { Tab, TabGroup } from "~utils/types"
  * @param windowId - The ID of the window to update.
  * @param tabs - The new tabs to be displayed in the window.
  * @param groups - The new tab groups to be applied to the window.
+ * @param exludeTabIndex - The index of the tab that needs to be excluded from discarding.
+ * 
  * @returns A promise that resolves when the update is complete.
  */
-const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
+const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exludeTabIndex?: number) => {
   let currentWindowTabs = await actions.window.getTabs(windowId)
 
   // this approach is used to ensuure parallel run for faster update
@@ -33,7 +35,7 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
   await Promise.all(currentTabsPromise)
   currentWindowTabs = await actions.window.getTabs(windowId)
 
-  await setOpenTabs(currentWindowTabs)
+  await setOpenTabs(currentWindowTabs, exludeTabIndex)
   await groupTabs(groups, tabs, currentWindowTabs, windowId)
 }
 

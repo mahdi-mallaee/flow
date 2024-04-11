@@ -45,6 +45,13 @@ export type AlertMessage = {
   type: 'error' | 'warning' | 'info'
 }
 
+export type OpenSessionInput = {
+  sessionId: string,
+  exludedTabIndex?: number,
+  currentWindowId?: number,
+  alterSettingsBehavior?: boolean,
+}
+
 export type Settings = {
   theme: Theme,
   newSessionWindowState: WindowState,

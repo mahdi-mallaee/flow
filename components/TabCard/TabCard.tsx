@@ -1,30 +1,17 @@
-import type { Session, Tab } from "~utils/types"
+import type { Tab } from "~utils/types"
 
 import './TabCard.scss'
-import actions from "~actions"
 import type React from "react"
 import type { ReactNode } from "react"
 
 const TabCard = (
-  { tab, session, title, url }:
-    { tab: Tab, session: Session, title?: ReactNode, url?: ReactNode }
+  { tab, title, url, onClickHandler }:
+    { tab: Tab, title?: ReactNode, url?: ReactNode, onClickHandler: () => void }
 ) => {
 
-  const tabCardClickHandler = async () => {
-    if (session.isOpen) {
-      chrome.windows.update(tab.windowId, { focused: true, })
-      chrome.tabs.update(tab.id, { active: true, })
-    } else {
-      const windowId = await actions.session.open(session.id, tab.index)
-      chrome.windows.update(windowId, { focused: true, })
-      const tabs = actions.window.getTabs(windowId)
-      chrome.tabs.update(tabs[tab.index].id, { active: true, })
-    }
-  }
-
   return (
-    <div className="tab-card" onClick={tabCardClickHandler}>
-      <img src={tab.iconUrl} />
+    <div className="tab-card" onClick={onClickHandler}>
+      <img src={tab.iconUrl || ''} />
       <div className="info">
         <div className="title">{title || tab.title || tab.url || ''}</div>
         <div className="url">{url || tab.url || ''}</div>

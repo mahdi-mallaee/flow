@@ -112,6 +112,8 @@ button {
     flex-direction: column;
     flex-shrink: 1;
     min-width: 0;
+    background-color: var(--background-color);
+    color: var(--on-background-color);
 
     .header {
       background-color: var(--surface-color);
@@ -152,8 +154,6 @@ button {
     }
 
     .tabs-container {
-      background-color: var(--background-color);
-      color: var(--on-background-color);
       overflow-y: scroll;
       display: grid;
       grid-template-columns: 1fr 1fr;

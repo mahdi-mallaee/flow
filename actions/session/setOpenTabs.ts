@@ -7,17 +7,19 @@ import type { OpenedTab, Tab } from "~utils/types"
  * And discarding so early will result in the tabs being blank new tab pages.
  *
  * @param windowTabs - The tabs that need to be discarded after opening a session.
+ * @param exludeTabIndex - The index of the tab that needs to be excluded from discarding.
+ * 
  * @returns A promise that resolves when the open tabs have been set.
  */
 
-const setOpenTabs = async(windowTabs: Tab[], exludeTabId?: number) => {
-  const openedTabs: OpenedTab[] = windowTabs.map((tab, i) => {
+const setOpenTabs = async (windowTabs: Tab[], exludeTabIndex?: number) => {
+  const openedTabs: OpenedTab[] = windowTabs.map((tab) => {
     return { id: tab.id, discarded: false }
   })
 
-  if (exludeTabId) {
-    openedTabs.find(ot => ot.id === exludeTabId)!.discarded = true
-  } else {
+  if (typeof exludeTabIndex === 'number' && exludeTabIndex >= 0 && openedTabs[exludeTabIndex]) {
+    openedTabs[exludeTabIndex].discarded = true
+  } else if (openedTabs.length > 0) {
     openedTabs[openedTabs.length - 1].discarded = true
   }
   await store.windows.setOpenedTabs(openedTabs)

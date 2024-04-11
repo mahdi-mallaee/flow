@@ -1,4 +1,4 @@
-import { type Tab } from "~utils/types";
+import { type OpenSessionInput, type Tab } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
 import { WINDOWID_NONE } from "~utils/constants";
@@ -10,6 +10,8 @@ import { WINDOWID_NONE } from "~utils/constants";
  * @param currentWindowId - The ID of the current window, if the session is to be opened in the current window.
  * @param alterSettingsBehavior - Whether to override the user's settings for opening the session.
  *  If user holds the ctrl key, the settings behaviour will be altered.
+ * @param exludedTabIndex - The index of the tab that should not be discarded in the opened window.
+ * 
  * @returns The ID of the window in which the session was opened.
  * 
  * @flow 
@@ -24,7 +26,7 @@ import { WINDOWID_NONE } from "~utils/constants";
  * set the session as open ->
  * delete the recent history !
  */
-const open = async (sessionId: string, currentWindowId?: number, alterSettingsBehavior = false): Promise<number> => {
+const open = async ({ sessionId, currentWindowId, alterSettingsBehavior = false, exludedTabIndex }: OpenSessionInput): Promise<number> => {
   const startTime = Date.now()
 
   const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
@@ -53,7 +55,7 @@ const open = async (sessionId: string, currentWindowId?: number, alterSettingsBe
     windowId = await actions.window.create()
   }
 
-  await actions.window.update(windowId, sessionTabs, groups)
+  await actions.window.update(windowId, sessionTabs, groups, exludedTabIndex)
 
   // set the session as open and assign the window id to it for updates
   await store.sessions.setOpenStatus(sessionId, true)
