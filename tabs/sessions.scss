@@ -111,6 +111,7 @@ button {
     display: flex;
     flex-direction: column;
     flex-shrink: 1;
+    min-width: 0;
 
     .header {
       background-color: var(--surface-color);
@@ -151,17 +152,19 @@ button {
     }
 
     .tabs-container {
-      padding: 24px;
       background-color: var(--background-color);
-      flex-grow: 1;
-      overflow-y: scroll;
-      width: 100%;
       color: var(--on-background-color);
+      overflow-y: scroll;
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: start;
       row-gap: 16px;
       column-gap: 24px;
+      padding: 24px;
+
+      @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }

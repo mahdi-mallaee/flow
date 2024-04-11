@@ -4,6 +4,8 @@
   display: flex;
   padding: 12px 16px;
   gap: 12px;
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
 
   .searchbar {
     flex: 1;
@@ -21,6 +23,8 @@
       border: none;
       outline: none;
       height: 100%;
+      background-color: inherit;
+      color: inherit;
     }
 
     svg {
