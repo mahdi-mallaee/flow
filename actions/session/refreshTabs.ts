@@ -6,8 +6,6 @@ import type { UnsavedWindow } from "~utils/types"
 * Refreshes the tabs for all open sessions and updates the unsaved window information.
 *
 * This function first retrieves the open sessions and their associated tabs.
-* If the `refreshGroups` flag is set, it also retrieves the window groups for each open session,
-* Then updates the session data accordingly.
 *
 * Next, the function refreshes the unsaved window information by calling `actions.window.refreshUnsavedWindows()`.
 * For each unsaved window, it retrieves the tabs and updates the `tabsCount` property of the `UnsavedWindow` object.
@@ -16,22 +14,14 @@ import type { UnsavedWindow } from "~utils/types"
 * 
 * Saving tabs individualy by their event made a lot of problems so I just refresh them all after every event.
 *
-* @param {boolean} [refreshGroups=false] - If true, the function will also refresh the window groups for each open session.
 * @returns {Promise<void>}
 */
 
-const refreshTabs = async (refreshGroups: boolean = false): Promise<void> => {
+const refreshTabs = async (): Promise<void> => {
   const sessions = await store.sessions.getOpenStatus()
 
   for (const session of sessions) {
     if (session.isOpen) {
-      if (refreshGroups) {
-        const groups = await actions.window.getGroups(session.windowId)
-        if (groups) {
-          await store.sessions.setGroups(session.sessionId, groups)
-        }
-      }
-
       const tabs = await actions.window.getTabs(session.windowId)
       if (tabs && tabs.length > 0) {
         await store.sessions.setTabs(session.sessionId, tabs)

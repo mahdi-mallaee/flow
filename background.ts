@@ -1,21 +1,24 @@
 import actions from "~actions"
 import store from "~store"
 import { NEW_TAB_URL } from "~utils/constants"
-import { Message, type Tab, type TabGroup } from "~utils/types"
+import { Message } from "~utils/types"
 
 export { }
 
 chrome.tabGroups.onCreated.addListener(() => {
-  actions.session.refreshTabs(true)
+  actions.session.refreshTabs()
+  actions.session.refreshGroups()
 })
 chrome.tabGroups.onRemoved.addListener(() => {
   actions.session.refreshTabs()
 })
 chrome.tabGroups.onMoved.addListener(() => {
-  actions.session.refreshTabs(true)
+  actions.session.refreshTabs()
+  actions.session.refreshGroups()
 })
 chrome.tabGroups.onUpdated.addListener(() => {
-  actions.session.refreshTabs(true)
+  actions.session.refreshTabs()
+  actions.session.refreshGroups()
 })
 
 chrome.tabs.onCreated.addListener(() => {
@@ -50,7 +53,7 @@ chrome.tabs.onDetached.addListener(() => {
 chrome.tabs.onMoved.addListener(() => {
   actions.session.refreshTabs()
 })
-chrome.tabs.onReplaced.addListener(() => {
+chrome.tabs.onReplaced.addListener((addedId, removedId) => {
   actions.session.refreshTabs()
 })
 
@@ -128,14 +131,13 @@ chrome.runtime.onMessage.addListener((
   } else if (message === Message.openSession) {
     refreshUnsvavedWindows = false
     actions.session.open(payload.sessionId, payload.windowId, payload.alterSettingsBehavior)
-      .then(() => { refreshUnsvavedWindows = true })
+      .finally(() => { refreshUnsvavedWindows = true })
   } else if (message === Message.createSession) {
     refreshUnsvavedWindows = false
     actions.session.create(payload)
       .then(result => {
         sendResponse(result)
-        refreshUnsvavedWindows = true
-      })
+      }).finally(() => { refreshUnsvavedWindows = true })
   }
 
   return true
