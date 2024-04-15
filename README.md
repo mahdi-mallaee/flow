@@ -97,6 +97,15 @@ Why Flow?
 
 Give Flow a try and experience a clutter-free browsing environment. Your feedback is invaluable in making Flow even better!
 
+What's new?
+
+1.1.0
+• sessions can be opened in the current window.
+• project is open source now. see about us in extension settings for more info.
+• pinned tabs will be saved now.
+• alert will be shown if a window is not saved as session.
+• performance improvements.
+
 #tab-manager #session #tab-groups #flow
 
 ### Contribution and License
