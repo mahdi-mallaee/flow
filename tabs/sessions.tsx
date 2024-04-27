@@ -2,46 +2,56 @@ import useSessions from "~hooks/useSessions"
 import './sessions.scss'
 import ThemeProvider from "~components/ThemeProvider"
 import TabCard from "~components/TabCard"
-import { useState, } from "react"
+import { useEffect, useState, } from "react"
 import Logo from "~components/Logo"
 import { MdTune } from "react-icons/md"
 import TabSearchResults from "~components/TabSearchResults"
 import Toolbar from "~components/Toolbar"
-import type { Tab } from "~utils/types"
+import type { Session, Tab } from "~utils/types"
 import actions from "~actions"
+import Sidebar from "~components/Sidebar"
+import store from "~store"
 
 const SessionsTabPage = () => {
   const sessions = useSessions()
-  const [selectedSessionId, setSelectedSessionId] = useState<string>(null)
-  const selectedSession = sessions.find(session => session.id === selectedSessionId) || sessions[0]
+  const [selectedSession, setSelectedSession] = useState(sessions[0])
   const [searchInput, setSearchInput] = useState("")
-
+  
   const tabCardClickHandler = async (tab: Tab) => {
     if (selectedSession.isOpen) {
       chrome.windows.update(tab.windowId, { focused: true, })
       chrome.tabs.update(tab.id, { active: true, })
     } else {
-      const windowId = await actions.message.openSession({ sessionId: selectedSessionId, exludedTabIndex: tab.index })
+      const windowId = await actions.message.openSession({ sessionId: selectedSession.id, exludedTabIndex: tab.index })
       chrome.windows.update(windowId, { focused: true, })
       const tabs = await actions.window.getTabs(windowId)
-      chrome.tabs.update(tabs[tab.index].id, { active: true, })
+      await chrome.tabs.update(tabs[tab.index].id, { active: true, })
     }
+  }
+
+  const sessionClickHandler = (session: Session) => {
+    setSelectedSession(session)
+  }
+
+  useEffect(() => {
+    if (!selectedSession) {
+      chrome.windows.getCurrent().then(window => {
+        if (actions.window.checkId(window.id)) {
+          const session = sessions.find(session => session.windowId === window.id) || sessions[0]
+          setSelectedSession(session)
+        }
+      })
+    }
+  }, [sessions])
+
+  const mainSesssionHandler = () => {
+    store.sessions.setAsMain(selectedSession.id)
   }
 
   return (
     <ThemeProvider>
       <div className="sessions-page">
-        <div className="sidebar">
-          <div className="sessions-container">
-            {sessions.map(session => (
-              <div className="session" key={session.id} onClick={() => setSelectedSessionId(session.id)}>
-                <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length}</div>
-                {session.main && <div className="main-indicator">M</div>}
-                <div className="title">{session.title}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Sidebar selectedSession={selectedSession} sessions={sessions} sessionClickHandler={sessionClickHandler}></Sidebar>
         <div className="main">
           <div className="header">
             <div className="logo">
@@ -55,7 +65,7 @@ const SessionsTabPage = () => {
           <Toolbar
             title={searchInput ? "Search Results" :
               selectedSession ? selectedSession.title : 'Select a session'}
-            setSearchInput={setSearchInput} />
+            setSearchInput={setSearchInput} mainSessionHandler={mainSesssionHandler}/>
           {
             searchInput ?
               <TabSearchResults sessions={sessions} searchInput={searchInput} />

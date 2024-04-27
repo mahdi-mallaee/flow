@@ -2,8 +2,8 @@ import { MdOutlineDelete, MdOutlineEdit, MdOutlinePushPin, MdSearch } from "reac
 import './Toolbar.scss'
 
 const Toolbar = (
-  { title, setSearchInput }:
-    { title: string, setSearchInput: React.Dispatch<React.SetStateAction<string>> }
+  { title, setSearchInput, mainSessionHandler }:
+    { title: string, setSearchInput: React.Dispatch<React.SetStateAction<string>>, mainSessionHandler: () => void }
 ) => {
   return (
     <div className="toolbar">
@@ -17,7 +17,7 @@ const Toolbar = (
           <div className="toolbar-button edit-title">
             <MdOutlineEdit />
           </div>
-          <div className="toolbar-button set-main-session">
+          <div className="toolbar-button set-main-session" onClick={mainSessionHandler}>
             <MdOutlinePushPin />
             <span>main</span>
           </div>
