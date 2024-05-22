@@ -101,7 +101,7 @@ const SessionsContainer = () => {
 
   const sessionClickHandler = async (session: Session, e: MouseEvent) => {
     if (!session.isOpen) {
-      await actions.message.openSession(session.id, e.ctrlKey)
+      await actions.message.openSession({ sessionId: session.id, alterSettingsBehavior: e.ctrlKey })
     } else {
       showAlert({
         text: 'This session is already open',

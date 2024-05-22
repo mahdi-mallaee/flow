@@ -46,6 +46,7 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
 
   const result = await store.sessions.create(session)
   await actions.window.refreshUnsavedWindows()
+  await actions.session.openSessionsPage({ windowId: windowId })
 
   return result
 }

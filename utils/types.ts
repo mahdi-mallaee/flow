@@ -29,6 +29,8 @@ export type Tab = {
   index: number,
   groupId: number,
   pinned: boolean
+  title: string,
+  iconUrl: string,
 }
 
 export type TabGroup = {
@@ -41,6 +43,13 @@ export type TabGroup = {
 export type AlertMessage = {
   text: string,
   type: 'error' | 'warning' | 'info'
+}
+
+export type OpenSessionInput = {
+  sessionId: string,
+  exludedTabIndex?: number,
+  currentWindowId?: number,
+  alterSettingsBehavior?: boolean,
 }
 
 export type Settings = {

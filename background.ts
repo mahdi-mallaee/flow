@@ -53,7 +53,7 @@ chrome.tabs.onDetached.addListener(() => {
 chrome.tabs.onMoved.addListener(() => {
   actions.session.refreshTabs()
 })
-chrome.tabs.onReplaced.addListener((addedId, removedId) => {
+chrome.tabs.onReplaced.addListener(() => {
   actions.session.refreshTabs()
 })
 
@@ -130,8 +130,9 @@ chrome.runtime.onMessage.addListener((
     }
   } else if (message === Message.openSession) {
     refreshUnsvavedWindows = false
-    actions.session.open(payload.sessionId, payload.windowId, payload.alterSettingsBehavior)
-      .finally(() => { refreshUnsvavedWindows = true })
+    actions.session.open(payload).then((windowId) => {
+      sendResponse(windowId)
+    }).finally(() => { refreshUnsvavedWindows = true })
   } else if (message === Message.createSession) {
     refreshUnsvavedWindows = false
     actions.session.create(payload)

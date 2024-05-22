@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
+
+body:has(.sessions-page),
+html:has(.sessions-page),
+#__plasmo:has(.sessions-page),
+#theme-provider:has(.sessions-page) {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input,
+button {
+  font-family: inherit;
+}
+
+.sessions-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-family: 'Lexend';
+
+  .main {
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    min-width: 0;
+    background-color: var(--background-color);
+    color: var(--on-background-color);
+
+    .header {
+      background-color: var(--surface-color);
+      color: var(--on-background-color);
+      flex-shrink: 0;
+      display: flex;
+      height: 56px;
+      padding: 12px 24px;
+      align-items: center;
+
+      .logo {
+        display: flex;
+        flex-grow: 1;
+        gap: 16px;
+        align-items: center;
+
+        .title {
+          font-size: 16px;
+          text-align: center;
+        }
+
+        svg {
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      .settings {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    .tabs-container {
+      overflow-y: scroll;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      row-gap: 16px;
+      column-gap: 24px;
+      padding: 24px;
+
+      @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
