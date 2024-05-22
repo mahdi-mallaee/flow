@@ -33,10 +33,12 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exludeT
 
   await Promise.all(newTabsPromise)
   await Promise.all(currentTabsPromise)
+  
+  await groupTabs(groups, tabs, windowId)
   currentWindowTabs = await actions.window.getTabs(windowId)
 
   await setOpenTabs(currentWindowTabs, exludeTabIndex)
-  await groupTabs(groups, tabs, currentWindowTabs, windowId)
+  await actions.session.refreshGroups()
 }
 
 export default update

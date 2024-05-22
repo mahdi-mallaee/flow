@@ -7,6 +7,7 @@
 - what it can do 
 - how it's made
 - what's the logic behind
+- Contribution & License
 
 ---
 
@@ -71,6 +72,9 @@ refreshTabs gets all the tabs from all open windows and save them in their sessi
 ---
 
 ### Chrome Description
+
+webstore link : https://chromewebstore.google.com/detail/flow-tab-manager/ddmmamibgihlgejeklfopeebcnobmfeb
+
 Flow is your ultimate solution for managing tabs and windows in Chrome. Whether you’re a power user or just someone who wants to keep things tidy, Flow streamlines your browsing experience. Here’s why you’ll love it:
 
 Effortless Tab Management
@@ -93,7 +97,20 @@ Why Flow?
 
 Give Flow a try and experience a clutter-free browsing environment. Your feedback is invaluable in making Flow even better!
 
+What's new?
+
+1.1.0
+• sessions can be opened in the current window.
+• project is open source now. see about us in extension settings for more info.
+• pinned tabs will be saved now.
+• alert will be shown if a window is not saved as session.
+• performance improvements.
+
 #tab-manager #session #tab-groups #flow
+
+### Contribution and License
+For contibuting see CONTRIBUTION.md file.
+This project is licensed under the GPL v3 License - see the LICENSE.md file.
 
 ### Refrences
 <a href="https://docs.plasmo.com/">Plasmo Docs</a>

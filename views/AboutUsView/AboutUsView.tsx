@@ -11,10 +11,14 @@ const AboutUsView = () => {
         <div className='item'>
           If you encounter any bug in the extension or any problem in your experience
           we would be happy to receive your email about it so we could fix it or address the problem.
+          Any feedback would be appreciated.
         </div>
 
         <div className='item'>
-          Any feedback would be appreciated.
+          <div>
+            This project is open source and you can find the project on
+            <a href="https://github.com/mahdi-mallaee/flow/" target="_blank" rel="noreferrer">Github</a>
+          </div>
         </div>
 
         <div className="item">
@@ -32,7 +36,7 @@ const AboutUsView = () => {
             <div className="title">Email :</div>
             <div>flow.extension@gmail.com</div>
           </div>
-          <CopyButton text={EMAIL}/>
+          <CopyButton text={EMAIL} />
         </div>
 
       </div>

@@ -8,6 +8,11 @@
     .item {
       display: flex;
       gap: 8px;
+
+      a {
+        margin-left: 4px;
+        color: var(--primary-color);
+      }
     }
 
     .email {
