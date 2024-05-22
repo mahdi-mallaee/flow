@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
 
-body,
-html,
-#__plasmo,
-#theme-provider {
+body:has(.sessions-page),
+html:has(.sessions-page),
+#__plasmo:has(.sessions-page),
+#theme-provider:has(.sessions-page) {
   margin: 0;
   height: 100%;
   width: 100%;
