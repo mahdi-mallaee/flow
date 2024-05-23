@@ -2,15 +2,16 @@ import ThemeProvider from "~components/ThemeProvider"
 import './sidepanel.scss'
 import { MemoryRouter } from "react-router-dom"
 import ViewRouter from "~views/ViewRouter"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SidePanelTabs from "~views/SidePanelTabs"
 import useSessions from "~hooks/useSessions"
+import actions from "~actions"
 
 function SidePanel() {
 
   const [sidePanelState, setSidePanelState] = useState('tabs')
   const sessions = useSessions()
-  const currentSession = sessions[0]
+  const [currentSession, setCurrentSession] = useState(sessions[0])
   const switchView = () => {
     if (sidePanelState === 'tabs') {
       return (
@@ -30,6 +31,15 @@ function SidePanel() {
       )
     }
   }
+
+  useEffect(() => {
+    chrome.windows.getCurrent().then(window => {
+      if (actions.window.checkId(window.id)) {
+        const session = sessions.find(session => session.windowId === window.id) || sessions[0]
+        setCurrentSession(session)
+      }
+    })
+  }, [sessions])
 
   return (
     <ThemeProvider>

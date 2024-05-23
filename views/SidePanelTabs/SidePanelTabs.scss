@@ -1,0 +1,126 @@
+.side-panel {
+  overflow: hidden;
+  .side-panel-tabs {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    gap: 4px;
+    user-select: none;
+
+    .tabs-toolbar{
+      height: 40px;
+      background-color: var(--background-v1-color);
+      display: flex;
+      justify-content: space-around;
+      gap: 4px;
+      border-radius: 6px;
+      overflow: hidden;
+      span{
+        display: flex;
+        align-items: center;
+      }
+      div{
+        margin: 4px 0;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        user-select: none;
+        &:hover{
+          background-color: var(--background-hover-color);
+        }
+        
+      }
+    }
+
+    .new-tab {
+      flex: 0 0 42px;
+      padding: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid var(--outline-color);
+
+      &:hover {
+        background-color: var(--background-hover-color);
+      }
+
+      &:active{
+        opacity: 0.6;
+      }
+    }
+
+    .tabs-container {
+      overflow-y: auto;
+      padding: 0 6px;
+      flex: 1 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-flow: wrap;
+
+      .tab {
+        user-select: none;
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+        height: 36px;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid transparent;
+        padding: 0 4px;
+        overflow: hidden;
+        color: var(--on-background-color);
+        transition: background-color 0.3s, border 0.2s;
+
+        &:hover,
+        &.selected {
+          background-color: var(--background-hover-color);
+          color: var(--on-background-color);
+          border: 1px solid var(--outline-color);
+          border-radius: 4px;
+          cursor: pointer;
+        }
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        img {
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+        }
+
+        .title {
+          white-space: nowrap;
+          text-align: start;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 12px;
+          flex: 1;
+        }
+
+        .close-button {
+          padding: 4px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          svg {
+            font-size: 14px;
+          }
+
+          &:hover {
+            background-color: var(--icon-button-hover);
+          }
+        }
+
+      }
+    }
+  }
+}
