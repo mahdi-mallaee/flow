@@ -28,23 +28,33 @@ body:has(.side-panel),
   color: var(--on-background-color);
   display: flex;
   flex-direction: column;
+  gap: 4px;
 
-  .side-panel-buttons{
+  .side-panel-buttons {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    flex: 0 0 50px ;
+    flex: 0 0 40px;
 
-    .button{
+    .button {
       font-size: 14px;
       padding: 6px;
       border-radius: 4px;
       cursor: pointer;
-      &.active{
+
+      &.active {
         background-color: var(--primary-color);
         color: var(--on-primary-color);
       }
     }
+  }
+
+  .session-title {
+    padding: 4px 12px;
+    font-size: 16px;
+    background-color: var(--surface-color);
+    border-top: 1px solid var(--outline-color);
+    border-bottom: 1px solid var(--outline-color);
   }
 
   .sessions-router {
@@ -55,7 +65,7 @@ body:has(.side-panel),
   }
 
   .view-title {
-    font-size: 12px;  
+    font-size: 12px;
     padding: 8px 12px;
     font-weight: 700;
     border: 1px solid var(--outline-color);

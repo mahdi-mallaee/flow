@@ -11,11 +11,12 @@ function SidePanel() {
 
   const [sidePanelState, setSidePanelState] = useState('tabs')
   const sessions = useSessions()
-  const [currentSession, setCurrentSession] = useState(sessions[0])
+  const [currentTabs, setCurrentTabs] = useState(sessions[0]?.tabs)
+  const [sidePanelTabsTitle, setSidePanelTabsTitle] = useState('')
   const switchView = () => {
     if (sidePanelState === 'tabs') {
       return (
-        <SidePanelTabs session={currentSession}></SidePanelTabs>
+        <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
       )
     } else if (sidePanelState === 'sessions') {
       return (
@@ -27,7 +28,8 @@ function SidePanel() {
       )
     } else {
       return (
-        <div>tabs</div>
+        <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
+
       )
     }
   }
@@ -35,11 +37,21 @@ function SidePanel() {
   useEffect(() => {
     chrome.windows.getCurrent().then(window => {
       if (actions.window.checkId(window.id)) {
-        const session = sessions.find(session => session.windowId === window.id) || sessions[0]
-        setCurrentSession(session)
+        const session = sessions.find(session => session.windowId === window.id)
+        if (session) {
+          setCurrentTabs(session.tabs)
+          setSidePanelTabsTitle(session.title)
+        } else {
+          actions.window.getTabs(window.id)
+            .then(tabs => {
+              setCurrentTabs(tabs)
+              setSidePanelTabsTitle(`Unsaved Window (${window.id})`)
+            })
+        }
       }
     })
   }, [sessions])
+
 
   return (
     <ThemeProvider>
@@ -60,6 +72,8 @@ function SidePanel() {
               bookmarks
             </div>
           </div>
+
+          <div className="session-title">{sidePanelTabsTitle}</div>
 
           <div className="sessions-router">
             {switchView()}

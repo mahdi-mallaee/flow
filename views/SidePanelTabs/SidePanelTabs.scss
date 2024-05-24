@@ -1,5 +1,28 @@
 .side-panel {
   overflow: hidden;
+
+  .context-menu {
+    position: fixed;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--outline-color);
+    color: var(--on-surface-color);
+    overflow: hidden;
+    z-index: 100;
+    div {
+      font-size: 12px;
+      padding: 4px 8px;
+      cursor: pointer;
+
+      &:hover{
+        background-color: var(--background-hover-color);
+      }
+    }
+  }
+
   .side-panel-tabs {
     display: flex;
     flex-direction: column;
@@ -7,7 +30,7 @@
     gap: 4px;
     user-select: none;
 
-    .tabs-toolbar{
+    .tabs-toolbar {
       height: 40px;
       background-color: var(--background-v1-color);
       display: flex;
@@ -15,11 +38,13 @@
       gap: 4px;
       border-radius: 6px;
       overflow: hidden;
-      span{
+
+      span {
         display: flex;
         align-items: center;
       }
-      div{
+
+      div {
         margin: 4px 0;
         display: flex;
         align-items: center;
@@ -27,10 +52,11 @@
         border-radius: 4px;
         cursor: pointer;
         user-select: none;
-        &:hover{
+
+        &:hover {
           background-color: var(--background-hover-color);
         }
-        
+
       }
     }
 
@@ -48,7 +74,7 @@
         background-color: var(--background-hover-color);
       }
 
-      &:active{
+      &:active {
         opacity: 0.6;
       }
     }

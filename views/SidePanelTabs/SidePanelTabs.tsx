@@ -1,11 +1,11 @@
-import React from 'react';
-import type { Session } from '~utils/types';
+import React, { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from 'react';
+import type { Session, Tab } from '~utils/types';
 import './SidePanelTabs.scss';
 import { MdAdd, MdClose } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const SidePanelTabs = ({ session }: { session: Session }) => {
+const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
 
   const [selectedTabs, setSelectedTabs] = React.useState<number[]>([])
 
@@ -35,11 +35,11 @@ const SidePanelTabs = ({ session }: { session: Session }) => {
   }
 
   const selectAllClickHandler = () => {
-    setSelectedTabs(session.tabs.map(tab => tab.id))
+    setSelectedTabs(tabs.map(tab => tab.id))
   }
 
   const closeAllClickHandler = () => {
-    if (selectedTabs.length === session.tabs.length) {
+    if (selectedTabs.length === tabs.length) {
       console.log('this will remove the session')
     } else {
       chrome.tabs.remove(selectedTabs)
@@ -47,22 +47,81 @@ const SidePanelTabs = ({ session }: { session: Session }) => {
     }
   }
 
+  const [showContext, setShowContext] = useState(false)
+  const [contextPos, setContextPos] = useState({ x: 0, y: 0 })
+  const Context = ({ x, y }: { x: number, y: number }) => {
+    return (
+      <motion.div ref={contextRef} className="context-menu"
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.17 }}
+        style={{
+          top: `${y}px`,
+          left: `${x}px`,
+        }}>
+        <div>Close tab</div>
+        <div>Add to a new group</div>
+        <div>Pin</div>
+        <div>Duplicate</div>
+      </motion.div>
+    )
+  }
+
+  const contextRef = useRef<HTMLDivElement>()
+
+  const tabOnContextMenuHandler = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setShowContext(true)
+    setContextPos({ x: e.clientX, y: e.clientY })
+  }
+
+  useEffect(() => {
+    if (contextRef.current) {
+      const width = contextRef.current.scrollWidth
+      const height = contextRef.current.scrollHeight
+      const x = window.innerWidth - width < contextPos.x ? window.innerWidth - width : contextPos.x
+      const y = window.innerHeight - height < contextPos.y ? window.innerHeight - height : contextPos.y
+      setContextPos({ x, y })
+    }
+
+  }, [showContext, contextPos.x, contextPos.y])
+
+  useEffect(() => {
+    window.addEventListener('click', () => {
+      setShowContext(false)
+    })
+  }, [])
+
   return (
     <div className='side-panel-tabs'>
+      <AnimatePresence>
+
+        {showContext &&
+          <Context x={contextPos.x} y={contextPos.y}></Context>
+        }
+      </AnimatePresence>
+
 
       <div className="tabs-container">
-        {session?.tabs.map(tab => {
-          return (
-            <div className={selectedTabs?.indexOf(tab.id) >= 0 ? 'selected tab' : 'tab'} onClick={(e) => tabClickHandler(e, tab.id)} key={tab.id}>
-              <div className='icon'><img src={tab.iconUrl} /></div>
-              <div className='title'>{tab.title}</div>
-              <div className="close-button" onClick={(e) => {
-                e.stopPropagation()
-                closeTabClickHandler(tab.id)
-              }}><MdClose /></div>
-            </div>
-          )
-        })}
+        <AnimatePresence>
+          {tabs?.map(tab => {
+            return (
+              <motion.div className={selectedTabs?.indexOf(tab.id) >= 0 ? 'selected tab' : 'tab'}
+                onClick={(e) => tabClickHandler(e, tab.id)}
+                transition={{ duration: 0.1 }}
+                key={tab.id}
+                onContextMenu={(e) => { tabOnContextMenuHandler(e) }}>
+                <div className='icon'><img src={tab.iconUrl} /></div>
+                <div className='title'>{tab.title}</div>
+                <div className="close-button" onClick={(e) => {
+                  e.stopPropagation()
+                  closeTabClickHandler(tab.id)
+                }}><MdClose /></div>
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
       </div>
       <div>
         <AnimatePresence>
@@ -76,6 +135,7 @@ const SidePanelTabs = ({ session }: { session: Session }) => {
               <div className="clear-selected" onClick={clearSelectedClickHandler}>clear selection</div>
               <div className="select-all" onClick={selectAllClickHandler}>select all</div>
               <div className="close-all" onClick={closeAllClickHandler}>close</div>
+              <div className="move-selection">move selection</div>
             </motion.div>}
         </AnimatePresence>
       </div>
