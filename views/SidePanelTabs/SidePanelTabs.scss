@@ -121,6 +121,12 @@
           flex-shrink: 0;
         }
 
+        .pinned-icon{
+          svg{
+            font-size: 14px;
+          }
+        }
+
         .title {
           white-space: nowrap;
           text-align: start;

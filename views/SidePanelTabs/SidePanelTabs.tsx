@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from 'react';
 import type { Session, Tab } from '~utils/types';
 import './SidePanelTabs.scss';
-import { MdAdd, MdClose } from 'react-icons/md';
+import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -49,6 +49,7 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
 
   const [showContext, setShowContext] = useState(false)
   const [contextPos, setContextPos] = useState({ x: 0, y: 0 })
+  const [contextTab, setContextTab] = useState<Tab>()
   const Context = ({ x, y }: { x: number, y: number }) => {
     return (
       <motion.div ref={contextRef} className="context-menu"
@@ -62,18 +63,24 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
         }}>
         <div>Close tab</div>
         <div>Add to a new group</div>
-        <div>Pin</div>
+        <div onClick={pinContextClickHandler}>{contextTab.pinned ? "Unpin" : "Pin"}</div>
         <div>Duplicate</div>
       </motion.div>
     )
   }
 
+  const pinContextClickHandler = () => {
+    chrome.tabs.update(contextTab.id, { pinned: !contextTab.pinned })
+  }
+
   const contextRef = useRef<HTMLDivElement>()
 
-  const tabOnContextMenuHandler = (e: React.MouseEvent) => {
+  const tabOnContextMenuHandler = (e: React.MouseEvent, tab: Tab) => {
+    e.stopPropagation()
     e.preventDefault()
-    setShowContext(true)
+    setShowContext(c => !c)
     setContextPos({ x: e.clientX, y: e.clientY })
+    setContextTab(tab)
   }
 
   useEffect(() => {
@@ -88,7 +95,11 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
   }, [showContext, contextPos.x, contextPos.y])
 
   useEffect(() => {
-    window.addEventListener('click', () => {
+    document.addEventListener('click', () => {
+      setShowContext(false)
+    })
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
       setShowContext(false)
     })
   }, [])
@@ -111,7 +122,8 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
                 onClick={(e) => tabClickHandler(e, tab.id)}
                 transition={{ duration: 0.1 }}
                 key={tab.id}
-                onContextMenu={(e) => { tabOnContextMenuHandler(e) }}>
+                onContextMenu={(e) => { tabOnContextMenuHandler(e, tab) }}>
+                {tab.pinned && <div className="pinned-icon"><MdOutlinePushPin /></div>}
                 <div className='icon'><img src={tab.iconUrl} /></div>
                 <div className='title'>{tab.title}</div>
                 <div className="close-button" onClick={(e) => {

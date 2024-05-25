@@ -29,7 +29,7 @@ chrome.tabs.onUpdated.addListener((id, info) => {
     /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
     actions.window.discardOpenedTab(id)
   }
-  if (info.url || info.groupId) {
+  if (info.url || info.groupId || info.pinned !== undefined) {
     /*
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs
