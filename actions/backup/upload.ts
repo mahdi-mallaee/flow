@@ -8,14 +8,18 @@ import type { Backup } from "~utils/types"
 const upload = (file: File, onError: (msg: string) => void) => {
   const reader = new FileReader()
   reader.onload = function (event) {
-    const data: Backup = JSON.parse(event.target.result.toString())
-    if (checkFile(data, onError)) {
-      actions.backup.create({ status: 'upload', sessions: data.sessions, title: data.title })
-        .then(result => {
-          if (!result) {
-            onError('Backup creation failed')
-          }
-        })
+    try {
+      const data: Backup = JSON.parse(event.target.result.toString())
+      if (checkFile(data, onError)) {
+        actions.backup.create({ status: 'upload', sessions: data.sessions, title: data.title })
+          .then(result => {
+            if (!result) {
+              onError('Backup creation failed')
+            }
+          })
+      }
+    } catch {
+      onError('File is not in JSON format')
     }
 
   }
@@ -24,13 +28,13 @@ const upload = (file: File, onError: (msg: string) => void) => {
 
 const checkFile = (data: Backup, onError: (msg: string) => void): boolean => {
   if (typeof data === 'undefined') {
-    onError("couldn't read the file")
+    onError("Couldn't read the file")
     return false
   }
 
   // checks to see if session is an array and has a title
   if (!(data.sessions || typeof data.sessions.length !== 'number' || typeof data.title !== 'string')) {
-    onError("backup format is not correct")
+    onError("Backup format is not correct")
     return false
   }
 
@@ -48,7 +52,7 @@ const checkFile = (data: Backup, onError: (msg: string) => void): boolean => {
   }
 
   if (!validSessions) {
-    onError('sessions are not in correct format')
+    onError('Sessions are not in correct format')
     return false
   }
 
