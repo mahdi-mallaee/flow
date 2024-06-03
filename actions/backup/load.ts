@@ -1,12 +1,10 @@
-import { Storage } from "@plasmohq/storage"
 import actions from "~actions"
 import store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
-import { StoreKeys, type Backup } from "~utils/types"
+import type { Backup } from "~utils/types"
 
 const load = async (id: string): Promise<boolean> => {
-  const localStorage = new Storage({ area: 'local' })
-  let backups: Backup[] = await localStorage.get(StoreKeys.backups) || []
+  const backups: Backup[] = await store.backups.getAll()
   const index = backups.findIndex(b => b.id === id)
   const backup = index >= 0 ? backups[index] : undefined
 

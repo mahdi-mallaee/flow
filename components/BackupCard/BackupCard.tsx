@@ -20,7 +20,7 @@ const BackupCard = (
   }
 
   const _loadBackup = async (id: string) => {
-    const result = await store.backups.load(id)
+    const result = await actions.backup.load(id)
     if (!result) {
       showAlert({ text: 'Backup loading failed', type: 'error' })
       return
