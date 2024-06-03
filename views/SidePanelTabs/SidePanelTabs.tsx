@@ -4,6 +4,7 @@ import './SidePanelTabs.scss';
 import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
 import { AnimatePresence, motion } from 'framer-motion';
+import ContextMenu from '~components/ContextMenu/ContexMenu';
 
 const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
 
@@ -50,28 +51,6 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
   const [showContext, setShowContext] = useState(false)
   const [contextPos, setContextPos] = useState({ x: 0, y: 0 })
   const [contextTab, setContextTab] = useState<Tab>()
-  const Context = ({ x, y }: { x: number, y: number }) => {
-    return (
-      <motion.div ref={contextRef} className="context-menu"
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: "auto" }}
-        exit={{ opacity: 0, height: 0 }}
-        transition={{ duration: 0.17 }}
-        style={{
-          top: `${y}px`,
-          left: `${x}px`,
-        }}>
-        <div>Close tab</div>
-        <div>Add to a new group</div>
-        <div onClick={pinContextClickHandler}>{contextTab.pinned ? "Unpin" : "Pin"}</div>
-        <div>Duplicate</div>
-      </motion.div>
-    )
-  }
-
-  const pinContextClickHandler = () => {
-    chrome.tabs.update(contextTab.id, { pinned: !contextTab.pinned })
-  }
 
   const contextRef = useRef<HTMLDivElement>()
 
@@ -98,21 +77,32 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
     document.addEventListener('click', () => {
       setShowContext(false)
     })
-    document.addEventListener('contextmenu', (e) => {
-      e.preventDefault()
+    document.addEventListener('contextmenu', () => {
+      // e.preventDefault()
       setShowContext(false)
     })
+    window.addEventListener('blur', () => {
+      setShowContext(false)
+
+    })
   }, [])
+
+
+  const [draggedId, setDraggedId] = useState<number>()
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    e.preventDefault()
+    chrome.tabs.move(draggedId, { index })
+  }
 
   return (
     <div className='side-panel-tabs'>
       <AnimatePresence>
 
         {showContext &&
-          <Context x={contextPos.x} y={contextPos.y}></Context>
+          <ContextMenu x={contextPos.x} y={contextPos.y} tab={contextTab} contextRef={contextRef}></ContextMenu>
         }
       </AnimatePresence>
-
 
       <div className="tabs-container">
         <AnimatePresence>
@@ -122,7 +112,12 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
                 onClick={(e) => tabClickHandler(e, tab.id)}
                 transition={{ duration: 0.1 }}
                 key={tab.id}
-                onContextMenu={(e) => { tabOnContextMenuHandler(e, tab) }}>
+                onContextMenu={(e) => { tabOnContextMenuHandler(e, tab) }}
+                draggable={true}
+                onDragEnd={() => { setDraggedId(0) }}
+                onDragStart={() => { setDraggedId(tab.id) }}
+                onDragEnter={(e) => { handleDragEnter(e, tab.index) }}>
+
                 {tab.pinned && <div className="pinned-icon"><MdOutlinePushPin /></div>}
                 <div className='icon'><img src={tab.iconUrl} /></div>
                 <div className='title'>{tab.title}</div>
