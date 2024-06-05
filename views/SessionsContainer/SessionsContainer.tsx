@@ -23,7 +23,7 @@ const SessionsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {
-    store.sessions.setAsMain(id)
+    store.sessions.basicUpdate(id, { main: true })
   }
 
   const deleteSession = async (session: Session) => {
@@ -59,7 +59,7 @@ const SessionsContainer = () => {
         return
       }
 
-      const result = await store.sessions.editTitle(id, title)
+      const result = await store.sessions.basicUpdate(id, { title })
       if (!result) {
         showAlert({ text: 'Session edit failed', type: 'error' })
         return

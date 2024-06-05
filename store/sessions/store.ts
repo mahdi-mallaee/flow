@@ -1,5 +1,5 @@
+import basicUpdate from "./basicUpdate"
 import create from "./create"
-import editTitle from "./editTitle"
 import getAll from "./getAll"
 import getGroups from "./getGroups"
 import getNumbers from "./getNumbers"
@@ -8,8 +8,6 @@ import getTabs from "./getTabs"
 import refreshSessionStatus from "./refreshSessionStatus"
 import remove from "./remove"
 import setAll from "./setAll"
-import setAsMain from "./setAsMain"
-import setGroups from "./setGroups"
 import setOpenStatus from "./setOpenStatus"
 import setTabs from "./setTabs"
 import setWindowId from "./setWindowId"
@@ -23,13 +21,11 @@ const sessionsStore = {
   refreshSessionStatus,
   remove,
   setWindowId,
-  setAsMain,
-  editTitle,
   setAll,
   getOpenStatus,
-  setGroups,
   getGroups,
-  getNumbers
+  getNumbers,
+  basicUpdate
 }
 
 export default sessionsStore
