@@ -10,14 +10,12 @@ import actions from "~actions"
  * 
  * If there is a main session and it was not the last closed window, it will open that session.
  */
-const openFirstSession = async (lastWindowId?: number) => {
+const openFirstSession = async () => {
   const sessions = await store.sessions.getAll()
   const mainSession = sessions.find(session => session.main === true)
-  const lastClosedWindowId = lastWindowId || await store.windows.getLastClosedWindowId()
-  const lastSession = sessions.find(session => session.windowId === lastClosedWindowId)
+  const windows = await chrome.windows.getAll()
 
-  if (mainSession && lastSession && mainSession.windowId === lastSession.windowId) {
-    const windows = await chrome.windows.getAll()
+  if (mainSession) {
     if (windows && windows.length === 1) {
       const windowTabs = await actions.window.getTabs(windows[0].id)
 
@@ -26,25 +24,28 @@ const openFirstSession = async (lastWindowId?: number) => {
       } else {
         await openMainSession(mainSession)
       }
+    } else {
+      await openMainSession(mainSession)
     }
-  } else if (mainSession) {
-    await openMainSession(mainSession)
-  } else if (lastSession) {
-    const windows = await chrome.windows.getAll()
-    if (windows && windows.length === 1) {
-      const windowTabs = await actions.window.getTabs(windows[0].id)
-      if (compareTabs(windowTabs, lastSession.tabs)) {
-        await store.sessions.setWindowId(lastSession.id, windows[0].id)
-      } else {
-        //sometimes the opend window haven't load completely and makes the compare tab fail 
-        setTimeout(() => {
-          openFirstSession(lastClosedWindowId)
-        }, 500)
+  } else {
+    if (windows) {
+      let retry = true
+      for (const window of windows) {
+        const windowTabs = await actions.window.getTabs(window.id)
+        for (const session of sessions) {
+          if (compareTabs(windowTabs, session.tabs)) {
+            retry = false
+            await store.sessions.setWindowId(session.id, window.id)
+          }
+        }
+      }
+
+      if (retry) {
+        setTimeout(openFirstSession, 300)
       }
     }
   }
 
-  await actions.window.refreshLastClosedWindow()
   await actions.session.refreshOpenSessions()
   await actions.window.refreshUnsavedWindows()
 }

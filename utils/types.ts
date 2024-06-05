@@ -92,7 +92,6 @@ export enum StoreKeys {
   unsavedWindows = 'unsavedWindows',
   backups = 'backups',
   openedTabs = 'openedTabs',
-  lastClosedWindowId = 'lastClosedWindowId',
   autoBackupIntervalId = 'autoBackupIntervalId',
   mainHeight = 'mainheight'
 }

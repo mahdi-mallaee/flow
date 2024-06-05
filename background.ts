@@ -53,13 +53,12 @@ chrome.tabs.onDetached.addListener(() => {
 chrome.tabs.onMoved.addListener(() => {
   actions.session.refreshTabs()
 })
-chrome.tabs.onReplaced.addListener((addedId, removedId) => {
+chrome.tabs.onReplaced.addListener(() => {
   actions.session.refreshTabs()
 })
 
 chrome.windows.onRemoved.addListener(() => {
   actions.window.refreshUnsavedWindows()
-  actions.window.refreshLastClosedWindow()
   actions.session.refreshOpenSessions()
 })
 chrome.windows.onCreated.addListener((window) => {
