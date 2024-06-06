@@ -90,7 +90,7 @@ const SessionsContainer = () => {
       return
     }
 
-    const result = await actions.message.createSession({ title: sessionTitleInput })
+    const result = await actions.session.create({ title: sessionTitleInput })
     if (!result) {
       showAlert({ text: 'Session creation failed', type: 'error' })
     }
@@ -101,7 +101,7 @@ const SessionsContainer = () => {
 
   const sessionClickHandler = async (session: Session, e: MouseEvent) => {
     if (!session.isOpen) {
-      await actions.message.openSession(session.id, e.ctrlKey)
+      await actions.session.open(session.id, e.ctrlKey)
     } else {
       showAlert({
         text: 'This session is already open',

@@ -24,7 +24,13 @@ import { WINDOWID_NONE } from "~utils/constants";
  * set the session as open ->
  * delete the recent history !
  */
-const open = async (sessionId: string, currentWindowId?: number, alterSettingsBehavior = false): Promise<number> => {
+const open = async (sessionId: string, alterSettingsBehavior = false, currentWindowId?: number,): Promise<number> => {
+
+  if (!location.href.includes('background')) {
+    actions.message.openSession(sessionId, alterSettingsBehavior)
+    return
+  }
+
   const startTime = Date.now()
 
   const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)

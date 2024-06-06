@@ -13,6 +13,12 @@ import actions from "~actions";
  * @returns {Promise<boolean>} - A promise that resolves to `true` if the session was created successfully, `false` otherwise.
  */
 const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<boolean> => {
+
+  if (!location.href.includes('background')) {
+    actions.message.createSession({ windowId, title })
+    return
+  }
+  
   const settings = await store.settings.getAll()
   const createWindow = settings.createWindowForNewSession
   let isSessionOpen = false
