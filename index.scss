@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
+@font-face {
+  font-family: "Lexend";
+  src: url("./assets/fonts/Lexend-Regular.ttf"),
+    url("./assets/fonts/Lexend-Bold.ttf");
+  font-weight: 400 700;
+}
 
 body {
   margin: 0;
