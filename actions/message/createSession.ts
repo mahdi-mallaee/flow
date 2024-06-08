@@ -1,6 +1,6 @@
 import { Message } from "~utils/types"
 
-const createSession = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<any> => {
+const createSession = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<boolean> => {
   const response = await chrome.runtime.sendMessage(
     {
       message: Message.createSession,

@@ -129,7 +129,7 @@ chrome.runtime.onMessage.addListener((
     }
   } else if (message === Message.openSession) {
     refreshUnsvavedWindows = false
-    actions.session.open(payload.sessionId, payload.windowId, payload.alterSettingsBehavior)
+    actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId )
       .finally(() => { refreshUnsvavedWindows = true })
   } else if (message === Message.createSession) {
     refreshUnsvavedWindows = false

@@ -36,6 +36,7 @@ const openFirstSession = async () => {
           if (compareTabs(windowTabs, session.tabs)) {
             retry = false
             await store.sessions.setWindowId(session.id, window.id)
+            break
           }
         }
       }

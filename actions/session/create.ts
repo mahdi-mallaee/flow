@@ -15,8 +15,8 @@ import actions from "~actions";
 const create = async ({ windowId, title }: { windowId?: number, title?: string }): Promise<boolean> => {
 
   if (!location.href.includes('background')) {
-    actions.message.createSession({ windowId, title })
-    return
+    const result = await actions.message.createSession({ windowId, title })
+    return result
   }
   
   const settings = await store.settings.getAll()
