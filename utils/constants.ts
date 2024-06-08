@@ -11,7 +11,6 @@ export const SESSION_NUMBER_LIMIT = 25
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: Theme.osDefault,
-  createWindowForNewSession: true,
   newSessionWindowState: "normal",
   autoBackupsInterval: "30",
   createBackupBeforeSessionDelete: true,

@@ -1,7 +1,6 @@
 import { v4 } from "uuid";
 import { type Session } from "../../utils/types";
 import store from "~store";
-import { WINDOWID_NONE } from "~utils/constants";
 import actions from "~actions";
 
 /**
@@ -18,9 +17,7 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
     const result = await actions.message.createSession({ windowId, title })
     return result
   }
-  
-  const settings = await store.settings.getAll()
-  const createWindow = settings.createWindowForNewSession
+
   let isSessionOpen = false
 
   // check to wether create a new window if windowId is not provided or 
@@ -28,13 +25,9 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
   if (actions.window.checkId(windowId)) {
     isSessionOpen = true
   } else {
-    if (createWindow) {
-      windowId = await actions.window.create()
-      if (actions.window.checkId(windowId)) {
-        isSessionOpen = true
-      }
-    } else {
-      windowId = WINDOWID_NONE
+    windowId = await actions.window.create()
+    if (actions.window.checkId(windowId)) {
+      isSessionOpen = true
     }
   }
   const tabs = await actions.window.getTabs(windowId)

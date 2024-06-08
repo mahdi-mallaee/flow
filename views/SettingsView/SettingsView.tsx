@@ -107,12 +107,6 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Creating window for new sessions</div>
-          <ToggleSwitch checked={settings.createWindowForNewSession}
-            onChange={(checked) => setSettingsHandler({ createWindowForNewSession: checked })} />
-        </div>
-
-        <div className="item">
           <div className="title">Create a new backup before deleting a session</div>
           <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
             onChange={(checked) => setSettingsHandler({ createBackupBeforeSessionDelete: checked })} />

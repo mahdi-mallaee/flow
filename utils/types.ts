@@ -46,7 +46,6 @@ export type AlertMessage = {
 export type Settings = {
   theme: Theme,
   newSessionWindowState: WindowState,
-  createWindowForNewSession: boolean,
   autoBackupsInterval: BackupIntervalTime,
   createBackupBeforeSessionDelete: boolean,
   deleteNewTabsWhenOpeningSession: boolean,
