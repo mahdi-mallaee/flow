@@ -33,26 +33,27 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
 
   const startTime = Date.now()
 
-  const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
-  const groups = await store.sessions.getGroups(sessionId)
-
   let windowId = WINDOWID_NONE
 
   const { openSessionInCurrentWindow } = await store.settings.getAll()
+  // if ctrl key is being held this setting will be altered 
   const openInCurrentWindow = alterSettingsBehavior ? !openSessionInCurrentWindow : openSessionInCurrentWindow
 
   if (openInCurrentWindow) {
     windowId = actions.window.checkId(currentWindowId) ? currentWindowId : (await chrome.windows.getCurrent()).id
 
-    // closing the current open session
     const openSessions = await store.sessions.getOpenStatus()
     const currentSessionIndex = openSessions.findIndex(s => s.windowId === windowId)
     if (currentSessionIndex >= 0) {
+      // closing the current open session
       const currentSessionId = openSessions[currentSessionIndex].sessionId
       if (currentSessionId) {
         await store.sessions.setOpenStatus(currentSessionId, false)
         await store.sessions.setWindowId(currentSessionId, WINDOWID_NONE)
       }
+    } else {
+      // opening a new window if window is an unsavedWindow
+      windowId = await actions.window.create()
     }
 
   } else {
@@ -62,9 +63,12 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   await store.sessions.setOpenStatus(sessionId, true)
   await store.sessions.setWindowId(sessionId, windowId)
 
+  const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
+  const groups = await store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups)
 
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
+
   await actions.window.refreshUnsavedWindows()
 
   return windowId
