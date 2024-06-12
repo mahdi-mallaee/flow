@@ -58,8 +58,10 @@ export type WindowState = chrome.windows.windowStateEnum
 
 export enum Theme {
   light = 'light',
+  magicalPurple = 'magical-purple',
   dark = 'dark',
-  osDefault = 'os-default'
+  deepBlue = 'deep-blue',
+  osDefault = 'os-default',
 }
 
 export type Path = "/" | '/settings' | '/backups'
