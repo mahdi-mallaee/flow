@@ -1,5 +1,5 @@
 #theme-provider[data-theme='light'] {
-  --background-color: #f3f3f3;
+  --background-color: #f8f8f8;
   --background-hover-color: #dedede;
 
   --on-background-color: #000000;
@@ -107,7 +107,7 @@
 
   --tab-indicator-color: #000;
   
-  --alert-info: #1f2424;
-  --alert-warning: #48382a;
-  --alert-error: #4a3030;
+  --alert-info: #f7f7ec;
+  --alert-warning: #edd5bf;
+  --alert-error: #f4c9c9;
 }
