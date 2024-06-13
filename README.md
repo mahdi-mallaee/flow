@@ -99,12 +99,17 @@ Give Flow a try and experience a clutter-free browsing environment. Your feedbac
 
 What's new?
 
+1.2.0
+• Two new themes : deepBlue, magicalPurple
+• Performance improvements.
+• Fixed some bugs.
+
 1.1.0
-• sessions can be opened in the current window.
-• project is open source now. see about us in extension settings for more info.
-• pinned tabs will be saved now.
-• alert will be shown if a window is not saved as session.
-• performance improvements.
+• Sessions can be opened in the current window.
+• Project is open source now. see about us in extension settings for more info.
+• Pinned tabs will be saved now.
+• Alert will be shown if a window is not saved as session.
+• Performance improvements.
 
 #tab-manager #session #tab-groups #flow
 
