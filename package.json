@@ -6,8 +6,8 @@
   "author": "Mahdi Mallaee",
   "packageManager": "npm@9.1.3",
   "scripts": {
-    "dev": "plasmo dev",
-    "build": "plasmo build",
+    "dev": "plasmo dev --hoist",
+    "build": "plasmo build --hoist",
     "package": "plasmo package"
   },
   "dependencies": {
