@@ -5,6 +5,16 @@ import { Message } from "~utils/types"
 
 export { }
 
+let refreshUnsvavedWindows = true
+chrome.runtime.onStartup.addListener(() => {
+  refreshUnsvavedWindows = false
+  actions.session.openFirstSession()
+    .then(() => {
+      refreshUnsvavedWindows = true
+    })
+  actions.backup.runInterval()
+})
+
 chrome.tabGroups.onCreated.addListener(() => {
   actions.session.refreshTabs()
   actions.session.refreshGroups()
@@ -90,8 +100,6 @@ chrome.runtime.onStartup.addListener(() => {
   actions.backup.runInterval()
 })
 
-let refreshUnsvavedWindows = true
-
 chrome.runtime.onMessage.addListener((
   { message, payload }:
     { message: Message, payload: any }, sender, sendResponse) => {
@@ -129,7 +137,7 @@ chrome.runtime.onMessage.addListener((
     }
   } else if (message === Message.openSession) {
     refreshUnsvavedWindows = false
-    actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId )
+    actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
       .finally(() => { refreshUnsvavedWindows = true })
   } else if (message === Message.createSession) {
     refreshUnsvavedWindows = false
