@@ -1,0 +1,2 @@
+import AdditionalSettingsView from "./AdditionalSettingsView"
+export default AdditionalSettingsView

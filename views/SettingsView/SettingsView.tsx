@@ -1,6 +1,6 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type WindowState, type BackupIntervalTime, StoreKeys, type Settings } from '~utils/types'
+import { Theme, type BackupIntervalTime, StoreKeys, type Settings } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
@@ -23,11 +23,6 @@ const SettignsView = () => {
     })
   })
 
-  const newSessionWindowStateDropdownOptions = [
-    { value: 'normal', label: "Normal" },
-    { value: 'minimized', label: "Minimized" },
-    { value: 'maximized', label: "Maximized" },
-  ]
   const autoBackupsIntervalDropdownOptions = [
     { value: '0', label: "Never" },
     { value: '10', label: "10 min" },
@@ -73,13 +68,6 @@ const SettignsView = () => {
             onChange={((option: Theme) => setSettingsHandler({ theme: option }))} />
         </div>
 
-        <div className="item">
-          <div className="title">Window size</div>
-          <Dropdown
-            value={settings.newSessionWindowState}
-            options={newSessionWindowStateDropdownOptions}
-            onChange={(option: WindowState) => setSettingsHandler({ newSessionWindowState: option })} />
-        </div>
 
         <div className="item">
           <div className="title">Automatic backups interval</div>
@@ -106,16 +94,9 @@ const SettignsView = () => {
             }} />
         </div>
 
-        <div className="item">
-          <div className="title">Create a new backup before deleting a session</div>
-          <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-            onChange={(checked) => setSettingsHandler({ createBackupBeforeSessionDelete: checked })} />
-        </div>
-
-        <div className="item">
-          <div className="title">Delete empty tabs when opening a session</div>
-          <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
-            onChange={(checked) => setSettingsHandler({ deleteNewTabsWhenOpeningSession: checked })} />
+        <div className="item nav" onClick={() => nav('/additional-settings')}>
+          <div className="title">Additional Settings</div>
+          <MdChevronRight />
         </div>
 
         <div className="item nav" onClick={() => nav('/backups')}>
