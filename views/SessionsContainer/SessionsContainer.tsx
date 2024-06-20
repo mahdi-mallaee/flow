@@ -90,7 +90,12 @@ const SessionsContainer = () => {
       return
     }
 
-    const result = await actions.session.create({ title: sessionTitleInput })
+    let windowId = -1
+    if (settings.createSessionInCurrentWindow) {
+      windowId = (await chrome.windows.getCurrent()).id
+    }
+
+    const result = await actions.session.create({ windowId, title: sessionTitleInput })
     if (!result) {
       showAlert({ text: 'Session creation failed', type: 'error' })
     }

@@ -52,6 +52,12 @@ const AdditionalSettingsView = () => {
               onChange={(checked) => setSettingsHandler({ deleteNewTabsWhenOpeningSession: checked })} />
           </div>
 
+          <div className="item">
+            <div className="title">Create sessions in the current window</div>
+            <ToggleSwitch checked={settings.createSessionInCurrentWindow}
+              onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
+          </div>
+
         </div>
       </div>
     </div>

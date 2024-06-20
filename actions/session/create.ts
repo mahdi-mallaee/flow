@@ -24,6 +24,7 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
   // set the session's windowId to be the provided windowId
   if (actions.window.checkId(windowId)) {
     isSessionOpen = true
+    await closeCurrentSession(windowId)
   } else {
     windowId = await actions.window.create()
     if (actions.window.checkId(windowId)) {
@@ -47,6 +48,15 @@ const create = async ({ windowId, title }: { windowId?: number, title?: string }
   await actions.window.refreshUnsavedWindows()
 
   return result
+}
+
+const closeCurrentSession = async (windowId: number) => {
+  const openStatus = await store.sessions.getOpenStatus()
+  const session = openStatus.find(status => status.windowId === windowId)
+  if (session) {
+    await store.sessions.setOpenStatus(session.sessionId, false)
+    await store.sessions.setWindowId(session.sessionId, -1)
+  }
 }
 
 export default create
