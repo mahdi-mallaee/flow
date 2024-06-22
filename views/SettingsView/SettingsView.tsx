@@ -87,7 +87,10 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Open sessions in current window</div>
+          <div className="title">
+            Zen Mode
+            <div className="desc">Open sessions in current window</div>
+          </div>
           <ToggleSwitch checked={settings.openSessionInCurrentWindow}
             onChange={(checked) => {
               setSettingsHandler({ openSessionInCurrentWindow: checked })

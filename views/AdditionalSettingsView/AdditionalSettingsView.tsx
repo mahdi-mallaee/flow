@@ -33,7 +33,10 @@ const AdditionalSettingsView = () => {
         <div className="items-container">
 
           <div className="item">
-            <div className="title">Window size</div>
+            <div className="title">
+              Window size
+              <div className="desc">Chose the default size to open windows</div>
+            </div>
             <Dropdown
               value={settings.newSessionWindowState}
               options={newSessionWindowStateDropdownOptions}
@@ -41,13 +44,19 @@ const AdditionalSettingsView = () => {
           </div>
 
           <div className="item">
-            <div className="title">Create a new backup before deleting a session</div>
+            <div className="title">
+              Session Delete Backup
+              <div className="desc">Create a new backup before deleting a session</div>
+            </div>
             <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
               onChange={(checked) => setSettingsHandler({ createBackupBeforeSessionDelete: checked })} />
           </div>
 
           <div className="item">
-            <div className="title">Delete empty tabs when opening a session</div>
+            <div className="title">
+              Empty Tabs
+              <div className="desc">Delete empty tabs when opening a session</div>
+            </div>
             <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
               onChange={(checked) => setSettingsHandler({ deleteNewTabsWhenOpeningSession: checked })} />
           </div>

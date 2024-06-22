@@ -3,19 +3,23 @@
   flex-direction: column;
   overflow: hidden;
 
+  .toggle-switch-container {
+    flex-shrink: 0;
+  }
+
   .items-container {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    gap: 4px;
 
     .item {
       flex-shrink: 0;
-      padding: 0 12px;
+      padding: 6px 12px;
       font-size: 11px;
       display: flex;
       gap: 8px;
       align-items: center;
-      height: 40px;
 
       .heart-icon {
         font-size: 20px;
@@ -23,6 +27,15 @@
 
       .title {
         flex-grow: 1;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .desc {
+          font-size: 10px;
+          color: var(--on-background-variant-color)
+        }
       }
 
       .selector {
