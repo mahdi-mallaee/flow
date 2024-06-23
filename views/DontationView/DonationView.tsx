@@ -6,6 +6,7 @@ const DonationView = () => {
   const btcAddress = "bc1qs57qa2urys0d8wxgjsprwa5xjqqscs8q9ek98n"
   const ethAddress = "0x1EFC03903C4ccf9E1b37622654BEFFb03299ab47"
   const ltcAddress = "ltc1qskd2deamjaqv3fupap4ckv5n5zpg5j4y8q6z66"
+  const tonAddress = "UQCCZ6f08W50b34T9HeKWEj04IRmKsOgOs29jPfpWGThM48d"
 
   return (
     <div className='donation-view'>
@@ -13,6 +14,13 @@ const DonationView = () => {
 
       <div className='container'>
         <div>Your donations will ensure constant updates and improvements.</div>
+
+        <div className='wallet-address'>
+          <span>TON (TON) wallet address (preferred)
+            
+          </span>
+          <CopyButton text={tonAddress} />
+        </div>
 
         <div className='wallet-address'>
           <span>Bitcoin (BTC) wallet address</span>
