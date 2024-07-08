@@ -1,16 +1,19 @@
 import actions from "~actions"
-import store from "~store"
+import initMsgControl from "~actions/background/messageControl"
 import { NEW_TAB_URL } from "~utils/constants"
-import { Message } from "~utils/types"
+import type { BgGlobalVar } from "~utils/types"
 
 export { }
 
-let refreshUnsvavedWindows = true
+let gl: BgGlobalVar = {
+  refreshUnsavedWindows: true
+}
+
 chrome.runtime.onStartup.addListener(() => {
-  refreshUnsvavedWindows = false
+  gl.refreshUnsavedWindows = false
   actions.session.openFirstSession()
     .then(() => {
-      refreshUnsvavedWindows = true
+      gl.refreshUnsavedWindows = true
     })
   actions.backup.runInterval()
 })
@@ -81,12 +84,12 @@ chrome.windows.onCreated.addListener((window) => {
         */
         actions.session.openFirstSession()
           .then(() => {
-            if (refreshUnsvavedWindows) {
+            if (gl.refreshUnsavedWindows) {
               actions.window.changeRecentWindowId(window.id)
             }
           })
       } else {
-        if (refreshUnsvavedWindows) {
+        if (gl.refreshUnsavedWindows) {
           actions.window.refreshUnsavedWindows()
             .then(() => {
               actions.window.changeRecentWindowId(window.id)
@@ -96,56 +99,4 @@ chrome.windows.onCreated.addListener((window) => {
     })
 })
 
-chrome.runtime.onStartup.addListener(() => {
-  actions.backup.runInterval()
-})
-
-chrome.runtime.onMessage.addListener((
-  { message, payload }:
-    { message: Message, payload: any }, sender, sendResponse) => {
-  if (message === Message.alertReady && sender.tab) {
-    store.windows.getUnsavedWindowAlertStatus()
-      .then(res => {
-        if (!res.alertShown) {
-          actions.window.includesTab(res.windowId, sender.tab.id)
-            .then(include => {
-              if (include) {
-                sendResponse({ message: Message.alertGo })
-              }
-            })
-        }
-      })
-  } else if (message === Message.saveSession) {
-    if (actions.window.checkId(sender.tab.windowId)) {
-      actions.session.checkNumberLimit()
-        .then(res => {
-          if (res) {
-            actions.session.create({ windowId: sender.tab.windowId })
-              .then(result => {
-                if (result) {
-                  sendResponse({ message: Message.success })
-                } else {
-                  sendResponse({ message: Message.error })
-                }
-              })
-          } else {
-            sendResponse({ message: Message.error })
-          }
-        })
-    } else {
-      sendResponse({ message: Message.error })
-    }
-  } else if (message === Message.openSession) {
-    refreshUnsvavedWindows = false
-    actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
-      .finally(() => { refreshUnsvavedWindows = true })
-  } else if (message === Message.createSession) {
-    refreshUnsvavedWindows = false
-    actions.session.create(payload)
-      .then(result => {
-        sendResponse(result)
-      }).finally(() => { refreshUnsvavedWindows = true })
-  }
-
-  return true
-})
+initMsgControl(gl)
