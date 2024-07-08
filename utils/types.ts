@@ -121,3 +121,7 @@ export enum Message {
   openSession = 'open-session',
   createSession = "create-session"
 }
+
+export type BgGlobalVar = {
+  refreshUnsavedWindows: boolean
+}
