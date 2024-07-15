@@ -15,10 +15,6 @@ const create = async (urls?: string[]): Promise<number> => {
   let id: number = WINDOWID_NONE
   urls = urls || []
 
-  if (settings.deleteNewTabsWhenOpeningSession) {
-    urls = urls.filter(url => url !== NEW_TAB_URL)
-  }
-
   const window = await chrome.windows.create({ state: settings.newSessionWindowState, url: urls })
   if (actions.window.checkId(window.id)) {
     id = window.id

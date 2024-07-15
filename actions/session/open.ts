@@ -1,7 +1,7 @@
 import { type Tab } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
-import { WINDOWID_NONE } from "~utils/constants";
+import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
 
 /**
  * Opens a session in the current window or a new window, depending on the user's settings.
@@ -35,7 +35,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
 
   let windowId = WINDOWID_NONE
 
-  const { openSessionInCurrentWindow } = await store.settings.getAll()
+  const { openSessionInCurrentWindow, deleteNewTabsWhenOpeningSession } = await store.settings.getAll()
   // if ctrl key is being held this setting will be altered 
   const openInCurrentWindow = alterSettingsBehavior ? !openSessionInCurrentWindow : openSessionInCurrentWindow
 
@@ -63,7 +63,10 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   await store.sessions.setOpenStatus(sessionId, true)
   await store.sessions.setWindowId(sessionId, windowId)
 
-  const sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
+  let sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
+  if (deleteNewTabsWhenOpeningSession) {
+    sessionTabs = sessionTabs.filter(t => t.url !== NEW_TAB_URL)
+  }
   const groups = await store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups)
 
