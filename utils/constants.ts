@@ -17,4 +17,5 @@ export const DEFAULT_SETTINGS: Settings = {
   deleteNewTabsWhenOpeningSession: false,
   openSessionInCurrentWindow: false,
   showLargeSessionWarning: true,
+  createSessionInCurrentWindow: false
 }
