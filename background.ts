@@ -19,23 +19,23 @@ chrome.runtime.onStartup.addListener(() => {
 })
 
 chrome.tabGroups.onCreated.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
   actions.session.refreshGroups()
 })
 chrome.tabGroups.onRemoved.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
 })
 chrome.tabGroups.onMoved.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
   actions.session.refreshGroups()
 })
 chrome.tabGroups.onUpdated.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
   actions.session.refreshGroups()
 })
 
 chrome.tabs.onCreated.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
 })
 chrome.tabs.onUpdated.addListener((id, info) => {
   if (info.url && info.url !== NEW_TAB_URL) {
@@ -47,27 +47,27 @@ chrome.tabs.onUpdated.addListener((id, info) => {
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs
     */
-    actions.session.refreshTabs()
+    actions.session.refreshTabs(gl)
   }
 })
 chrome.tabs.onRemoved.addListener((_, info) => {
   if (!info.isWindowClosing) {
-    actions.session.refreshTabs()
+    actions.session.refreshTabs(gl)
   }
 })
 chrome.tabs.onAttached.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
   actions.window.refreshUnsavedWindows()
 })
 chrome.tabs.onDetached.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
   actions.window.refreshUnsavedWindows()
 })
 chrome.tabs.onMoved.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
 })
 chrome.tabs.onReplaced.addListener(() => {
-  actions.session.refreshTabs()
+  actions.session.refreshTabs(gl)
 })
 
 chrome.windows.onRemoved.addListener(() => {

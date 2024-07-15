@@ -59,9 +59,6 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   } else {
     windowId = await actions.window.create()
   }
-  // set the session as open and assign the window id to it for updates
-  await store.sessions.setOpenStatus(sessionId, true)
-  await store.sessions.setWindowId(sessionId, windowId)
 
   let sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
   if (deleteNewTabsWhenOpeningSession) {
@@ -69,6 +66,9 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   }
   const groups = await store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups)
+  // set the session as open and assign the window id to it for updates
+  await store.sessions.setOpenStatus(sessionId, true)
+  await store.sessions.setWindowId(sessionId, windowId)
 
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
 
