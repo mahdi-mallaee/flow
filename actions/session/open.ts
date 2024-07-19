@@ -50,6 +50,8 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
       if (currentSessionId) {
         await store.sessions.setOpenStatus(currentSessionId, false)
         await store.sessions.setWindowId(currentSessionId, WINDOWID_NONE)
+      } else {
+        windowId = await actions.window.create()
       }
     } else {
       // opening a new window if window is an unsavedWindow

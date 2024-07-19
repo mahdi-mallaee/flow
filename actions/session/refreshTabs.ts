@@ -18,6 +18,10 @@ import type { BgGlobalVar, UnsavedWindow } from "~utils/types"
 */
 
 const refreshTabs = async (gl: BgGlobalVar): Promise<void> => {
+  if (!gl.refreshUnsavedWindows) {
+    return
+  }
+
   const sessions = await store.sessions.getOpenStatus()
 
   for (const session of sessions) {
@@ -29,17 +33,15 @@ const refreshTabs = async (gl: BgGlobalVar): Promise<void> => {
     }
   }
 
-  if (gl.refreshUnsavedWindows) {
-    const unsavedWindows: UnsavedWindow[] = await actions.window.refreshUnsavedWindows(true)
-    for (const window of unsavedWindows) {
-      const tabs = await actions.window.getTabs(window.id)
-      if (tabs && tabs.length > 0) {
-        window.tabsCount = tabs.length
-      }
+  const unsavedWindows: UnsavedWindow[] = await actions.window.refreshUnsavedWindows(true)
+  for (const window of unsavedWindows) {
+    const tabs = await actions.window.getTabs(window.id)
+    if (tabs && tabs.length > 0) {
+      window.tabsCount = tabs.length
     }
-
-    await store.windows.setUnsavedWindows(unsavedWindows)
   }
+
+  await store.windows.setUnsavedWindows(unsavedWindows)
 }
 
 export default refreshTabs
