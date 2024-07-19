@@ -72,6 +72,8 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   await store.sessions.setOpenStatus(sessionId, true)
   await store.sessions.setWindowId(sessionId, windowId)
 
+  await actions.session.refreshGroups()
+
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
 
   await actions.window.refreshUnsavedWindows()

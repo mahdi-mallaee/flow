@@ -35,7 +35,6 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
   await groupTabs(groups, tabs, windowId)
   currentWindowTabs = await actions.window.getTabs(windowId)
   await setOpenTabs(currentWindowTabs)
-  await actions.session.refreshGroups()
 }
 
 export default update

@@ -124,5 +124,6 @@ export enum Message {
 }
 
 export type BgGlobalVar = {
-  refreshUnsavedWindows: boolean
+  refreshUnsavedWindows: boolean,
+  closingWindow: boolean
 }
