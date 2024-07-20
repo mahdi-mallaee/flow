@@ -65,6 +65,9 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   let sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
   if (deleteNewTabsWhenOpeningSession) {
     sessionTabs = sessionTabs.filter(t => t.url !== NEW_TAB_URL)
+    if (sessionTabs.length < 1) {
+      sessionTabs = [{ groupId: -1, id: -1, index: 0, pinned: false, url: NEW_TAB_URL, windowId }]
+    }
   }
   const groups = await store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups)
@@ -77,6 +80,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
 
   await actions.window.refreshUnsavedWindows()
+  await actions.session.refreshTabs({ refreshUnsavedWindows: true, closingWindow: false })
 
   return windowId
 }

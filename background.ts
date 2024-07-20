@@ -50,7 +50,6 @@ chrome.tabs.onUpdated.addListener((id, info) => {
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs
     */
-    console.log("refresh tabs update")
     actions.session.refreshTabs(gl)
   }
 })
