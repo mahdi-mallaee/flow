@@ -1,7 +1,7 @@
 {
   "name": "flow",
   "displayName": "Flow - Tab Manager",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A new way to manage chrome tabs and windows easily.",
   "author": "Mahdi Mallaee",
   "packageManager": "npm@9.1.3",
