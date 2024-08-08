@@ -7,47 +7,40 @@
  * @param gl - The global variable object for the background script.
  * @returns void
  */
-import actions from "~actions"
 import { Message, type BgGlobalVar } from "~utils/types"
+import actions from "~actions"
 
-const initMessageControl = async (gl: BgGlobalVar) => {
-  chrome.runtime.onMessage.addListener(async (
-    { message, payload }:
-      { message: Message, payload: any }, sender, sendResponse) => {
+export default async function messageControl(
+  gl: BgGlobalVar, sender: chrome.runtime.MessageSender, message: Message, payload: any, sendResponse: (data: any) => void
+) {
 
-    switch (message) {
-      case Message.alertReady:
-        {
-          if (sender.tab) {
-            await actions.background.alertGo(sender, sendResponse)
-          }
-          break
+  switch (message) {
+    case Message.alertReady:
+      {
+        if (sender.tab) {
+          await actions.background.alertGo(sender, sendResponse)
         }
-      case Message.saveSession:
-        {
-          await actions.background.saveSession(sender, sendResponse)
-          break
-        }
-      case Message.openSession:
-        {
-          gl.refreshUnsavedWindows = false
-          await actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
-          gl.refreshUnsavedWindows = true
-          break
-        }
-      case Message.createSession:
-        {
-          gl.refreshUnsavedWindows = false
-          await actions.background.createSession(payload, sendResponse)
-          gl.refreshUnsavedWindows = true
-          break
-        }
-      default:
-        return true
-    }
-    // returing true to keep connection alive for response
-    return true
-  })
+        break
+      }
+    case Message.saveSession:
+      {
+        await actions.background.saveSession(sender, sendResponse)
+        break
+      }
+    case Message.openSession:
+      {
+        gl.refreshUnsavedWindows = false
+        await actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
+        gl.refreshUnsavedWindows = true
+        break
+      }
+    case Message.createSession:
+      {
+        gl.refreshUnsavedWindows = false
+        await actions.background.createSession(payload, sendResponse)
+        gl.refreshUnsavedWindows = true
+        break
+      }
+
+  }
 }
-
-export default initMessageControl

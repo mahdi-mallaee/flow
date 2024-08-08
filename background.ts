@@ -1,7 +1,8 @@
 import actions from "~actions"
-import initMsgControl from "~actions/background/messageControl"
+import messageControl from "~actions/background/messageControl"
 import { NEW_TAB_URL } from "~utils/constants"
 import type { BgGlobalVar } from "~utils/types"
+import { Message } from '~utils/types'
 
 export { }
 
@@ -104,4 +105,11 @@ chrome.windows.onCreated.addListener((window) => {
     })
 })
 
-initMsgControl(gl)
+chrome.runtime.onMessage.addListener((
+  { message, payload }:
+    { message: Message, payload: any }, sender, sendResponse) => {
+
+  messageControl(gl, sender, message, payload, sendResponse)
+
+  return true
+})
