@@ -8,7 +8,10 @@ export { }
 
 let gl: BgGlobalVar = {
   refreshUnsavedWindows: true,
-  closingWindow: false
+  closingWindow: {
+    status: false,
+    windowId: -1
+  }
 }
 
 chrome.runtime.onStartup.addListener(() => {
@@ -41,12 +44,12 @@ chrome.tabGroups.onUpdated.addListener(() => {
 chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs(gl)
 })
-chrome.tabs.onUpdated.addListener((id, info) => {
+chrome.tabs.onUpdated.addListener((id, info, tab) => {
   if (info.url && info.url !== NEW_TAB_URL) {
     /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
     actions.window.discardOpenedTab(id)
   }
-  if ((info.url || info.groupId || info.pinned !== undefined) && !gl.closingWindow) {
+  if ((info.url || info.groupId || info.pinned !== undefined) && gl.closingWindow.windowId !== tab.windowId) {
     /*
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs
@@ -58,7 +61,8 @@ chrome.tabs.onRemoved.addListener((_, info) => {
   if (!info.isWindowClosing) {
     actions.session.refreshTabs(gl)
   } else {
-    gl.closingWindow = true
+    gl.closingWindow.status = true
+    gl.closingWindow.windowId = info.windowId
   }
 })
 chrome.tabs.onAttached.addListener(() => {
