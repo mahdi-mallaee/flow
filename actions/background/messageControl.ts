@@ -10,7 +10,7 @@
 import { Message, type BgGlobalVar } from "~utils/types"
 import actions from "~actions"
 
-export default async function messageControl(
+export default function messageControl(
   gl: BgGlobalVar, sender: chrome.runtime.MessageSender, message: Message, payload: any, sendResponse: (data: any) => void
 ) {
 
@@ -18,27 +18,32 @@ export default async function messageControl(
     case Message.alertReady:
       {
         if (sender.tab) {
-          await actions.background.alertGo(sender, sendResponse)
+          actions.background.alertGo(sender, sendResponse)
         }
         break
       }
     case Message.saveSession:
       {
-        await actions.background.saveSession(sender, sendResponse)
+        actions.background.saveSession(sender, sendResponse)
         break
       }
     case Message.openSession:
       {
         gl.refreshUnsavedWindows = false
-        await actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
-        gl.refreshUnsavedWindows = true
+        actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
+          .then((res) => {
+            sendResponse(res)
+            gl.refreshUnsavedWindows = true
+          })
         break
       }
     case Message.createSession:
       {
         gl.refreshUnsavedWindows = false
-        await actions.background.createSession(payload, sendResponse)
-        gl.refreshUnsavedWindows = true
+        actions.background.createSession(payload, sendResponse)
+          .then(() => {
+            gl.refreshUnsavedWindows = true
+          })
         break
       }
 

@@ -8,9 +8,11 @@ const setTabs = async (sessionId: string, tabs: Tab[]) => {
   const storedTab = storedTabs.find(st => st.sessionId === sessionId)
   if (storedTab && tabs) {
     storedTab.tabs = tabs
-    await localStorage.set(SessionsKeys.tab, storedTabs)
-    await refreshSessionStatus()
+  } else {
+    storedTabs.push({ sessionId, tabs })
   }
+  await localStorage.set(SessionsKeys.tab, storedTabs)
+  await refreshSessionStatus()
 }
 
 export default setTabs

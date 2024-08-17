@@ -48,7 +48,11 @@ const create = async (session: Session): Promise<boolean> => {
     await localStorage.set(SessionsKeys.tab, sessionsTabs)
 
     await localStorage.set(SessionsKeys.basic, basicSessions)
+    await localStorage.set(SessionsKeys.basic, basicSessions)
+
     await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
+    await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
+
     await refreshSessionStatus()
     return true
   } catch (error) {

@@ -9,6 +9,8 @@ const setOpenStatus = async (sessionId: string, isOpen: boolean) => {
   const openSessionIndex = sessionsOpenStatus.findIndex(os => os.sessionId === sessionId)
   if (openSessionIndex >= 0 && typeof sessionsOpenStatus[openSessionIndex].isOpen === 'boolean') {
     sessionsOpenStatus[openSessionIndex].isOpen = isOpen
+  } else if (sessionId) {
+    sessionsOpenStatus.push({ sessionId, isOpen, windowId: -1 })
   }
   await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
   await refreshSessionStatus()
