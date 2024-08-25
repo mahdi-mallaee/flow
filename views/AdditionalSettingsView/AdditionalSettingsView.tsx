@@ -24,50 +24,48 @@ const AdditionalSettingsView = () => {
   }
 
   return (
-    <div>
-      <div className="settings-view">
+    <div className="settings-view">
 
-        {renderAlert()}
+      {renderAlert()}
 
-        <div className='view-title'>Additional Settings</div>
-        <div className="items-container">
+      <div className='view-title'>Additional Settings</div>
+      <div className="items-container">
 
-          <div className="item">
-            <div className="title">
-              Window size
-              <div className="desc">Chose the default size to open windows</div>
-            </div>
-            <Dropdown
-              value={settings.newSessionWindowState}
-              options={newSessionWindowStateDropdownOptions}
-              onChange={(option: WindowState) => setSettingsHandler({ newSessionWindowState: option })} />
+        <div className="item">
+          <div className="title">
+            Window size
+            <div className="desc">Chose the default size to open windows</div>
           </div>
-
-          <div className="item">
-            <div className="title">
-              Session Delete Backup
-              <div className="desc">Create a new backup before deleting a session</div>
-            </div>
-            <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
-              onChange={(checked) => setSettingsHandler({ createBackupBeforeSessionDelete: checked })} />
-          </div>
-
-          <div className="item">
-            <div className="title">
-              Empty Tabs
-              <div className="desc">Delete empty tabs when opening a session</div>
-            </div>
-            <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
-              onChange={(checked) => setSettingsHandler({ deleteNewTabsWhenOpeningSession: checked })} />
-          </div>
-
-          <div className="item">
-            <div className="title">Create sessions in the current window</div>
-            <ToggleSwitch checked={settings.createSessionInCurrentWindow}
-              onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
-          </div>
-
+          <Dropdown
+            value={settings.newSessionWindowState}
+            options={newSessionWindowStateDropdownOptions}
+            onChange={(option: WindowState) => setSettingsHandler({ newSessionWindowState: option })} />
         </div>
+
+        <div className="item">
+          <div className="title">
+            Session Delete Backup
+            <div className="desc">Create a new backup before deleting a session</div>
+          </div>
+          <ToggleSwitch checked={settings.createBackupBeforeSessionDelete}
+            onChange={(checked) => setSettingsHandler({ createBackupBeforeSessionDelete: checked })} />
+        </div>
+
+        <div className="item">
+          <div className="title">
+            Empty Tabs
+            <div className="desc">Delete empty tabs when opening a session</div>
+          </div>
+          <ToggleSwitch checked={settings.deleteNewTabsWhenOpeningSession}
+            onChange={(checked) => setSettingsHandler({ deleteNewTabsWhenOpeningSession: checked })} />
+        </div>
+
+        <div className="item">
+          <div className="title">Create sessions in the current window</div>
+          <ToggleSwitch checked={settings.createSessionInCurrentWindow}
+            onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
+        </div>
+
       </div>
     </div>
   )
