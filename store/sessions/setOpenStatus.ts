@@ -16,11 +16,11 @@ const setOpenStatus = async (sessionId: string, status: Partial<SessionOpenStatu
     }
 
 
-    if (typeof status.isOpen === 'boolean' && typeof sessionsOpenStatus[index].isOpen === 'boolean') {
+    if (typeof status.isOpen === 'boolean') {
       sessionsOpenStatus[index].isOpen = status.isOpen
     }
 
-    if (typeof status.windowId === "number" && typeof sessionsOpenStatus[index].windowId === 'number') {
+    if (typeof status.windowId === "number") {
       sessionsOpenStatus[index].windowId = status.windowId
     }
 

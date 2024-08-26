@@ -1,5 +1,4 @@
 import { Storage } from "@plasmohq/storage";
-import { WINDOWID_NONE } from "~utils/constants";
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types";
 
 const getAll = async (): Promise<Session[]> => {
@@ -11,25 +10,22 @@ const getAll = async (): Promise<Session[]> => {
   const sessions: Session[] = []
 
   for (const basicSession of basics) {
-    let isOpen = false
-    let windowId: number = WINDOWID_NONE
-    const isOpenStore = opens.find(o => o.id === basicSession.id)
-    if (isOpenStore && typeof isOpenStore.isOpen === 'boolean' && isOpenStore.windowId > 0) {
-      isOpen = isOpenStore.isOpen
-      windowId = isOpenStore.windowId
+    const defaultOpenStatus: SessionOpenStatus = {
+      isOpen: false,
+      id: basicSession.id,
+      windowId: -1,
     }
 
-    let tabs = []
-    const tabsStore = sessionsTabs.find(st => st.id === basicSession.id)
-    if (tabsStore && tabsStore.tabs && tabsStore.tabs.length > 0) {
-      tabs = tabsStore.tabs
+    const defaultSessionTabs: SessionTabsStore = {
+      id: basicSession.id,
+      tabs: []
     }
-
+    const openStatus = opens.find(o => o.id === basicSession.id) || defaultOpenStatus
+    const tabsStore = sessionsTabs.find(st => st.id === basicSession.id) || defaultSessionTabs
     sessions.push({
       ...basicSession,
-      windowId,
-      tabs,
-      isOpen
+      ...openStatus,
+      ...tabsStore,
     })
   }
 
