@@ -6,8 +6,10 @@ const setTabs = async (sessionId: string, tabs: Tab[]) => {
   const localStorage = new Storage({ area: 'local' })
   const storedTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
   const storedTab = storedTabs.find(st => st.sessionId === sessionId)
-  if (storedTab && tabs) {
-    storedTab.tabs = tabs
+  if (storedTab) {
+    if (tabs && tabs.length > 0) {
+      storedTab.tabs = tabs
+    }
   } else {
     storedTabs.push({ sessionId, tabs })
   }
