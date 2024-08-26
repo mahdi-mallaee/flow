@@ -1,8 +1,4 @@
-export interface Session extends BasicSession {
-  windowId: number,
-  tabs: Tab[],
-  isOpen: boolean,
-}
+export interface Session extends BasicSession, SessionOpenStatus, SessionTabsStore { }
 
 export interface BasicSession {
   id: string,
@@ -14,12 +10,12 @@ export interface BasicSession {
 
 export interface SessionOpenStatus {
   isOpen: boolean,
-  sessionId: string,
-  windowId: number
+  id: string,
+  windowId: number,
 }
 export interface SessionTabsStore {
   tabs: Tab[],
-  sessionId: string
+  id: string
 }
 
 export type Tab = {

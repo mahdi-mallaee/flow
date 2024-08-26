@@ -46,7 +46,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
     const currentSessionIndex = openSessions.findIndex(s => s.windowId === windowId)
     if (currentSessionIndex >= 0) {
       // closing the current open session
-      const currentSessionId = openSessions[currentSessionIndex].sessionId
+      const currentSessionId = openSessions[currentSessionIndex].id
       if (currentSessionId) {
         await store.sessions.setOpenStatus(currentSessionId, { isOpen: false, windowId: WINDOWID_NONE })
       } else {

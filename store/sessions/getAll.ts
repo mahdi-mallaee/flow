@@ -13,14 +13,14 @@ const getAll = async (): Promise<Session[]> => {
   for (const basicSession of basics) {
     let isOpen = false
     let windowId: number = WINDOWID_NONE
-    const isOpenStore = opens.find(o => o.sessionId === basicSession.id)
+    const isOpenStore = opens.find(o => o.id === basicSession.id)
     if (isOpenStore && typeof isOpenStore.isOpen === 'boolean' && isOpenStore.windowId > 0) {
       isOpen = isOpenStore.isOpen
       windowId = isOpenStore.windowId
     }
 
     let tabs = []
-    const tabsStore = sessionsTabs.find(st => st.sessionId === basicSession.id)
+    const tabsStore = sessionsTabs.find(st => st.id === basicSession.id)
     if (tabsStore && tabsStore.tabs && tabsStore.tabs.length > 0) {
       tabs = tabsStore.tabs
     }
