@@ -48,8 +48,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
       // closing the current open session
       const currentSessionId = openSessions[currentSessionIndex].sessionId
       if (currentSessionId) {
-        await store.sessions.setOpenStatus(currentSessionId, false)
-        await store.sessions.setWindowId(currentSessionId, WINDOWID_NONE)
+        await store.sessions.setOpenStatus(currentSessionId, { isOpen: false, windowId: WINDOWID_NONE })
       } else {
         windowId = await actions.window.create()
       }
@@ -72,8 +71,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   const groups = await store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups)
   // set the session as open and assign the window id to it for updates
-  await store.sessions.setOpenStatus(sessionId, true)
-  await store.sessions.setWindowId(sessionId, windowId)
+  await store.sessions.setOpenStatus(sessionId, { isOpen: true, windowId })
 
   await actions.session.refreshGroups()
 
