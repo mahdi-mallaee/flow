@@ -14,6 +14,7 @@ const getAll = async (): Promise<Session[]> => {
       isOpen: false,
       id: basicSession.id,
       windowId: -1,
+      freeze: false
     }
 
     const defaultSessionTabs: SessionTabsStore = {

@@ -1,8 +1,9 @@
 import { useState, type MouseEvent } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
-import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
+import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin, MdIcecream } from 'react-icons/md'
 import { INPUT_MAX_LENGTH } from "~utils/constants";
+import store from "~store";
 
 type SessionCardArgs = {
   session: Session,
@@ -73,6 +74,9 @@ const SessionCard = (
           {session.main ? <MdPushPin /> : <MdOutlinePushPin />}<span>Main</span>
         </div>
         <div className="buttons-container">
+          <div onClick={() => {
+            store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
+          }}><MdIcecream /></div>
           <div className="delete-session-button" onClick={() => setSessionCardState('delete-confirmation')}><MdOutlineDelete /></div>
           <div className="close-menu-button" onClick={() => {
             setSessionCardState('default')

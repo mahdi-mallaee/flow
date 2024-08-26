@@ -32,6 +32,7 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
       id: s.id,
       isOpen: s.isOpen,
       windowId: s.windowId,
+      freeze: s.freeze
     }
   })
 

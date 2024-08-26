@@ -12,6 +12,7 @@ export interface SessionOpenStatus {
   isOpen: boolean,
   id: string,
   windowId: number,
+  freeze: boolean
 }
 export interface SessionTabsStore {
   tabs: Tab[],

@@ -25,7 +25,7 @@ const refreshTabs = async (gl: BgGlobalVar): Promise<void> => {
   const sessions = await store.sessions.getOpenStatus()
 
   for (const session of sessions) {
-    if (session.isOpen) {
+    if (session.isOpen && !session.freeze) {
       const tabs = await actions.window.getTabs(session.windowId)
       if (tabs && tabs.length > 0) {
         await store.sessions.setTabs(session.id, tabs)
