@@ -17,7 +17,7 @@ import type { BgGlobalVar, UnsavedWindow } from "~utils/types"
 * @returns {Promise<void>}
 */
 
-const refreshTabs = async (gl: BgGlobalVar): Promise<void> => {
+const refreshTabs = async (gl: BgGlobalVar = { closingWindow: { status: false, windowId: -1 }, refreshUnsavedWindows: true }): Promise<void> => {
   if (!gl.refreshUnsavedWindows) {
     return
   }

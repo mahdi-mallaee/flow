@@ -1,9 +1,11 @@
 import { useState, type MouseEvent } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
-import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin, MdIcecream } from 'react-icons/md'
+import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
+import { FaSnowflake } from "react-icons/fa"
 import { INPUT_MAX_LENGTH } from "~utils/constants";
 import store from "~store";
+import actions from "~actions";
 
 type SessionCardArgs = {
   session: Session,
@@ -31,10 +33,25 @@ const SessionCard = (
         <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
         {session.main && <div className="main-indicator">M</div>}
         <div className="title">{session.title}</div>
-        <div className="edit-title-button" onClick={e => {
-          setSessionCardState('title-edit')
-          e.stopPropagation()
-        }}><MdOutlineEdit /></div>
+        <div className={session.freeze ? "session-freeze-button freeze" : "session-freeze-button"}
+          onClick={(e) => {
+            e.stopPropagation()
+            store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
+              .then(() => {
+                actions.session.refreshTabs()
+              })
+          }}
+          title="Session Freeze">
+          <FaSnowflake />
+        </div>
+        <div className="edit-title-button"
+          onClick={e => {
+            setSessionCardState('title-edit')
+            e.stopPropagation()
+          }}
+          title="Edit Session Title">
+          <MdOutlineEdit />
+        </div>
         <div className="menu-session-button" onClick={e => {
           setSessionCardState('menu')
           e.stopPropagation()
@@ -70,13 +87,11 @@ const SessionCard = (
       <div className="menu-session-container">
         <div className="tabs-count">{session.tabs.length} Tabs</div>
         <div className={session.main ? "main-session-button main" : "main-session-button"}
-          onClick={() => mainButtonClickHandler(session.id)}>
+          onClick={() => mainButtonClickHandler(session.id)}
+          title="Set Session as Main">
           {session.main ? <MdPushPin /> : <MdOutlinePushPin />}<span>Main</span>
         </div>
         <div className="buttons-container">
-          <div onClick={() => {
-            store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
-          }}><MdIcecream /></div>
           <div className="delete-session-button" onClick={() => setSessionCardState('delete-confirmation')}><MdOutlineDelete /></div>
           <div className="close-menu-button" onClick={() => {
             setSessionCardState('default')

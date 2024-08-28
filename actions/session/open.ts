@@ -78,7 +78,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   chrome.history.deleteRange({ startTime, endTime: Date.now() })
 
   await actions.window.refreshUnsavedWindows()
-  await actions.session.refreshTabs({ refreshUnsavedWindows: true, closingWindow: { status: false, windowId: -1 } })
+  await actions.session.refreshTabs()
 
   return windowId
 }
