@@ -1,6 +1,6 @@
 import actions from "~actions"
 import messageControl from "~actions/background/messageControl"
-import { NEW_TAB_URL } from "~utils/constants"
+import { LANDING_PAGE_URL, NEW_TAB_URL } from "~utils/constants"
 import type { BgGlobalVar } from "~utils/types"
 import { Message } from '~utils/types'
 
@@ -13,6 +13,12 @@ let gl: BgGlobalVar = {
     windowId: -1
   }
 }
+
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    chrome.tabs.create({ url: LANDING_PAGE_URL });
+  }
+})
 
 chrome.runtime.onStartup.addListener(() => {
   gl.refreshUnsavedWindows = false
