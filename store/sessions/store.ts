@@ -10,7 +10,6 @@ import remove from "./remove"
 import setAll from "./setAll"
 import setOpenStatus from "./setOpenStatus"
 import setTabs from "./setTabs"
-import setWindowId from "./setWindowId"
 
 const sessionsStore = {
   setTabs,
@@ -20,7 +19,6 @@ const sessionsStore = {
   setOpenStatus,
   refreshSessionStatus,
   remove,
-  setWindowId,
   setAll,
   getOpenStatus,
   getGroups,

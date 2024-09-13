@@ -20,7 +20,7 @@ const openFirstSession = async () => {
       const windowTabs = await actions.window.getTabs(windows[0].id)
 
       if (compareTabs(windowTabs, mainSession.tabs)) {
-        await store.sessions.setWindowId(mainSession.id, windows[0].id)
+        await store.sessions.setOpenStatus(mainSession.id, { windowId: windows[0].id })
       } else {
         await openMainSession(mainSession)
       }
@@ -35,7 +35,7 @@ const openFirstSession = async () => {
         for (const session of sessions) {
           if (compareTabs(windowTabs, session.tabs)) {
             retry = false
-            await store.sessions.setWindowId(session.id, window.id)
+            await store.sessions.setOpenStatus(session.id, { windowId: window.id })
             break
           }
         }

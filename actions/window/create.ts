@@ -1,6 +1,6 @@
 import actions from "~actions"
 import store from "~store"
-import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants"
+import { WINDOWID_NONE } from "~utils/constants"
 
 /**
  * Creates a new browser window with the specified URLs.

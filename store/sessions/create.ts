@@ -25,13 +25,14 @@ const create = async (session: Session): Promise<boolean> => {
 
   const newSessionsOpenStatus: SessionOpenStatus = {
     isOpen: session.isOpen,
-    sessionId: session.id,
-    windowId: session.windowId
+    id: session.id,
+    windowId: session.windowId,
+    freeze: session.freeze
   }
   sessionsOpenStatus = [newSessionsOpenStatus, ...sessionsOpenStatus]
 
   const newSessionsTabs: SessionTabsStore = {
-    sessionId: session.id,
+    id: session.id,
     tabs: session.tabs
   }
   sessionsTabs = [newSessionsTabs, ...sessionsTabs]

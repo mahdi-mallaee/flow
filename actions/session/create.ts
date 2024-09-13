@@ -50,7 +50,8 @@ const create = async ({ windowId, title, updateWindow = false }: { windowId?: nu
     main: false,
     isOpen: isSessionOpen,
     colorCode: Math.floor(Math.random() * 5) + 1,
-    groups: []
+    groups: [],
+    freeze: false
   }
 
   const result = await store.sessions.create(session)
@@ -69,8 +70,7 @@ const closeCurrentSession = async (windowId: number): Promise<boolean> => {
   const openStatus = await store.sessions.getOpenStatus()
   const session = openStatus.find(status => status.windowId === windowId)
   if (session) {
-    await store.sessions.setOpenStatus(session.sessionId, false)
-    await store.sessions.setWindowId(session.sessionId, -1)
+    await store.sessions.setOpenStatus(session.id, { isOpen: false, windowId: -1 })
     return true
   }
   return false
