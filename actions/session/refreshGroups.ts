@@ -7,7 +7,7 @@ const refreshGroups = async () => {
     if (session.isOpen) {
       const groups = await actions.window.getGroups(session.windowId)
       if (groups) {
-        await store.sessions.basicUpdate(session.id, { groups })
+        await store.sessions.basicUpdate(session.sessionId, { groups })
       }
     }
   }

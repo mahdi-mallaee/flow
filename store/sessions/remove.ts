@@ -9,8 +9,8 @@ const remove = async (sessionId: string) => {
   let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
 
   const basicsIndex = basics.findIndex(b => b.id === sessionId)
-  const opensIndex = opens.findIndex(o => o.id === sessionId)
-  const sessionsTabsIndex = sessionsTabs.findIndex(s => s.id === sessionId)
+  const opensIndex = opens.findIndex(o => o.sessionId === sessionId)
+  const sessionsTabsIndex = sessionsTabs.findIndex(s => s.sessionId === sessionId)
 
   if (basicsIndex >= 0) {
     basics.splice(basicsIndex, 1)

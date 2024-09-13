@@ -8,8 +8,8 @@ const setOpenStatus = async (sessionId: string, status: Partial<SessionOpenStatu
     const localStorage = new Storage({ area: "local" })
     let sessionsOpenStatus: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
 
-    let index = sessionsOpenStatus.findIndex(os => os.id === sessionId)
-    let newStatus: SessionOpenStatus = { id: sessionId, isOpen: false, windowId: -1, freeze: false }
+    let index = sessionsOpenStatus.findIndex(os => os.sessionId === sessionId)
+    let newStatus: SessionOpenStatus = { sessionId: sessionId, isOpen: false, windowId: -1, freeze: false }
 
     if (index === -1 && sessionId) {
       index = sessionsOpenStatus.push(newStatus) - 1

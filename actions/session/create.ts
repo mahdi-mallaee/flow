@@ -70,7 +70,7 @@ const closeCurrentSession = async (windowId: number): Promise<boolean> => {
   const openStatus = await store.sessions.getOpenStatus()
   const session = openStatus.find(status => status.windowId === windowId)
   if (session) {
-    await store.sessions.setOpenStatus(session.id, { isOpen: false, windowId: -1 })
+    await store.sessions.setOpenStatus(session.sessionId, { isOpen: false, windowId: -1 })
     return true
   }
   return false

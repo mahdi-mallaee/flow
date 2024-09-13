@@ -12,17 +12,17 @@ const getAll = async (): Promise<Session[]> => {
   for (const basicSession of basics) {
     const defaultOpenStatus: SessionOpenStatus = {
       isOpen: false,
-      id: basicSession.id,
+      sessionId: basicSession.id,
       windowId: -1,
       freeze: false
     }
 
     const defaultSessionTabs: SessionTabsStore = {
-      id: basicSession.id,
+      sessionId: basicSession.id,
       tabs: []
     }
-    const openStatus = opens.find(o => o.id === basicSession.id) || defaultOpenStatus
-    const tabsStore = sessionsTabs.find(st => st.id === basicSession.id) || defaultSessionTabs
+    const openStatus = opens.find(o => o.sessionId === basicSession.id) || defaultOpenStatus
+    const tabsStore = sessionsTabs.find(st => st.sessionId === basicSession.id) || defaultSessionTabs
     sessions.push({
       ...basicSession,
       ...openStatus,
