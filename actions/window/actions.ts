@@ -5,7 +5,6 @@ import includesTab from "./includesTab";
 import getGroups from "./getGroups";
 import getTabs from "./getTabs";
 import isUnsaved from "./isUnsaved";
-import refreshLastClosedWindow from "./refreshLastClosedWindow";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
 import checkId from "./checkId";
 import update from "./update";
@@ -17,7 +16,6 @@ const windowActions = {
   getGroups: getGroups,
   refreshUnsavedWindows: refreshUnsavedWindows,
   isUnsaved: isUnsaved,
-  refreshLastClosedWindow: refreshLastClosedWindow,
   includesTab: includesTab,
   changeRecentWindowId: changeRecentWindowId,
   checkId: checkId,

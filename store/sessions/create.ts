@@ -26,7 +26,8 @@ const create = async (session: Session): Promise<boolean> => {
   const newSessionsOpenStatus: SessionOpenStatus = {
     isOpen: session.isOpen,
     sessionId: session.id,
-    windowId: session.windowId
+    windowId: session.windowId,
+    freeze: session.freeze
   }
   sessionsOpenStatus = [newSessionsOpenStatus, ...sessionsOpenStatus]
 
@@ -48,7 +49,11 @@ const create = async (session: Session): Promise<boolean> => {
     await localStorage.set(SessionsKeys.tab, sessionsTabs)
 
     await localStorage.set(SessionsKeys.basic, basicSessions)
+    await localStorage.set(SessionsKeys.basic, basicSessions)
+
     await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
+    await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
+
     await refreshSessionStatus()
     return true
   } catch (error) {

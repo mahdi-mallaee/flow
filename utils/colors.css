@@ -1,47 +1,113 @@
 #theme-provider[data-theme='light'] {
-  --background-color: #fcfcfc;
-  --background-v1-color: #e8e8e8;
-  --background-hover-color: #ededed;
-  --on-background-color: #101010;
+  --background-color: #f8f8f8;
+  --background-hover-color: #dedede;
+
+  --on-background-color: #000000;
   --on-background-variant-color: #393939;
   --on-background-disabled-color: #9e9e9e;
 
-  --primary-color: #45FFF4;
+  --primary-color: #abff45;
+
   --on-primary-color: #4c4c4c;
 
-  --surface-color: #f7f7ec;
-  --surface-hover-color: #efd3ab;
-  --on-surface-color: #5a5a5a;
+  --surface-color: #e7f5c7;
+  --surface-hover-color: #e3ccab;
 
-  --outline-color: #DCDCDC;
+  --on-surface-color: #373737;
 
-  --icon-button-hover: #dce1c8;
+  --outline-color: #c9c9c9;
+
+  --icon-button-hover: #c8d692;
+
+  --tab-indicator-color: #000;
 
   --alert-info: #f7f7ec;
   --alert-warning: #edd5bf;
   --alert-error: #f4c9c9;
 }
 
+
 #theme-provider[data-theme='dark'] {
   --background-color: #1e2127;
-  --background-v1-color: #222426;
   --background-hover-color: #33363a;
+  
   --on-background-color: #fff;
   --on-background-variant-color: #c1c1c1;
   --on-background-disabled-color: #9e9e9e;
-
+  
   --primary-color: #45fff4;
+  
   --on-primary-color: #4c4c4c;
-
+  
   --surface-color: #21241f;
   --surface-hover-color: #343224;
+  
   --on-surface-color: #d5d5d5;
-
+  
   --outline-color: #515151;
-
+  
   --icon-button-hover: #5f673c;
+
+  --tab-indicator-color: #000000;
 
   --alert-info: #21241f;
   --alert-warning: #48382a;
   --alert-error: #4a3030;
+}
+
+#theme-provider[data-theme='deep-blue'] {
+  --background-color: #02242F;
+  --background-hover-color: #0e475a;
+
+  --on-background-color: #def5f9;
+  --on-background-variant-color: #c5dfe2;
+  --on-background-disabled-color: #a6bbbd;
+
+  --primary-color: #4479FF;
+
+  --on-primary-color: #ffffff;
+
+  --surface-color: #234e66;
+  --surface-hover-color: #5b9fa7;
+
+  --on-surface-color: #d6eaef;
+
+  --outline-color: #5b7f89;
+
+  --icon-button-hover: #4d8b87;
+
+  --tab-indicator-color: #000000;
+
+  --alert-info: #1f2424;
+  --alert-warning: #48382a;
+  --alert-error: #4a3030;
+}
+
+
+#theme-provider[data-theme='magical-purple'] {
+  --background-color: #f7f5fd;
+  --background-hover-color: #dbd6ef;
+
+  --on-background-color: #1b1830;
+  --on-background-variant-color: #3e3b51;
+  --on-background-disabled-color: #656279;
+
+  --primary-color: #a544ff;
+
+  --on-primary-color: #fff;
+
+  --surface-color: #d5ccfa;
+  --surface-hover-color: #cac1e9;
+
+  --on-surface-color: #000000;
+
+  --outline-color: #b58ed0;
+
+  --icon-button-hover: #af9ddf;
+
+  --tab-indicator-color: #000;
+  
+  --alert-info: #f7f7ec;
+  --alert-warning: #edd5bf;
+  --alert-error: #f4c9c9;
 }

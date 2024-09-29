@@ -22,16 +22,17 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
 
   const sessionsTabs: SessionTabsStore[] = sessions.map(s => {
     return {
-      sessionId: s.id,
+      id: s.id,
       tabs: s.tabs
     }
   })
 
   const sessionsOpenStatus: SessionOpenStatus[] = sessions.map(s => {
     return {
-      sessionId: s.id,
+      id: s.id,
       isOpen: s.isOpen,
-      windowId: s.windowId
+      windowId: s.windowId,
+      freeze: s.freeze
     }
   })
 

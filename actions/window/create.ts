@@ -1,6 +1,6 @@
 import actions from "~actions"
 import store from "~store"
-import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants"
+import { WINDOWID_NONE } from "~utils/constants"
 
 /**
  * Creates a new browser window with the specified URLs.
@@ -14,10 +14,6 @@ const create = async (urls?: string[]): Promise<number> => {
   const settings = await store.settings.getAll()
   let id: number = WINDOWID_NONE
   urls = urls || []
-
-  if (settings.deleteNewTabsWhenOpeningSession) {
-    urls = urls.filter(url => url !== NEW_TAB_URL)
-  }
 
   const window = await chrome.windows.create({ state: settings.newSessionWindowState, url: urls })
   if (actions.window.checkId(window.id)) {

@@ -1,12 +1,12 @@
 import create from "./create";
-import load from "./load";
+import getAll from "./getAll";
 import remove from "./remove";
 import removeAll from "./removeAll";
 
 const backupStore = {
   create: create,
   remove: remove,
-  load: load,
+  getAll: getAll,
   removeAll: removeAll
 }
 

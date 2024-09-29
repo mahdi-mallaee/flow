@@ -23,7 +23,7 @@ const SessionsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const mainButtonClickHandler = (id: string) => {
-    store.sessions.setAsMain(id)
+    store.sessions.basicUpdate(id, { main: true })
   }
 
   const deleteSession = async (session: Session) => {
@@ -59,7 +59,7 @@ const SessionsContainer = () => {
         return
       }
 
-      const result = await store.sessions.editTitle(id, title)
+      const result = await store.sessions.basicUpdate(id, { title })
       if (!result) {
         showAlert({ text: 'Session edit failed', type: 'error' })
         return
@@ -90,7 +90,12 @@ const SessionsContainer = () => {
       return
     }
 
-    const result = await actions.message.createSession({ title: sessionTitleInput })
+    let windowId = -1
+    if (settings.createSessionInCurrentWindow) {
+      windowId = (await chrome.windows.getCurrent()).id
+    }
+
+    const result = await actions.session.create({ windowId, title: sessionTitleInput, updateWindow: settings.createSessionInCurrentWindow })
     if (!result) {
       showAlert({ text: 'Session creation failed', type: 'error' })
     }
@@ -101,7 +106,8 @@ const SessionsContainer = () => {
 
   const sessionClickHandler = async (session: Session, e: MouseEvent) => {
     if (!session.isOpen) {
-      await actions.message.openSession({ sessionId: session.id, alterSettingsBehavior: e.ctrlKey })
+      // adding metaKey for mac users
+      await actions.session.open(session.id, e.ctrlKey || e.metaKey)
     } else {
       showAlert({
         text: 'This session is already open',

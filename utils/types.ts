@@ -1,8 +1,7 @@
-export interface Session extends BasicSession {
-  windowId: number,
-  tabs: Tab[],
-  isOpen: boolean,
-}
+export interface Session extends
+  Omit<BasicSession, 'sessionId'>,
+  Omit<SessionOpenStatus, 'sessionId'>,
+  Omit<SessionTabsStore, 'sessionId'> { }
 
 export interface BasicSession {
   id: string,
@@ -15,7 +14,8 @@ export interface BasicSession {
 export interface SessionOpenStatus {
   isOpen: boolean,
   sessionId: string,
-  windowId: number
+  windowId: number,
+  freeze: boolean
 }
 export interface SessionTabsStore {
   tabs: Tab[],
@@ -55,12 +55,12 @@ export type OpenSessionInput = {
 export type Settings = {
   theme: Theme,
   newSessionWindowState: WindowState,
-  createWindowForNewSession: boolean,
   autoBackupsInterval: BackupIntervalTime,
   createBackupBeforeSessionDelete: boolean,
   deleteNewTabsWhenOpeningSession: boolean,
   openSessionInCurrentWindow: boolean,
   showLargeSessionWarning: boolean,
+  createSessionInCurrentWindow: boolean
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'
@@ -68,8 +68,10 @@ export type WindowState = chrome.windows.windowStateEnum
 
 export enum Theme {
   light = 'light',
+  magicalPurple = 'magical-purple',
   dark = 'dark',
-  osDefault = 'os-default'
+  deepBlue = 'deep-blue',
+  osDefault = 'os-default',
 }
 
 export type Path = "/" | '/settings' | '/backups'
@@ -101,7 +103,6 @@ export enum StoreKeys {
   unsavedWindows = 'unsavedWindows',
   backups = 'backups',
   openedTabs = 'openedTabs',
-  lastClosedWindowId = 'lastClosedWindowId',
   autoBackupIntervalId = 'autoBackupIntervalId',
   mainHeight = 'mainheight'
 }
@@ -129,4 +130,12 @@ export enum Message {
   error = 'error',
   openSession = 'open-session',
   createSession = "create-session"
+}
+
+export type BgGlobalVar = {
+  refreshUnsavedWindows: boolean,
+  closingWindow: {
+    status: boolean,
+    windowId: number
+  }
 }

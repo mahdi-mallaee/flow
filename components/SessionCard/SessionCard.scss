@@ -10,7 +10,7 @@
     padding: 0 8px;
     transition: background-color 0.13s ease-in;
     display: flex;
-    gap: 8px;
+    gap: 6px;
     height: 40px;
     align-items: center;
 
@@ -40,7 +40,7 @@
     .main-indicator {
       flex-shrink: 0;
       background-color: var(--primary-color);
-      color: var(--on-primary-color);
+      color: var(--tab-indicator-color);
       border-radius: 4px;
       width: 20px;
       height: 20px;
@@ -61,7 +61,8 @@
     }
 
     .menu-session-button,
-    .edit-title-button {
+    .edit-title-button,
+    .session-freeze-button {
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -76,6 +77,11 @@
 
       &:hover {
         background-color: var(--icon-button-hover);
+      }
+
+      &.freeze {
+        background-color: var(--primary-color);
+        color: var(--on-primary-color);
       }
     }
 

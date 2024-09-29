@@ -6,6 +6,7 @@ import Header from "~components/Header"
 import SessionsContainer from "~views/SessionsContainer"
 import SettignsView from "~views/SettingsView"
 import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer"
+import AdditionalSettingsView from "./AdditionalSettingsView"
 
 const ViewRouter = () => {
 
@@ -37,10 +38,15 @@ const ViewRouter = () => {
         <Header headerButtonPath="/settings" />
         <AboutUsView />
       </>} />
-      
+
       <Route path="/donation" element={<>
         <Header headerButtonPath="/settings" />
         <DonationView />
+      </>} />
+
+      <Route path="/additional-settings" element={<>
+        <Header headerButtonPath="/settings" />
+        <AdditionalSettingsView />
       </>} />
 
     </Routes>

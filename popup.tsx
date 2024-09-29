@@ -29,7 +29,6 @@ const IndexPopup = () => {
     })
     observer.observe(ref.current)
 
-    actions.window.refreshLastClosedWindow()
     actions.session.refreshOpenSessions()
     actions.window.refreshUnsavedWindows()
     return () => {
