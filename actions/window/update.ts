@@ -29,9 +29,13 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[]) => {
     return chrome.tabs.remove(t.id)
   })
 
-  await Promise.all(newTabsPromise)
-  await Promise.all(currentTabsPromise)
-  
+  try {
+    await Promise.allSettled(newTabsPromise)
+    await Promise.allSettled(currentTabsPromise)
+  } catch {
+    console.log("Error updating tabs")
+  }
+
   await groupTabs(groups, tabs, windowId)
   currentWindowTabs = await actions.window.getTabs(windowId)
   await setOpenTabs(currentWindowTabs)

@@ -24,7 +24,11 @@ const groupTabs = async (groups: TabGroup[], tabs: Tab[], windowId: number, tryC
       }
     }
   })
-  await Promise.all(groupPromises)
+  try {
+    await Promise.allSettled(groupPromises)
+  } catch {
+    console.log("Error grouping tabs")
+  }
 }
 
 export default groupTabs
