@@ -28,19 +28,23 @@ body:has(.side-panel),
   color: var(--on-background-color);
   display: flex;
   flex-direction: column;
-  gap: 4px;
 
   .side-panel-buttons {
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    flex: 0 0 40px;
+    flex: 0 0 32px;
+    justify-content: center;
+    align-items: center;
+
 
     .button {
+      width: 100%;
       font-size: 14px;
-      padding: 6px;
-      border-radius: 4px;
       cursor: pointer;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &.active {
         background-color: var(--primary-color);

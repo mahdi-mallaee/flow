@@ -6,6 +6,9 @@ import { useEffect, useState } from "react"
 import SidePanelTabs from "~views/SidePanelTabs"
 import useSessions from "~hooks/useSessions"
 import actions from "~actions"
+import SessionsContainer from "~views/SessionsContainer"
+import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer"
+import SettignsView from "~views/SettingsView"
 
 function SidePanel() {
 
@@ -16,20 +19,32 @@ function SidePanel() {
   const switchView = () => {
     if (sidePanelState === 'tabs') {
       return (
-        <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
+        <>
+          <div className="session-title">{sidePanelTabsTitle}</div>
+          <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
+        </>
       )
     } else if (sidePanelState === 'sessions') {
       return (
-        <ViewRouter></ViewRouter>
+        <>
+          <SessionsContainer />
+          <UnsavedWindowsContainer />
+        </>
       )
     } else if (sidePanelState === 'bookmarks') {
       return (
         <div>bookmarks</div>
       )
+    } else if (sidePanelState === 'settings') {
+      return (
+        <SettignsView />
+      )
     } else {
       return (
-        <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
-
+        <>
+          <div className="session-title">{sidePanelTabsTitle}</div>
+          <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
+        </>
       )
     }
   }
@@ -71,14 +86,16 @@ function SidePanel() {
               onClick={() => setSidePanelState('bookmarks')}>
               bookmarks
             </div>
+            <div className={sidePanelState === 'settings' ? "button settings active" : "button settings"}
+              onClick={() => setSidePanelState("settings")}>
+              settings
+            </div>
           </div>
-
-          <div className="session-title">{sidePanelTabsTitle}</div>
 
           <div className="sessions-router">
             {switchView()}
           </div>
-
+2
         </div>
       </MemoryRouter>
     </ThemeProvider>

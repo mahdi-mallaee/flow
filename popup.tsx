@@ -42,18 +42,11 @@ const IndexPopup = () => {
     }
   }, [containerHeight])
 
-  const openSidePanel = async () => {
-    const windowId = (await chrome.windows.getCurrent()).id
-    const options = await chrome.sidePanel.getOptions({})
-    await chrome.sidePanel.setOptions({ enabled: !options.enabled, })
-    await chrome.sidePanel.open({ windowId })
-  }
 
   return (
     <ThemeProvider>
       <MemoryRouter>
         <div className="main-view">
-          <button onClick={openSidePanel}>side panel</button>
           <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
             <ViewRouter />
           </div>

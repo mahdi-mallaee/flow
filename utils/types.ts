@@ -54,6 +54,7 @@ export type OpenSessionInput = {
 
 export type Settings = {
   theme: Theme,
+  defaultAction: DefaultAction,
   newSessionWindowState: WindowState,
   autoBackupsInterval: BackupIntervalTime,
   createBackupBeforeSessionDelete: boolean,
@@ -72,6 +73,11 @@ export enum Theme {
   dark = 'dark',
   deepBlue = 'deep-blue',
   osDefault = 'os-default',
+}
+
+export enum DefaultAction {
+  popup = "popup",
+  sidepanel = "sidepanel"
 }
 
 export type Path = "/" | '/settings' | '/backups'
