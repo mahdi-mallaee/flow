@@ -1,4 +1,4 @@
-import { Theme, type Settings } from "./types"
+import { DefaultAction, Theme, type Settings } from "./types"
 
 export const DEFAULT_MAIN_CONTAINER_HEIGHT = 470
 export const ALERT_MESSAGE_DURATION_MS = 4000
@@ -18,5 +18,6 @@ export const DEFAULT_SETTINGS: Settings = {
   deleteNewTabsWhenOpeningSession: false,
   openSessionInCurrentWindow: false,
   showLargeSessionWarning: true,
-  createSessionInCurrentWindow: false
+  createSessionInCurrentWindow: false,
+  defaultAction: DefaultAction.popup
 }

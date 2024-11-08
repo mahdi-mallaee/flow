@@ -52,7 +52,7 @@ const openFirstSession = async () => {
 }
 
 const openMainSession = async (mainSession: Session) => {
-  const newWindowId = await actions.session.open(mainSession.id)
+  const newWindowId = await actions.session.open({ sessionId: mainSession.id })
   const windows = await chrome.windows.getAll()
   for (const window of windows) {
     if (window.id !== newWindowId) {

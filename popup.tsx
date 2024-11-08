@@ -42,6 +42,7 @@ const IndexPopup = () => {
     }
   }, [containerHeight])
 
+
   return (
     <ThemeProvider>
       <MemoryRouter>
@@ -51,7 +52,7 @@ const IndexPopup = () => {
           </div>
         </div >
       </MemoryRouter>
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 

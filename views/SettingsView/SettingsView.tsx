@@ -1,6 +1,6 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type BackupIntervalTime, StoreKeys, type Settings } from '~utils/types'
+import { Theme, type BackupIntervalTime, StoreKeys, type Settings, DefaultAction } from '~utils/types'
 import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
@@ -39,10 +39,38 @@ const SettignsView = () => {
     })
   })
 
+  const defaultActionOptions = []
+  Object.values(DefaultAction).forEach((value, id) => {
+    defaultActionOptions.push({
+      label: Object.keys(DefaultAction)[id].toString(),
+      value: value
+    })
+  })
+
   const setSettingsHandler = async (settings: Partial<Settings>) => {
     const result = await store.settings.set(settings)
     if (!result) {
       showAlert({ text: 'Settings update failed', type: 'error' })
+    }
+  }
+
+  const defaultActionHandler = async (option: DefaultAction) => {
+    try {
+      await setSettingsHandler({ defaultAction: option })
+
+      const windowId = (await chrome.windows.getCurrent()).id || -1
+
+      if (option === DefaultAction.popup) {
+        await chrome.action.openPopup({ windowId })
+        await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false })
+        await chrome.sidePanel.setOptions({ enabled: false, })
+      } else {
+        await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
+        await chrome.sidePanel.setOptions({ enabled: true, })
+        await chrome.sidePanel.open({ windowId })
+      }
+    } finally {
+      return
     }
   }
 
@@ -65,9 +93,16 @@ const SettignsView = () => {
           <Dropdown
             value={settings.theme}
             options={themeOptions}
-            onChange={((option: Theme) => setSettingsHandler({ theme: option }))} />
+            onChange={(option: Theme) => setSettingsHandler({ theme: option })} />
         </div>
 
+        <div className="item">
+          <div className="title">Default Action</div>
+          <Dropdown
+            value={settings.defaultAction}
+            options={defaultActionOptions}
+            onChange={defaultActionHandler} />
+        </div>
 
         <div className="item">
           <div className="title">Automatic backups interval</div>

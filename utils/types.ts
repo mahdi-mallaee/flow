@@ -29,6 +29,8 @@ export type Tab = {
   index: number,
   groupId: number,
   pinned: boolean
+  title: string,
+  iconUrl: string,
 }
 
 export type TabGroup = {
@@ -43,8 +45,16 @@ export type AlertMessage = {
   type: 'error' | 'warning' | 'info'
 }
 
+export type OpenSessionInput = {
+  sessionId: string,
+  exludedTabIndex?: number,
+  currentWindowId?: number,
+  alterSettingsBehavior?: boolean,
+}
+
 export type Settings = {
   theme: Theme,
+  defaultAction: DefaultAction,
   newSessionWindowState: WindowState,
   autoBackupsInterval: BackupIntervalTime,
   createBackupBeforeSessionDelete: boolean,
@@ -63,6 +73,11 @@ export enum Theme {
   dark = 'dark',
   deepBlue = 'deep-blue',
   osDefault = 'os-default',
+}
+
+export enum DefaultAction {
+  popup = "popup",
+  sidepanel = "sidepanel"
 }
 
 export type Path = "/" | '/settings' | '/backups'

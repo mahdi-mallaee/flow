@@ -62,6 +62,7 @@ const create = async ({ windowId, title, updateWindow = false }: { windowId?: nu
   }
 
   await actions.window.refreshUnsavedWindows()
+  await actions.session.openSessionsPage({ windowId: windowId })
 
   return result
 }

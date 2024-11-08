@@ -1,0 +1,80 @@
+html:has(.side-panel),
+body:has(.side-panel),
+#__plasmo:has(.side-panel),
+#theme-provider:has(.side-panel),
+.side-panel {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  background-color: var(--surface-color);
+  width: 6px;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(180, 180, 180);
+  border-radius: 8px;
+}
+
+.side-panel {
+  background-color: var(--background-color);
+  color: var(--on-background-color);
+  display: flex;
+  flex-direction: column;
+
+  .side-panel-buttons {
+    display: flex;
+    align-items: center;
+    flex: 0 0 32px;
+    justify-content: center;
+    align-items: center;
+
+
+    .button {
+      width: 100%;
+      font-size: 14px;
+      cursor: pointer;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.active {
+        background-color: var(--primary-color);
+        color: var(--on-primary-color);
+      }
+    }
+  }
+
+  .session-title {
+    padding: 4px 12px;
+    font-size: 16px;
+    background-color: var(--surface-color);
+    border-top: 1px solid var(--outline-color);
+    border-bottom: 1px solid var(--outline-color);
+  }
+
+  .sessions-router {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .view-title {
+    font-size: 12px;
+    padding: 8px 12px;
+    font-weight: 700;
+    border: 1px solid var(--outline-color);
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+  }
+
+}

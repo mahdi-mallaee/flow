@@ -2,6 +2,7 @@ import { MdArrowBack, MdTune } from "react-icons/md"
 import Logo from "~components/Logo"
 import { useNavigate, useLocation } from 'react-router-dom'
 import type { Path } from "~utils/types"
+import './Header.scss'
 
 const Header = ({ headerButtonPath }: { headerButtonPath: Path }) => {
   const nav = useNavigate()

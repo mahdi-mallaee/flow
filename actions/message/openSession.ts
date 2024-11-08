@@ -1,4 +1,4 @@
-import { Message } from "~utils/types"
+import { Message, type OpenSessionInput } from "~utils/types"
 
 /**
  * Sends a message to background to open the session with the given sessionId.
@@ -14,12 +14,12 @@ import { Message } from "~utils/types"
  * @returns A Promise that resolves with the response from the runtime message.
  */
 
-const openSession = async (sessionId: string, alterSettingsBehavior = false): Promise<any> => {
-  const currentWindowId = (await chrome.windows.getCurrent()).id
-  const response = await chrome.runtime.sendMessage(
+const openSession = async (payload: OpenSessionInput): Promise<any> => {
+  payload.currentWindowId = payload.currentWindowId || (await chrome.windows.getCurrent()).id
+  const response: number = await chrome.runtime.sendMessage(
     {
       message: Message.openSession,
-      payload: { sessionId, currentWindowId, alterSettingsBehavior }
+      payload
     })
   return response
 }

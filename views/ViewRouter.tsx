@@ -25,7 +25,7 @@ const ViewRouter = () => {
       </>} />
 
       <Route path="/backups" element={<>
-        <Header headerButtonPath="/settings" />
+        <Header headerButtonPath="/settings" /> 
         <BackupsView />
       </>} />
 

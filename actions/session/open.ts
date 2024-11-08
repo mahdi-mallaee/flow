@@ -1,4 +1,4 @@
-import { type Tab } from "~utils/types";
+import { type OpenSessionInput, type Tab } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
 import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
@@ -10,6 +10,8 @@ import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
  * @param currentWindowId - The ID of the current window, if the session is to be opened in the current window.
  * @param alterSettingsBehavior - Whether to override the user's settings for opening the session.
  *  If user holds the ctrl key, the settings behaviour will be altered.
+ * @param exludedTabIndex - The index of the tab that should not be discarded in the opened window.
+ * 
  * @returns The ID of the window in which the session was opened.
  * 
  * @flow 
@@ -27,7 +29,7 @@ import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
 const open = async (sessionId: string, alterSettingsBehavior = false, currentWindowId?: number,): Promise<number> => {
 
   if (!location.href.includes('background')) {
-    actions.message.openSession(sessionId, alterSettingsBehavior)
+    actions.message.openSession({ sessionId, alterSettingsBehavior })
     return
   }
 
@@ -65,7 +67,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   if (deleteNewTabsWhenOpeningSession) {
     sessionTabs = sessionTabs.filter(t => t.url !== NEW_TAB_URL)
     if (sessionTabs.length < 1) {
-      sessionTabs = [{ groupId: -1, id: -1, index: 0, pinned: false, url: NEW_TAB_URL, windowId }]
+      sessionTabs = [{ groupId: -1, id: -1, index: 0, pinned: false, url: NEW_TAB_URL, windowId, iconUrl: "", title: "" }]
     }
   }
   const groups = await store.sessions.getGroups(sessionId)
