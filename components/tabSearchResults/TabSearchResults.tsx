@@ -33,7 +33,7 @@ const TabSearchResults = ({ sessions, searchInput }: { sessions: Session[], sear
 
   const highlightSearchInput = (text: string): ReactNode => {
     if (!text) return
-    
+
     const parts = text.split(new RegExp(`(${searchInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'))
     return (
       parts.map((part, i) =>
@@ -53,9 +53,10 @@ const TabSearchResults = ({ sessions, searchInput }: { sessions: Session[], sear
             <div className="session">{session.title}</div>
             <div className="tabs">
               {session.tabs.map((tab, i) => (
-                <TabCard key={tab.id || i} tab={tab} session={session}
+                <TabCard key={tab.id || i} tab={tab}
                   title={highlightSearchInput(tab.title)}
-                  url={highlightSearchInput(tab.url)} />
+                  url={highlightSearchInput(tab.url)}
+                  onClickHandler={() => { }} />
               ))}
             </div>
           </div>

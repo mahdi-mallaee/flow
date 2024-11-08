@@ -5,7 +5,7 @@ import TabCard from "~components/TabCard"
 import { useEffect, useState, } from "react"
 import Logo from "~components/Logo"
 import { MdTune } from "react-icons/md"
-import TabSearchResults from "~components/TabSearchResults"
+import TabSearchResults from "~components/tabSearchResults"
 import Toolbar from "~components/Toolbar"
 import type { Session, Tab } from "~utils/types"
 import actions from "~actions"
@@ -16,7 +16,7 @@ const SessionsTabPage = () => {
   const sessions = useSessions()
   const [selectedSession, setSelectedSession] = useState(sessions[0])
   const [searchInput, setSearchInput] = useState("")
-  
+
   const tabCardClickHandler = async (tab: Tab) => {
     if (selectedSession.isOpen) {
       chrome.windows.update(tab.windowId, { focused: true, })
@@ -45,7 +45,7 @@ const SessionsTabPage = () => {
   }, [sessions])
 
   const mainSesssionHandler = () => {
-    store.sessions.setAsMain(selectedSession.id)
+    store.sessions.basicUpdate(selectedSession.id, { main: !selectedSession.main })
   }
 
   return (
@@ -65,7 +65,7 @@ const SessionsTabPage = () => {
           <Toolbar
             title={searchInput ? "Search Results" :
               selectedSession ? selectedSession.title : 'Select a session'}
-            setSearchInput={setSearchInput} mainSessionHandler={mainSesssionHandler}/>
+            setSearchInput={setSearchInput} mainSessionHandler={mainSesssionHandler} />
           {
             searchInput ?
               <TabSearchResults sessions={sessions} searchInput={searchInput} />

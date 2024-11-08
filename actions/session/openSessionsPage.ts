@@ -6,7 +6,7 @@ type input = {
   active?: boolean,
 }
 
-const createSessionsPage = async ({ windowId, pin = true, active = false }: input) => {
+const openSessionsPage = async ({ windowId, pin = true, active = false }: input) => {
   const pageUrl = 'chrome-extension://' + chrome.runtime.id + '/tabs/sessions.html'
   const windowTabs = await actions.window.getTabs(windowId)
   const index = windowTabs.findIndex(tab => tab.url === pageUrl)
@@ -22,4 +22,4 @@ const createSessionsPage = async ({ windowId, pin = true, active = false }: inpu
   }
 }
 
-export default createSessionsPage
+export default openSessionsPage

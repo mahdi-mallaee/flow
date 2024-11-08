@@ -39,7 +39,7 @@ const create = async ({ windowId, title, updateWindow = false }: { windowId?: nu
   }
 
   const tabs = updateWindow ?
-    [{ groupId: -1, id: -1, index: 0, pinned: false, url: NEW_TAB_URL, windowId }] :
+    [{ groupId: -1, id: -1, index: 0, pinned: false, url: NEW_TAB_URL, windowId, title: '', iconUrl: "" }] :
     await actions.window.getTabs(windowId)
 
   const session: Session = {
@@ -62,7 +62,7 @@ const create = async ({ windowId, title, updateWindow = false }: { windowId?: nu
   }
 
   await actions.window.refreshUnsavedWindows()
-  await actions.session.openSessionsPage({ windowId: windowId })
+  // await actions.session.openSessionsPage({ windowId: windowId })
 
   return result
 }
