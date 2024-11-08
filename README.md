@@ -13,22 +13,34 @@
 
 ### Starting the project
 first clone the project
-> git clone https://github.com/mahdi-mallaee/future-tabs.git
+```bash
+git clone https://github.com/mahdi-mallaee/flow.git
+```
 
 then install the packages
-> pnpm i
+```bash
+npm i
+```
 
 dev server command
-> npm run dev
+ ```bash
+ npm run dev
+ ```
 
 building an unpacked chrome extenstion
-> npm run build
+```bash
+npm run build
+```
 
 extension should be loaded in chrome dev mode afterward by clicking on load unpacked button and selecting on of the below directories in extensions page
 
-> ./build/chrome-mv3-dev
+```bash
+./build/chrome-mv3-dev
+```
 
-> ./build/chrome-mv3-prod
+```bash
+./build/chrome-mv3-prod
+```
 
 ---
 
