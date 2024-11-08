@@ -99,6 +99,10 @@ Give Flow a try and experience a clutter-free browsing environment. Your feedbac
 
 What's new?
 
+1.2.2
+• Add session freeze.
+• Code improvements.
+
 1.2.1
 • Organizing settings and added a few more settings in additional settings
 • Bug fixes
