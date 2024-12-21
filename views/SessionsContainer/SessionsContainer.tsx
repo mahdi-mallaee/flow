@@ -96,6 +96,7 @@ const SessionsContainer = () => {
     }
 
     const result = await actions.session.create({ windowId, title: sessionTitleInput, updateWindow: settings.createSessionInCurrentWindow })
+    window.close()
     if (!result) {
       showAlert({ text: 'Session creation failed', type: 'error' })
     }
@@ -108,6 +109,7 @@ const SessionsContainer = () => {
     if (!session.isOpen) {
       // adding metaKey for mac users
       await actions.session.open(session.id, e.ctrlKey || e.metaKey)
+      window.close()
     } else {
       showAlert({
         text: 'This session is already open',
