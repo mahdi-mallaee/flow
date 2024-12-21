@@ -5,10 +5,11 @@ import refreshSessionStatus from "./refreshSessionStatus"
 interface updateInfo {
   title?: string,
   main?: boolean,
-  groups?: TabGroup[]
+  groups?: TabGroup[],
+  colorCode?: number
 }
 
-const basicUpdate = async (sessionId: string, { title, main, groups }: updateInfo): Promise<boolean> => {
+const basicUpdate = async (sessionId: string, { title, main, groups, colorCode }: updateInfo): Promise<boolean> => {
   const localStorage = new Storage({ area: 'local' })
   const sessions: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
   const session = sessions.find(s => s.id === sessionId)
@@ -31,6 +32,10 @@ const basicUpdate = async (sessionId: string, { title, main, groups }: updateInf
 
     if (groups) {
       session.groups = groups
+    }
+
+    if (colorCode) {
+      session.colorCode = colorCode
     }
 
 

@@ -162,8 +162,7 @@ const SessionsContainer = () => {
                   initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ overflow: 'hidden' }}>
+                  transition={{ duration: 0.2 }}>
                   <SessionCard
                     key={session.id}
                     session={session}
