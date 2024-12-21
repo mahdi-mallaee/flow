@@ -1,11 +1,13 @@
-import { useState, type MouseEvent } from "react";
+import { useState, type MouseEvent, type MutableRefObject } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
 import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
+import { HiOutlineBars2 } from "react-icons/hi2";
 import { FaSnowflake } from "react-icons/fa"
 import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
 import store from "~store";
 import actions from "~actions";
+import { Reorder, useDragControls } from "framer-motion";
 
 type SessionCardArgs = {
   session: Session,
@@ -13,16 +15,19 @@ type SessionCardArgs = {
   mainButtonClickHandler: (id: string) => void,
   deleteSession: (session: Session) => void,
   editSession: (id: string, title: string, callBack: Function) => void
+  dragConstarintRef: MutableRefObject<HTMLUListElement>
 }
 type State = 'default' | 'title-edit' | 'delete-confirmation' | 'menu'
 
 const SessionCard = (
-  { session, sessionClickHandler, mainButtonClickHandler, deleteSession, editSession }: SessionCardArgs
+  { session, sessionClickHandler, mainButtonClickHandler, deleteSession, editSession, dragConstarintRef }: SessionCardArgs
 ) => {
 
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [sessionCardState, setSessionCardState] = useState<State>('default')
   const [showColorChanger, setShowColorChanger] = useState(false)
+
+  const dragControls = useDragControls()
 
 
   const defaultState = () => {
@@ -34,7 +39,7 @@ const SessionCard = (
         <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
         {session.main && <div className={`main-indicator color-${session.colorCode}`}>M</div>}
         <div className="title">{session.title}</div>
-        <div className={session.freeze ? "session-freeze-button freeze" : "session-freeze-button"}
+        <div className={"icon-button session-freeze-button " + (session.freeze ? "freeze" : "")}
           onClick={(e) => {
             e.stopPropagation()
             store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
@@ -45,7 +50,7 @@ const SessionCard = (
           title="Session Freeze">
           <FaSnowflake />
         </div>
-        <div className="edit-title-button"
+        <div className="icon-button"
           onClick={e => {
             setSessionCardState('title-edit')
             e.stopPropagation()
@@ -53,7 +58,7 @@ const SessionCard = (
           title="Edit Session Title">
           <MdOutlineEdit />
         </div>
-        <div className="menu-session-button" onClick={e => {
+        <div className="icon-button" onClick={e => {
           setSessionCardState('menu')
           e.stopPropagation()
         }}><MdMoreVert /></div>
@@ -78,7 +83,7 @@ const SessionCard = (
           onChange={e => {
             setSessionTitleInput(e.target.value)
           }} />
-        <div className="confirm-edit-title-button" onClick={_editSession}><MdDone /></div>
+        <div className="icon-button" onClick={_editSession}><MdDone /></div>
       </div >
     )
   }
@@ -86,6 +91,7 @@ const SessionCard = (
   const menuState = () => {
     return (
       <div className="menu-session-container">
+        <div className="icon-button" onPointerDown={e => dragControls.start(e)}><HiOutlineBars2 /></div>
         <div className={`tabs-count color-${session.colorCode}`}
           style={{ position: "relative" }}
           onClick={() => setShowColorChanger(c => !c)}>
@@ -106,8 +112,8 @@ const SessionCard = (
           {session.main ? <MdPushPin /> : <MdOutlinePushPin />}<span>Main</span>
         </div>
         <div className="buttons-container">
-          <div className="delete-session-button" onClick={() => setSessionCardState('delete-confirmation')}><MdOutlineDelete /></div>
-          <div className="close-menu-button" onClick={() => {
+          <div className="icon-button" onClick={() => setSessionCardState('delete-confirmation')}><MdOutlineDelete /></div>
+          <div className="icon-button" onClick={() => {
             setSessionCardState('default')
           }}><MdClose /></div>
         </div>
@@ -119,10 +125,10 @@ const SessionCard = (
     return (
       <div className="delete-confirmation-container">
         <div className="confirmation-text">Are you sure of deleting this session ?</div>
-        <div className="close-confirmation-button" onClick={() => {
+        <div className="icon-button" onClick={() => {
           setSessionCardState('default')
         }}><MdClose /></div>
-        <div className="accept-confirmation-button" onClick={() => {
+        <div className="icon-button" onClick={() => {
           deleteSession(session)
         }}><MdDone /></div>
       </div>
@@ -153,9 +159,16 @@ const SessionCard = (
 
 
   return (
-    <div key={session.id} className='session'>
+    <Reorder.Item
+      value={session}
+      key={session.id}
+      className='session'
+      dragListener={false}
+      dragControls={dragControls}
+      dragConstraints={dragConstarintRef}
+      dragElastic={0.1}>
       {getCurrentState(sessionCardState)}
-    </div>
+    </Reorder.Item>
   )
 }
 

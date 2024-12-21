@@ -1,9 +1,9 @@
 import { MdAdd, MdClose, MdDone } from "react-icons/md"
 import SessionCard from "~components/SessionCard"
 import { type Session } from "~utils/types"
-import { useEffect, useState, type MouseEvent } from "react"
+import { useRef, useState, type MouseEvent } from "react"
 import './SessionsContainer.scss'
-import { AnimatePresence, motion } from "framer-motion"
+import { Reorder, } from "framer-motion"
 import store from "~store"
 import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
@@ -20,7 +20,7 @@ const SessionsContainer = () => {
   const settings = useSettings()
   const sessions = useSessions()
 
-  const [initialAnimation, setInitialAnimation] = useState(false)
+  const dragConstarintRef = useRef<HTMLUListElement>()
 
   const mainButtonClickHandler = (id: string) => {
     store.sessions.basicUpdate(id, { main: true })
@@ -118,12 +118,6 @@ const SessionsContainer = () => {
     }
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setInitialAnimation(true)
-    }, 200)
-  }, [])
-
   return (
     <>
       {renderAlert()}
@@ -156,29 +150,26 @@ const SessionsContainer = () => {
             </div>
           }
 
-          <AnimatePresence>
+          <Reorder.Group
+            className="session-reorder-container"
+            axis="y" values={sessions}
+            onReorder={(newOrder) => { store.sessions.setAll(newOrder) }}
+            ref={dragConstarintRef}>
             {sessions.map(session => {
               return (
-                <motion.div
+                <SessionCard
                   key={session.id}
-                  initial={{ opacity: initialAnimation ? 0 : 1, height: initialAnimation ? 0 : 'auto' }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}>
-                  <SessionCard
-                    key={session.id}
-                    session={session}
-                    sessionClickHandler={sessionClickHandler}
-                    mainButtonClickHandler={mainButtonClickHandler}
-                    deleteSession={deleteSession}
-                    editSession={(id: string, title: string, callBack: Function) => {
-                      editSession(id, title, callBack)
-                    }} />
-                </motion.div>
+                  session={session}
+                  sessionClickHandler={sessionClickHandler}
+                  mainButtonClickHandler={mainButtonClickHandler}
+                  deleteSession={deleteSession}
+                  editSession={(id: string, title: string, callBack: Function) => {
+                    editSession(id, title, callBack)
+                  }}
+                  dragConstarintRef={dragConstarintRef} />
               )
             })}
-          </AnimatePresence>
-
+          </Reorder.Group >
 
         </div>
 

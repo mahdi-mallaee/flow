@@ -56,3 +56,22 @@ body {
   }
 
 }
+
+.icon-button {
+  cursor: pointer;
+  border-radius: 8px;
+  align-items: center;
+  padding: 6px 4px;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--icon-button-hover);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}

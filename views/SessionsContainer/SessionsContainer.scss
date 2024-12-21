@@ -47,6 +47,12 @@
     }
   }
 
+  .session-reorder-container {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
   .get-session-title-container {
     display: flex;
     padding: 12px;
@@ -57,25 +63,6 @@
     input {
       background-color: var(--background-color);
       color: var(--on-background-color);
-    }
-
-    .confirm-title-button,
-    .close-get-title-button {
-      padding: 6px 4px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      &:hover {
-        background-color: var(--icon-button-hover);
-      }
     }
 
     input {

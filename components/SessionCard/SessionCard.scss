@@ -37,25 +37,8 @@
       font-size: 11px;
     }
 
-    .menu-session-button,
-    .edit-title-button,
+
     .session-freeze-button {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px 4px;
-      border-radius: 8px;
-
-      svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      &:hover {
-        background-color: var(--icon-button-hover);
-      }
-
       &.freeze {
         background-color: var(--primary-color);
         color: var(--on-primary-color);
@@ -86,38 +69,20 @@
       background-color: var(--background-color);
       color: var(--on-background-color);
     }
-
-    .confirm-edit-title-button {
-      flex-shrink: 0;
-      padding: 6px 4px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-
-      svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      &:hover {
-        background-color: var(--icon-button-hover);
-      }
-    }
   }
 
   .menu-session-container {
     display: flex;
     gap: 8px;
     justify-content: space-between;
-    padding: 12 8px 12px 12px;
+    padding: 8px;
     height: 40px;
+    align-items: center;
 
     .tabs-count {
       display: flex;
       align-items: center;
-      padding: 0 8px;
+      padding: 2px 8px;
       color: var(--on-primary-color);
       border-radius: 6px;
       font-size: 10px;
@@ -148,24 +113,6 @@
       display: flex;
       gap: 8px;
       align-items: center;
-
-      .close-menu-button,
-      .delete-session-button {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        padding: 6px 4px;
-        border-radius: 8px;
-
-        svg {
-          width: 14px;
-          height: 14px;
-        }
-
-        &:hover {
-          background-color: var(--icon-button-hover);
-        }
-      }
     }
 
     .tabs-count {
@@ -210,22 +157,5 @@
       font-weight: 700;
     }
 
-    .close-confirmation-button,
-    .accept-confirmation-button {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      padding: 6px 4px;
-      border-radius: 8px;
-
-      svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      &:hover {
-        background-color: var(--icon-button-hover);
-      }
-    }
   }
 }
