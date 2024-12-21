@@ -3,7 +3,7 @@ import type { Session } from "~utils/types";
 import './SessionCard.scss'
 import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
 import { FaSnowflake } from "react-icons/fa"
-import { INPUT_MAX_LENGTH } from "~utils/constants";
+import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
 import store from "~store";
 import actions from "~actions";
 
@@ -22,6 +22,7 @@ const SessionCard = (
 
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [sessionCardState, setSessionCardState] = useState<State>('default')
+  const [showColorChanger, setShowColorChanger] = useState(false)
 
 
   const defaultState = () => {
@@ -31,7 +32,7 @@ const SessionCard = (
           sessionClickHandler(session, e)
         }}>
         <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
-        {session.main && <div className="main-indicator">M</div>}
+        {session.main && <div className={`main-indicator color-${session.colorCode}`}>M</div>}
         <div className="title">{session.title}</div>
         <div className={session.freeze ? "session-freeze-button freeze" : "session-freeze-button"}
           onClick={(e) => {
@@ -85,7 +86,20 @@ const SessionCard = (
   const menuState = () => {
     return (
       <div className="menu-session-container">
-        <div className="tabs-count">{session.tabs.length} Tabs</div>
+        <div className={`tabs-count color-${session.colorCode}`}
+          style={{ position: "relative" }}
+          onClick={() => setShowColorChanger(c => !c)}>
+          {session.tabs.length} Tabs
+          {showColorChanger && <div className="color-changer">
+            {Array.from({ length: NUMBER_OF_COLOR_CODES }, (_, i) => i + 1).map((i: number) => {
+              return <div className={`color-${i}`}
+                onClick={() => {
+                  store.sessions.basicUpdate(session.id, { colorCode: i })
+                }}>
+              </div>
+            })}
+          </div>}
+        </div>
         <div className={session.main ? "main-session-button main" : "main-session-button"}
           onClick={() => mainButtonClickHandler(session.id)}
           title="Set Session as Main">

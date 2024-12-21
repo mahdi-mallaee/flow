@@ -14,32 +14,9 @@
     height: 40px;
     align-items: center;
 
-    .tabs-count {
-      &.color-1 {
-        background-color: rgb(255, 156, 156);
-      }
-
-      &.color-2 {
-        background-color: #98FF96;
-      }
-
-      &.color-3 {
-        background-color: #8699FF;
-      }
-
-      &.color-4 {
-        background-color: rgb(232, 132, 255);
-      }
-
-      &.color-5 {
-        background-color: rgb(243, 243, 118);
-      }
-    }
-
     .tabs-count,
     .main-indicator {
       flex-shrink: 0;
-      background-color: var(--primary-color);
       color: var(--tab-indicator-color);
       border-radius: 4px;
       width: 20px;
@@ -141,7 +118,6 @@
       display: flex;
       align-items: center;
       padding: 0 8px;
-      background-color: var(--primary-color);
       color: var(--on-primary-color);
       border-radius: 6px;
       font-size: 10px;
@@ -189,6 +165,35 @@
         &:hover {
           background-color: var(--icon-button-hover);
         }
+      }
+    }
+
+    .tabs-count {
+      cursor: pointer;
+
+      &:active {
+        opacity: 0.8;
+      }
+    }
+
+    .color-changer {
+      top: 100%;
+      left: 0;
+      position: absolute;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-radius: 4px;
+      width: 100%;
+      background-color: var(--surface-color);
+      z-index: 100;
+      border: 1px solid var(--outline-color);
+      margin-top: 4px;
+
+      div {
+        width: 100%;
+        height: 12px;
       }
     }
   }
