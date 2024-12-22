@@ -30,7 +30,7 @@ export default function messageControl(
     case Message.openSession:
       {
         gl.refreshUnsavedWindows = false
-        actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId)
+        actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.windowId, payload.exludedTabIndex)
           .then((res) => {
             sendResponse(res)
             gl.refreshUnsavedWindows = true

@@ -41,8 +41,10 @@
         font-size: 14px;
       }
 
-      .search-session:first-child {
-        border-top: none;
+      &:first-child {
+        .search-session {
+          border-top: none;
+        }
       }
 
       .search-tabs {

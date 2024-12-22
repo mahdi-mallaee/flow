@@ -26,7 +26,7 @@ import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
  * set the session as open ->
  * delete the recent history !
  */
-const open = async (sessionId: string, alterSettingsBehavior = false, currentWindowId?: number,): Promise<number> => {
+const open = async (sessionId: string, alterSettingsBehavior = false, currentWindowId?: number, exludedTabIndex?: number): Promise<number> => {
 
   if (!location.href.includes('background')) {
     actions.message.openSession({ sessionId, alterSettingsBehavior })
@@ -71,7 +71,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
     }
   }
   const groups = await store.sessions.getGroups(sessionId)
-  await actions.window.update(windowId, sessionTabs, groups)
+  await actions.window.update(windowId, sessionTabs, groups, exludedTabIndex)
   // set the session as open and assign the window id to it for updates
   await store.sessions.setOpenStatus(sessionId, { isOpen: true, windowId })
 

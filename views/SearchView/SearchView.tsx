@@ -1,7 +1,9 @@
 import { MdClose, MdSearch } from "react-icons/md"
-import { useEffect, useMemo, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useState } from "react"
 import useSessions from "~hooks/useSessions"
 import './SearchView.scss'
+import type { Tab } from "~utils/types"
+import actions from "~actions"
 
 const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [searchInput, setSearchInput] = useState('')
@@ -12,12 +14,26 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchInput(searchInput)
-    }, 100)
+    }, 200)
 
     return () => {
       clearTimeout(handler)
     }
   }, [searchInput])
+
+  const tabClickHandler = async (tab: Tab) => {
+    const session = sessions.find(s => s.tabs.includes(tab))
+    if (session.isOpen) {
+      chrome.windows.update(tab.windowId, { focused: true, })
+      chrome.tabs.update(tab.id, { active: true, })
+    } else {
+      const windowId = await actions.message.openSession({ sessionId: session.id, exludedTabIndex: tab.index })
+      chrome.windows.update(windowId, { focused: true, })
+      const tabs = await actions.window.getTabs(windowId)
+      await chrome.tabs.update(tabs[tab.index].id, { active: true, })
+    }
+
+  }
 
   const searchResults = useMemo(() => {
     if (debouncedSearchInput) {
@@ -34,19 +50,6 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
     }
   }, [debouncedSearchInput, sessions])
 
-  const highlightSearchInput = (text: string): ReactNode => {
-    if (!text) return
-
-    const parts = text.split(new RegExp(`(${searchInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'))
-    return (
-      parts.map((part, i) =>
-        part.toLowerCase() === searchInput.toLowerCase() ?
-          <b style={{ backgroundColor: 'yellow' }} key={i}>{part}</b>
-          :
-          part
-      )
-    )
-  }
 
   return (
     <div className="search-view">
@@ -62,7 +65,7 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
               <div className="search-session">{session.title}</div>
               <div className="search-tabs">
                 {session.tabs.map((tab, i) => (
-                  <div className="tab">
+                  <div className="tab" onClick={() => tabClickHandler(tab)}>
                     <div className="title">{tab.title}</div>
                     <div className="url">{tab.url}</div>
                   </div>
