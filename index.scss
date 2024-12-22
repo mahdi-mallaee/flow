@@ -63,18 +63,6 @@ body {
           background-color: var(--icon-button-hover);
         }
       }
-
-      &.search-view {
-
-        input {
-          flex-grow: 1;
-          border: none;
-          outline: none;
-          background-color: var(--surface-color);
-          color: var(--on-surface-color);
-          padding: 4px 0;
-        }
-      }
     }
   }
 
