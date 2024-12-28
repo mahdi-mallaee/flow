@@ -121,9 +121,7 @@ const SessionsContainer = () => {
   return (
     <>
       {renderAlert()}
-
       <div className='sessions-container'>
-        <div className='view-title session-title'>Sessions</div>
         <div className="sessions">
           {gettingSessionName ?
             <div className="get-session-title-container">
