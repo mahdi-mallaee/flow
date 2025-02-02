@@ -111,8 +111,13 @@ Give Flow a try and experience a clutter-free browsing environment. Your feedbac
 
 What's new?
 
+1.2.3
+• Added search in sessions.
+• Added session reordering ( holding two horizontal lines in session menu).
+• Added session color change ( click on tab count in session menu).
+
 1.2.2
-• Add session freeze.
+• Added session freeze.
 • Code improvements.
 
 1.2.1
