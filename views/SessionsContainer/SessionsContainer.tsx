@@ -11,6 +11,7 @@ import useAlertMessage from "~hooks/useAlertMessage"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
 import actions from "~actions"
 import checkNumberLimit from "~actions/session/checkNumberLimit"
+import { ReorderItem, ReorderList } from "~components/ReorderList/Reorder"
 
 const SessionsContainer = () => {
   const [sessionTitleInput, setSessionTitleInput] = useState('')
@@ -118,11 +119,13 @@ const SessionsContainer = () => {
     }
   }
 
+  const scrollRef = useRef(null)
+
   return (
     <>
       {renderAlert()}
       <div className='sessions-container'>
-        <div className="sessions">
+        <div className="sessions" ref={scrollRef}>
           {gettingSessionName ?
             <div className="get-session-title-container">
               <input maxLength={INPUT_MAX_LENGTH} autoFocus type="text" value={sessionTitleInput} onChange={e => {
@@ -148,26 +151,27 @@ const SessionsContainer = () => {
             </div>
           }
 
-          <Reorder.Group
-            className="session-reorder-container"
-            axis="y" values={sessions}
-            onReorder={(newOrder) => { store.sessions.setAll(newOrder) }}
-            ref={dragConstarintRef}>
+          <ReorderList
+            items={sessions}
+            onReorder={async (items) => { await store.sessions.setAll(items) }}
+            scrollRef={scrollRef}>
             {sessions.map(session => {
               return (
-                <SessionCard
+                <ReorderItem
                   key={session.id}
-                  session={session}
-                  sessionClickHandler={sessionClickHandler}
-                  mainButtonClickHandler={mainButtonClickHandler}
-                  deleteSession={deleteSession}
-                  editSession={(id: string, title: string, callBack: Function) => {
-                    editSession(id, title, callBack)
-                  }}
-                  dragConstarintRef={dragConstarintRef} />
+                  id={session.id}>
+                  <SessionCard
+                    session={session}
+                    sessionClickHandler={sessionClickHandler}
+                    mainButtonClickHandler={mainButtonClickHandler}
+                    deleteSession={deleteSession}
+                    editSession={(id: string, title: string, callBack: Function) => {
+                      editSession(id, title, callBack)
+                    }} />
+                </ReorderItem>
               )
             })}
-          </Reorder.Group >
+          </ReorderList >
 
         </div>
 

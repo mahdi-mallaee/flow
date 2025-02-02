@@ -1,0 +1,15 @@
+.reorder-list{
+  height: 100%;
+  position: relative;
+}
+
+.reorder-item{
+  width: 100%;
+  height: 40px;
+  &.drag{
+    .reorder-item-draggable{
+      width: 100%;
+      position: absolute;
+    }
+  }
+}

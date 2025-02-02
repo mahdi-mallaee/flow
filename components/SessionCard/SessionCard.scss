@@ -1,5 +1,6 @@
 .session {
   border-top: 1px solid var(--outline-color);
+  background-color: var(--background-color);
 
   .session-container {
     &.open {

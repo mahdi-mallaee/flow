@@ -7,7 +7,7 @@ import { FaSnowflake } from "react-icons/fa"
 import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
 import store from "~store";
 import actions from "~actions";
-import { Reorder, useDragControls } from "framer-motion";
+import { ItemDragController } from "~components/ReorderList/Reorder";
 
 type SessionCardArgs = {
   session: Session,
@@ -15,19 +15,16 @@ type SessionCardArgs = {
   mainButtonClickHandler: (id: string) => void,
   deleteSession: (session: Session) => void,
   editSession: (id: string, title: string, callBack: Function) => void
-  dragConstarintRef: MutableRefObject<HTMLUListElement>
 }
 type State = 'default' | 'title-edit' | 'delete-confirmation' | 'menu'
 
 const SessionCard = (
-  { session, sessionClickHandler, mainButtonClickHandler, deleteSession, editSession, dragConstarintRef }: SessionCardArgs
+  { session, sessionClickHandler, mainButtonClickHandler, deleteSession, editSession }: SessionCardArgs
 ) => {
 
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [sessionCardState, setSessionCardState] = useState<State>('default')
   const [showColorChanger, setShowColorChanger] = useState(false)
-
-  const dragControls = useDragControls()
 
 
   const defaultState = () => {
@@ -91,7 +88,9 @@ const SessionCard = (
   const menuState = () => {
     return (
       <div className="menu-session-container">
-        <div className="icon-button" onPointerDown={e => dragControls.start(e)}><HiOutlineBars2 /></div>
+        <ItemDragController id={session.id}>
+          <div className="icon-button"><HiOutlineBars2 /></div>
+        </ItemDragController>
         <div className={`tabs-count color-${session.colorCode}`}
           style={{ position: "relative" }}
           onClick={() => setShowColorChanger(c => !c)}>
@@ -156,19 +155,10 @@ const SessionCard = (
     }
   }
 
-
-
   return (
-    <Reorder.Item
-      value={session}
-      key={session.id}
-      className='session'
-      dragListener={false}
-      dragControls={dragControls}
-      dragConstraints={dragConstarintRef}
-      dragElastic={0.1}>
+    <div className="session">
       {getCurrentState(sessionCardState)}
-    </Reorder.Item>
+    </div>
   )
 }
 
