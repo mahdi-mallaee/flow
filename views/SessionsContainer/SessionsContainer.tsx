@@ -114,6 +114,7 @@ const SessionsContainer = () => {
         text: 'This session is already open',
         type: 'info'
       })
+      chrome.windows.update(session.windowId, { focused: true })
     }
   }
 
