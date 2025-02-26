@@ -66,6 +66,12 @@ const AdditionalSettingsView = () => {
             onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
         </div>
 
+        <div className="item">
+          <div className="title">Discard tabs after loading title</div>
+          <ToggleSwitch checked={settings.discardTabsAfterTitleLoad}
+            onChange={(checked) => setSettingsHandler({ discardTabsAfterTitleLoad: checked })} />
+        </div>
+
       </div>
     </div>
   )

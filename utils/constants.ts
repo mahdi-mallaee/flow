@@ -20,5 +20,6 @@ export const DEFAULT_SETTINGS: Settings = {
   openSessionInCurrentWindow: false,
   showLargeSessionWarning: true,
   createSessionInCurrentWindow: false,
-  defaultAction: DefaultAction.popup
+  defaultAction: DefaultAction.popup,
+  discardTabsAfterTitleLoad: false
 }

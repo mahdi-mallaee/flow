@@ -1,5 +1,6 @@
 import actions from "~actions"
 import messageControl from "~actions/background/messageControl"
+import store from "~store"
 import { LANDING_PAGE_URL, NEW_TAB_URL } from "~utils/constants"
 import type { BgGlobalVar } from "~utils/types"
 import { Message } from '~utils/types'
@@ -51,9 +52,18 @@ chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs(gl)
 })
 chrome.tabs.onUpdated.addListener((id, info, tab) => {
-  if (info.url && info.url !== NEW_TAB_URL) {
+  if ((info.url && info.url !== NEW_TAB_URL) || (info.title && info.title !== "")) {
     /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
-    actions.window.discardOpenedTab(id)
+    store.settings.getAll()
+      .then(settings => {
+        if (settings.discardTabsAfterTitleLoad) {
+          if (info.title && !tab.active) {
+            actions.window.discardOpenedTab(id)
+          }
+        } else if (info.url && info.url !== NEW_TAB_URL) {
+          actions.window.discardOpenedTab(id)
+        }
+      })
   }
   if ((info.url || info.groupId || info.pinned !== undefined) && gl.closingWindow.windowId !== tab.windowId) {
     /*
