@@ -3,7 +3,6 @@ import SessionCard from "~components/SessionCard"
 import { type Session } from "~utils/types"
 import { useRef, useState, type MouseEvent } from "react"
 import './SessionsContainer.scss'
-import { Reorder, } from "framer-motion"
 import store from "~store"
 import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
@@ -20,8 +19,6 @@ const SessionsContainer = () => {
 
   const settings = useSettings()
   const sessions = useSessions()
-
-  const dragConstarintRef = useRef<HTMLUListElement>()
 
   const mainButtonClickHandler = (id: string) => {
     store.sessions.basicUpdate(id, { main: true })

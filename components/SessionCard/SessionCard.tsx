@@ -97,7 +97,7 @@ const SessionCard = (
           {session.tabs.length} Tabs
           {showColorChanger && <div className="color-changer">
             {Array.from({ length: NUMBER_OF_COLOR_CODES }, (_, i) => i + 1).map((i: number) => {
-              return <div className={`color-${i}`}
+              return <div key={i} className={`color-${i}`}
                 onClick={() => {
                   store.sessions.basicUpdate(session.id, { colorCode: i })
                 }}>
