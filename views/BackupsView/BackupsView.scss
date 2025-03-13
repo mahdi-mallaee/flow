@@ -131,25 +131,6 @@
         border: none;
         outline: none;
       }
-
-      .confirm-title-button,
-      .close-get-title-button {
-        padding: 6px 4px;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        svg {
-          width: 14px;
-          height: 14px;
-        }
-
-        &:hover {
-          background-color: var(--icon-button-hover);
-        }
-      }
     }
   }
 

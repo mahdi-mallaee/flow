@@ -131,8 +131,8 @@ const SessionsContainer = () => {
                   _createNewSession()
                 }
               }} />
-              <div className='close-get-title-button' onClick={() => setGettingSessionName(false)}><MdClose /></div>
-              <div className='confirm-title-button' onClick={() => _createNewSession()}><MdDone /></div>
+              <div className='icon-button' onClick={() => setGettingSessionName(false)}><MdClose /></div>
+              <div className='icon-button' onClick={() => _createNewSession()}><MdDone /></div>
             </div>
             :
             <div className="new-session-button" onClick={newSessionClickHandler}><MdAdd /> <span>Add new session</span></div>

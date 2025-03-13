@@ -75,11 +75,11 @@ const BackupsView = ({ }) => {
                 _createNewBackup()
               }
             }} />
-            <div className='close-get-title-button' onClick={() => {
+            <div className='icon-button' onClick={() => {
               setGetBackupName(false)
               setBackupTitleInput('')
             }}><MdClose /></div>
-            <div className='confirm-title-button' onClick={() => _createNewBackup()}><MdDone /></div>
+            <div className='icon-button' onClick={() => _createNewBackup()}><MdDone /></div>
           </div>
           :
           <div className="new-backup-button" onClick={() => setGetBackupName(true)}><MdAdd /> <span>create new backup</span></div>
