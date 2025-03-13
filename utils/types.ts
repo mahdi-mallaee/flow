@@ -62,7 +62,6 @@ export type Settings = {
   openSessionInCurrentWindow: boolean,
   showLargeSessionWarning: boolean,
   createSessionInCurrentWindow: boolean,
-  discardTabsAfterTitleLoad: boolean
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'

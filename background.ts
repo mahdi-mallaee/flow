@@ -52,20 +52,14 @@ chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs(gl)
 })
 chrome.tabs.onUpdated.addListener((id, info, tab) => {
-  if ((info.url && info.url !== NEW_TAB_URL) || (info.title && info.title !== "")) {
-    /* discarding tabs when they have url ensures that their icon and title is loaded before discarding */
-    store.settings.getAll()
-      .then(settings => {
-        if (settings.discardTabsAfterTitleLoad) {
-          if (info.title && !tab.active) {
-            actions.window.discardOpenedTab(id)
-          }
-        } else if (info.url && info.url !== NEW_TAB_URL) {
-          actions.window.discardOpenedTab(id)
-        }
-      })
+  if (info.title && info.title !== "" && !tab.active) {
+    /* 
+    discarding tabs when they have title ensures that their icon and title is loaded before discarding
+    so search functionality works properly 
+    */
+    actions.window.discardOpenedTab(id)
   }
-  if ((info.url || info.groupId || info.pinned !== undefined) && gl.closingWindow.windowId !== tab.windowId) {
+  if ((info.url || info.groupId || info.pinned !== undefined || info.title) && gl.closingWindow.windowId !== tab.windowId) {
     /*
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs

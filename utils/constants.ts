@@ -21,5 +21,4 @@ export const DEFAULT_SETTINGS: Settings = {
   showLargeSessionWarning: true,
   createSessionInCurrentWindow: false,
   defaultAction: DefaultAction.popup,
-  discardTabsAfterTitleLoad: false
 }
