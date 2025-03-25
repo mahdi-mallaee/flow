@@ -9,6 +9,7 @@ export const EMAIL = "flow.extension@gmail.com"
 export const BACKUP_NUMBER_LIMIT = 50
 export const SESSION_NUMBER_LIMIT = 25
 export const LANDING_PAGE_URL = "https://flow-extension.pages.dev/"
+export const UNINSTALL_URL = "https://forms.gle/XAJq2kmTpschA8Jn8"
 export const NUMBER_OF_COLOR_CODES = 5
 
 export const DEFAULT_SETTINGS: Settings = {
