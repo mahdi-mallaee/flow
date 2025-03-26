@@ -29,7 +29,7 @@ import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
 const open = async (sessionId: string, alterSettingsBehavior = false, currentWindowId?: number, exludedTabIndex?: number): Promise<number> => {
 
   if (!location.href.includes('background')) {
-    actions.message.openSession({ sessionId, alterSettingsBehavior })
+    actions.message.openSession({ sessionId, alterSettingsBehavior, currentWindowId, exludedTabIndex })
     return
   }
 

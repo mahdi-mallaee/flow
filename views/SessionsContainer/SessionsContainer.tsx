@@ -105,7 +105,8 @@ const SessionsContainer = () => {
   const sessionClickHandler = async (session: Session, e: MouseEvent) => {
     if (!session.isOpen) {
       // adding metaKey for mac users
-      await actions.session.open(session.id, e.ctrlKey || e.metaKey)
+      const windowId = (await chrome.windows.getCurrent()).id
+      await actions.session.open(session.id, e.ctrlKey || e.metaKey, windowId)
     } else {
       showAlert({
         text: 'This session is already open',
