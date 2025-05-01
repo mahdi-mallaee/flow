@@ -8,6 +8,8 @@ import isUnsaved from "./isUnsaved";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
 import checkId from "./checkId";
 import update from "./update";
+import refreshWindowPositions from "~actions/session/refreshWindowPosition";
+import getWindowPosBound from "./getWindowPosBound";
 
 const windowActions = {
   create: create,
@@ -20,6 +22,8 @@ const windowActions = {
   changeRecentWindowId: changeRecentWindowId,
   checkId: checkId,
   update: update,
+  refreshWindowPositions: refreshWindowPositions,
+  getWindowPosBound: getWindowPosBound
 }
 
 export default windowActions

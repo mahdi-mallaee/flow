@@ -14,12 +14,13 @@ const create = async (session: Session): Promise<boolean> => {
   let sessionsOpenStatus: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
   let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
 
-  const newBasicSessions = {
+  const newBasicSessions:BasicSession = {
     id: session.id,
     title: session.title,
     colorCode: session.colorCode,
     main: session.main,
-    groups: session.groups
+    groups: session.groups,
+    windowPos:session.windowPos
   }
   basicSessions = [newBasicSessions, ...basicSessions]
 

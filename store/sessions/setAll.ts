@@ -16,7 +16,8 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
       colorCode: s.colorCode,
       main: s.main,
       title: s.title,
-      groups: s.groups
+      groups: s.groups,
+      windowPos: s.windowPos
     }
   })
 

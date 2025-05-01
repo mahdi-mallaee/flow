@@ -1,15 +1,8 @@
 import { Storage } from "@plasmohq/storage"
-import { SessionsKeys, type BasicSession, type TabGroup } from "~utils/types"
+import { SessionsKeys, type BasicSession } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
 
-interface updateInfo {
-  title?: string,
-  main?: boolean,
-  groups?: TabGroup[],
-  colorCode?: number
-}
-
-const basicUpdate = async (sessionId: string, { title, main, groups, colorCode }: updateInfo): Promise<boolean> => {
+const basicUpdate = async (sessionId: string, { title, main, groups, colorCode, windowPos }: Partial<BasicSession>): Promise<boolean> => {
   const localStorage = new Storage({ area: 'local' })
   const sessions: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
   const session = sessions.find(s => s.id === sessionId)
@@ -36,6 +29,24 @@ const basicUpdate = async (sessionId: string, { title, main, groups, colorCode }
 
     if (colorCode) {
       session.colorCode = colorCode
+    }
+
+    if(windowPos){
+      if(!session.windowPos){
+        session.windowPos = {}
+      }
+      if(windowPos.height){
+        session.windowPos.height = windowPos.height
+      }
+      if(windowPos.width){
+        session.windowPos.width = windowPos.width
+      }
+      if(windowPos.top){
+        session.windowPos.top = windowPos.top
+      }
+      if(windowPos.left){
+        session.windowPos.left = windowPos.left
+      }
     }
 
 

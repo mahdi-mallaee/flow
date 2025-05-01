@@ -52,15 +52,15 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
       if (currentSessionId) {
         await store.sessions.setOpenStatus(currentSessionId, { isOpen: false, windowId: WINDOWID_NONE })
       } else {
-        windowId = await actions.window.create()
+        windowId = await actions.window.create(sessionId)
       }
     } else {
       // opening a new window if window is an unsavedWindow
-      windowId = await actions.window.create()
+      windowId = await actions.window.create(sessionId)
     }
 
   } else {
-    windowId = await actions.window.create()
+    windowId = await actions.window.create(sessionId)
   }
 
   let sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)

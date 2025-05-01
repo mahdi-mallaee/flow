@@ -5,6 +5,7 @@ import getGroups from "./getGroups"
 import getNumbers from "./getNumbers"
 import getOpenStatus from "./getOpenStatus"
 import getTabs from "./getTabs"
+import getWindowPos from "./getWindowPos"
 import refreshSessionStatus from "./refreshSessionStatus"
 import remove from "./remove"
 import setAll from "./setAll"
@@ -23,7 +24,8 @@ const sessionsStore = {
   getOpenStatus,
   getGroups,
   getNumbers,
-  basicUpdate
+  basicUpdate,
+  getWindowPos
 }
 
 export default sessionsStore

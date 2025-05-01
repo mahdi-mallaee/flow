@@ -3,12 +3,20 @@ export interface Session extends
   Omit<SessionOpenStatus, 'sessionId'>,
   Omit<SessionTabsStore, 'sessionId'> { }
 
+
+export interface WindowPosition {
+  width?: number,
+  height?: number,
+  top?: number,
+  left?: number,
+}
 export interface BasicSession {
   id: string,
   title: string,
   main: boolean,
   colorCode: number,
-  groups: TabGroup[]
+  groups: TabGroup[],
+  windowPos: WindowPosition
 }
 
 export interface SessionOpenStatus {

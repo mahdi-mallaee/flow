@@ -36,7 +36,8 @@
       "history",
       "downloads",
       "tabGroups",
-      "unlimitedStorage"
+      "unlimitedStorage",
+      "system.display"
     ],
     "side_panel": {
       "default_path": "tabs/sidepanel.html"

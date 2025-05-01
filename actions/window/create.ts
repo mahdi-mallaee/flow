@@ -1,6 +1,7 @@
 import actions from "~actions"
 import store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
+import type { WindowPosition } from "~utils/types"
 
 /**
  * Creates a new browser window with the specified URLs.
@@ -10,12 +11,20 @@ import { WINDOWID_NONE } from "~utils/constants"
  * 
  * @returns The ID of the newly created window, or `WINDOWID_NONE` if the window could not be created.
  */
-const create = async (urls?: string[]): Promise<number> => {
+const create = async (sessionId?: string): Promise<number> => {
   const settings = await store.settings.getAll()
   let id: number = WINDOWID_NONE
-  urls = urls || []
+  let windowPos = await store.sessions.getWindowPos(sessionId)
+  windowPos = await actions.window.getWindowPosBound(windowPos)
 
-  const window = await chrome.windows.create({ state: settings.newSessionWindowState, url: urls })
+  const window = await chrome.windows.create({
+    state: settings.newSessionWindowState,
+    height: windowPos?.height,
+    width: windowPos?.width,
+    top: windowPos?.top,
+    left: windowPos?.left
+  })
+
   if (actions.window.checkId(window.id)) {
     id = window.id
   }

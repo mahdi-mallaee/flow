@@ -93,6 +93,9 @@ chrome.tabs.onReplaced.addListener(() => {
   actions.session.refreshTabs(gl)
 })
 
+chrome.windows.onBoundsChanged.addListener(()=>{
+  actions.window.refreshWindowPositions()
+})
 chrome.windows.onRemoved.addListener(() => {
   actions.window.refreshUnsavedWindows()
   actions.session.refreshOpenSessions()
