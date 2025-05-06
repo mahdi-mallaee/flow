@@ -14,16 +14,23 @@ import type { WindowPosition } from "~utils/types"
 const create = async (sessionId?: string): Promise<number> => {
   const settings = await store.settings.getAll()
   let id: number = WINDOWID_NONE
-  let windowPos = await store.sessions.getWindowPos(sessionId)
-  windowPos = await actions.window.getWindowPosBound(windowPos)
+  let window = null
 
-  const window = await chrome.windows.create({
-    state: settings.newSessionWindowState,
-    height: windowPos?.height,
-    width: windowPos?.width,
-    top: windowPos?.top,
-    left: windowPos?.left
-  })
+  if (settings.saveWindowsPosition) {
+    let windowPos = await store.sessions.getWindowPos(sessionId)
+    windowPos = await actions.window.getWindowPosBound(windowPos)
+    window = await chrome.windows.create({
+      height: windowPos?.height,
+      width: windowPos?.width,
+      top: windowPos?.top,
+      left: windowPos?.left
+    })
+  } else {
+    window = await chrome.windows.create({
+      state: settings.newSessionWindowState,
+    })
+  }
+
 
   if (actions.window.checkId(window.id)) {
     id = window.id

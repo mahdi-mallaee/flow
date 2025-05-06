@@ -70,6 +70,7 @@ export type Settings = {
   openSessionInCurrentWindow: boolean,
   showLargeSessionWarning: boolean,
   createSessionInCurrentWindow: boolean,
+  saveWindowsPosition: boolean
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'
