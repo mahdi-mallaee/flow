@@ -33,10 +33,12 @@
     "permissions": [
       "storage",
       "tabs",
+      "tabGroups",
+      "unlimitedStorage"
+    ],
+    "optional_permissions": [
       "history",
       "downloads",
-      "tabGroups",
-      "unlimitedStorage",
       "system.display"
     ]
   }
