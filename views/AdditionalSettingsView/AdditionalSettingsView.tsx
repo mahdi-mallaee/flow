@@ -1,3 +1,4 @@
+import actions from "~actions"
 import Dropdown from "~components/Dropdown"
 import ToggleSwitch from "~components/ToggleSwitch"
 import useAlertMessage from "~hooks/useAlertMessage"
@@ -64,6 +65,28 @@ const AdditionalSettingsView = () => {
           <div className="title">Create sessions in the current window</div>
           <ToggleSwitch checked={settings.createSessionInCurrentWindow}
             onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
+        </div>
+
+        <div className="item">
+          <div className="title">Clear history after opening a session</div>
+          <ToggleSwitch checked={settings.clearHistoryAfterSessionOpening}
+            onChange={(checked) => {
+              if (checked) {
+                actions.checkPermission("history")
+                  .then(res => {
+                    if (res) {
+                      setSettingsHandler({ clearHistoryAfterSessionOpening: checked })
+                    } else {
+                      showAlert({
+                        text: "History permission is not granted",
+                        type: "error"
+                      })
+                    }
+                  })
+              } else {
+                setSettingsHandler({ clearHistoryAfterSessionOpening: checked })
+              }
+            }} />
         </div>
 
       </div>

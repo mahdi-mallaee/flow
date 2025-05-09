@@ -37,7 +37,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
 
   let windowId = WINDOWID_NONE
 
-  const { openSessionInCurrentWindow, deleteNewTabsWhenOpeningSession } = await store.settings.getAll()
+  const { openSessionInCurrentWindow, deleteNewTabsWhenOpeningSession, clearHistoryAfterSessionOpening } = await store.settings.getAll()
   // if ctrl key is being held this setting will be altered 
   const openInCurrentWindow = alterSettingsBehavior ? !openSessionInCurrentWindow : openSessionInCurrentWindow
 
@@ -77,7 +77,9 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
 
   await actions.session.refreshGroups()
 
-  chrome.history.deleteRange({ startTime, endTime: Date.now() })
+  if(clearHistoryAfterSessionOpening){
+    chrome.history.deleteRange({ startTime, endTime: Date.now() })
+  }
 
   await actions.window.refreshUnsavedWindows()
   await actions.session.refreshTabs()
