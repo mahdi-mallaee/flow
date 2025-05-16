@@ -110,6 +110,9 @@ Why Flow?
 Give Flow a try and experience a clutter-free browsing environment. Your feedback is invaluable in making Flow even better!
 
 What's new?
+1.2.6
+• Added window positions saving.
+• Bug fixes.
 
 1.2.5
 • Now Discarding tabs after title is load to improve search and visibility.
