@@ -66,6 +66,12 @@ const AdditionalSettingsView = () => {
             onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
         </div>
 
+        <div className="item">
+          <div className="title">Save window positions</div>
+          <ToggleSwitch checked={settings.saveWindowsPosition}
+            onChange={(checked) => setSettingsHandler({ saveWindowsPosition: checked })} />
+        </div>
+
       </div>
     </div>
   )
