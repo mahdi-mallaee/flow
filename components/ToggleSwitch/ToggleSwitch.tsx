@@ -22,7 +22,7 @@ const ToggleSwitch = ({ checked, onChange, disabled }: ToggleSwitchProps) => {
       data-disabled={disabled}
       data-checked={checked}
       onClick={() => {
-        if (!disabled) onChange(!checked)
+        onChange(!checked)
       }}>
       <div className="switch"></div>
     </div>
