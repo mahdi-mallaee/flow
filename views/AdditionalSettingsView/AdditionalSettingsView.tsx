@@ -2,6 +2,7 @@ import actions from "~actions"
 import Dropdown from "~components/Dropdown"
 import ToggleSwitch from "~components/ToggleSwitch"
 import useAlertMessage from "~hooks/useAlertMessage"
+import usePermissions from "~hooks/usePermissions"
 import useSettings from "~hooks/useSettings"
 import store from "~store"
 import type { Settings, WindowState } from "~utils/types"
@@ -23,6 +24,8 @@ const AdditionalSettingsView = () => {
       showAlert({ text: 'Settings update failed', type: 'error' })
     }
   }
+
+  const { permissions } = usePermissions()
 
   return (
     <div className="settings-view">
@@ -70,29 +73,15 @@ const AdditionalSettingsView = () => {
         <div className="item">
           <div className="title">Save window positions</div>
           <ToggleSwitch checked={settings.saveWindowsPosition}
+            disabled={!permissions.display}
             onChange={(checked) => setSettingsHandler({ saveWindowsPosition: checked })} />
         </div>
-        
+
         <div className="item">
           <div className="title">Clear history after opening a session</div>
           <ToggleSwitch checked={settings.clearHistoryAfterSessionOpening}
-            onChange={(checked) => {
-              if (checked) {
-                actions.checkPermission("history")
-                  .then(res => {
-                    if (res) {
-                      setSettingsHandler({ clearHistoryAfterSessionOpening: checked })
-                    } else {
-                      showAlert({
-                        text: "History permission is not granted",
-                        type: "error"
-                      })
-                    }
-                  })
-              } else {
-                setSettingsHandler({ clearHistoryAfterSessionOpening: checked })
-              }
-            }} />
+            disabled={!permissions.history}
+            onChange={(checked) => setSettingsHandler({ clearHistoryAfterSessionOpening: checked })} />
         </div>
 
       </div>

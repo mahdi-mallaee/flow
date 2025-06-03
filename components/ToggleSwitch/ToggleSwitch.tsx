@@ -1,7 +1,13 @@
 import './ToggleSwitch.scss'
 import { useState, useEffect } from 'react'
 
-const ToggleSwitch = ({ checked, onChange }: { checked: boolean, onChange: (checked: boolean) => void }) => {
+interface ToggleSwitchProps {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+}
+
+const ToggleSwitch = ({ checked, onChange, disabled }: ToggleSwitchProps) => {
   const [transition, setTransition] = useState(false)
 
   useEffect(() => {
@@ -11,9 +17,13 @@ const ToggleSwitch = ({ checked, onChange }: { checked: boolean, onChange: (chec
   }, [])
 
   return (
-    <div className="toggle-switch-container" data-transition={transition} data-checked={checked} onClick={() => {
-      onChange(!checked)
-    }}>
+    <div className="toggle-switch-container"
+      data-transition={transition}
+      data-disabled={disabled}
+      data-checked={checked}
+      onClick={() => {
+        if (!disabled) onChange(!checked)
+      }}>
       <div className="switch"></div>
     </div>
   )

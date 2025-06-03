@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react"
+import store from "~store";
+
+interface Permssions {
+  downloads: boolean;
+  history: boolean;
+  display: boolean;
+}
 
 const usePermissions = () => {
 
-  const [permissions, setPermissions] = useState({
+  const [permissions, _setPermissions] = useState<Permssions>({
     downloads: false,
     history: false,
     display: false
@@ -16,7 +23,7 @@ const usePermissions = () => {
         chrome.permissions.contains({ permissions: ["system.display"] }),
       ])
 
-      setPermissions({
+      _setPermissions({
         downloads: downloadsPermission.status === "fulfilled" && downloadsPermission.value,
         history: historyPermission.status === "fulfilled" && historyPermission.value,
         display: displayPermission.status === "fulfilled" && displayPermission.value
@@ -25,6 +32,21 @@ const usePermissions = () => {
 
     checkAllPermissions()
   }, [])
+
+  const setPermissions = (permissions: Partial<Permssions>) => {
+    if (typeof permissions?.display === "boolean") {
+      if (!permissions.display) {
+        store.settings.set({ saveWindowsPosition: false })
+      }
+    }
+    if (typeof permissions?.history === "boolean") {
+      if (!permissions.history) {
+        store.settings.set({ clearHistoryAfterSessionOpening: false })
+      }
+    }
+
+    _setPermissions(prev => ({ ...prev, ...permissions }))
+  }
 
   return { permissions, setPermissions }
 }

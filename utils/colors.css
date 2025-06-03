@@ -1,6 +1,7 @@
 #theme-provider[data-theme='light'] {
   --background-color: #f8f8f8;
   --background-hover-color: #dedede;
+  --disabled-color: #bdbdbd;
 
   --on-background-color: #000000;
   --on-background-variant-color: #393939;
@@ -30,6 +31,7 @@
 #theme-provider[data-theme='dark'] {
   --background-color: #1e2127;
   --background-hover-color: #33363a;
+  --disabled-color: #393d44;
 
   --on-background-color: #fff;
   --on-background-variant-color: #c1c1c1;
@@ -58,6 +60,7 @@
 #theme-provider[data-theme='deep-blue'] {
   --background-color: #02242F;
   --background-hover-color: #0e475a;
+  --disabled-color: #565f61;
 
   --on-background-color: #def5f9;
   --on-background-variant-color: #c5dfe2;
@@ -87,7 +90,8 @@
 #theme-provider[data-theme='magical-purple'] {
   --background-color: #f7f5fd;
   --background-hover-color: #dbd6ef;
-
+  --disabled-color: #beb9cd;
+  
   --on-background-color: #1b1830;
   --on-background-variant-color: #3e3b51;
   --on-background-disabled-color: #656279;

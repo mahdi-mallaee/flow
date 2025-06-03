@@ -9,12 +9,11 @@ const PermissionsView = () => {
     if (checked) {
       const hasPermission = await actions.checkPermission(permission)
       if (hasPermission) {
-        setPermissions(prev => ({ ...prev, [key || permission]: true }))
-        
+        setPermissions({ [key || permission]: true })
       }
     } else {
       await chrome.permissions.remove({ permissions: [permission] })
-      setPermissions(prev => ({ ...prev, [key || permission]: false }))
+      setPermissions({ [key || permission]: false })
     }
   }
 
