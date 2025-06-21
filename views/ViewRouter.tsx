@@ -6,6 +6,7 @@ import Header from "~components/Header"
 import SettignsView from "~views/SettingsView"
 import AdditionalSettingsView from "./AdditionalSettingsView"
 import MainView from "./MainView/MainView"
+import SessionDetailsView from "./SessionDetailsView"
 
 const ViewRouter = () => {
 
@@ -42,6 +43,11 @@ const ViewRouter = () => {
       <Route path="/additional-settings" element={<>
         <Header headerButtonPath="/settings" />
         <AdditionalSettingsView />
+      </>} />
+
+      <Route path="/session/:id" element={<>
+        <Header headerButtonPath="/" />
+        <SessionDetailsView />
       </>} />
 
     </Routes>

@@ -1,4 +1,4 @@
-import { useState, type MouseEvent, type MutableRefObject } from "react";
+import { useState, type MouseEvent } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
 import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
@@ -8,6 +8,7 @@ import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
 import store from "~store";
 import actions from "~actions";
 import { ItemDragController } from "~components/ReorderList/Reorder";
+import { useNavigate } from "~node_modules/react-router/dist";
 
 type SessionCardArgs = {
   session: Session,
@@ -25,6 +26,8 @@ const SessionCard = (
   const [sessionTitleInput, setSessionTitleInput] = useState('')
   const [sessionCardState, setSessionCardState] = useState<State>('default')
   const [showColorChanger, setShowColorChanger] = useState(false)
+
+  const nav = useNavigate()
 
 
   const defaultState = () => {
@@ -49,7 +52,8 @@ const SessionCard = (
         </div>
         <div className="icon-button"
           onClick={e => {
-            setSessionCardState('title-edit')
+            // setSessionCardState('title-edit')
+            nav(`/session/${session.id}`)
             e.stopPropagation()
           }}
           title="Edit Session Title">
