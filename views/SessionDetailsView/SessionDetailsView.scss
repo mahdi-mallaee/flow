@@ -1,15 +1,7 @@
-.search-view {
+.session-details-view {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
-  .not-found {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    margin-top: 32px;
-  }
 
   .view-title {
     flex-shrink: 0;
@@ -24,56 +16,47 @@
     }
   }
 
-  .search-items-container {
+  .tab-actions {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    border-top: 1px solid var(--outline-color);
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+    justify-content: space-between;
+  }
+
+  .tabs-container {
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 
-    .search-item {
-      display: flex;
-      flex-direction: column;
+    .tab {
+      padding: 4px 12px;
+      cursor: pointer;
 
-      .search-session {
-        border-top: 1px solid var(--outline-color);
-        border-bottom: 1px solid var(--outline-color);
-        padding: 4px 8px;
-        font-size: 14px;
+      &:hover,
+      &.selected {
+        background-color: var(--background-hover-color);
       }
 
-      &:first-child {
-        .search-session {
-          border-top: none;
-        }
+      .url,
+      .title {
+        width: 100%;
+        overflow: hidden;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
       }
 
-      .search-tabs {
-        display: flex;
-        flex-direction: column;
-
-        .tab {
-          padding: 4px 12px;
-          cursor: pointer;
-
-          &:hover {
-            background-color: var(--background-hover-color);
-          }
-
-          .url,
-          .title {
-            width: 100%;
-            overflow: hidden;
-            text-wrap: nowrap;
-            text-overflow: ellipsis;
-          }
-
-          .url {
-            color: var(--on-background-variant-color);
-            padding-left: 4px;
-          }
-        }
-
+      .url {
+        color: var(--on-background-variant-color);
+        padding-left: 4px;
       }
     }
+
   }
 }
