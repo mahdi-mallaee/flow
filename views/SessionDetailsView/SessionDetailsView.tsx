@@ -36,7 +36,16 @@ const SessionDetailsView = () => {
 
       {selectedTabIds.length > 0 &&
         <div className="tab-actions">
-          <div>{selectedTabIds.length} selected</div>
+          <div className="select-action"
+            onClick={() => {
+              if (selectedTabIds.length < session.tabs.length) {
+                setSelectedTabIds(session.tabs.map(t => t.id))
+              } else {
+                setSelectedTabIds([])
+              }
+            }}>
+            {selectedTabIds.length} of {session?.tabs?.length || 0} selected
+          </div>
           <div className="icon-button"><MdDelete /></div>
         </div>
       }

@@ -16,20 +16,6 @@
     }
   }
 
-  .tab-actions {
-    position: sticky;
-    bottom: 0;
-    background-color: var(--surface-color);
-    color: var(--on-surface-color);
-    border-top: 1px solid var(--outline-color);
-    width: 100%;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding: 8px;
-    justify-content: space-between;
-  }
-
   .tabs-container {
     overflow-y: scroll;
     display: flex;
@@ -39,9 +25,17 @@
       padding: 4px 12px;
       cursor: pointer;
 
-      &:hover,
-      &.selected {
+      &:hover {
         background-color: var(--background-hover-color);
+      }
+
+      &.selected,
+      &:active {
+        background-color: var(--background-select-color);
+      }
+
+      &:active {
+        opacity: 0.8;
       }
 
       .url,
@@ -57,6 +51,29 @@
         padding-left: 4px;
       }
     }
+  }
 
+  .tab-actions {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    border-top: 1px solid var(--outline-color);
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+    justify-content: space-between;
+
+    .select-action {
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--surface-hover-color);
+      }
+    }
   }
 }
