@@ -2,7 +2,9 @@ import useSessions from "~hooks/useSessions"
 import './SessionDetailsView.scss'
 import { useParams } from "~node_modules/react-router/dist"
 import { useState } from "react"
-import { MdDelete } from "~node_modules/react-icons/md"
+import { MdDelete, MdOpenInBrowser } from "~node_modules/react-icons/md"
+import store from "~store"
+import actions from "~actions"
 
 const SessionDetailsView = () => {
   const { id } = useParams()
@@ -27,8 +29,11 @@ const SessionDetailsView = () => {
                   setSelectedTabIds(c => [...c, t.id])
                 }
               }}>
-              <div className="title">{t.title}</div>
-              <div className="url">{t.url}</div>
+              <img src={t.iconUrl} />
+              <div className="tab-details-container">
+                <div className="title">{t.title}</div>
+                <div className="url">{t.url}</div>
+              </div>
             </div>
           )
         })}
@@ -46,7 +51,32 @@ const SessionDetailsView = () => {
             }}>
             {selectedTabIds.length} of {session?.tabs?.length || 0} selected
           </div>
-          <div className="icon-button"><MdDelete /></div>
+
+          <div className="action-buttons-container">
+            <div className="icon-button"
+              onClick={async () => {
+                if (!session.isOpen) {
+                  const newTabs = session.tabs.filter(t => !selectedTabIds.includes(t.id))
+                  await store.sessions.setTabs(session.id, newTabs)
+                  setSelectedTabIds([])
+                } else {
+                  await chrome.tabs.remove(selectedTabIds)
+                }
+              }}>
+              <MdDelete />
+            </div>
+
+            <div className="icon-button"
+              onClick={async () => {
+                const windowId = await actions.window.create()
+                if (actions.window.checkId(windowId)) {
+                  await actions.window.update(windowId, session.tabs.filter(t => selectedTabIds.includes(t.id)), [])
+                }
+              }}>
+              <MdOpenInBrowser />
+            </div>
+          </div>
+
         </div>
       }
 

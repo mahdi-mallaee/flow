@@ -22,8 +22,11 @@
     flex-direction: column;
 
     .tab {
-      padding: 4px 12px;
+      padding: 4px 8px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
       &:hover {
         background-color: var(--background-hover-color);
@@ -36,6 +39,16 @@
 
       &:active {
         opacity: 0.8;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .tab-details-container {
+        width: 100%;
+        overflow: hidden;
       }
 
       .url,
@@ -74,6 +87,11 @@
       &:hover {
         background-color: var(--surface-hover-color);
       }
+    }
+
+    .action-buttons-container {
+      display: flex;
+      gap: 4px;
     }
   }
 }
