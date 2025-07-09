@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  flex-grow: 1;
 
   .view-title {
     flex-shrink: 0;
@@ -20,6 +21,7 @@
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 
     .tab {
       padding: 4px 8px;
@@ -66,6 +68,10 @@
     }
   }
 
+  .session {
+    overflow-y: auto;
+  }
+
   .tab-actions {
     position: sticky;
     bottom: 0;
@@ -78,6 +84,7 @@
     align-items: center;
     padding: 8px;
     justify-content: space-between;
+    flex-shrink: 0;
 
     .select-action {
       padding: 4px 8px;
