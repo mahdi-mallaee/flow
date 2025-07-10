@@ -28,27 +28,43 @@ body:has(.side-panel),
   color: var(--on-background-color);
   display: flex;
   flex-direction: column;
+  gap: 8px;
 
-  .side-panel-buttons {
+  .side-panel-buttons-container {
+    padding: 4px 8px;
+    flex: 0 0 36px;
+    align-items: center;
     display: flex;
-    align-items: center;
-    flex: 0 0 32px;
-    justify-content: center;
-    align-items: center;
 
-
-    .button {
-      width: 100%;
-      font-size: 14px;
-      cursor: pointer;
-      height: 100%;
+    .side-panel-buttons {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
+      align-items: center;
+      border: 1px solid var(--outline-color);
+      flex: 1;
+      height: 100%;
+      border-radius: 12px;
 
-      &.active {
-        background-color: var(--primary-color);
-        color: var(--on-primary-color);
+      .button {
+        height: 100%;
+        flex: 1;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+
+        &.active {
+          background-color: var(--primary-color);
+          color: var(--on-primary-color);
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }
@@ -76,5 +92,6 @@ body:has(.side-panel),
     background-color: var(--surface-color);
     color: var(--on-surface-color);
   }
+
 
 }

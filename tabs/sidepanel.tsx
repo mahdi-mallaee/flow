@@ -9,6 +9,7 @@ import actions from "~actions"
 import SessionsContainer from "~views/SessionsContainer"
 import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer"
 import SettignsView from "~views/SettingsView"
+import { MdTune } from "~node_modules/react-icons/md"
 
 function SidePanel() {
 
@@ -69,18 +70,20 @@ function SidePanel() {
       <MemoryRouter>
         <div className="side-panel">
 
-          <div className="side-panel-buttons">
-            <div className={sidePanelState === 'tabs' ? "button tabs active" : "button tabs"}
-              onClick={() => setSidePanelState('tabs')}>
-              tabs
-            </div>
-            <div className={sidePanelState === 'sessions' ? "button sessions active" : "button sessions"}
-              onClick={() => setSidePanelState('sessions')}>
-              sessions
-            </div>
-            <div className={sidePanelState === 'settings' ? "button settings active" : "button settings"}
-              onClick={() => setSidePanelState("settings")}>
-              settings
+          <div className="side-panel-buttons-container">
+            <div className="side-panel-buttons">
+              <div className={sidePanelState === 'tabs' ? "button tabs active" : "button tabs"}
+                onClick={() => setSidePanelState('tabs')}>
+                tabs
+              </div>
+              <div className={sidePanelState === 'sessions' ? "button sessions active" : "button sessions"}
+                onClick={() => setSidePanelState('sessions')}>
+                sessions
+              </div>
+              <div className={sidePanelState === 'settings' ? "button settings active" : "button settings"}
+                onClick={() => setSidePanelState("settings")}>
+                <MdTune />
+              </div>
             </div>
           </div>
 
