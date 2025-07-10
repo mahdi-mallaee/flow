@@ -37,7 +37,8 @@
       "downloads",
       "tabGroups",
       "unlimitedStorage",
-      "system.display"
+      "system.display",
+      "favicon"
     ]
   }
 }

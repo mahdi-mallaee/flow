@@ -6,6 +6,7 @@ import { MdClose, MdDelete, MdOpenInBrowser } from "~node_modules/react-icons/md
 import { FaArrowRightToBracket } from "~node_modules/react-icons/fa6"
 import store from "~store"
 import actions from "~actions"
+import faviconURL from "~utils/faviconUrl"
 
 const SessionDetailsView = () => {
   const { id } = useParams()
@@ -55,7 +56,7 @@ const SessionDetailsView = () => {
                       setSelectedTabIds(c => [...c, t.id])
                     }
                   }}>
-                  <img src={t.iconUrl} />
+                  <img src={faviconURL(t.url)} />
                   <div className="tab-details-container">
                     <div className="title">{t.title}</div>
                     <div className="url">{t.url}</div>
