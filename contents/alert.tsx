@@ -7,6 +7,12 @@ import { Message, StoreKeys, type unsavedWindowAlertStatus } from '~utils/types'
 import { AnimatePresence, motion } from 'framer-motion'
 import ThemeProvider from '~components/ThemeProvider';
 
+import type { PlasmoCSConfig } from "plasmo"
+
+export const config: PlasmoCSConfig = {
+  matches: []
+}
+
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = colors
