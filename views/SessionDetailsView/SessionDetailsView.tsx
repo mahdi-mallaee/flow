@@ -101,10 +101,21 @@ const SessionDetailsView = () => {
 
                 <div className="icon-button"
                   onClick={async () => {
-                    const windowId = await actions.window.create()
-                    if (actions.window.checkId(windowId)) {
-                      await actions.window.update(windowId, selectedSession.tabs.filter(t => selectedTabIds.includes(t.id)), [])
+                    const settings = await store.settings.getAll()
+                    if (settings.openSessionInCurrentWindow) {
+                      selectedTabIds.forEach(async id => {
+                        const tab = selectedSession.tabs.find(t => t.id === id)
+                        if (tab) {
+                          await chrome.tabs.create({ url: tab.url, active: false })
+                        }
+                      })
+                    } else {
+                      const windowId = await actions.window.create()
+                      if (actions.window.checkId(windowId)) {
+                        await actions.window.update(windowId, selectedSession.tabs.filter(t => selectedTabIds.includes(t.id)), [])
+                      }
                     }
+                    setSelectedTabIds([])
                   }}>
                   <MdOpenInBrowser />
                 </div>
