@@ -24,6 +24,7 @@ const SessionDetailsView = () => {
         moveToSession ?
           <div className="session">
             {sessions.map(s => {
+              if (s.id === selectedSession.id) return null
               return (
                 <div key={s.id}
                   className={s.isOpen ? 'session-container open' : 'session-container'}
