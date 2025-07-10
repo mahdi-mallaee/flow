@@ -30,6 +30,9 @@
     "typescript": "5.0.4"
   },
   "manifest": {
+    "side_panel": {
+      "default_path": "tabs/sidepanel.html"
+    },
     "permissions": [
       "storage",
       "tabs",
@@ -37,7 +40,8 @@
       "downloads",
       "tabGroups",
       "unlimitedStorage",
-      "system.display"
+      "system.display",
+      "sidePanel"
     ]
   }
 }

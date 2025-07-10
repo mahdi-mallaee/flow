@@ -1,7 +1,7 @@
 import ThemeProvider from "~components/ThemeProvider"
 import './sidepanel.scss'
+import '../index.scss'
 import { MemoryRouter } from "react-router-dom"
-import ViewRouter from "~views/ViewRouter"
 import { useEffect, useState } from "react"
 import SidePanelTabs from "~views/SidePanelTabs"
 import useSessions from "~hooks/useSessions"
@@ -30,10 +30,6 @@ function SidePanel() {
           <SessionsContainer />
           <UnsavedWindowsContainer />
         </>
-      )
-    } else if (sidePanelState === 'bookmarks') {
-      return (
-        <div>bookmarks</div>
       )
     } else if (sidePanelState === 'settings') {
       return (
@@ -82,10 +78,6 @@ function SidePanel() {
               onClick={() => setSidePanelState('sessions')}>
               sessions
             </div>
-            <div className={sidePanelState === 'bookmarks' ? "button bookmarks active" : "button bookmarks"}
-              onClick={() => setSidePanelState('bookmarks')}>
-              bookmarks
-            </div>
             <div className={sidePanelState === 'settings' ? "button settings active" : "button settings"}
               onClick={() => setSidePanelState("settings")}>
               settings
@@ -95,7 +87,6 @@ function SidePanel() {
           <div className="sessions-router">
             {switchView()}
           </div>
-2
         </div>
       </MemoryRouter>
     </ThemeProvider>
