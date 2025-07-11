@@ -2,7 +2,8 @@ import useSessions from "~hooks/useSessions"
 import './SessionDetailsView.scss'
 import { useParams } from "~node_modules/react-router-dom"
 import { useState } from "react"
-import { MdClose, MdDelete, MdOpenInBrowser } from "~node_modules/react-icons/md"
+import { MdClose, MdDelete } from "~node_modules/react-icons/md"
+import { BiWindowOpen } from "~node_modules/react-icons/bi"
 import { FaArrowRightToBracket } from "~node_modules/react-icons/fa6"
 import store from "~store"
 import actions from "~actions"
@@ -58,7 +59,7 @@ const SessionDetailsView = () => {
                   }}>
                   <img src={faviconURL(t.url)} />
                   <div className="tab-details-container">
-                    <div className="title">{t.title}</div>
+                    <div className="title">{t.title || t.url}</div>
                     <div className="url">{t.url}</div>
                   </div>
                 </div>
@@ -95,7 +96,8 @@ const SessionDetailsView = () => {
                     } else {
                       await chrome.tabs.remove(selectedTabIds)
                     }
-                  }}>
+                  }}
+                  title="Delete selected tabs">
                   <MdDelete />
                 </div>
 
@@ -116,8 +118,9 @@ const SessionDetailsView = () => {
                       }
                     }
                     setSelectedTabIds([])
-                  }}>
-                  <MdOpenInBrowser />
+                  }}
+                  title="Open selected tabs">
+                  <BiWindowOpen />
                 </div>
               </>
             }
