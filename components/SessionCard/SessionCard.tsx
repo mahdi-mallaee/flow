@@ -9,7 +9,7 @@ import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
 import store from "~store";
 import actions from "~actions";
 import { ItemDragController } from "~components/ReorderList/Reorder";
-import { useNavigate } from "~node_modules/react-router/dist";
+import { useNavigate } from "~node_modules/react-router-dom";
 
 type SessionCardArgs = {
   session: Session,

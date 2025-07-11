@@ -1,6 +1,6 @@
 import useSessions from "~hooks/useSessions"
 import './SessionDetailsView.scss'
-import { useParams } from "~node_modules/react-router/dist"
+import { useParams } from "~node_modules/react-router-dom"
 import { useState } from "react"
 import { MdClose, MdDelete, MdOpenInBrowser } from "~node_modules/react-icons/md"
 import { FaArrowRightToBracket } from "~node_modules/react-icons/fa6"
