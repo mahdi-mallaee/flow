@@ -38,7 +38,8 @@
       "tabGroups",
       "unlimitedStorage",
       "system.display",
-      "favicon"
+      "favicon",
+      "activeTab"
     ]
   }
 }
