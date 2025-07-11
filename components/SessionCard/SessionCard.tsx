@@ -1,13 +1,15 @@
-import { useState, type MouseEvent, type MutableRefObject } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import type { Session } from "~utils/types";
 import './SessionCard.scss'
 import { MdMoreVert, MdDone, MdClose, MdOutlineEdit, MdOutlineDelete, MdOutlinePushPin, MdPushPin } from 'react-icons/md'
 import { HiOutlineBars2 } from "react-icons/hi2";
+import { TbLayersIntersect } from "react-icons/tb";
 import { FaSnowflake } from "react-icons/fa"
 import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
 import store from "~store";
 import actions from "~actions";
 import { ItemDragController } from "~components/ReorderList/Reorder";
+import { useNavigate } from "~node_modules/react-router-dom";
 
 type SessionCardArgs = {
   session: Session,
@@ -26,6 +28,8 @@ const SessionCard = (
   const [sessionCardState, setSessionCardState] = useState<State>('default')
   const [showColorChanger, setShowColorChanger] = useState(false)
 
+  const nav = useNavigate()
+
 
   const defaultState = () => {
     return (
@@ -36,16 +40,13 @@ const SessionCard = (
         <div className={`tabs-count color-${session.colorCode}`}>{session.tabs.length <= 99 ? session.tabs.length : "+"}</div>
         {session.main && <div className={`main-indicator color-${session.colorCode}`}>M</div>}
         <div className="title">{session.title}</div>
-        <div className={"icon-button session-freeze-button " + (session.freeze ? "freeze" : "")}
-          onClick={(e) => {
+        <div className="icon-button"
+          onClick={e => {
+            nav(`/session/${session.id}`)
             e.stopPropagation()
-            store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
-              .then(() => {
-                actions.session.refreshTabs()
-              })
           }}
-          title="Session Freeze">
-          <FaSnowflake />
+          title="Tabs">
+          <TbLayersIntersect />
         </div>
         <div className="icon-button"
           onClick={e => {
@@ -111,6 +112,16 @@ const SessionCard = (
           {session.main ? <MdPushPin /> : <MdOutlinePushPin />}<span>Main</span>
         </div>
         <div className="buttons-container">
+          <div className={"icon-button session-freeze-button " + (session.freeze ? "freeze" : "")}
+            onClick={() => {
+              store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
+                .then(() => {
+                  actions.session.refreshTabs()
+                })
+            }}
+            title="Session Freeze">
+            <FaSnowflake />
+          </div>
           <div className="icon-button" onClick={() => setSessionCardState('delete-confirmation')}><MdOutlineDelete /></div>
           <div className="icon-button" onClick={() => {
             setSessionCardState('default')

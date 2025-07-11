@@ -16,7 +16,7 @@ const create = async (sessionId?: string): Promise<number> => {
   let id: number = WINDOWID_NONE
   let window = null
 
-  if (settings.saveWindowsPosition) {
+  if (settings.saveWindowsPosition && sessionId) {
     let windowPos = await store.sessions.getWindowPos(sessionId)
     windowPos = await actions.window.getWindowPosBound(windowPos)
     window = await chrome.windows.create({

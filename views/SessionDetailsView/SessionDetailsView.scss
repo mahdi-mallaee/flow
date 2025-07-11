@@ -1,0 +1,104 @@
+.session-details-view {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-grow: 1;
+
+  .view-title {
+    flex-shrink: 0;
+
+    input {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+      background-color: var(--surface-color);
+      color: var(--on-surface-color);
+      padding: 4px 0;
+    }
+  }
+
+  .tabs-container {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .tab {
+      padding: 4px 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &:hover {
+        background-color: var(--background-hover-color);
+      }
+
+      &.selected,
+      &:active {
+        background-color: var(--background-select-color);
+      }
+
+      &:active {
+        opacity: 0.8;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      .tab-details-container {
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .url,
+      .title {
+        width: 100%;
+        overflow: hidden;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .url {
+        color: var(--on-background-variant-color);
+        padding-left: 4px;
+      }
+    }
+  }
+
+  .session {
+    overflow-y: auto;
+  }
+
+  .tab-actions {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    border-top: 1px solid var(--outline-color);
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+    justify-content: space-between;
+    flex-shrink: 0;
+
+    .select-action {
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--surface-hover-color);
+      }
+    }
+
+    .action-buttons-container {
+      display: flex;
+      gap: 4px;
+    }
+  }
+}
