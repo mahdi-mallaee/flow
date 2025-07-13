@@ -39,7 +39,7 @@
       "unlimitedStorage",
       "system.display",
       "favicon",
-      "activeTab"
+      "contextMenus"
     ]
   }
 }

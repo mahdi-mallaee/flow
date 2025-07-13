@@ -1,7 +1,7 @@
 import actions from "~actions"
 import messageControl from "~actions/background/messageControl"
 import { LANDING_PAGE_URL, UNINSTALL_URL } from "~utils/constants"
-import type { BgGlobalVar } from "~utils/types"
+import type { BgGlobalVar, Tab } from "~utils/types"
 import { Message } from '~utils/types'
 
 export { }
@@ -14,15 +14,38 @@ let gl: BgGlobalVar = {
   }
 }
 
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (!info.menuItemId.toString().startsWith("move-")) return;
+  const sessionId = info.menuItemId.toString().replace("move-", "");
+
+  const currentTab: Tab = {
+    id: tab.id,
+    url: tab.url,
+    title: tab.title,
+    pinned: tab.pinned,
+    groupId: tab.groupId,
+    iconUrl: tab.favIconUrl,
+    windowId: tab.windowId,
+    index: tab.index,
+  }
+
+  await actions.session.moveTabs({
+    targetSession: sessionId,
+    tabs: currentTab,
+    mode: "context"
+  });
+});
+
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.tabs.create({ url: LANDING_PAGE_URL });
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
+    actions.background.rebuildContextMenus()
   } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
+    actions.background.rebuildContextMenus()
   }
 })
-
 
 chrome.runtime.onStartup.addListener(() => {
   gl.refreshUnsavedWindows = false
@@ -31,6 +54,7 @@ chrome.runtime.onStartup.addListener(() => {
       gl.refreshUnsavedWindows = true
     })
   actions.backup.runInterval()
+  actions.background.rebuildContextMenus()
 })
 
 chrome.tabGroups.onCreated.addListener(() => {
@@ -93,7 +117,7 @@ chrome.tabs.onReplaced.addListener(() => {
   actions.session.refreshTabs(gl)
 })
 
-chrome.windows.onBoundsChanged.addListener(()=>{
+chrome.windows.onBoundsChanged.addListener(() => {
   actions.window.refreshWindowPositions()
 })
 chrome.windows.onRemoved.addListener(() => {
