@@ -7,7 +7,7 @@ import { BiWindowOpen } from "~node_modules/react-icons/bi"
 import { FaArrowRightToBracket } from "~node_modules/react-icons/fa6"
 import store from "~store"
 import actions from "~actions"
-import faviconURL from "~utils/faviconUrl"
+import TabItem from "~components/TabItem"
 
 const SessionDetailsView = () => {
   const { id } = useParams()
@@ -33,7 +33,7 @@ const SessionDetailsView = () => {
                   onClick={async () => {
                     if (s.id !== selectedSession.id) {
                       const movingTabs = selectedSession.tabs.filter(t => selectedTabIds.includes(t.id))
-                      await actions.session.moveTabs(selectedSession, s, movingTabs)
+                      await actions.session.moveTabs({ sourceSession: selectedSession, targetSession: s, tabs: movingTabs })
                       setSelectedTabIds([])
                       setMoveToSession(false)
                     }
@@ -48,21 +48,17 @@ const SessionDetailsView = () => {
           <div className="tabs-container">
             {selectedSession?.tabs?.map(t => {
               return (
-                <div key={t.id}
-                  className={selectedTabIds.includes(t.id) ? "tab selected" : "tab"}
+                <TabItem
+                  key={t.id}
+                  tab={t}
+                  selected={selectedTabIds.includes(t.id)}
                   onClick={() => {
                     if (selectedTabIds.includes(t.id)) {
                       setSelectedTabIds(c => c.filter(id => id !== t.id))
                     } else {
                       setSelectedTabIds(c => [...c, t.id])
                     }
-                  }}>
-                  <img src={faviconURL(t.url)} />
-                  <div className="tab-details-container">
-                    <div className="title">{t.title || t.url}</div>
-                    <div className="url">{t.url}</div>
-                  </div>
-                </div>
+                  }} />
               )
             })}
           </div>

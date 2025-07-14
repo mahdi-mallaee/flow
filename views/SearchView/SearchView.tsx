@@ -4,6 +4,7 @@ import useSessions from "~hooks/useSessions"
 import './SearchView.scss'
 import type { Tab } from "~utils/types"
 import actions from "~actions"
+import TabItem from "~components/TabItem"
 
 const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [searchInput, setSearchInput] = useState('')
@@ -64,11 +65,11 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
             <div className="search-item" key={session.id} >
               <div className="search-session">{session.title}</div>
               <div className="search-tabs">
-                {session.tabs.map((tab, i) => (
-                  <div className="tab" onClick={() => tabClickHandler(tab)}>
-                    <div className="title">{tab.title}</div>
-                    <div className="url">{tab.url}</div>
-                  </div>
+                {session.tabs.map(tab => (
+                  <TabItem
+                    key={tab.id}
+                    tab={tab}
+                    onClick={() => tabClickHandler(tab)} />
                 ))}
               </div>
             </div>

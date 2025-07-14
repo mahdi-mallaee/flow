@@ -50,29 +50,6 @@
       .search-tabs {
         display: flex;
         flex-direction: column;
-
-        .tab {
-          padding: 4px 12px;
-          cursor: pointer;
-
-          &:hover {
-            background-color: var(--background-hover-color);
-          }
-
-          .url,
-          .title {
-            width: 100%;
-            overflow: hidden;
-            text-wrap: nowrap;
-            text-overflow: ellipsis;
-          }
-
-          .url {
-            color: var(--on-background-variant-color);
-            padding-left: 4px;
-          }
-        }
-
       }
     }
   }

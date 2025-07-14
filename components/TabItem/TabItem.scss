@@ -1,0 +1,43 @@
+.tab-item {
+  padding: 4px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover {
+    background-color: var(--background-hover-color);
+  }
+
+  &.selected,
+  &:active {
+    background-color: var(--background-select-color);
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .tab-details-container {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .url,
+  .title {
+    width: 100%;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .url {
+    color: var(--on-background-variant-color);
+    padding-left: 4px;
+  }
+}
