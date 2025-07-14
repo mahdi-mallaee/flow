@@ -142,6 +142,11 @@ const SettignsView = () => {
           <MdChevronRight />
         </div>
 
+        <div className="item nav" onClick={() => nav('/permissions')}>
+          <div className="title">Permissions</div>
+          <MdChevronRight />
+        </div>
+
         <div className="item nav" onClick={() => nav('/about-us')}>
           <div className="title">About Us</div>
           <MdChevronRight />

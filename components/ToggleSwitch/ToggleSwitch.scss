@@ -16,6 +16,16 @@
     }
   }
 
+  &[data-disabled="true"] {
+    background-color: var(--disabled-color);
+    cursor: not-allowed;
+
+    .switch {
+      background-color: var(--on-surface-color);
+      transform: scale(0.88);
+    }
+  }
+
   .switch {
     background-color: var(--on-surface-color);
     transform: scale(0.88);
