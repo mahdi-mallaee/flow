@@ -29,9 +29,13 @@ const BackupCard = (
   }
 
   const downloadBackupHandler = async (backup: Backup) => {
-    const result = await actions.backup.download(backup)
-    if (!result) {
-      showAlert({ text: 'Backup download failed', type: 'error' })
+    if (await actions.checkPermission("downloads")) {
+      const result = await actions.backup.download(backup)
+      if (!result) {
+        showAlert({ text: 'Backup download failed', type: 'error' })
+      }
+    } else {
+      showAlert({ text: 'Download permission is not granted', type: 'error' })
     }
   }
 

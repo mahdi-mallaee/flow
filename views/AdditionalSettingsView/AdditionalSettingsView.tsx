@@ -1,7 +1,9 @@
 import Dropdown from "~components/Dropdown"
 import ToggleSwitch from "~components/ToggleSwitch"
 import useAlertMessage from "~hooks/useAlertMessage"
+import usePermissions from "~hooks/usePermissions"
 import useSettings from "~hooks/useSettings"
+import { useNavigate } from "react-router-dom"
 import store from "~store"
 import type { Settings, WindowState } from "~utils/types"
 
@@ -22,6 +24,9 @@ const AdditionalSettingsView = () => {
       showAlert({ text: 'Settings update failed', type: 'error' })
     }
   }
+
+  const { permissions } = usePermissions()
+  const nav = useNavigate()
 
   return (
     <div className="settings-view">
@@ -67,9 +72,39 @@ const AdditionalSettingsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Save window positions</div>
+          <div className="title">
+            Save window positions
+            {!permissions.display &&
+              <div className="desc warning">Display permission is not granted!</div>
+            }
+          </div>
           <ToggleSwitch checked={settings.saveWindowsPosition}
-            onChange={(checked) => setSettingsHandler({ saveWindowsPosition: checked })} />
+            disabled={!permissions.display}
+            onChange={(checked) => {
+              if (permissions.display) {
+                setSettingsHandler({ saveWindowsPosition: checked })
+              } else {
+                nav('/permissions')
+              }
+            }} />
+        </div>
+
+        <div className="item">
+          <div className="title">
+            Clear history after opening a session
+            {!permissions.history &&
+              <div className="desc warning">History permission is not granted!</div>
+            }
+          </div>
+          <ToggleSwitch checked={settings.clearHistoryAfterSessionOpening}
+            disabled={!permissions.history}
+            onChange={(checked) => {
+              if (permissions.history) {
+                setSettingsHandler({ clearHistoryAfterSessionOpening: checked })
+              } else {
+                nav('/permissions')
+              }
+            }} />
         </div>
 
       </div>

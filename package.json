@@ -33,13 +33,15 @@
     "permissions": [
       "storage",
       "tabs",
-      "history",
-      "downloads",
       "tabGroups",
       "unlimitedStorage",
-      "system.display",
       "favicon",
       "contextMenus"
+    ],
+    "optional_permissions": [
+      "history",
+      "downloads",
+      "system.display"
     ]
   }
 }

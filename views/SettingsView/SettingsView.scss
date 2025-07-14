@@ -34,7 +34,11 @@
 
         .desc {
           font-size: 10px;
-          color: var(--on-background-variant-color)
+          color: var(--on-background-variant-color);
+
+          &.warning {
+            color: var(--on-background-warning-color);
+          }
         }
       }
 

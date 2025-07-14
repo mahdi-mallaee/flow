@@ -1,11 +1,13 @@
 #theme-provider[data-theme='light'] {
   --background-color: #f8f8f8;
   --background-hover-color: #dedede;
+  --disabled-color: #bdbdbd;
   --background-select-color: #dedede;
 
   --on-background-color: #000000;
   --on-background-variant-color: #393939;
   --on-background-disabled-color: #9e9e9e;
+  --on-background-warning-color: #b61b1b;
 
   --primary-color: #abff45;
 
@@ -31,11 +33,13 @@
 #theme-provider[data-theme='dark'] {
   --background-color: #1e2127;
   --background-hover-color: #33363a;
+  --disabled-color: #393d44;
   --background-select-color: #272f41;
 
   --on-background-color: #fff;
   --on-background-variant-color: #c1c1c1;
   --on-background-disabled-color: #9e9e9e;
+  --on-background-warning-color: #d9715a;
 
   --primary-color: #45fff4;
 
@@ -60,11 +64,13 @@
 #theme-provider[data-theme='deep-blue'] {
   --background-color: #02242F;
   --background-hover-color: #0e475a;
+  --disabled-color: #565f61;
   --background-select-color: #0e475a;
 
   --on-background-color: #def5f9;
   --on-background-variant-color: #c5dfe2;
   --on-background-disabled-color: #a6bbbd;
+  --on-background-warning-color: #ee8d77;
 
   --primary-color: #4479FF;
 
@@ -90,11 +96,14 @@
 #theme-provider[data-theme='magical-purple'] {
   --background-color: #f7f5fd;
   --background-hover-color: #dbd6ef;
+  --disabled-color: #beb9cd;
+  
   --background-select-color: #dbd6ef;
 
   --on-background-color: #1b1830;
   --on-background-variant-color: #3e3b51;
   --on-background-disabled-color: #656279;
+  --on-background-warning-color: #b61b1b;
 
   --primary-color: #a544ff;
 
