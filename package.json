@@ -34,7 +34,9 @@
       "storage",
       "tabs",
       "tabGroups",
-      "unlimitedStorage"
+      "unlimitedStorage",
+      "favicon",
+      "contextMenus"
     ],
     "optional_permissions": [
       "history",

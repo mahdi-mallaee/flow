@@ -2,6 +2,7 @@
   --background-color: #f8f8f8;
   --background-hover-color: #dedede;
   --disabled-color: #bdbdbd;
+  --background-select-color: #dedede;
 
   --on-background-color: #000000;
   --on-background-variant-color: #393939;
@@ -33,6 +34,7 @@
   --background-color: #1e2127;
   --background-hover-color: #33363a;
   --disabled-color: #393d44;
+  --background-select-color: #272f41;
 
   --on-background-color: #fff;
   --on-background-variant-color: #c1c1c1;
@@ -63,6 +65,7 @@
   --background-color: #02242F;
   --background-hover-color: #0e475a;
   --disabled-color: #565f61;
+  --background-select-color: #0e475a;
 
   --on-background-color: #def5f9;
   --on-background-variant-color: #c5dfe2;
@@ -95,6 +98,8 @@
   --background-hover-color: #dbd6ef;
   --disabled-color: #beb9cd;
   
+  --background-select-color: #dbd6ef;
+
   --on-background-color: #1b1830;
   --on-background-variant-color: #3e3b51;
   --on-background-disabled-color: #656279;

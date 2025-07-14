@@ -7,6 +7,7 @@ import SettignsView from "~views/SettingsView"
 import AdditionalSettingsView from "./AdditionalSettingsView"
 import MainView from "./MainView/MainView"
 import PermissionsView from "./PermissionsView"
+import SessionDetailsView from "./SessionDetailsView"
 
 const ViewRouter = () => {
 
@@ -47,6 +48,11 @@ const ViewRouter = () => {
       <Route path="/permissions" element={<>
         <Header headerButtonPath="/settings" />
         <PermissionsView />
+      </>} />
+
+      <Route path="/session/:id" element={<>
+        <Header headerButtonPath="/" />
+        <SessionDetailsView />
       </>} />
 
     </Routes>

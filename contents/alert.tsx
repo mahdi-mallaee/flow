@@ -7,6 +7,7 @@ import { Message, StoreKeys, type unsavedWindowAlertStatus } from '~utils/types'
 import { AnimatePresence, motion } from 'framer-motion'
 import ThemeProvider from '~components/ThemeProvider';
 
+
 export const getStyle = () => {
   const style = document.createElement("style")
   style.textContent = colors

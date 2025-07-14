@@ -38,14 +38,6 @@
       font-size: 11px;
     }
 
-
-    .session-freeze-button {
-      &.freeze {
-        background-color: var(--primary-color);
-        color: var(--on-primary-color);
-      }
-    }
-
     &:hover {
       background-color: var(--background-hover-color);
 
@@ -107,6 +99,13 @@
 
       &.main {
         color: var(--on-background-color);
+      }
+    }
+
+    .session-freeze-button {
+      &.freeze {
+        background-color: var(--primary-color);
+        color: var(--on-primary-color);
       }
     }
 
