@@ -1,4 +1,3 @@
-import changeRecentWindowId from "./changeRecentWindowId";
 import create from "./create";
 import discardOpenedTab from "./discardOpenedTab";
 import includesTab from "./includesTab";
@@ -19,7 +18,6 @@ const windowActions = {
   refreshUnsavedWindows: refreshUnsavedWindows,
   isUnsaved: isUnsaved,
   includesTab: includesTab,
-  changeRecentWindowId: changeRecentWindowId,
   checkId: checkId,
   update: update,
   refreshWindowPositions: refreshWindowPositions,

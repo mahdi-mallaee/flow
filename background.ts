@@ -135,15 +135,24 @@ chrome.windows.onCreated.addListener((window) => {
         actions.session.openFirstSession()
           .then(() => {
             if (gl.refreshUnsavedWindows) {
-              actions.window.changeRecentWindowId(window.id)
+              actions.window.isUnsaved(window.id)
+                .then((isUnsaved) => {
+                  if (isUnsaved) {
+                    actions.background.showUnsavedAlert(window.id)
+                  }
+                })
             }
           })
       } else {
         if (gl.refreshUnsavedWindows) {
           actions.window.refreshUnsavedWindows()
             .then(() => {
-              actions.window.changeRecentWindowId(window.id)
-              actions.background.showUnsavedAlert(window.id)
+              actions.window.isUnsaved(window.id)
+                .then((isUnsaved) => {
+                  if (isUnsaved) {
+                    actions.background.showUnsavedAlert(window.id)
+                  }
+                })
             })
         }
       }
