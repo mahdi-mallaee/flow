@@ -15,18 +15,6 @@ export default function messageControl(
 ) {
 
   switch (message) {
-    case Message.alertReady:
-      {
-        if (sender.tab) {
-          actions.background.alertGo(sender, sendResponse)
-        }
-        break
-      }
-    case Message.saveSession:
-      {
-        actions.background.saveSession(sender, sendResponse)
-        break
-      }
     case Message.openSession:
       {
         gl.refreshUnsavedWindows = false
