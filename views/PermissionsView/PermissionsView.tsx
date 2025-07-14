@@ -24,7 +24,10 @@ const PermissionsView = () => {
       <div className="items-container">
 
         <div className="item">
-          <div className="title">Downloads</div>
+          <div className="title">
+            Downloads
+            <div className="desc">This is required for downloading backups</div>
+          </div>
           <ToggleSwitch
             checked={permissions.downloads}
             onChange={(checked) => handlePermissionToggle("downloads", checked)}
@@ -32,7 +35,10 @@ const PermissionsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">History</div>
+          <div className="title">
+            History
+            <div className="desc">This is required for cleaning up histroy after each session openning to reduce duplicates</div>
+          </div>
           <ToggleSwitch
             checked={permissions.history}
             onChange={(checked) => handlePermissionToggle("history", checked)}
@@ -40,7 +46,10 @@ const PermissionsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Display</div>
+          <div className="title">
+            Display
+            <div className="desc">This is required for saving window positions and restoring them</div>
+          </div>
           <ToggleSwitch
             checked={permissions.display}
             onChange={(checked) => handlePermissionToggle("system.display", checked, "display")}

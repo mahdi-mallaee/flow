@@ -3,7 +3,7 @@ import ToggleSwitch from "~components/ToggleSwitch"
 import useAlertMessage from "~hooks/useAlertMessage"
 import usePermissions from "~hooks/usePermissions"
 import useSettings from "~hooks/useSettings"
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router-dom"
 import store from "~store"
 import type { Settings, WindowState } from "~utils/types"
 
