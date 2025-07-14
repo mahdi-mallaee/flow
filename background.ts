@@ -143,6 +143,7 @@ chrome.windows.onCreated.addListener((window) => {
           actions.window.refreshUnsavedWindows()
             .then(() => {
               actions.window.changeRecentWindowId(window.id)
+              actions.background.showUnsavedAlert(window.id)
             })
         }
       }
