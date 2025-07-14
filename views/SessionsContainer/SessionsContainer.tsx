@@ -64,6 +64,7 @@ const SessionsContainer = () => {
       }
     }
     callBack()
+    actions.background.rebuildContextMenus()
   }
 
   const newSessionClickHandler = () => {

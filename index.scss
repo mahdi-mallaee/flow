@@ -47,6 +47,7 @@ body {
     color: var(--on-surface-color);
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 
     &.session-title {
       justify-content: space-between;
