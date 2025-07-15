@@ -1,99 +1,51 @@
 import ThemeProvider from "~components/ThemeProvider"
 import './sidepanel.scss'
 import '../index.scss'
-import { MemoryRouter } from "react-router-dom"
-import { useEffect, useState } from "react"
-import SidePanelTabs from "~views/SidePanelTabs"
-import useSessions from "~hooks/useSessions"
-import actions from "~actions"
-import SessionsContainer from "~views/SessionsContainer"
-import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer"
-import SettignsView from "~views/SettingsView"
+import { MemoryRouter, useNavigate } from "react-router-dom"
 import { MdTune } from "~node_modules/react-icons/md"
+import ViewRouter from "~views/ViewRouter"
+import { useLocation } from "react-router-dom"
 
 function SidePanel() {
+  const { pathname: path } = useLocation()
+  const nav = useNavigate()
 
-  const [sidePanelState, setSidePanelState] = useState('tabs')
-  const sessions = useSessions()
-  const [currentTabs, setCurrentTabs] = useState(sessions[0]?.tabs)
-  const [sidePanelTabsTitle, setSidePanelTabsTitle] = useState('')
-  const switchView = () => {
-    if (sidePanelState === 'tabs') {
-      return (
-        <>
-          <div className="session-title">{sidePanelTabsTitle}</div>
-          <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
-        </>
-      )
-    } else if (sidePanelState === 'sessions') {
-      return (
-        <>
-          <SessionsContainer />
-          <UnsavedWindowsContainer />
-        </>
-      )
-    } else if (sidePanelState === 'settings') {
-      return (
-        <SettignsView />
-      )
-    } else {
-      return (
-        <>
-          <div className="session-title">{sidePanelTabsTitle}</div>
-          <SidePanelTabs tabs={currentTabs}></SidePanelTabs>
-        </>
-      )
-    }
-  }
+  return (
+    <div className="side-panel">
 
-  useEffect(() => {
-    chrome.windows.getCurrent().then(window => {
-      if (actions.window.checkId(window.id)) {
-        const session = sessions.find(session => session.windowId === window.id)
-        if (session) {
-          setCurrentTabs(session.tabs)
-          setSidePanelTabsTitle(session.title)
-        } else {
-          actions.window.getTabs(window.id)
-            .then(tabs => {
-              setCurrentTabs(tabs)
-              setSidePanelTabsTitle(`Unsaved Window (${window.id})`)
-            })
-        }
-      }
-    })
-  }, [sessions])
+      <div className="side-panel-buttons-container">
+        <div className="side-panel-buttons">
+          <div className={path === '/' ? "button tabs active" : "button tabs"}
+            onClick={() => nav("/")}>
+            tabs
+          </div>
+          <div className={path === '/main' ? "button sessions active" : "button sessions"}
+            onClick={() => nav('/main')}>
+            sessions
+          </div>
+          <div className={path === '/settings' ? "button settings active" : "button settings"}
+            onClick={() => nav('/settings')}>
+            <MdTune />
+          </div>
+        </div>
+      </div>
 
+      <div className="sessions-router">
+        <ViewRouter isPopup={false} />
+      </div>
+    </div>
+  )
+}
+
+function SidePanelWrapper() {
 
   return (
     <ThemeProvider>
       <MemoryRouter>
-        <div className="side-panel">
-
-          <div className="side-panel-buttons-container">
-            <div className="side-panel-buttons">
-              <div className={sidePanelState === 'tabs' ? "button tabs active" : "button tabs"}
-                onClick={() => setSidePanelState('tabs')}>
-                tabs
-              </div>
-              <div className={sidePanelState === 'sessions' ? "button sessions active" : "button sessions"}
-                onClick={() => setSidePanelState('sessions')}>
-                sessions
-              </div>
-              <div className={sidePanelState === 'settings' ? "button settings active" : "button settings"}
-                onClick={() => setSidePanelState("settings")}>
-                <MdTune />
-              </div>
-            </div>
-          </div>
-
-          <div className="sessions-router">
-            {switchView()}
-          </div>
-        </div>
+        <SidePanel />
       </MemoryRouter>
     </ThemeProvider>
   )
 }
 
-export default SidePanel
+export default SidePanelWrapper

@@ -5,14 +5,16 @@ import SearchView from "~views/SearchView";
 import SessionsContainer from "~views/SessionsContainer";
 import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer";
 
-export default function MainView() {
+export default function MainView({ isPopup }: { isPopup: boolean }) {
 
   const [showSearchView, setShowSearchView] = useState(false)
-
+  if (typeof isPopup !== "boolean") isPopup = true
 
   return (
     <>
-      <Header headerButtonPath="/settings" />
+      {isPopup &&
+        <Header headerButtonPath="/settings" />
+      }
       {showSearchView ?
         <SearchView setShowSearchView={setShowSearchView} />
         :

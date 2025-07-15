@@ -5,9 +5,12 @@ import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
 import { AnimatePresence, motion } from 'framer-motion';
 import ContextMenu from '~components/ContextMenu/ContexMenu';
+import useSessions from '~hooks/useSessions';
+import actions from '~actions';
 
-const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
-
+const SidePanelTabs = () => {
+  const sessions = useSessions()
+  const [tabs, setTabs] = useState(sessions[0]?.tabs)
   const [selectedTabs, setSelectedTabs] = React.useState<number[]>([])
 
   const tabClickHandler = (e: React.MouseEvent, id: number) => {
@@ -87,6 +90,22 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
     })
   }, [])
 
+
+  useEffect(() => {
+    chrome.windows.getCurrent().then(window => {
+      if (actions.window.checkId(window.id)) {
+        const session = sessions.find(session => session.windowId === window.id)
+        if (session) {
+          setTabs(session.tabs)
+        } else {
+          actions.window.getTabs(window.id)
+            .then(tabs => {
+              setTabs(tabs)
+            })
+        }
+      }
+    })
+  }, [sessions])
 
   const [draggedId, setDraggedId] = useState<number>()
 

@@ -6,43 +6,46 @@ import Header from "~components/Header"
 import SettignsView from "~views/SettingsView"
 import AdditionalSettingsView from "./AdditionalSettingsView"
 import MainView from "./MainView/MainView"
+import SidePanelTabs from "./SidePanelTabs"
 
-const ViewRouter = () => {
+const ViewRouter = ({ isPopup = true }: { isPopup?: boolean }) => {
 
   return (
     <Routes>
 
-      <Route path="/" element={<MainView />} />
+      <Route path="/" element={<>{
+        isPopup ?
+          < MainView isPopup={isPopup} />
+          :
+          <SidePanelTabs />
+      }</>} />
 
       <Route path="/settings" element={<>
-        <Header headerButtonPath="/" />
+        {isPopup && <Header headerButtonPath="/" />}
         <SettignsView />
       </>} />
 
       <Route path="/backups" element={<>
-        <Header headerButtonPath="/settings" />
-        <BackupsView />
-      </>} />
-
-      <Route path="/backups" element={<>
-        <Header headerButtonPath="/settings" />
+        {isPopup && <Header headerButtonPath="/settings" />}
         <BackupsView />
       </>} />
 
       <Route path="/about-us" element={<>
-        <Header headerButtonPath="/settings" />
+        {isPopup && <Header headerButtonPath="/settings" />}
         <AboutUsView />
       </>} />
 
       <Route path="/donation" element={<>
-        <Header headerButtonPath="/settings" />
+        {isPopup && <Header headerButtonPath="/settings" />}
         <DonationView />
       </>} />
 
       <Route path="/additional-settings" element={<>
-        <Header headerButtonPath="/settings" />
+        {isPopup && <Header headerButtonPath="/settings" />}
         <AdditionalSettingsView />
       </>} />
+
+      <Route path='/main' element={<MainView isPopup={isPopup} />} />
 
     </Routes>
   )
