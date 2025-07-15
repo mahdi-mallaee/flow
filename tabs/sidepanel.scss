@@ -28,11 +28,10 @@ body:has(.side-panel),
   color: var(--on-background-color);
   display: flex;
   flex-direction: column;
-  gap: 8px;
 
   .side-panel-buttons-container {
-    padding: 4px 8px;
-    flex: 0 0 36px;
+    padding: 8px 16px;
+    flex: 0 0 40px;
     align-items: center;
     display: flex;
 
@@ -41,7 +40,6 @@ body:has(.side-panel),
       align-items: center;
       justify-content: space-around;
       align-items: center;
-      border: 1px solid var(--outline-color);
       flex: 1;
       height: 100%;
       border-radius: 12px;

@@ -13,6 +13,7 @@ const SidePanelTabs = () => {
   const [tabs, setTabs] = useState(sessions[0]?.tabs)
   const [selectedTabs, setSelectedTabs] = React.useState<number[]>([])
   const [viewTitle, setViewTitle] = useState<string>('Sessions')
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const tabClickHandler = (e: React.MouseEvent, id: number) => {
     if (e.shiftKey) {
@@ -31,8 +32,12 @@ const SidePanelTabs = () => {
     chrome.tabs.remove(id)
   }
 
-  const newTabClickHandler = () => {
-    chrome.tabs.create({ url: NEW_TAB_URL, })
+  const newTabClickHandler = async () => {
+    console.log(scrollRef.current.scrollHeight)
+    await chrome.tabs.create({ url: NEW_TAB_URL, })
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+    }, 200)
   }
 
   const clearSelectedClickHandler = () => {
@@ -128,7 +133,7 @@ const SidePanelTabs = () => {
 
       <div className='view-title session-title'>{viewTitle}</div>
 
-      <div className="tabs-container">
+      <div className="tabs-container" ref={scrollRef}>
         <AnimatePresence>
           {tabs?.map(tab => {
             return (
