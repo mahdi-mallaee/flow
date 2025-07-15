@@ -12,6 +12,7 @@ const SidePanelTabs = () => {
   const sessions = useSessions()
   const [tabs, setTabs] = useState(sessions[0]?.tabs)
   const [selectedTabs, setSelectedTabs] = React.useState<number[]>([])
+  const [viewTitle, setViewTitle] = useState<string>('Sessions')
 
   const tabClickHandler = (e: React.MouseEvent, id: number) => {
     if (e.shiftKey) {
@@ -97,7 +98,9 @@ const SidePanelTabs = () => {
         const session = sessions.find(session => session.windowId === window.id)
         if (session) {
           setTabs(session.tabs)
+          setViewTitle(session.title)
         } else {
+          setViewTitle('Unsaved Window')
           actions.window.getTabs(window.id)
             .then(tabs => {
               setTabs(tabs)
@@ -122,6 +125,8 @@ const SidePanelTabs = () => {
           <ContextMenu x={contextPos.x} y={contextPos.y} tab={contextTab} contextRef={contextRef}></ContextMenu>
         }
       </AnimatePresence>
+
+      <div className='view-title session-title'>{viewTitle}</div>
 
       <div className="tabs-container">
         <AnimatePresence>
