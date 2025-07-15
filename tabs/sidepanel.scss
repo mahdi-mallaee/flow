@@ -86,12 +86,30 @@ body:has(.side-panel),
 
   .view-title {
     font-size: 12px;
-    padding: 8px 12px;
+    padding: 0 12px;
+    height: 32px;
     font-weight: 700;
     border: 1px solid var(--outline-color);
     background-color: var(--surface-color);
     color: var(--on-surface-color);
+    display: flex;
+    align-items: center;
+
+    &.session-title {
+      justify-content: space-between;
+      gap: 4px;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        padding: 2px;
+        border-radius: 8px;
+
+        &:hover {
+          background-color: var(--icon-button-hover);
+        }
+      }
+    }
   }
-
-
 }

@@ -89,7 +89,7 @@ export enum DefaultAction {
   sidepanel = "sidepanel"
 }
 
-export type Path = "/" | '/settings' | '/backups'
+export type Path = "/" | '/settings' | '/settings/backups' | '/settings/about-us' | '/settings/donation' | '/settings/additional-settings'
 
 export type Backup = {
   id: string,

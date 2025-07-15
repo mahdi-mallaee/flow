@@ -25,22 +25,22 @@ const ViewRouter = ({ isPopup = true }: { isPopup?: boolean }) => {
         <SettignsView />
       </>} />
 
-      <Route path="/backups" element={<>
+      <Route path="/settings/backups" element={<>
         {isPopup && <Header headerButtonPath="/settings" />}
         <BackupsView />
       </>} />
 
-      <Route path="/about-us" element={<>
+      <Route path="/settings/about-us" element={<>
         {isPopup && <Header headerButtonPath="/settings" />}
         <AboutUsView />
       </>} />
 
-      <Route path="/donation" element={<>
+      <Route path="/settings/donation" element={<>
         {isPopup && <Header headerButtonPath="/settings" />}
         <DonationView />
       </>} />
 
-      <Route path="/additional-settings" element={<>
+      <Route path="/settings/additional-settings" element={<>
         {isPopup && <Header headerButtonPath="/settings" />}
         <AdditionalSettingsView />
       </>} />

@@ -82,7 +82,7 @@ const SettignsView = () => {
       <div className='view-title'>Settings</div>
       <div className="items-container">
 
-        <div className="item nav" onClick={() => nav('/donation')}>
+        <div className="item nav" onClick={() => nav('/settings/donation')}>
           <MdFavoriteBorder className='heart-icon' />
           <div className="title">Donation</div>
           <MdChevronRight />
@@ -132,17 +132,17 @@ const SettignsView = () => {
             }} />
         </div>
 
-        <div className="item nav" onClick={() => nav('/additional-settings')}>
+        <div className="item nav" onClick={() => nav('/settings/additional-settings')}>
           <div className="title">Additional Settings</div>
           <MdChevronRight />
         </div>
 
-        <div className="item nav" onClick={() => nav('/backups')}>
+        <div className="item nav" onClick={() => nav('/settings/backups')}>
           <div className="title">Backups</div>
           <MdChevronRight />
         </div>
 
-        <div className="item nav" onClick={() => nav('/about-us')}>
+        <div className="item nav" onClick={() => nav('/settings/about-us')}>
           <div className="title">About Us</div>
           <MdChevronRight />
         </div>

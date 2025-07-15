@@ -2,13 +2,15 @@ import ThemeProvider from "~components/ThemeProvider"
 import './sidepanel.scss'
 import '../index.scss'
 import { MemoryRouter, useNavigate } from "react-router-dom"
-import { MdTune } from "~node_modules/react-icons/md"
+import { MdTune, MdArrowBack } from "~node_modules/react-icons/md"
 import ViewRouter from "~views/ViewRouter"
 import { useLocation } from "react-router-dom"
 
 function SidePanel() {
   const { pathname: path } = useLocation()
   const nav = useNavigate()
+
+  const isSubSettingsRoute = path.startsWith('/settings/')
 
   return (
     <div className="side-panel">
@@ -23,10 +25,17 @@ function SidePanel() {
             onClick={() => nav('/main')}>
             sessions
           </div>
-          <div className={path === '/settings' ? "button settings active" : "button settings"}
-            onClick={() => nav('/settings')}>
-            <MdTune />
-          </div>
+          {isSubSettingsRoute ? (
+            <div className="button back"
+              onClick={() => nav('/settings')}>
+              <MdArrowBack />
+            </div>
+          ) : (
+            <div className={path === '/settings' ? "button settings active" : "button settings"}
+              onClick={() => nav('/settings')}>
+              <MdTune />
+            </div>
+          )}
         </div>
       </div>
 
