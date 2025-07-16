@@ -10,7 +10,7 @@ import { StoreKeys, type Session } from "~utils/types"
   and this hook refreshes sessions for usage in UI
 */
 
-const useSessions = () => {
+const useSessions = (onSessionChange?: (sessions: Session[]) => void) => {
   const [sessions, setSessions] = useState<Session[]>([])
 
   const [statusId] = useStorage({ instance: new Storage({ area: 'local' }), key: StoreKeys.sessionsStatusId }, '')
@@ -19,6 +19,9 @@ const useSessions = () => {
     store.sessions.getAll()
       .then(response => {
         setSessions(response)
+        if (onSessionChange) {
+          onSessionChange(response)
+        }
       })
   }, [statusId])
 

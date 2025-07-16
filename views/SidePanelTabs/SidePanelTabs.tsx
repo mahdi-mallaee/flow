@@ -9,8 +9,7 @@ import useSessions from '~hooks/useSessions';
 import actions from '~actions';
 
 const SidePanelTabs = () => {
-  const sessions = useSessions()
-  const [tabs, setTabs] = useState(sessions[0]?.tabs)
+  const [tabs, setTabs] = useState<Tab[]>([])
   const [selectedTabs, setSelectedTabs] = React.useState<number[]>([])
   const [viewTitle, setViewTitle] = useState<string>('Sessions')
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -96,24 +95,20 @@ const SidePanelTabs = () => {
     })
   }, [])
 
+  useSessions(async (sessions: Session[]) => {
+    const { id: windowId } = await chrome.windows.getCurrent({ populate: true })
+    if(!actions.window.checkId(windowId)) return
 
-  useEffect(() => {
-    chrome.windows.getCurrent().then(window => {
-      if (actions.window.checkId(window.id)) {
-        const session = sessions.find(session => session.windowId === window.id)
-        if (session) {
-          setTabs(session.tabs)
-          setViewTitle(session.title)
-        } else {
-          setViewTitle('Unsaved Window')
-          actions.window.getTabs(window.id)
-            .then(tabs => {
-              setTabs(tabs)
-            })
-        }
-      }
-    })
-  }, [sessions])
+    const tabs = await actions.window.getTabs(windowId)
+    setTabs(tabs)
+    
+    const currentSession = sessions.find(session => session.windowId === windowId)
+    if (currentSession) {
+      setViewTitle(currentSession.title)
+    } else {
+      setViewTitle('Unsaved Window')
+    }
+  })
 
   const [draggedId, setDraggedId] = useState<number>()
 
