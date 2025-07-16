@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { Session, Tab } from '~utils/types';
 import './SidePanelTabs.scss';
 import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
@@ -24,11 +24,17 @@ const SidePanelTabs = () => {
       }
     } else {
       chrome.tabs.update(id, { active: true, })
+      setSelectedTabs([id])
     }
   }
 
   const closeTabClickHandler = (id: number) => {
-    chrome.tabs.remove(id)
+    if (selectedTabs.length > 0) {
+      chrome.tabs.remove(selectedTabs)
+      setSelectedTabs([])
+    } else {
+      chrome.tabs.remove(id)
+    }
   }
 
   const newTabClickHandler = async () => {
@@ -37,23 +43,6 @@ const SidePanelTabs = () => {
     setTimeout(() => {
       scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
     }, 200)
-  }
-
-  const clearSelectedClickHandler = () => {
-    setSelectedTabs([])
-  }
-
-  const selectAllClickHandler = () => {
-    setSelectedTabs(tabs.map(tab => tab.id))
-  }
-
-  const closeAllClickHandler = () => {
-    if (selectedTabs.length === tabs.length) {
-      console.log('this will remove the session')
-    } else {
-      chrome.tabs.remove(selectedTabs)
-      setSelectedTabs([])
-    }
   }
 
   const [showContext, setShowContext] = useState(false)
@@ -91,22 +80,45 @@ const SidePanelTabs = () => {
     })
     window.addEventListener('blur', () => {
       setShowContext(false)
-
     })
+    window.addEventListener("keydown", (e) => {
+      if (e.key === 'Escape') {
+        setShowContext(false)
+
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (selectedTabs.length > 0) {
+          chrome.tabs.remove(selectedTabs)
+          setSelectedTabs([])
+        }
+      } else if (e.key === 'a' && e.ctrlKey) {
+        e.preventDefault()
+        setSelectedTabs(tabs.map(tab => tab.id))
+      }
+    })
+    return () => {
+      document.removeEventListener('click', () => { })
+      document.removeEventListener('contextmenu', () => { })
+      window.removeEventListener('blur', () => { })
+      window.removeEventListener("keydown", () => { })
+    }
   }, [])
 
   useSessions(async (sessions: Session[]) => {
     const { id: windowId } = await chrome.windows.getCurrent({ populate: true })
-    if(!actions.window.checkId(windowId)) return
+    if (!actions.window.checkId(windowId)) return
 
     const tabs = await actions.window.getTabs(windowId)
     setTabs(tabs)
-    
+
     const currentSession = sessions.find(session => session.windowId === windowId)
     if (currentSession) {
       setViewTitle(currentSession.title)
     } else {
       setViewTitle('Unsaved Window')
+    }
+    if (selectedTabs.length == 0) {
+      const activeTab = await chrome.tabs.query({ active: true, currentWindow: true })
+      setSelectedTabs(activeTab.map(tab => tab.id))
     }
   })
 
@@ -122,7 +134,12 @@ const SidePanelTabs = () => {
       <AnimatePresence>
 
         {showContext &&
-          <ContextMenu x={contextPos.x} y={contextPos.y} tab={contextTab} contextRef={contextRef}></ContextMenu>
+          <ContextMenu
+            x={contextPos.x}
+            y={contextPos.y}
+            tab={contextTab}
+            selectedTabIds={selectedTabs}
+            contextRef={contextRef} />
         }
       </AnimatePresence>
 
@@ -152,22 +169,6 @@ const SidePanelTabs = () => {
               </motion.div>
             )
           })}
-        </AnimatePresence>
-      </div>
-      <div>
-        <AnimatePresence>
-          {selectedTabs.length > 0 &&
-            <motion.div className="tabs-toolbar"
-              initial={{ opacity: 0.1, height: 0 }}
-              animate={{ opacity: 1, height: '40px' }}
-              exit={{ opacity: 0.2, height: 0 }}
-              transition={{ duration: 0.2 }}>
-              <span className="tabs-count">{selectedTabs?.length}</span>
-              <div className="clear-selected" onClick={clearSelectedClickHandler}>clear selection</div>
-              <div className="select-all" onClick={selectAllClickHandler}>select all</div>
-              <div className="close-all" onClick={closeAllClickHandler}>close</div>
-              <div className="move-selection">move selection</div>
-            </motion.div>}
         </AnimatePresence>
       </div>
       <div className="new-tab" onClick={newTabClickHandler}><MdAdd /> Create a new tab</div>

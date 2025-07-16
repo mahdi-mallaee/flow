@@ -12,12 +12,13 @@
     color: var(--on-surface-color);
     overflow: hidden;
     z-index: 100;
+
     div {
       font-size: 12px;
       padding: 4px 8px;
       cursor: pointer;
 
-      &:hover{
+      &:hover {
         background-color: var(--background-hover-color);
       }
     }
@@ -29,36 +30,6 @@
     overflow: auto;
     gap: 4px;
     user-select: none;
-
-    .tabs-toolbar {
-      height: 40px;
-      background-color: var(--background-v1-color);
-      display: flex;
-      justify-content: space-around;
-      gap: 4px;
-      border-radius: 6px;
-      overflow: hidden;
-
-      span {
-        display: flex;
-        align-items: center;
-      }
-
-      div {
-        margin: 4px 0;
-        display: flex;
-        align-items: center;
-        padding: 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        user-select: none;
-
-        &:hover {
-          background-color: var(--background-hover-color);
-        }
-
-      }
-    }
 
     .new-tab {
       flex: 0 0 42px;
@@ -122,8 +93,8 @@
           flex-shrink: 0;
         }
 
-        .pinned-icon{
-          svg{
+        .pinned-icon {
+          svg {
             font-size: 14px;
           }
         }

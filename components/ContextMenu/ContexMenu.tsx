@@ -1,18 +1,31 @@
 import { motion } from 'framer-motion'
 import { NEW_TAB_URL } from '~utils/constants'
 import type { Tab } from '~utils/types'
-const ContextMenu = ({ x, y, tab, contextRef }: { x: number, y: number, tab: Tab, contextRef: any }) => {
+const ContextMenu = ({ x, y, tab, selectedTabIds, contextRef }: { x: number, y: number, tab: Tab, selectedTabIds?: number[], contextRef: any }) => {
 
   const pinContextClickHandler = () => {
-    chrome.tabs.update(tab.id, { pinned: !tab.pinned })
+    if (selectedTabIds && selectedTabIds.length > 0) {
+      selectedTabIds.forEach(id => {
+        chrome.tabs.update(id, { pinned: !tab.pinned })
+      })
+    } else {
+      chrome.tabs.update(tab.id, { pinned: !tab.pinned })
+    }
   }
 
   const closeContextClickHandler = () => {
-    chrome.tabs.remove(tab.id)
+    console.log('closeContextClickHandler', selectedTabIds)
+    chrome.tabs.remove(selectedTabIds ? selectedTabIds : [tab.id])
   }
 
   const duplicateContextClickHandler = () => {
-    chrome.tabs.duplicate(tab.id)
+    if (selectedTabIds && selectedTabIds.length > 0) {
+      selectedTabIds.forEach(id => {
+        chrome.tabs.duplicate(id)
+      })
+    } else {
+      chrome.tabs.duplicate(tab.id)
+    }
   }
 
   const newTabContextClickHandler = () => {
