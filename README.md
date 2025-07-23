@@ -110,6 +110,11 @@ Why Flow?
 Give Flow a try and experience a clutter-free browsing environment. Your feedback is invaluable in making Flow even better!
 
 What's new?
+1.2.7
+• Added sessions details to view tabs and move tabs between sesssoin
+• Added move tabs to session in chrome context menu
+• Added permission view to review optional permissions for certain settings
+
 1.2.6
 • Added window positions saving.
 • Bug fixes.
