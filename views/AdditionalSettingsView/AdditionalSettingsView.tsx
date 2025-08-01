@@ -49,6 +49,14 @@ const AdditionalSettingsView = () => {
 
         <div className="item">
           <div className="title">
+            Show unsaved window alert
+          </div>
+          <ToggleSwitch checked={settings.showUnsavedWindowAlert}
+            onChange={(checked) => setSettingsHandler({ showUnsavedWindowAlert: checked })} />
+        </div>
+
+        <div className="item">
+          <div className="title">
             Session Delete Backup
             <div className="desc">Create a new backup before deleting a session</div>
           </div>

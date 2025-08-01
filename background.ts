@@ -1,5 +1,6 @@
 import actions from "~actions"
 import messageControl from "~actions/background/messageControl"
+import store from "~store"
 import { LANDING_PAGE_URL, UNINSTALL_URL } from "~utils/constants"
 import type { BgGlobalVar, Tab } from "~utils/types"
 import { Message } from '~utils/types'
@@ -135,10 +136,15 @@ chrome.windows.onCreated.addListener((window) => {
         actions.session.openFirstSession()
           .then(() => {
             if (gl.refreshUnsavedWindows) {
-              actions.window.isUnsaved(window.id)
-                .then((isUnsaved) => {
-                  if (isUnsaved) {
-                    actions.background.showUnsavedAlert(window.id)
+              store.settings.getAll()
+                .then(settings => {
+                  if (settings.showUnsavedWindowAlert) {
+                    actions.window.isUnsaved(window.id)
+                      .then((isUnsaved) => {
+                        if (isUnsaved) {
+                          actions.background.showUnsavedAlert(window.id)
+                        }
+                      })
                   }
                 })
             }
@@ -147,10 +153,15 @@ chrome.windows.onCreated.addListener((window) => {
         if (gl.refreshUnsavedWindows) {
           actions.window.refreshUnsavedWindows()
             .then(() => {
-              actions.window.isUnsaved(window.id)
-                .then((isUnsaved) => {
-                  if (isUnsaved) {
-                    actions.background.showUnsavedAlert(window.id)
+              store.settings.getAll()
+                .then(settings => {
+                  if (settings.showUnsavedWindowAlert) {
+                    actions.window.isUnsaved(window.id)
+                      .then((isUnsaved) => {
+                        if (isUnsaved) {
+                          actions.background.showUnsavedAlert(window.id)
+                        }
+                      })
                   }
                 })
             })

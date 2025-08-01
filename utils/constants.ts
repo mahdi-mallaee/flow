@@ -24,4 +24,5 @@ export const DEFAULT_SETTINGS: Settings = {
   defaultAction: DefaultAction.popup,
   saveWindowsPosition: false,
   clearHistoryAfterSessionOpening: false,
+  showUnsavedWindowAlert: true
 }

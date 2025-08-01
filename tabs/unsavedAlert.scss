@@ -21,7 +21,7 @@ body {
 
 .unsaved-alert {
   width: 380px;
-  height: 130px;
+  height: 160px;
   background-color: var(--background-color);
   color: var(--on-background-color);
   padding: 16px;
@@ -69,4 +69,10 @@ body {
       cursor: pointer;
     }
   }
+}
+
+.show-alert-checkbox{
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }

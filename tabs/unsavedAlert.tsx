@@ -3,23 +3,29 @@ import './unsavedAlert.scss'
 import Logo from "~components/Logo"
 import { useEffect, useState } from "react"
 import actions from "~actions"
+import store from "~store"
 
 const UnsavedAlert = () => {
   type state = 'default' | 'saved-session' | 'error'
   const [UIState, setUIState] = useState<state>('default')
+
+  const openMainPopup = async () => {
+    await chrome.action.setPopup({ popup: "popup.html" })
+    await chrome.action.openPopup()
+  }
 
   const saveSessionHandler = async () => {
     const windowId = (await chrome.windows.getCurrent()).id
     const checkLimit = await actions.session.checkNumberLimit()
     if (!checkLimit) {
       setUIState('error')
-      setTimeout(() => { window.close() }, 6000)
+      setTimeout(() => { openMainPopup() }, 6000)
       return
     }
     const result = await actions.session.create({ windowId: windowId })
     if (!result) {
       console.error("Session creation failed")
-      setTimeout(() => { window.close() }, 6000)
+      setTimeout(() => { openMainPopup() }, 6000)
       setUIState('error')
       return
     }
@@ -32,7 +38,8 @@ const UnsavedAlert = () => {
   }
 
   useEffect(() => {
-    setTimeout(()=>{
+    setTimeout(async () => {
+      await chrome.action.setPopup({ popup: "popup.html" })
       window.close()
     }, 10000)
   }, [])
@@ -44,7 +51,10 @@ const UnsavedAlert = () => {
           <div className="default-state">
             <div>This window is not saved, you may want to catch it!</div>
             <div className="buttons">
-              <div className="close-alert" onClick={() => { window.close() }}>No, Thanks</div>
+              <div className="close-alert" onClick={async () => {
+                await chrome.action.setPopup({ popup: "popup.html" })
+                window.close()
+              }}>No, Thanks</div>
               <div className="save-session" onClick={saveSessionHandler}>Yes, Please</div>
             </div>
           </div>
@@ -76,6 +86,12 @@ const UnsavedAlert = () => {
         {
           getUIState()
         }
+        <div className="show-alert-checkbox">
+          <input id="show-alert" type="checkbox" onChange={async (e) => {
+            await store.settings.set({ showUnsavedWindowAlert: !Boolean(e.target.checked) })
+          }} />
+          <label htmlFor="show-alert">don't show this warning again</label>
+        </div>
       </div>
     </ThemeProvider>
   )
