@@ -45,6 +45,7 @@ chrome.runtime.onInstalled.addListener((details) => {
   } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
     actions.background.rebuildContextMenus()
+    store.settings.update()
   }
 })
 
