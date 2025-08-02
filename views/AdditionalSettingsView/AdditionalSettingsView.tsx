@@ -6,6 +6,7 @@ import useSettings from "~hooks/useSettings"
 import { useNavigate } from "react-router-dom"
 import store from "~store"
 import type { Settings, WindowState } from "~utils/types"
+import actions from "~actions"
 
 const AdditionalSettingsView = () => {
 
@@ -49,10 +50,19 @@ const AdditionalSettingsView = () => {
 
         <div className="item">
           <div className="title">
-            Show unsaved window alert
+            Show session badge
+            <div className="desc">Shows session's first letter on the extension icon or N for not saved sessions</div>
           </div>
-          <ToggleSwitch checked={settings.showUnsavedWindowAlert}
-            onChange={(checked) => setSettingsHandler({ showUnsavedWindowAlert: checked })} />
+          <ToggleSwitch checked={settings.showSessionBadge}
+            onChange={async (checked) => {
+              if (checked) {
+                const currentWindow = await chrome.windows.getCurrent()
+                actions.window.setBadgeColors({ windowId: currentWindow.id })
+              } else {
+                chrome.action.setBadgeText({ text: '' })
+              }
+              setSettingsHandler({ showSessionBadge: checked })
+            }} />
         </div>
 
         <div className="item">

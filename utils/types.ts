@@ -72,7 +72,7 @@ export type Settings = {
   createSessionInCurrentWindow: boolean,
   saveWindowsPosition: boolean,
   clearHistoryAfterSessionOpening: boolean,
-  showUnsavedWindowAlert: boolean
+  showSessionBadge: boolean
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'

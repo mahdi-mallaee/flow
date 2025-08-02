@@ -62,7 +62,6 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   } else {
     windowId = await actions.window.create(sessionId)
   }
-
   let sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
   if (deleteNewTabsWhenOpeningSession) {
     sessionTabs = sessionTabs.filter(t => t.url !== NEW_TAB_URL)
@@ -72,6 +71,7 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   }
   const groups = await store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups, exludedTabIndex)
+  actions.window.setBadgeColors({sessionId})
   // set the session as open and assign the window id to it for updates
   await store.sessions.setOpenStatus(sessionId, { isOpen: true, windowId })
 

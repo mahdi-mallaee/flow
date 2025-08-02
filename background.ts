@@ -94,7 +94,11 @@ chrome.tabs.onUpdated.addListener((id, info, tab) => {
     */
     actions.session.refreshTabs(gl)
   }
+  if (tab.active) {
+    actions.window.setBadgeColors({ windowId: tab.windowId })
+  }
 })
+
 chrome.tabs.onRemoved.addListener((_, info) => {
   if (!info.isWindowClosing) {
     actions.session.refreshTabs(gl)
@@ -125,7 +129,12 @@ chrome.windows.onRemoved.addListener(() => {
   actions.window.refreshUnsavedWindows()
   actions.session.refreshOpenSessions()
 })
-chrome.windows.onCreated.addListener((window) => {
+chrome.windows.onFocusChanged.addListener((windowId) => {
+  if (windowId === chrome.windows.WINDOW_ID_NONE) return;
+  actions.window.setBadgeColors({ windowId })
+})
+
+chrome.windows.onCreated.addListener(() => {
   chrome.windows.getAll()
     .then(win => {
       if (win.length === 1) {
@@ -134,37 +143,9 @@ chrome.windows.onCreated.addListener((window) => {
           when there is only one window (happend on Mac OS) so I just run the openFirstSession here.
         */
         actions.session.openFirstSession()
-          .then(() => {
-            if (gl.refreshUnsavedWindows) {
-              store.settings.getAll()
-                .then(settings => {
-                  if (settings.showUnsavedWindowAlert) {
-                    actions.window.isUnsaved(window.id)
-                      .then((isUnsaved) => {
-                        if (isUnsaved) {
-                          actions.background.showUnsavedAlert(window.id)
-                        }
-                      })
-                  }
-                })
-            }
-          })
       } else {
         if (gl.refreshUnsavedWindows) {
           actions.window.refreshUnsavedWindows()
-            .then(() => {
-              store.settings.getAll()
-                .then(settings => {
-                  if (settings.showUnsavedWindowAlert) {
-                    actions.window.isUnsaved(window.id)
-                      .then((isUnsaved) => {
-                        if (isUnsaved) {
-                          actions.background.showUnsavedAlert(window.id)
-                        }
-                      })
-                  }
-                })
-            })
         }
       }
     })

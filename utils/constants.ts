@@ -10,7 +10,15 @@ export const BACKUP_NUMBER_LIMIT = 50
 export const SESSION_NUMBER_LIMIT = 25
 export const LANDING_PAGE_URL = "https://flow-extension.pages.dev/"
 export const UNINSTALL_URL = "https://forms.gle/XAJq2kmTpschA8Jn8"
+
 export const NUMBER_OF_COLOR_CODES = 5
+export const COLOR_CODES = {
+  1: "#ff9c9c",
+  2: "#98FF96",
+  3: "#8699FF",
+  4: "#e884ff",
+  5: "#f3f376",
+}
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: Theme.osDefault,
@@ -24,5 +32,5 @@ export const DEFAULT_SETTINGS: Settings = {
   defaultAction: DefaultAction.popup,
   saveWindowsPosition: false,
   clearHistoryAfterSessionOpening: false,
-  showUnsavedWindowAlert: true
+  showSessionBadge: true
 }
