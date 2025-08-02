@@ -135,7 +135,7 @@ chrome.windows.onFocusChanged.addListener((windowId) => {
   actions.window.setBadgeColors({ windowId })
 })
 
-chrome.windows.onCreated.addListener(() => {
+chrome.windows.onCreated.addListener((window) => {
   chrome.windows.getAll()
     .then(win => {
       if (win.length === 1) {
@@ -144,9 +144,15 @@ chrome.windows.onCreated.addListener(() => {
           when there is only one window (happend on Mac OS) so I just run the openFirstSession here.
         */
         actions.session.openFirstSession()
+          .then(() => {
+            actions.window.setBadgeColors({ windowId: window.id })
+          })
       } else {
         if (gl.refreshUnsavedWindows) {
           actions.window.refreshUnsavedWindows()
+            .then(() => {
+              actions.window.setBadgeColors({ windowId: window.id })
+            })
         }
       }
     })
