@@ -23,7 +23,7 @@ export default function messageControl(
             sendResponse(res)
             gl.refreshUnsavedWindows = true
           })
-        break
+        return true
       }
     case Message.createSession:
       {
@@ -32,7 +32,7 @@ export default function messageControl(
           .then(() => {
             gl.refreshUnsavedWindows = true
           })
-        break
+        return true
       }
 
   }
