@@ -1,3 +1,4 @@
+import isFirefox from "./isFirefox"
 import { DefaultAction, Theme, type Settings } from "./types"
 
 export const DEFAULT_MAIN_CONTAINER_HEIGHT = 470
@@ -5,11 +6,9 @@ export const ALERT_MESSAGE_DURATION_MS = 4000
 export const INPUT_MAX_LENGTH = 25
 export const WINDOWID_NONE = -1
 export const NEW_TAB_URL = ((): string => {
-  try {
-    if (typeof navigator !== "undefined" && /firefox/i.test(navigator.userAgent)) {
-      return "about:newtab"
-    }
-  } catch { }
+  if (isFirefox()) {
+    return "about:newtab"
+  }
   return "chrome://newtab/"
 })()
 export const EMAIL = "flow.extension@gmail.com"

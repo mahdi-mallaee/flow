@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import store from "~store";
+import isFirefox from "~utils/isFirefox"
 
 interface Permssions {
   downloads: boolean;
@@ -8,7 +9,6 @@ interface Permssions {
 }
 
 const usePermissions = () => {
-
   const [permissions, _setPermissions] = useState<Permssions>({
     downloads: false,
     history: false,
@@ -17,16 +17,28 @@ const usePermissions = () => {
 
   useEffect(() => {
     const checkAllPermissions = async () => {
-      const [downloadsPermission, historyPermission, displayPermission] = await Promise.allSettled([
+      const tasks: Promise<boolean>[] = [
         chrome.permissions.contains({ permissions: ["downloads"] }),
         chrome.permissions.contains({ permissions: ["history"] }),
-        chrome.permissions.contains({ permissions: ["system.display"] }),
-      ])
+      ]
+
+      const hasDisplayCheck = !isFirefox()
+      if (hasDisplayCheck) {
+        tasks.push(chrome.permissions.contains({ permissions: ["system.display"] }))
+      }
+
+      const results = await Promise.allSettled(tasks)
+
+      const downloadsPermission = results[0]
+      const historyPermission = results[1]
+      const displayPermission = hasDisplayCheck ? results[2] : undefined
 
       _setPermissions({
         downloads: downloadsPermission.status === "fulfilled" && downloadsPermission.value,
         history: historyPermission.status === "fulfilled" && historyPermission.value,
-        display: displayPermission.status === "fulfilled" && displayPermission.value
+        display: hasDisplayCheck
+          ? (displayPermission?.status === "fulfilled" && displayPermission.value)
+          : false
       })
     }
 
@@ -44,7 +56,6 @@ const usePermissions = () => {
         store.settings.set({ clearHistoryAfterSessionOpening: false })
       }
     }
-
     _setPermissions(prev => ({ ...prev, ...permissions }))
   }
 
