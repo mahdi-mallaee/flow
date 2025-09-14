@@ -18,7 +18,6 @@ import type { Tab, TabGroup } from "~utils/types"
 const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exludeTabIndex?: number) => {
   let currentWindowTabs = await actions.window.getTabs(windowId)
 
-  // this approach is used to ensuure parallel run for faster update
   const newTabsPromise = tabs.map(t => {
     return chrome.tabs.create({
       url: t.url,
@@ -26,6 +25,10 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exludeT
       windowId: windowId,
     })
   })
+
+  if (newTabsPromise.length === 0) {
+    newTabsPromise.push(chrome.tabs.create({}))
+  }
 
   const currentTabsPromise = currentWindowTabs.map(t => {
     return chrome.tabs.remove(t.id)
