@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "plasmo dev --hoist",
     "build": "plasmo build --hoist",
-    "package": "plasmo package"
+    "package": "plasmo package",
+    "firefox" : "plasmo build --target=firefox-mv3 --hoist"
   },
   "dependencies": {
     "@plasmohq/storage": "^1.6.1",
@@ -32,6 +33,12 @@
     "typescript": "5.0.4"
   },
   "manifest": {
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "@flowtabmanager",
+        "strict_min_version": "58.0"
+      }
+    },
     "permissions": [
       "storage",
       "tabs",
