@@ -2,10 +2,12 @@ import actions from "~actions"
 import type { Backup } from "~utils/types"
 
 /**
+ * @param file - The file to be uploaded, expected to be a JSON file including an array of sessions.
  * @param onError - A callback function to handle errors during the upload process.
  *    It will show alert message in the BackupContainer view
+ * @param onSuccess - A callback function to be called when the upload is successful.
  */
-const upload = (file: File, onError: (msg: string) => void) => {
+const upload = (file: File, onError?: (msg: string) => void, onSuccess?: () => void) => {
   const reader = new FileReader()
   reader.onload = function (event) {
     try {
@@ -15,6 +17,8 @@ const upload = (file: File, onError: (msg: string) => void) => {
           .then(result => {
             if (!result) {
               onError('Backup creation failed')
+            }else{
+              onSuccess()
             }
           })
       }
