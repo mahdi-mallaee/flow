@@ -8,10 +8,8 @@ const PermissionsView = () => {
 
   const handlePermissionToggle = async (permission: string, checked: boolean, key?: string) => {
     if (checked) {
-      const hasPermission = actions.checkPermission(permission)
-      if (hasPermission) {
-        setPermissions({ [key || permission]: true })
-      }
+      const granted = await chrome.permissions.request({ permissions: [permission] })
+      setPermissions({ [key || permission]: granted })
     } else {
       await chrome.permissions.remove({ permissions: [permission] })
       setPermissions({ [key || permission]: false })

@@ -29,7 +29,7 @@ const BackupCard = (
   }
 
   const downloadBackupHandler = async (backup: Backup) => {
-    if (actions.checkPermission("downloads")) {
+    if (await chrome.permissions.request({ permissions: ['downloads'] })) {
       const result = await actions.backup.download(backup)
       if (!result) {
         showAlert({ text: 'Backup download failed', type: 'error' })
