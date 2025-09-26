@@ -4,6 +4,8 @@ import store from "~store"
 import { LANDING_PAGE_URL, UNINSTALL_URL } from "~utils/constants"
 import type { BgGlobalVar, Tab } from "~utils/types"
 import { Message } from '~utils/types'
+import browser from "webextension-polyfill";
+(globalThis as any).chrome = browser;
 
 export { }
 
@@ -123,7 +125,7 @@ chrome.tabs.onReplaced.addListener(() => {
   actions.session.refreshTabs(gl)
 })
 
-chrome.windows.onBoundsChanged.addListener(() => {
+chrome.windows.onBoundsChanged?.addListener(() => {
   actions.window.refreshWindowPositions()
 })
 chrome.windows.onRemoved.addListener(() => {

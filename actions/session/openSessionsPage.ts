@@ -7,7 +7,7 @@ type input = {
 }
 
 const openSessionsPage = async ({ windowId, pin = true, active = false }: input) => {
-  const pageUrl = 'chrome-extension://' + chrome.runtime.id + '/tabs/sessions.html'
+  const pageUrl = chrome.runtime.getURL('tabs/sessions.html')
   const windowTabs = await actions.window.getTabs(windowId)
   const index = windowTabs.findIndex(tab => tab.url === pageUrl)
 

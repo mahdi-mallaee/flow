@@ -86,12 +86,6 @@ const UnsavedAlert = () => {
         {
           getUIState()
         }
-        <div className="show-alert-checkbox">
-          <input id="show-alert" type="checkbox" onChange={async (e) => {
-            await store.settings.set({ showUnsavedWindowAlert: !Boolean(e.target.checked) })
-          }} />
-          <label htmlFor="show-alert">don't show this warning again</label>
-        </div>
       </div>
     </ThemeProvider>
   )

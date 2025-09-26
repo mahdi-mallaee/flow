@@ -10,6 +10,7 @@ import BackupCard from "~components/BackupCard"
 import useAlertMessage from "~hooks/useAlertMessage"
 import actions from "~actions"
 import store from "~store"
+import isFirefox from "~utils/isFirefox"
 
 const BackupsView = ({ }) => {
 
@@ -45,7 +46,7 @@ const BackupsView = ({ }) => {
   }
 
   const uploadBackupHandler = (file: File) => {
-    actions.backup.upload(file, onUploadError)
+    actions.backup.upload(file, onUploadError,)
   }
 
   const deleteAllBackupsHandler = () => {
@@ -53,6 +54,20 @@ const BackupsView = ({ }) => {
   }
 
   const [initialAnimation, setInitialAnimation] = useState(false)
+
+  const openUploadWindow = () => {
+    const url = chrome.runtime.getURL("tabs/upload.html");
+    if (chrome.windows && chrome.windows.create) {
+      chrome.windows.create({
+        url,
+        type: "popup",
+        width: 600,
+        height: 280
+      });
+    } else {
+      chrome.tabs.create({ url });
+    }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -85,8 +100,17 @@ const BackupsView = ({ }) => {
           <div className="new-backup-button" onClick={() => setGetBackupName(true)}><MdAdd /> <span>create new backup</span></div>
         }
         <div className="file-input-container">
-          <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
-          <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackupHandler(event.target.files[0])} />
+          {isFirefox() ?
+            <div className="custom-file-input" onClick={openUploadWindow}>
+              <MdUploadFile />
+              <span>Upload A Local Backup</span>
+            </div>
+            :
+            <>
+              <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
+              <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackupHandler(event.target.files[0])} />
+            </>
+          }
         </div>
         <div className="delete-all-backups-container">
           {showDeleteBackups ?

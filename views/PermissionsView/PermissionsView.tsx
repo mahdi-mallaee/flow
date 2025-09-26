@@ -1,16 +1,15 @@
 import actions from "~actions"
 import ToggleSwitch from "~components/ToggleSwitch"
 import usePermissions from "~hooks/usePermissions"
+import isFirefox from "~utils/isFirefox"
 
 const PermissionsView = () => {
   const { permissions, setPermissions } = usePermissions()
 
   const handlePermissionToggle = async (permission: string, checked: boolean, key?: string) => {
     if (checked) {
-      const hasPermission = await actions.checkPermission(permission)
-      if (hasPermission) {
-        setPermissions({ [key || permission]: true })
-      }
+      const granted = await chrome.permissions.request({ permissions: [permission] })
+      setPermissions({ [key || permission]: granted })
     } else {
       await chrome.permissions.remove({ permissions: [permission] })
       setPermissions({ [key || permission]: false })
@@ -45,16 +44,19 @@ const PermissionsView = () => {
           />
         </div>
 
-        <div className="item">
-          <div className="title">
-            Display
-            <div className="desc">This is required for saving window positions and restoring them</div>
+        {
+          !isFirefox() &&
+          <div className="item">
+            <div className="title">
+              Display
+              <div className="desc">This is required for saving window positions and restoring them</div>
+            </div>
+            <ToggleSwitch
+              checked={permissions.display}
+              onChange={(checked) => handlePermissionToggle("system.display", checked, "display")}
+            />
           </div>
-          <ToggleSwitch
-            checked={permissions.display}
-            onChange={(checked) => handlePermissionToggle("system.display", checked, "display")}
-          />
-        </div>
+        }
 
       </div>
     </div>

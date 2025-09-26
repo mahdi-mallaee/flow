@@ -7,6 +7,9 @@ import ViewRouter from '~views/ViewRouter'
 import { MemoryRouter } from 'react-router-dom'
 import { DEFAULT_MAIN_CONTAINER_HEIGHT } from '~utils/constants'
 import actions from '~actions'
+import browser from "webextension-polyfill";
+(globalThis as any).chrome = browser;
+
 
 const IndexPopup = () => {
   const [containerHeight, setContainerHeight] = useState(DEFAULT_MAIN_CONTAINER_HEIGHT)

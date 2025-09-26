@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import store from "~store"
 import type { Settings, WindowState } from "~utils/types"
 import actions from "~actions"
+import isFirefox from "~utils/isFirefox"
 
 const AdditionalSettingsView = () => {
 
@@ -89,23 +90,27 @@ const AdditionalSettingsView = () => {
             onChange={(checked) => setSettingsHandler({ createSessionInCurrentWindow: checked })} />
         </div>
 
-        <div className="item">
-          <div className="title">
-            Save window positions
-            {!permissions.display &&
-              <div className="desc warning">Display permission is not granted!</div>
-            }
-          </div>
-          <ToggleSwitch checked={settings.saveWindowsPosition}
-            disabled={!permissions.display}
-            onChange={(checked) => {
-              if (permissions.display) {
-                setSettingsHandler({ saveWindowsPosition: checked })
-              } else {
-                nav('/permissions')
+        {
+          !isFirefox() &&
+
+          <div className="item">
+            <div className="title">
+              Save window positions
+              {!permissions.display &&
+                <div className="desc warning">Display permission is not granted!</div>
               }
-            }} />
-        </div>
+            </div>
+            <ToggleSwitch checked={settings.saveWindowsPosition}
+              disabled={!permissions.display}
+              onChange={(checked) => {
+                if (permissions.display) {
+                  setSettingsHandler({ saveWindowsPosition: checked })
+                } else {
+                  nav('/permissions')
+                }
+              }} />
+          </div>
+        }
 
         <div className="item">
           <div className="title">
