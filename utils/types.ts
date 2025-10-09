@@ -72,7 +72,8 @@ export type Settings = {
   createSessionInCurrentWindow: boolean,
   saveWindowsPosition: boolean,
   clearHistoryAfterSessionOpening: boolean,
-  showSessionBadge: boolean
+  showSessionBadge: boolean,
+  storageArea: "local" | "sync",
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'

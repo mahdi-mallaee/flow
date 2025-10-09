@@ -38,5 +38,6 @@ export const DEFAULT_SETTINGS: Settings = {
   defaultAction: DefaultAction.popup,
   saveWindowsPosition: false,
   clearHistoryAfterSessionOpening: false,
-  showSessionBadge: true
+  showSessionBadge: true,
+  storageArea: "local",
 }

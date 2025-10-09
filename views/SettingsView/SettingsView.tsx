@@ -97,11 +97,14 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Default Action</div>
+          <div className="title">Storage</div>
           <Dropdown
-            value={settings.defaultAction}
-            options={defaultActionOptions}
-            onChange={defaultActionHandler} />
+            value={settings.storageArea}
+            options={[
+              { value: "local", label: "Local" },
+              { value: "sync", label: "Sync" }
+            ]}
+            onChange={(option: "local" | "sync") => setSettingsHandler({ storageArea: option })} />
         </div>
 
         <div className="item">
