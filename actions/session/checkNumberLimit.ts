@@ -1,4 +1,4 @@
-import store from "~store"
+import Store from "~store"
 import { SESSION_NUMBER_LIMIT } from "~utils/constants"
 
 /**
@@ -7,7 +7,7 @@ import { SESSION_NUMBER_LIMIT } from "~utils/constants"
  */
 
 const checkNumberLimit = async (): Promise<boolean> => {
-  const number = await store.sessions.getNumbers()
+  const number = await Store.sessions.getNumbers()
   if (number < SESSION_NUMBER_LIMIT) {
     return true
   } else {

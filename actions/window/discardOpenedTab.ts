@@ -1,4 +1,4 @@
-import store from "~store"
+import Store from "~store"
 import type { OpenedTab } from "~utils/types"
 
 /**
@@ -11,14 +11,14 @@ import type { OpenedTab } from "~utils/types"
  * @returns Promise that resolves when the tab has been discarded or an error has occurred.
  */
 const discardOpenedTab = async (id: number,) => {
-  const openedTabs: OpenedTab[] = await store.windows.getOpenedTabs()
+  const openedTabs: OpenedTab[] = await Store.windows.getOpenedTabs()
   if (openedTabs && openedTabs.length >= 1) {
     const tab = openedTabs.find(ot => ot.id === id)
     if (tab && id && !tab.discarded) {
       try {
         await chrome.tabs.discard(id)
         tab.discarded = true
-        await store.windows.setOpenedTabs(openedTabs)
+        await Store.windows.setOpenedTabs(openedTabs)
       }
       catch (error) {
         if (process.env.NODE_ENV === "development") {

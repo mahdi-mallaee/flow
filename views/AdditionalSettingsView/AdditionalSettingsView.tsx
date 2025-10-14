@@ -4,7 +4,7 @@ import useAlertMessage from "~hooks/useAlertMessage"
 import usePermissions from "~hooks/usePermissions"
 import useSettings from "~hooks/useSettings"
 import { useNavigate } from "react-router-dom"
-import store from "~store"
+import Store from "~store"
 import type { Settings, WindowState } from "~utils/types"
 import actions from "~actions"
 import isFirefox from "~utils/isFirefox"
@@ -21,7 +21,7 @@ const AdditionalSettingsView = () => {
   ]
 
   const setSettingsHandler = async (settings: Partial<Settings>) => {
-    const result = await store.settings.set(settings)
+    const result = await Store.settings.set(settings)
     if (!result) {
       showAlert({ text: 'Settings update failed', type: 'error' })
     }

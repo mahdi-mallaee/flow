@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import store from "~store";
+import Store from "~store";
 import isFirefox from "~utils/isFirefox"
 
 interface Permssions {
@@ -48,12 +48,12 @@ const usePermissions = () => {
   const setPermissions = (permissions: Partial<Permssions>) => {
     if (typeof permissions?.display === "boolean") {
       if (!permissions.display) {
-        store.settings.set({ saveWindowsPosition: false })
+        Store.settings.set({ saveWindowsPosition: false })
       }
     }
     if (typeof permissions?.history === "boolean") {
       if (!permissions.history) {
-        store.settings.set({ clearHistoryAfterSessionOpening: false })
+        Store.settings.set({ clearHistoryAfterSessionOpening: false })
       }
     }
     _setPermissions(prev => ({ ...prev, ...permissions }))

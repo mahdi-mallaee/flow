@@ -1,5 +1,5 @@
 import { MdDelete, MdDownload } from "react-icons/md"
-import store from "~store"
+import Store from "~store"
 import type { Backup } from "~utils/types"
 import './BackupCard.scss'
 import actions from "~actions"
@@ -13,7 +13,7 @@ const BackupCard = (
   const { showAlert, renderAlert } = useAlertMessage()
 
   const removeBackup = async (id: string) => {
-    const result = await store.backups.remove(id)
+    const result = await Store.backups.remove(id)
     if (!result) {
       showAlert({ text: 'Backup removal failed', type: 'error' })
     }

@@ -13,7 +13,7 @@ import setOpenStatus from "./setOpenStatus"
 import setTabs from "./setTabs"
 
 const sessionsStore = {
-  setTabs,
+  setTabs: setTabs,
   getTabs,
   create,
   getAll,

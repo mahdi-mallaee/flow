@@ -1,62 +1,27 @@
-import './index.scss'
-import { useStorage } from "@plasmohq/storage/hook"
-import { Storage } from "@plasmohq/storage"
-import ThemeProvider from "~components/ThemeProvider"
-import { useEffect, useRef, useState } from 'react'
-import ViewRouter from '~views/ViewRouter'
-import { MemoryRouter } from 'react-router-dom'
-import { DEFAULT_MAIN_CONTAINER_HEIGHT } from '~utils/constants'
-import actions from '~actions'
-import browser from "webextension-polyfill";
-(globalThis as any).chrome = browser;
+// popup/index.tsx (Plasmo entry)
+import "./index.scss"
+import { useEffect, useState } from "react"
+import browser from "webextension-polyfill"
+import Store from "~store"
+(globalThis as any).chrome = browser
+import IndexPopup from "~views/IndexPopup"
 
+export default function PopupBootstrap() {
+  const [ready, setReady] = useState(false)
 
-const IndexPopup = () => {
-  const [containerHeight, setContainerHeight] = useState(DEFAULT_MAIN_CONTAINER_HEIGHT)
-
-  const [mainViewHeight, setMainViewHeight] = useStorage<number>({
-    key: "mainheight",
-    instance: new Storage({
-      area: "local"
-    })
-  }, DEFAULT_MAIN_CONTAINER_HEIGHT)
-
-  const ref = useRef(null)
   useEffect(() => {
-
-    const observer = new ResizeObserver(entries => {
-      const height = entries[0].target.clientHeight
-      if (height != DEFAULT_MAIN_CONTAINER_HEIGHT) {
-        setContainerHeight(height)
-      }
-    })
-    observer.observe(ref.current)
-
-    actions.session.refreshOpenSessions()
-    actions.window.refreshUnsavedWindows()
+    let mounted = true
+    Store.getInstance().init()
+      .then(() => mounted && setReady(true))
+      .catch((err) => {
+        console.error("Failed to initialize Store before rendering popup:", err)
+      })
     return () => {
-      observer.disconnect()
+      mounted = false
     }
   }, [])
 
-  useEffect(() => {
-    if (containerHeight !== DEFAULT_MAIN_CONTAINER_HEIGHT) {
-      setMainViewHeight(containerHeight)
-    }
-  }, [containerHeight])
+  if (!ready) return null
 
-
-  return (
-    <ThemeProvider>
-      <MemoryRouter>
-        <div className="main-view">
-          <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
-            <ViewRouter />
-          </div>
-        </div >
-      </MemoryRouter>
-    </ThemeProvider >
-  )
+  return <IndexPopup />
 }
-
-export default IndexPopup

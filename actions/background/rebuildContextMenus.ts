@@ -1,4 +1,4 @@
-import store from "~store";
+import Store from "~store";
 import type { Session } from "~utils/types";
 
 const PARENT_ID = "move-to-session";
@@ -12,7 +12,7 @@ async function rebuildContextMenus() {
     contexts: ["all"]
   });
 
-  const sessions: Session[] = await store.sessions.getAll()
+  const sessions: Session[] = await Store.sessions.getAll()
 
   sessions.forEach((session: Session) => {
     chrome.contextMenus.create({

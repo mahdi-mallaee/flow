@@ -1,5 +1,5 @@
 import { type OpenSessionInput, type Tab } from "~utils/types";
-import store from "~store";
+import Store from "~store";
 import actions from "~actions";
 import { NEW_TAB_URL, WINDOWID_NONE } from "~utils/constants";
 
@@ -37,20 +37,20 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
 
   let windowId = WINDOWID_NONE
 
-  const { openSessionInCurrentWindow, deleteNewTabsWhenOpeningSession, clearHistoryAfterSessionOpening } = await store.settings.getAll()
+  const { openSessionInCurrentWindow, deleteNewTabsWhenOpeningSession, clearHistoryAfterSessionOpening } = await Store.settings.getAll()
   // if ctrl key is being held this setting will be altered 
   const openInCurrentWindow = alterSettingsBehavior ? !openSessionInCurrentWindow : openSessionInCurrentWindow
 
   if (openInCurrentWindow) {
     windowId = actions.window.checkId(currentWindowId) ? currentWindowId : (await chrome.windows.getCurrent()).id
 
-    const openSessions = await store.sessions.getOpenStatus()
+    const openSessions = await Store.sessions.getOpenStatus()
     const currentSessionIndex = openSessions.findIndex(s => s.windowId === windowId)
     if (currentSessionIndex >= 0) {
       // closing the current open session
       const currentSessionId = openSessions[currentSessionIndex].sessionId
       if (currentSessionId) {
-        await store.sessions.setOpenStatus(currentSessionId, { isOpen: false, windowId: WINDOWID_NONE })
+        await Store.sessions.setOpenStatus(currentSessionId, { isOpen: false, windowId: WINDOWID_NONE })
       } else {
         windowId = await actions.window.create(sessionId)
       }
@@ -62,18 +62,18 @@ const open = async (sessionId: string, alterSettingsBehavior = false, currentWin
   } else {
     windowId = await actions.window.create(sessionId)
   }
-  let sessionTabs: Tab[] = await store.sessions.getTabs(sessionId)
+  let sessionTabs: Tab[] = await Store.sessions.getTabs(sessionId)
   if (deleteNewTabsWhenOpeningSession) {
     sessionTabs = sessionTabs.filter(t => t.url !== NEW_TAB_URL)
     if (sessionTabs.length < 1) {
       sessionTabs = [{ groupId: -1, id: -1, index: 0, pinned: false, url: NEW_TAB_URL, windowId, iconUrl: "", title: "" }]
     }
   }
-  const groups = await store.sessions.getGroups(sessionId)
+  const groups = await Store.sessions.getGroups(sessionId)
   await actions.window.update(windowId, sessionTabs, groups, exludedTabIndex)
   actions.window.setBadgeColors({sessionId})
   // set the session as open and assign the window id to it for updates
-  await store.sessions.setOpenStatus(sessionId, { isOpen: true, windowId })
+  await Store.sessions.setOpenStatus(sessionId, { isOpen: true, windowId })
 
   await actions.session.refreshGroups()
 

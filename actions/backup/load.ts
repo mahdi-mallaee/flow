@@ -1,10 +1,10 @@
 import actions from "~actions"
-import store from "~store"
+import Store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
 import type { Backup } from "~utils/types"
 
 const load = async (id: string): Promise<boolean> => {
-  const backups: Backup[] = await store.backups.getAll()
+  const backups: Backup[] = await Store.backups.getAll()
   const index = backups.findIndex(b => b.id === id)
   const backup = index >= 0 ? backups[index] : undefined
 
@@ -16,7 +16,7 @@ const load = async (id: string): Promise<boolean> => {
       session.windowId = WINDOWID_NONE
     })
 
-    const result = await store.sessions.setAll(backup.sessions)
+    const result = await Store.sessions.setAll(backup.sessions)
     if (!result) {
       if (process.env.NODE_ENV === 'development') {
         console.error('ERROR: could not set the backup sessions -> store/backup/load l.21 ')

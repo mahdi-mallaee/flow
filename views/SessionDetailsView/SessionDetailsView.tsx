@@ -5,7 +5,7 @@ import { useState } from "react"
 import { MdClose, MdDelete } from "~node_modules/react-icons/md"
 import { BiWindowOpen } from "~node_modules/react-icons/bi"
 import { FaArrowRightToBracket } from "~node_modules/react-icons/fa6"
-import store from "~store"
+import Store from "~store"
 import actions from "~actions"
 import TabItem from "~components/TabItem"
 
@@ -87,7 +87,7 @@ const SessionDetailsView = () => {
                   onClick={async () => {
                     if (!selectedSession.isOpen) {
                       const newTabs = selectedSession.tabs.filter(t => !selectedTabIds.includes(t.id))
-                      await store.sessions.setTabs(selectedSession.id, newTabs)
+                      await Store.sessions.setTabs(selectedSession.id, newTabs)
                       setSelectedTabIds([])
                     } else {
                       await chrome.tabs.remove(selectedTabIds)
@@ -99,7 +99,7 @@ const SessionDetailsView = () => {
 
                 <div className="icon-button"
                   onClick={async () => {
-                    const settings = await store.settings.getAll()
+                    const settings = await Store.settings.getAll()
                     if (settings.openSessionInCurrentWindow) {
                       selectedTabIds.forEach(async id => {
                         const tab = selectedSession.tabs.find(t => t.id === id)

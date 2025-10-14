@@ -6,7 +6,7 @@ import { HiOutlineBars2 } from "react-icons/hi2";
 import { TbLayersIntersect } from "react-icons/tb";
 import { FaSnowflake } from "react-icons/fa"
 import { INPUT_MAX_LENGTH, NUMBER_OF_COLOR_CODES } from "~utils/constants";
-import store from "~store";
+import Store from "~store";
 import actions from "~actions";
 import { ItemDragController } from "~components/ReorderList/Reorder";
 import { useNavigate } from "~node_modules/react-router-dom";
@@ -100,7 +100,7 @@ const SessionCard = (
             {Array.from({ length: NUMBER_OF_COLOR_CODES }, (_, i) => i + 1).map((i: number) => {
               return <div key={i} className={`color-${i}`}
                 onClick={() => {
-                  store.sessions.basicUpdate(session.id, { colorCode: i })
+                  Store.sessions.basicUpdate(session.id, { colorCode: i })
                 }}>
               </div>
             })}
@@ -114,7 +114,7 @@ const SessionCard = (
         <div className="buttons-container">
           <div className={"icon-button session-freeze-button " + (session.freeze ? "freeze" : "")}
             onClick={() => {
-              store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
+              Store.sessions.setOpenStatus(session.id, { freeze: !(session.freeze || false) })
                 .then(() => {
                   actions.session.refreshTabs()
                 })

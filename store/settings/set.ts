@@ -1,11 +1,11 @@
 import { Storage } from "@plasmohq/storage"
-import store from "~store"
+import Store from "~store"
 import { DEFAULT_SETTINGS } from "~utils/constants"
 import { StoreKeys, type Settings } from "~utils/types"
 
 const set = async (newSettings: Partial<Settings>): Promise<boolean> => {
   const localStorage = new Storage({ area: "local" })
-  const settings: Settings = await store.settings.getAll()
+  const settings: Settings = await Store.settings.getAll()
 
   const updatedSettings: Settings = { ...settings, ...newSettings }
 

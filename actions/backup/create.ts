@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid"
-import store from "~store"
+import Store from "~store"
 import { type Backup, type BackupStatus, type Session } from "~utils/types"
 
 type backupInput = {
@@ -20,7 +20,7 @@ type backupInput = {
  * @returns A boolean indicating whether the backup was successfully created.
  */
 const create = async ({ status, title, relatedItem, sessions }: backupInput): Promise<boolean> => {
-  sessions = sessions || await store.sessions.getAll()
+  sessions = sessions || await Store.sessions.getAll()
 
   const newBackup: Backup = {
     id: uuidv4(),
@@ -31,7 +31,7 @@ const create = async ({ status, title, relatedItem, sessions }: backupInput): Pr
     relatedItem
   }
 
-  const result = await store.backups.create(newBackup)
+  const result = await Store.backups.create(newBackup)
   return result
 
 }

@@ -1,5 +1,5 @@
 import { type UnsavedWindow, type SessionOpenStatus } from "~utils/types"
-import store from "~store"
+import Store from "~store"
 
 /**
  * Refreshes the list of unsaved windows by checking the current open windows and comparing them to the session status.
@@ -8,7 +8,7 @@ import store from "~store"
  * @returns An array of `UnsavedWindow` objects representing the unsaved windows.
  */
 const refreshUnsavedWindows = async (onlyGet = false): Promise<UnsavedWindow[]> => {
-  const sessions: SessionOpenStatus[] = await store.sessions.getOpenStatus()
+  const sessions: SessionOpenStatus[] = await Store.sessions.getOpenStatus()
   let unsavevdWindows: UnsavedWindow[] = []
   const windows = await chrome.windows.getAll()
 
@@ -26,7 +26,7 @@ const refreshUnsavedWindows = async (onlyGet = false): Promise<UnsavedWindow[]> 
     }
   }
   if (!onlyGet) {
-    await store.windows.setUnsavedWindows(unsavevdWindows)
+    await Store.windows.setUnsavedWindows(unsavevdWindows)
   }
 
   return unsavevdWindows

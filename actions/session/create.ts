@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { type Session } from "../../utils/types";
-import store from "~store";
+import Store from "~store";
 import actions from "~actions";
 import { NEW_TAB_URL } from "~utils/constants";
 
@@ -55,7 +55,7 @@ const create = async ({ windowId, title, updateWindow = false }: { windowId?: nu
     windowPos: {}
   }
 
-  const result = await store.sessions.create(session)
+  const result = await Store.sessions.create(session)
 
   if (updateWindow) {
     // removing tabs in the current window to start a new session
@@ -70,10 +70,10 @@ const create = async ({ windowId, title, updateWindow = false }: { windowId?: nu
 }
 
 const closeCurrentSession = async (windowId: number): Promise<boolean> => {
-  const openStatus = await store.sessions.getOpenStatus()
+  const openStatus = await Store.sessions.getOpenStatus()
   const session = openStatus.find(status => status.windowId === windowId)
   if (session) {
-    await store.sessions.setOpenStatus(session.sessionId, { isOpen: false, windowId: -1 })
+    await Store.sessions.setOpenStatus(session.sessionId, { isOpen: false, windowId: -1 })
     return true
   }
   return false

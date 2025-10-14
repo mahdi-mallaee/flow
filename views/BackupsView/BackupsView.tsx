@@ -9,7 +9,7 @@ import { BACKUP_NUMBER_LIMIT, INPUT_MAX_LENGTH } from "~utils/constants"
 import BackupCard from "~components/BackupCard"
 import useAlertMessage from "~hooks/useAlertMessage"
 import actions from "~actions"
-import store from "~store"
+import Store from "~store"
 import isFirefox from "~utils/isFirefox"
 
 const BackupsView = ({ }) => {
@@ -50,7 +50,7 @@ const BackupsView = ({ }) => {
   }
 
   const deleteAllBackupsHandler = () => {
-    store.backups.removeAll()
+    Store.backups.removeAll()
   }
 
   const [initialAnimation, setInitialAnimation] = useState(false)

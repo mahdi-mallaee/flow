@@ -1,4 +1,4 @@
-import store from "~store"
+import Store from "~store"
 import type { OpenedTab, Tab } from "~utils/types"
 
 /**
@@ -22,7 +22,7 @@ const setOpenTabs = async (windowTabs: Tab[], exludeTabIndex?: number) => {
   } else if (openedTabs.length > 0) {
     openedTabs[openedTabs.length - 1].discarded = true
   }
-  await store.windows.setOpenedTabs(openedTabs)
+  await Store.windows.setOpenedTabs(openedTabs)
 }
 
 export default setOpenTabs

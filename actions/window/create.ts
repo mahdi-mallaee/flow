@@ -1,5 +1,5 @@
 import actions from "~actions"
-import store from "~store"
+import Store from "~store"
 import { WINDOWID_NONE } from "~utils/constants"
 import type { WindowPosition } from "~utils/types"
 
@@ -12,12 +12,12 @@ import type { WindowPosition } from "~utils/types"
  * @returns The ID of the newly created window, or `WINDOWID_NONE` if the window could not be created.
  */
 const create = async (sessionId?: string): Promise<number> => {
-  const settings = await store.settings.getAll()
+  const settings = await Store.settings.getAll()
   let id: number = WINDOWID_NONE
   let window = null
 
   if (settings.saveWindowsPosition && sessionId) {
-    let windowPos = await store.sessions.getWindowPos(sessionId)
+    let windowPos = await Store.sessions.getWindowPos(sessionId)
     windowPos = await actions.window.getWindowPosBound(windowPos)
     window = await chrome.windows.create({
       height: windowPos?.height,

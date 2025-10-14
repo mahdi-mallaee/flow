@@ -1,7 +1,7 @@
-import store from "~store";
+import Store from "~store";
 
 const refreshWindowPositions = async () => {
-  const sessions = await store.sessions.getAll()
+  const sessions = await Store.sessions.getAll()
   for (const session of sessions) {
     if (session.isOpen && !session.freeze) {
       const window = await chrome.windows.get(session.windowId)
@@ -11,7 +11,7 @@ const refreshWindowPositions = async () => {
         height: window.height,
         width: window.width
       }
-      await store.sessions.basicUpdate(session.id, { windowPos })
+      await Store.sessions.basicUpdate(session.id, { windowPos })
     }
   }
 }

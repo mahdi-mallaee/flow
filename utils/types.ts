@@ -3,6 +3,7 @@ export interface Session extends
   Omit<SessionOpenStatus, 'sessionId'>,
   Omit<SessionTabsStore, 'sessionId'> { }
 
+export type StorageArea = "local" | "sync"
 
 export interface WindowPosition {
   width?: number,

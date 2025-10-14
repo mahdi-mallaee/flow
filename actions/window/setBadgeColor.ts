@@ -1,11 +1,11 @@
-import store from "~store"
+import Store from "~store"
 import { COLOR_CODES } from "~utils/constants"
 
 const setBadgeColors = async ({ sessionId, windowId }: { sessionId?: string, windowId?: number }) => {
-  const sessions = await store.sessions.getAll()
+  const sessions = await Store.sessions.getAll()
   const session = sessionId ? sessions.find(s => s.id === sessionId) : sessions.find(s => s.windowId === windowId)
 
-  const settings = await store.settings.getAll()
+  const settings = await Store.settings.getAll()
   if (settings.showSessionBadge) {
     if (session) {
       await chrome.action.setBadgeText({ text: session.title[0].toUpperCase() })

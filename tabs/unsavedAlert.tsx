@@ -3,7 +3,7 @@ import './unsavedAlert.scss'
 import Logo from "~components/Logo"
 import { useEffect, useState } from "react"
 import actions from "~actions"
-import store from "~store"
+import Store from "~store"
 
 const UnsavedAlert = () => {
   type state = 'default' | 'saved-session' | 'error'

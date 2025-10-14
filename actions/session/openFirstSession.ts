@@ -1,5 +1,5 @@
 import { type Session, type Tab } from "~utils/types"
-import store from "~store"
+import Store from "~store"
 import actions from "~actions"
 
 /**
@@ -11,7 +11,7 @@ import actions from "~actions"
  * If there is a main session and it was not the last closed window, it will open that session.
  */
 const openFirstSession = async () => {
-  const sessions = await store.sessions.getAll()
+  const sessions = await Store.sessions.getAll()
   const mainSession = sessions.find(session => session.main === true)
   const windows = await chrome.windows.getAll()
 
@@ -20,7 +20,7 @@ const openFirstSession = async () => {
       const windowTabs = await actions.window.getTabs(windows[0].id)
 
       if (compareTabs(windowTabs, mainSession.tabs)) {
-        await store.sessions.setOpenStatus(mainSession.id, { windowId: windows[0].id })
+        await Store.sessions.setOpenStatus(mainSession.id, { windowId: windows[0].id })
       } else {
         await openMainSession(mainSession)
       }
@@ -35,7 +35,7 @@ const openFirstSession = async () => {
         for (const session of sessions) {
           if (compareTabs(windowTabs, session.tabs)) {
             retry = false
-            await store.sessions.setOpenStatus(session.id, { windowId: window.id })
+            await Store.sessions.setOpenStatus(session.id, { windowId: window.id })
             break
           }
         }

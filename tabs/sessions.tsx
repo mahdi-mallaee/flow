@@ -10,7 +10,7 @@ import Toolbar from "~components/Toolbar"
 import type { Session, Tab } from "~utils/types"
 import actions from "~actions"
 import Sidebar from "~components/Sidebar"
-import store from "~store"
+import Store from "~store"
 
 const SessionsTabPage = () => {
   const sessions = useSessions()
@@ -45,7 +45,7 @@ const SessionsTabPage = () => {
   }, [sessions])
 
   const mainSesssionHandler = () => {
-    store.sessions.basicUpdate(selectedSession.id, { main: !selectedSession.main })
+    Store.sessions.basicUpdate(selectedSession.id, { main: !selectedSession.main })
   }
 
   return (

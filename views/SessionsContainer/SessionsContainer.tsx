@@ -3,7 +3,7 @@ import SessionCard from "~components/SessionCard"
 import { type Session } from "~utils/types"
 import { useRef, useState, type MouseEvent } from "react"
 import './SessionsContainer.scss'
-import store from "~store"
+import Store from "~store"
 import useSessions from "~hooks/useSessions"
 import useSettings from "~hooks/useSettings"
 import useAlertMessage from "~hooks/useAlertMessage"
@@ -21,7 +21,7 @@ const SessionsContainer = () => {
   const sessions = useSessions()
 
   const mainButtonClickHandler = (id: string) => {
-    store.sessions.basicUpdate(id, { main: true })
+    Store.sessions.basicUpdate(id, { main: true })
   }
 
   const deleteSession = async (session: Session) => {
@@ -42,7 +42,7 @@ const SessionsContainer = () => {
         return
       }
     }
-    await store.sessions.remove(session.id)
+    await Store.sessions.remove(session.id)
     actions.window.refreshUnsavedWindows()
   }
 
@@ -57,7 +57,7 @@ const SessionsContainer = () => {
         return
       }
 
-      const result = await store.sessions.basicUpdate(id, { title })
+      const result = await Store.sessions.basicUpdate(id, { title })
       if (!result) {
         showAlert({ text: 'Session edit failed', type: 'error' })
         return
@@ -145,13 +145,13 @@ const SessionsContainer = () => {
             sessions.findIndex(s => s.tabs.length > 30) >= 0 &&
             <div className="limit-number">
               Sessions with over 30 tabs will be slow!
-              <MdClose onClick={() => store.settings.set({ showLargeSessionWarning: false })} />
+              <MdClose onClick={() => Store.settings.set({ showLargeSessionWarning: false })} />
             </div>
           }
 
           <ReorderList
             items={sessions}
-            onReorder={async (items) => { await store.sessions.setAll(items) }}
+            onReorder={async (items) => { await Store.sessions.setAll(items) }}
             scrollRef={scrollRef}>
             {sessions.map(session => {
               return (

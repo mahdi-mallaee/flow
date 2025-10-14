@@ -5,7 +5,7 @@ import { useStorage } from '@plasmohq/storage/hook'
 import { Storage } from '@plasmohq/storage'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight, MdFavoriteBorder } from 'react-icons/md'
-import store from '~store'
+import Store from '~store'
 import useSettings from '~hooks/useSettings'
 import { useNavigate } from 'react-router-dom'
 import actions from '~actions'
@@ -48,7 +48,7 @@ const SettignsView = () => {
   })
 
   const setSettingsHandler = async (settings: Partial<Settings>) => {
-    const result = await store.settings.set(settings)
+    const result = await Store.settings.set(settings)
     if (!result) {
       showAlert({ text: 'Settings update failed', type: 'error' })
     }
@@ -97,14 +97,20 @@ const SettignsView = () => {
         </div>
 
         <div className="item">
-          <div className="title">Storage</div>
+          <div className="title">
+            Storage
+            <div className="desc">Extension will be restarted after change</div>
+          </div>
           <Dropdown
             value={settings.storageArea}
             options={[
               { value: "local", label: "Local" },
               { value: "sync", label: "Sync" }
             ]}
-            onChange={(option: "local" | "sync") => setSettingsHandler({ storageArea: option })} />
+            onChange={(option: "local" | "sync") => {
+              Store.setArea(option)
+            }} />
+
         </div>
 
         <div className="item">
@@ -157,7 +163,7 @@ const SettignsView = () => {
 
         <div className="item">
           <div className="title">Reset settings to default</div>
-          <div className="reset-button" onClick={() => store.settings.reset()}>Reset</div>
+          <div className="reset-button" onClick={() => Store.settings.reset()}>Reset</div>
         </div>
       </div>
     </div>
