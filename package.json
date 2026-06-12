@@ -9,15 +9,15 @@
     "dev": "plasmo dev --hoist",
     "build": "plasmo build --hoist",
     "package": "plasmo package",
-    "firefox" : "plasmo build --target=firefox-mv3 --hoist"
+    "firefox": "plasmo build --target=firefox-mv3 --hoist"
   },
   "dependencies": {
     "@plasmohq/storage": "^1.6.1",
-    "framer-motion": "^10.12.21",
+    "motion": "^12.40.0",
     "plasmo": "0.74.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.10.1",
+    "react-icons": "^5.6.0",
     "react-router-dom": "^6.15.0",
     "uuid": "^9.0.0",
     "webextension-polyfill": "^0.12.0"
@@ -26,11 +26,12 @@
     "@plasmohq/prettier-plugin-sort-imports": "3.6.4",
     "@types/chrome": "^0.0.266",
     "@types/node": "20.2.4",
-    "@types/react": "18.2.7",
-    "@types/react-dom": "18.2.4",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "@types/webextension-polyfill": "^0.12.3",
     "prettier": "2.8.8",
-    "typescript": "5.0.4"
+    "sharp": "^0.35.1",
+    "typescript": "^6.0.3"
   },
   "manifest": {
     "browser_specific_settings": {

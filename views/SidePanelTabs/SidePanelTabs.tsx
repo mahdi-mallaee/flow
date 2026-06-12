@@ -3,7 +3,7 @@ import type { Session, Tab } from '~utils/types';
 import './SidePanelTabs.scss';
 import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import ContextMenu from '~components/ContextMenu/ContexMenu';
 
 const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {

@@ -4,7 +4,7 @@ import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
 import { useEffect, useState } from "react"
 import { MdAdd, MdClose, MdDeleteOutline, MdDone, MdUploadFile } from "react-icons/md"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { BACKUP_NUMBER_LIMIT, INPUT_MAX_LENGTH } from "~utils/constants"
 import BackupCard from "~components/BackupCard"
 import useAlertMessage from "~hooks/useAlertMessage"
@@ -54,7 +54,7 @@ const BackupsView = ({ }) => {
   }
 
   const [initialAnimation, setInitialAnimation] = useState(false)
-
+  
   const openUploadWindow = () => {
     const url = chrome.runtime.getURL("tabs/upload.html");
     if (chrome.windows && chrome.windows.create) {
