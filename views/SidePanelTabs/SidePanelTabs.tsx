@@ -52,7 +52,7 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
   const [contextPos, setContextPos] = useState({ x: 0, y: 0 })
   const [contextTab, setContextTab] = useState<Tab>()
 
-  const contextRef = useRef<HTMLDivElement>()
+  const contextRef = useRef<HTMLDivElement | null>(null)
 
   const tabOnContextMenuHandler = (e: React.MouseEvent, tab: Tab) => {
     e.stopPropagation()
