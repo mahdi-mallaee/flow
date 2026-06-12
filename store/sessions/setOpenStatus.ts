@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type SessionOpenStatus } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
-import actions from "~actions"
+import { WINDOWID_NONE } from "~utils/constants"
 
 const setOpenStatus = async (sessionId: string, status: Partial<SessionOpenStatus>) => {
   {
@@ -9,12 +9,21 @@ const setOpenStatus = async (sessionId: string, status: Partial<SessionOpenStatu
     let sessionsOpenStatus: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
 
     let index = sessionsOpenStatus.findIndex(os => os.sessionId === sessionId)
-    let newStatus: SessionOpenStatus = { sessionId: sessionId, isOpen: false, windowId: -1, freeze: false }
+    const duplicateWindowIndex = sessionsOpenStatus.findIndex(os => os.windowId == status.windowId)
 
     if (index === -1 && sessionId) {
+      let newStatus: SessionOpenStatus = {
+        sessionId: sessionId,
+        isOpen: status.isOpen || false,
+        windowId: status.windowId || WINDOWID_NONE,
+        freeze: status.freeze || false
+      }
       index = sessionsOpenStatus.push(newStatus) - 1
     }
-
+    
+    if (duplicateWindowIndex !== -1 && sessionsOpenStatus[duplicateWindowIndex].sessionId !== sessionId) {
+      sessionsOpenStatus[duplicateWindowIndex].isOpen = false
+    }
 
     if (typeof status.isOpen === 'boolean') {
       sessionsOpenStatus[index].isOpen = status.isOpen

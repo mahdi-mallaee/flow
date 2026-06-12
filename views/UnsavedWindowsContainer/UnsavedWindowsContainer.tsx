@@ -3,7 +3,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
 import { StoreKeys, type UnsavedWindow } from "~utils/types"
 import './UnsavedWindowsContainer.scss'
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useState } from "react"
 import { WINDOWID_NONE } from "~utils/constants"
 import actions from "~actions"

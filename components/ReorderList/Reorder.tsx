@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode, type MutableRefObject, useRef } from 'react'
 import './Reorder.scss'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'motion/react'
 
 interface ListProps {
   items: any[],

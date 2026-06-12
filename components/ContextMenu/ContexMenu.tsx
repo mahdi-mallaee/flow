@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { NEW_TAB_URL } from '~utils/constants'
 import type { Tab } from '~utils/types'
 const ContextMenu = ({ x, y, tab, contextRef }: { x: number, y: number, tab: Tab, contextRef: any }) => {
