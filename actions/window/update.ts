@@ -1,6 +1,4 @@
 import actions from "~actions"
-import groupTabs from "~actions/session/groupTabs"
-import setOpenTabs from "~actions/session/setOpenTabs"
 import logger from "~utils/logger"
 import type { Tab, TabGroup } from "~utils/types"
 
@@ -42,9 +40,9 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exclude
     logger.error("Error updating tabs", error)
   }
 
-  await groupTabs(groups, tabs, windowId)
+  await actions.window.groupTabs(groups, tabs, windowId)
   currentWindowTabs = await actions.window.getTabs(windowId)
-  await setOpenTabs(currentWindowTabs, excludeTabIndex)
+  await actions.window.setOpenTabs(currentWindowTabs, excludeTabIndex)
 }
 
 export default update

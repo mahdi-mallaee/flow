@@ -7,7 +7,9 @@ import isUnsaved from "./isUnsaved";
 import refreshUnsavedWindows from "./refreshUnsavedWindows";
 import checkId from "./checkId";
 import update from "./update";
-import refreshWindowPositions from "~actions/session/refreshWindowPosition";
+import refreshWindowPositions from "./refreshWindowPosition";
+import setOpenTabs from "./setOpenTabs";
+import groupTabs from "./groupTabs";
 import getWindowPosBound from "./getWindowPosBound";
 import setBadgeColors from "./setBadgeColor";
 
@@ -22,6 +24,8 @@ const windowActions = {
   checkId,
   update,
   refreshWindowPositions,
+  setOpenTabs,
+  groupTabs,
   getWindowPosBound,
   setBadgeColors,
 }
