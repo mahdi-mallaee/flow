@@ -1,4 +1,4 @@
-import createSession from "./createSessoin"
+import createSession from "./createSession"
 import rebuildContextMenus from "./rebuildContextMenus"
 import showUnsavedAlert from "./showUnsavedAlert"
 

@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom"
 import AboutUsView from "~views/AboutUsView"
 import BackupsView from "~views/BackupsView"
-import DonationView from "~views/DontationView"
+import DonationView from "~views/DonationView"
 import Header from "~components/Header"
-import SettignsView from "~views/SettingsView"
+import SettingsView from "~views/SettingsView"
 import AdditionalSettingsView from "./AdditionalSettingsView"
 import MainView from "./MainView/MainView"
 import PermissionsView from "./PermissionsView"
@@ -18,7 +18,7 @@ const ViewRouter = () => {
 
       <Route path="/settings" element={<>
         <Header headerButtonPath="/" />
-        <SettignsView />
+        <SettingsView />
       </>} />
 
       <Route path="/backups" element={<>

@@ -8,7 +8,7 @@ import useSessions from "~hooks/useSessions"
 import actions from "~actions"
 import SessionsContainer from "~views/SessionsContainer"
 import UnsavedWindowsContainer from "~views/UnsavedWindowsContainer"
-import SettignsView from "~views/SettingsView"
+import SettingsView from "~views/SettingsView"
 
 function SidePanel() {
 
@@ -37,7 +37,7 @@ function SidePanel() {
       )
     } else if (sidePanelState === 'settings') {
       return (
-        <SettignsView />
+        <SettingsView />
       )
     } else {
       return (
