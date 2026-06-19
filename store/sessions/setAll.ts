@@ -2,6 +2,7 @@ import { Storage } from "@plasmohq/storage"
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
 import actions from "~actions"
+import logger from "~utils/logger"
 
 const setAll = async (sessions: Session[]): Promise<boolean> => {
   if (!sessions) {
@@ -42,10 +43,8 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
     await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
     await localStorage.set(SessionsKeys.tab, sessionsTabs)
   } catch {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: could not set the sessions correctly -> store/sessions/setAll l.12')
-      console.log('a backup will be created')
-    }
+    logger.error('ERROR: could not set the sessions correctly -> store/sessions/setAll l.12')
+    logger.log('a backup will be created')
     await actions.backup.create({ status: "manual", title: 'incorrect session set backup', sessions })
     return false
   }

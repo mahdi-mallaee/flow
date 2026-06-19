@@ -1,6 +1,7 @@
 import actions from "~actions"
 import groupTabs from "~actions/session/groupTabs"
 import setOpenTabs from "~actions/session/setOpenTabs"
+import logger from "~utils/logger"
 import type { Tab, TabGroup } from "~utils/types"
 
 /**
@@ -37,8 +38,8 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exclude
   try {
     await Promise.allSettled(newTabsPromise)
     await Promise.allSettled(currentTabsPromise)
-  } catch {
-    console.log("Error updating tabs")
+  } catch (error) {
+    logger.error("Error updating tabs", error)
   }
 
   await groupTabs(groups, tabs, windowId)

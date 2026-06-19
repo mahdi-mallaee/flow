@@ -5,6 +5,7 @@ import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
 import { AnimatePresence, motion } from 'motion/react';
 import ContextMenu from '~components/ContextMenu/ContexMenu';
+import logger from '~utils/logger';
 
 const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
 
@@ -41,7 +42,7 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
 
   const closeAllClickHandler = () => {
     if (selectedTabs.length === tabs.length) {
-      console.log('this will remove the session')
+      logger.warn('this will remove the session')
     } else {
       chrome.tabs.remove(selectedTabs)
       setSelectedTabs([])

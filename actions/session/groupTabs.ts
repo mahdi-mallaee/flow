@@ -1,4 +1,5 @@
 import actions from "~actions"
+import logger from "~utils/logger"
 import type { Tab, TabGroup } from "~utils/types"
 
 const groupTabs = async (groups: TabGroup[], tabs: Tab[], windowId: number, tryCount = 0) => {
@@ -18,16 +19,14 @@ const groupTabs = async (groups: TabGroup[], tabs: Tab[], windowId: number, tryC
           groupTabs(groups, tabs, windowId, tryCount + 1)
         }
       } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('ERROR: could not group tabs correctly -> actions/session/groupTabs l.12', error)
-        }
+        logger.error('ERROR: could not group tabs correctly -> actions/session/groupTabs l.12', error)
       }
     }
   })
   try {
     await Promise.allSettled(groupPromises)
-  } catch {
-    console.log("Error grouping tabs")
+  } catch (error) {
+    logger.error("Error grouping tabs", error)
   }
 }
 
