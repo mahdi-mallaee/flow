@@ -1,9 +1,9 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { SessionsKeys, type BasicSession } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
 
 const basicUpdate = async (sessionId: string, { title, main, groups, colorCode, windowPos }: Partial<BasicSession>): Promise<boolean> => {
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
   const sessions: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
   const session = sessions.find(s => s.id === sessionId)
   if (session) {

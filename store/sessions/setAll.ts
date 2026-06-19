@@ -1,4 +1,4 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
 import actions from "~actions"
@@ -9,7 +9,7 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
     return
   }
 
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
 
   const basicSessions: BasicSession[] = sessions.map(s => {
     return {

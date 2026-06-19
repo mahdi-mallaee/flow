@@ -1,8 +1,8 @@
-import { Storage } from "@plasmohq/storage";
+import { localStore } from "~utils/storageManager";
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types";
 
 const getAll = async (): Promise<Session[]> => {
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
   let basics: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
   let opens: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
   let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
