@@ -16,7 +16,8 @@
       ]
     },
     "types": [
-      "chrome"
+      "chrome",
+      "node"
     ],
     "ignoreDeprecations": "6.0"
   }
