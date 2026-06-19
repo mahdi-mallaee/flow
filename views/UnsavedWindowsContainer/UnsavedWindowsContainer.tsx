@@ -8,7 +8,6 @@ import { useEffect, useState } from "react"
 import { WINDOWID_NONE } from "~utils/constants"
 import actions from "~actions"
 import useAlertMessage from "~hooks/useAlertMessage"
-import checkNumberLimit from "~actions/session/checkNumberLimit"
 
 const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
@@ -23,7 +22,7 @@ const UnsavedWindowsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
-    const checkLimit = await checkNumberLimit()
+    const checkLimit = await actions.session.checkNumberLimit()
     if (!checkLimit) {
       showAlert({
         text: "You've reached session numbers limit!",

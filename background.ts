@@ -1,5 +1,4 @@
 import actions from "~actions"
-import messageControl from "~actions/background/messageControl"
 import store from "~store"
 import { LANDING_PAGE_URL, UNINSTALL_URL } from "~utils/constants"
 import type { BgGlobalVar, Tab } from "~utils/types"
@@ -164,7 +163,7 @@ chrome.runtime.onMessage.addListener((
   { message, payload }:
     { message: Message, payload: any }, sender, sendResponse) => {
 
-  messageControl(gl, sender, message, payload, sendResponse)
+  actions.background.messageControl(gl, sender, message, payload, sendResponse)
 
   return true
 })
