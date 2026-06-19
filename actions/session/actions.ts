@@ -9,15 +9,15 @@ import refreshGroups from "./refreshGroups";
 import moveTabs from "./moveTabs";
 
 const sessionActions = {
-  create: create,
-  open: open,
-  refreshTabs: refreshTabs,
-  refreshOpenSessions: refreshOpenSessions,
-  openFirstSession: openFirstSession,
-  checkNumberLimit: checkNumberLimit,
-  openSessionsPage: openSessionsPage,
-  refreshGroups: refreshGroups,
-  moveTabs: moveTabs,
+  create,
+  open,
+  refreshTabs,
+  refreshOpenSessions,
+  openFirstSession,
+  checkNumberLimit,
+  openSessionsPage,
+  refreshGroups,
+  moveTabs,
 }
 
 export default sessionActions

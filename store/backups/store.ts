@@ -4,10 +4,10 @@ import remove from "./remove";
 import removeAll from "./removeAll";
 
 const backupStore = {
-  create: create,
-  remove: remove,
-  getAll: getAll,
-  removeAll: removeAll
+  create,
+  remove,
+  getAll,
+  removeAll
 }
 
 export default backupStore

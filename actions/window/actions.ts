@@ -12,18 +12,18 @@ import getWindowPosBound from "./getWindowPosBound";
 import setBadgeColors from "./setBadgeColor";
 
 const windowActions = {
-  create: create,
-  discardOpenedTab: discardOpenedTab,
-  getTabs: getTabs,
-  getGroups: getGroups,
-  refreshUnsavedWindows: refreshUnsavedWindows,
-  isUnsaved: isUnsaved,
-  includesTab: includesTab,
-  checkId: checkId,
-  update: update,
-  refreshWindowPositions: refreshWindowPositions,
-  getWindowPosBound: getWindowPosBound,
-  setBadgeColors: setBadgeColors,
+  create,
+  discardOpenedTab,
+  getTabs,
+  getGroups,
+  refreshUnsavedWindows,
+  isUnsaved,
+  includesTab,
+  checkId,
+  update,
+  refreshWindowPositions,
+  getWindowPosBound,
+  setBadgeColors,
 }
 
 export default windowActions

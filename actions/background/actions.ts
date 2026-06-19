@@ -3,9 +3,9 @@ import rebuildContextMenus from "./rebuildContextMenus"
 import showUnsavedAlert from "./showUnsavedAlert"
 
 const backgroundActions = {
-  createSession: createSession,
-  rebuildContextMenus: rebuildContextMenus,
-  showUnsavedAlert: showUnsavedAlert
+  createSession,
+  rebuildContextMenus,
+  showUnsavedAlert
 }
 
 export default backgroundActions

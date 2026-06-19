@@ -5,11 +5,11 @@ import runInterval from "./runInterval";
 import upload from "./upload";
 
 const backupActions = {
-  create: create,
-  download: download,
-  upload: upload,
-  runInterval: runInterval,
-  load: load
+  create,
+  download,
+  upload,
+  runInterval,
+  load
 }
 
 export default backupActions
