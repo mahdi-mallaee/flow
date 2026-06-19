@@ -1,13 +1,4 @@
-import getAll from "./getAll"
-import reset from "./reset"
-import set from "./set"
-import update from "./update"
-
-const settingsStore = {
-  getAll,
-  reset,
-  set,
-  update
-}
-
-export default settingsStore
+export { default as getAll } from "./getAll";
+export { default as reset } from "./reset";
+export { default as set } from "./set";
+export { default as update } from "./update";

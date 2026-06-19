@@ -1,9 +1,2 @@
-import openSession from "./openSession"
-import createSession from "./createSession"
-
-const messageActions = {
-  openSession,
-  createSession,
-}
-
-export default messageActions
+export { default as openSession } from "./openSession";
+export { default as createSession } from "./createSession";

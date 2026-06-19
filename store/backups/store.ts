@@ -1,13 +1,4 @@
-import create from "./create";
-import getAll from "./getAll";
-import remove from "./remove";
-import removeAll from "./removeAll";
-
-const backupStore = {
-  create,
-  remove,
-  getAll,
-  removeAll
-}
-
-export default backupStore
+export { default as create } from "./create";
+export { default as getAll } from "./getAll";
+export { default as remove } from "./remove";
+export { default as removeAll } from "./removeAll";

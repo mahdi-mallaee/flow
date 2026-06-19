@@ -1,11 +1,3 @@
-import getOpenedTabs from "./getOpenedTabs"
-import setUnsavedWindows from "./setUnsavedWindows"
-import setOpenedTabs from "./setOpenedTabs"
-
-const windowsStore = {
-  setOpenedTabs,
-  getOpenedTabs,
-  setUnsavedWindows,
-}
-
-export default windowsStore
+export { default as getOpenedTabs } from "./getOpenedTabs";
+export { default as setUnsavedWindows } from "./setUnsavedWindows";
+export { default as setOpenedTabs } from "./setOpenedTabs";
