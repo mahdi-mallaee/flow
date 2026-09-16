@@ -60,23 +60,25 @@ chrome.runtime.onStartup.addListener(() => {
   actions.background.rebuildContextMenus()
 })
 
-chrome.tabGroups.onCreated.addListener(() => {
-  actions.session.refreshTabs(gl)
-  actions.session.refreshGroups()
-})
-chrome.tabGroups.onRemoved.addListener(() => {
-  if (!gl.closingWindow) {
+if (chrome.tabGroups) {
+  chrome.tabGroups.onCreated.addListener(() => {
     actions.session.refreshTabs(gl)
-  }
-})
-chrome.tabGroups.onMoved.addListener(() => {
-  actions.session.refreshTabs(gl)
-  actions.session.refreshGroups()
-})
-chrome.tabGroups.onUpdated.addListener(() => {
-  actions.session.refreshTabs(gl)
-  actions.session.refreshGroups()
-})
+    actions.session.refreshGroups()
+  })
+  chrome.tabGroups.onRemoved.addListener(() => {
+    if (!gl.closingWindow) {
+      actions.session.refreshTabs(gl)
+    }
+  })
+  chrome.tabGroups.onMoved.addListener(() => {
+    actions.session.refreshTabs(gl)
+    actions.session.refreshGroups()
+  })
+  chrome.tabGroups.onUpdated.addListener(() => {
+    actions.session.refreshTabs(gl)
+    actions.session.refreshGroups()
+  })
+}
 
 chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs(gl)

@@ -46,7 +46,10 @@ const BackupsView = ({ }) => {
   }
 
   const uploadBackupHandler = (file: File) => {
-    actions.backup.upload(file, onUploadError,)
+    if (!file) return
+    actions.backup.upload(file, onUploadError, () => {
+      showAlert({ text: "Backup uploaded successfully", type: "info" })
+    })
   }
 
   const deleteAllBackupsHandler = () => {
@@ -119,7 +122,7 @@ const BackupsView = ({ }) => {
               Delete All Backups
             </div>
             :
-            <div className="confirmation-dialouge">
+            <div className="confirmation-dialogue">
               <span>This action is irreversible. Are you sure?</span>
               <div className='close-delete-button' onClick={() => setShowDeleteBackups(true)}><MdClose /></div>
               <div className='confirm-delete-button' onClick={deleteAllBackupsHandler}><MdDone /></div>

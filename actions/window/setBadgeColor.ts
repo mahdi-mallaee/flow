@@ -8,8 +8,9 @@ const setBadgeColors = async ({ sessionId, windowId }: { sessionId?: string, win
   const settings = await store.settings.getAll()
   if (settings.showSessionBadge) {
     if (session) {
-      await chrome.action.setBadgeText({ text: session.title[0].toUpperCase() })
-      await chrome.action.setBadgeBackgroundColor({ color: COLOR_CODES[session.colorCode] })
+      const char = session.title && session.title.length > 0 ? session.title[0].toUpperCase() : "S"
+      await chrome.action.setBadgeText({ text: char })
+      await chrome.action.setBadgeBackgroundColor({ color: COLOR_CODES[session.colorCode] || "gray" })
     } else {
       await chrome.action.setBadgeBackgroundColor({ color: "white" })
       await chrome.action.setBadgeText({ text: 'N' })
