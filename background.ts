@@ -43,12 +43,24 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.tabs.create({ url: LANDING_PAGE_URL });
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
     actions.background.rebuildContextMenus()
+    actions.backup.runInterval()
   } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
     actions.background.rebuildContextMenus()
     store.settings.update()
+    actions.backup.runInterval()
   }
 })
+
+if (chrome.alarms) {
+  chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "flow-auto-backup") {
+      actions.backup.create({
+        status: "interval backups"
+      })
+    }
+  })
+}
 
 chrome.runtime.onStartup.addListener(() => {
   gl.refreshUnsavedWindows = false

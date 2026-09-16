@@ -11,17 +11,10 @@ import { useNavigate } from 'react-router-dom'
 import actions from '~actions'
 import useAlertMessage from '~hooks/useAlertMessage'
 
-const SettignsView = () => {
+const SettingsView = () => {
   const settings = useSettings()
   const nav = useNavigate()
   const { showAlert, renderAlert } = useAlertMessage()
-
-  const [autoBackupIntervalId] = useStorage({
-    key: StoreKeys.autoBackupIntervalId,
-    instance: new Storage({
-      area: "local"
-    })
-  })
 
   const autoBackupsIntervalDropdownOptions = [
     { value: '0', label: "Never" },
@@ -55,22 +48,22 @@ const SettignsView = () => {
   }
 
   const defaultActionHandler = async (option: DefaultAction) => {
-    try {
-      await setSettingsHandler({ defaultAction: option })
+    await setSettingsHandler({ defaultAction: option })
 
-      const windowId = (await chrome.windows.getCurrent()).id || -1
+    const windowId = (await chrome.windows.getCurrent()).id || -1
 
+    if (chrome.sidePanel) {
       if (option === DefaultAction.popup) {
-        await chrome.action.openPopup({ windowId })
+        if (chrome.action?.openPopup) {
+          await chrome.action.openPopup({ windowId })
+        }
         await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false })
-        await chrome.sidePanel.setOptions({ enabled: false, })
+        await chrome.sidePanel.setOptions({ enabled: false })
       } else {
         await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
-        await chrome.sidePanel.setOptions({ enabled: true, })
+        await chrome.sidePanel.setOptions({ enabled: true })
         await chrome.sidePanel.open({ windowId })
       }
-    } finally {
-      return
     }
   }
 
@@ -112,10 +105,7 @@ const SettignsView = () => {
             onChange={(option: BackupIntervalTime) => {
               setSettingsHandler({ autoBackupsInterval: option })
                 .then(() => {
-                  if (autoBackupIntervalId) {
-                    clearInterval(autoBackupIntervalId)
-                    actions.backup.runInterval()
-                  }
+                  actions.backup.runInterval()
                 })
             }}
           />
@@ -161,4 +151,4 @@ const SettignsView = () => {
   )
 }
 
-export default SettignsView
+export default SettingsView

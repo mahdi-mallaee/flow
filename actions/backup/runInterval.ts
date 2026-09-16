@@ -1,28 +1,23 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys } from "~utils/types"
 import store from "~store"
-import actions from "~actions"
+
+export const AUTO_BACKUP_ALARM = "flow-auto-backup"
 
 /**
- * Runs an interval that automatically creates a backup at the specified interval.
- * The interval is determined by the user's settings, and is stored in the local storage.
- * If the interval is set to 0, no interval will be created.
+ * Sets up a recurring chrome alarm that automatically creates a backup at the specified interval.
+ * If the interval is set to 0, any existing alarm will be cleared.
  */
 const runInterval = async () => {
-  const localStorage = new Storage({ area: 'local' })
+  if (!chrome.alarms) return
   const settings = await store.settings.getAll()
-  const interval = Number.parseInt(settings.autoBackupsInterval) * 60 * 1000
+  const intervalMinutes = Number.parseInt(settings.autoBackupsInterval)
 
-  if (interval > 0) {
-    const intervalId = setInterval(() => {
-      actions.backup.create({
-        status: 'interval backups',
-      })
-    }, interval)
+  await chrome.alarms.clear(AUTO_BACKUP_ALARM)
 
-    await localStorage.set(StoreKeys.autoBackupIntervalId, intervalId)
+  if (intervalMinutes > 0) {
+    chrome.alarms.create(AUTO_BACKUP_ALARM, {
+      periodInMinutes: intervalMinutes
+    })
   }
-
 }
 
 export default runInterval
