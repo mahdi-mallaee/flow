@@ -9,27 +9,25 @@ import store from "~store"
  */
 const refreshUnsavedWindows = async (onlyGet = false): Promise<UnsavedWindow[]> => {
   const sessions: SessionOpenStatus[] = await store.sessions.getOpenStatus()
-  let unsavevdWindows: UnsavedWindow[] = []
-  const windows = await chrome.windows.getAll()
+  const unsavedWindows: UnsavedWindow[] = []
+  const windows = await chrome.windows.getAll({ populate: true })
+
+  const sessionWindowIds = new Set(sessions.map(session => session.windowId))
 
   for (const window of windows) {
-    let index = -1
-    if (sessions) {
-      index = sessions.findIndex(session => { return session.windowId === window.id })
-    }
-    if (index === -1) {
-      const tabsCount = (await chrome.tabs.query({ windowId: window.id })).length
-      unsavevdWindows.push({
+    if (!sessionWindowIds.has(window.id)) {
+      unsavedWindows.push({
         id: window.id,
-        tabsCount
+        tabsCount: window.tabs?.length || 0
       })
     }
   }
+
   if (!onlyGet) {
-    await store.windows.setUnsavedWindows(unsavevdWindows)
+    await store.windows.setUnsavedWindows(unsavedWindows)
   }
 
-  return unsavevdWindows
+  return unsavedWindows
 }
 
 export default refreshUnsavedWindows

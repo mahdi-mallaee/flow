@@ -26,7 +26,6 @@ const upload = (file: File, onError?: (msg: string) => void, onSuccess?: () => v
     } catch {
       onError?.('File is not in JSON format')
     }
-
   }
   reader.readAsText(file)
 }

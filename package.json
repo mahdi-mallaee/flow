@@ -4,7 +4,7 @@
   "version": "1.2.9",
   "description": "A new way to manage chrome tabs and windows easily.",
   "author": "Mahdi Mallaee",
-"packageManager": "pnpm@8.10.3",
+  "packageManager": "pnpm@8.10.3",
   "scripts": {
     "dev": "plasmo dev --hoist",
     "build": "plasmo build --hoist",

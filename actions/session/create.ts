@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { type Session } from "../../utils/types";
+import type { Session } from "~utils/types";
 import store from "~store";
 import actions from "~actions";
 import { NEW_TAB_URL } from "~utils/constants";

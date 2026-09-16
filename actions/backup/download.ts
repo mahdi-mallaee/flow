@@ -1,4 +1,5 @@
 import type { Backup } from "~utils/types"
+import logger from "~utils/logger"
 
 const download = async (backup: Backup): Promise<boolean> => {
   const backupJsonString = JSON.stringify(backup)
@@ -7,9 +8,7 @@ const download = async (backup: Backup): Promise<boolean> => {
     const blob = new Blob([backupJsonString], { type: "application/json" })
     downloadUrl = URL.createObjectURL(blob)
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: could not create the backup blob -> store/backup/download l.7', error)
-    }
+    logger.error('ERROR: could not create the backup blob -> actions/backup/download', error)
     return false
   }
 
@@ -20,11 +19,13 @@ const download = async (backup: Backup): Promise<boolean> => {
       url: downloadUrl,
       filename: fileName + '.json'
     })
+    setTimeout(() => {
+      URL.revokeObjectURL(downloadUrl)
+    }, 10000)
     return true
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: could not download the backup -> store/backup/download l.19', error)
-    }
+    logger.error('ERROR: could not download the backup -> actions/backup/download', error)
+    URL.revokeObjectURL(downloadUrl)
     return false
   }
 }

@@ -31,7 +31,6 @@ const create = async (sessionId?: string): Promise<number> => {
     })
   }
 
-
   if (actions.window.checkId(window.id)) {
     id = window.id
   }

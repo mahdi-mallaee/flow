@@ -73,20 +73,20 @@ chrome.runtime.onStartup.addListener(() => {
 })
 
 if (chrome.tabGroups) {
-  chrome.tabGroups.onCreated.addListener(() => {
+  chrome.tabGroups.onCreated?.addListener(() => {
     actions.session.refreshTabs(gl)
     actions.session.refreshGroups()
   })
-  chrome.tabGroups.onRemoved.addListener(() => {
-    if (!gl.closingWindow) {
+  chrome.tabGroups.onRemoved?.addListener(() => {
+    if (!gl.closingWindow.status) {
       actions.session.refreshTabs(gl)
     }
   })
-  chrome.tabGroups.onMoved.addListener(() => {
+  chrome.tabGroups.onMoved?.addListener(() => {
     actions.session.refreshTabs(gl)
     actions.session.refreshGroups()
   })
-  chrome.tabGroups.onUpdated.addListener(() => {
+  chrome.tabGroups.onUpdated?.addListener(() => {
     actions.session.refreshTabs(gl)
     actions.session.refreshGroups()
   })

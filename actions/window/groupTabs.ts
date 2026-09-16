@@ -13,8 +13,11 @@ const groupTabs = async (groups: TabGroup[], tabs: Tab[], windowId: number, tryC
 
     if (tabIds.length > 0) {
       try {
-        const newTabGroupId = await chrome.tabs.group({ tabIds, createProperties: { windowId } })
-        await chrome.tabGroups.update(newTabGroupId, { collapsed: group.collapsed, color: group.color, title: group.title })
+        const newTabGroupId = (await chrome.tabs.group({
+          tabIds: tabIds as [number, ...number[]],
+          createProperties: { windowId }
+        })) as number
+        await chrome.tabGroups.update(newTabGroupId, { collapsed: group.collapsed, color: group.color as chrome.tabGroups.Color, title: group.title })
         const groupCheck = await actions.window.getGroups(windowId)
         if (groupCheck.length !== groups.length && tryCount < 3) {
           await groupTabs(groups, tabs, windowId, tryCount + 1)

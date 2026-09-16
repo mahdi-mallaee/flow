@@ -4,6 +4,7 @@ import type { Session } from "~utils/types";
 const PARENT_ID = "move-to-session";
 
 async function rebuildContextMenus() {
+  chrome.contextMenus.removeAll();
   if (!chrome.contextMenus) return;
   await chrome.contextMenus.removeAll();
 
