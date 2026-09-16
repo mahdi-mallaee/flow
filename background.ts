@@ -103,7 +103,7 @@ chrome.tabs.onUpdated.addListener((id, info, tab) => {
     */
     actions.window.discardOpenedTab(id)
   }
-  if ((info.url || info.groupId || info.pinned !== undefined || info.title) && gl.closingWindow.windowId !== tab.windowId) {
+  if ((info.url || info.groupId || info.pinned !== undefined || (info.title && tab.status !== "loading")) && gl.closingWindow.windowId !== tab.windowId) {
     /*
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs
