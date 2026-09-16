@@ -1,10 +1,11 @@
-import { Storage } from "@plasmohq/storage"
 import { BACKUP_NUMBER_LIMIT } from "~utils/constants"
+import { localStore } from "~utils/storageManager"
 import { StoreKeys, type Backup } from "~utils/types"
+import logger from "~utils/logger"
 
 const create = async (backup: Backup): Promise<boolean> => {
   try {
-    const localStorage = new Storage({ area: 'local' })
+    const localStorage = localStore
 
     let backups: Backup[] = await localStorage.get(StoreKeys.backups) || []
 
@@ -20,10 +21,7 @@ const create = async (backup: Backup): Promise<boolean> => {
     return true
 
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: creating backup -> store/backup/create l.7', error)
-    }
-
+    logger.error('ERROR: creating backup -> store/backups/create', error)
     return false
   }
 }

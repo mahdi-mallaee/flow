@@ -1,16 +1,17 @@
-import { Storage } from "@plasmohq/storage"
 import store from "~store"
 import { DEFAULT_SETTINGS } from "~utils/constants"
+import { localStore } from "~utils/storageManager"
 import { StoreKeys, type Settings } from "~utils/types"
+import logger from "~utils/logger"
 
 const update = async (): Promise<boolean> => {
-  const localStorage = new Storage({ area: "local" })
+  const localStorage = localStore
   const settings: Settings = await store.settings.getAll()
 
   const validKeys = Object.keys(DEFAULT_SETTINGS)
 
   validKeys.forEach(key => {
-    if (!Object.keys(settings).includes(key)) {
+    if (settings[key] === undefined) {
       settings[key] = DEFAULT_SETTINGS[key]
     }
   })
@@ -18,11 +19,8 @@ const update = async (): Promise<boolean> => {
   try {
     await localStorage.set(StoreKeys.settings, settings)
     return true
-
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: could not set the settings -> store/settings/set l.18', error)
-    }
+    logger.error('ERROR: could not set the settings -> store/settings/update', error)
     return false
   }
 }

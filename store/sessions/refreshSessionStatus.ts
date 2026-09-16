@@ -1,14 +1,13 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { v4 } from "uuid"
 import { StoreKeys } from "~utils/types"
 
 /**
-* Sessions are seperated in different parts and if anything changes this functino will becalled,
+* Sessions are separated into different parts; whenever anything changes this function is called,
 * indicating the sessions have changed so the UI gets the updated sessions
 */
-
 const refreshSessionStatus = async () => {
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
   await localStorage.set(StoreKeys.sessionsStatusId, v4())
 }
 

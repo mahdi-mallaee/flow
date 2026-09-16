@@ -3,9 +3,14 @@ import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, 
 
 const getAll = async (): Promise<Session[]> => {
   const localStorage = localStore
-  let basics: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
-  let opens: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
-  let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
+  const [basics = [], opens = [], sessionsTabs = []] = await Promise.all([
+    localStorage.get<BasicSession[]>(SessionsKeys.basic).then(res => res || []),
+    localStorage.get<SessionOpenStatus[]>(SessionsKeys.open).then(res => res || []),
+    localStorage.get<SessionTabsStore[]>(SessionsKeys.tab).then(res => res || [])
+  ])
+
+  const opensMap = new Map<string, SessionOpenStatus>(opens.map(o => [o.sessionId, o]))
+  const tabsMap = new Map<string, SessionTabsStore>(sessionsTabs.map(st => [st.sessionId, st]))
 
   const sessions: Session[] = []
 
@@ -21,8 +26,8 @@ const getAll = async (): Promise<Session[]> => {
       sessionId: basicSession.id,
       tabs: []
     }
-    const openStatus = opens.find(o => o.sessionId === basicSession.id) || defaultOpenStatus
-    const tabsStore = sessionsTabs.find(st => st.sessionId === basicSession.id) || defaultSessionTabs
+    const openStatus = opensMap.get(basicSession.id) || defaultOpenStatus
+    const tabsStore = tabsMap.get(basicSession.id) || defaultSessionTabs
     sessions.push({
       ...basicSession,
       ...openStatus,

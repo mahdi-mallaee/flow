@@ -1,8 +1,8 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type Backup } from "~utils/types"
+import { localStore } from "~utils/storageManager"
+import { StoreKeys } from "~utils/types"
 
 const removeAll = async () => {
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
   await localStorage.set(StoreKeys.backups, [])
 }
 

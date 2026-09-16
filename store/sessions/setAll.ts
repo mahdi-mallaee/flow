@@ -1,12 +1,11 @@
 import { localStore } from "~utils/storageManager"
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
-import actions from "~actions"
 import logger from "~utils/logger"
 
 const setAll = async (sessions: Session[]): Promise<boolean> => {
   if (!sessions) {
-    return
+    return false
   }
 
   const localStorage = localStore
@@ -39,16 +38,17 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
   })
 
   try {
-    await localStorage.set(SessionsKeys.basic, basicSessions)
-    await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
-    await localStorage.set(SessionsKeys.tab, sessionsTabs)
-  } catch {
-    logger.error('ERROR: could not set the sessions correctly -> store/sessions/setAll l.12')
-    logger.log('a backup will be created')
-    await actions.backup.create({ status: "manual", title: 'incorrect session set backup', sessions })
+    await Promise.all([
+      localStorage.set(SessionsKeys.basic, basicSessions),
+      localStorage.set(SessionsKeys.open, sessionsOpenStatus),
+      localStorage.set(SessionsKeys.tab, sessionsTabs)
+    ])
+  } catch (error) {
+    logger.error('ERROR: could not set the sessions correctly -> store/sessions/setAll', error)
     return false
   }
   await refreshSessionStatus()
   return true
 }
+
 export default setAll

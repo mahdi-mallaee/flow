@@ -1,8 +1,8 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { StoreKeys, type OpenedTab } from "~utils/types"
 
 const getOpenedTabs = async (): Promise<OpenedTab[]> => {
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
   const openedTabs: OpenedTab[] = await localStorage.get(StoreKeys.openedTabs) || []
   return openedTabs
 }

@@ -1,8 +1,8 @@
-import { Storage } from "@plasmohq/storage";
+import { localStore } from "~utils/storageManager";
 import { StoreKeys, type UnsavedWindow } from "~utils/types";
 
 const setUnsavedWindows = async (windows: UnsavedWindow[]) => {
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
   if (windows) {
     await localStorage.set(StoreKeys.unsavedWindows, windows)
   }

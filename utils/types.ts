@@ -44,7 +44,7 @@ export type Tab = {
 export type TabGroup = {
   id: number,
   title: string,
-  color: chrome.tabGroups.ColorEnum,
+  color: chrome.tabGroups.Color | `${chrome.tabGroups.Color}`,
   collapsed: boolean
 }
 
@@ -76,7 +76,7 @@ export type Settings = {
 }
 
 export type BackupIntervalTime = '0' | '10' | '30' | '60' | '120'
-export type WindowState = chrome.windows.windowStateEnum
+export type WindowState = chrome.windows.WindowState | `${chrome.windows.WindowState}`
 
 export enum Theme {
   light = 'light',
