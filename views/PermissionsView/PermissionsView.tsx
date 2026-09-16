@@ -8,10 +8,10 @@ const PermissionsView = () => {
 
   const handlePermissionToggle = async (permission: string, checked: boolean, key?: string) => {
     if (checked) {
-      const granted = await chrome.permissions.request({ permissions: [permission] })
+      const granted = await chrome.permissions.request({ permissions: [permission as chrome.runtime.ManifestPermission] })
       setPermissions({ [key || permission]: granted })
     } else {
-      await chrome.permissions.remove({ permissions: [permission] })
+      await chrome.permissions.remove({ permissions: [permission as chrome.runtime.ManifestPermission] })
       setPermissions({ [key || permission]: false })
     }
   }
@@ -36,7 +36,7 @@ const PermissionsView = () => {
         <div className="item">
           <div className="title">
             History
-            <div className="desc">This is required for cleaning up histroy after each session openning to reduce duplicates</div>
+            <div className="desc">This is required for cleaning up history after each session opening to reduce duplicates</div>
           </div>
           <ToggleSwitch
             checked={permissions.history}

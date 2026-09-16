@@ -4,7 +4,7 @@ import './SidePanelTabs.scss';
 import { MdAdd, MdClose, MdOutlinePushPin } from 'react-icons/md';
 import { NEW_TAB_URL } from '~utils/constants';
 import { AnimatePresence, motion } from 'motion/react';
-import ContextMenu from '~components/ContextMenu/ContexMenu';
+import ContextMenu from '~components/ContextMenu';
 import logger from '~utils/logger';
 
 const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
@@ -75,17 +75,16 @@ const SidePanelTabs = ({ tabs }: { tabs: Tab[] }) => {
   }, [showContext, contextPos.x, contextPos.y])
 
   useEffect(() => {
-    document.addEventListener('click', () => {
-      setShowContext(false)
-    })
-    document.addEventListener('contextmenu', () => {
-      // e.preventDefault()
-      setShowContext(false)
-    })
-    window.addEventListener('blur', () => {
-      setShowContext(false)
+    const handleClose = () => setShowContext(false)
+    document.addEventListener('click', handleClose)
+    document.addEventListener('contextmenu', handleClose)
+    window.addEventListener('blur', handleClose)
 
-    })
+    return () => {
+      document.removeEventListener('click', handleClose)
+      document.removeEventListener('contextmenu', handleClose)
+      window.removeEventListener('blur', handleClose)
+    }
   }, [])
 
 

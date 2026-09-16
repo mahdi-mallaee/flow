@@ -95,7 +95,6 @@ function SidePanel() {
           <div className="sessions-router">
             {switchView()}
           </div>
-2
         </div>
       </MemoryRouter>
     </ThemeProvider>

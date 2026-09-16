@@ -1,8 +1,6 @@
 import Dropdown from '~components/Dropdown'
 import './SettingsView.scss'
-import { Theme, type BackupIntervalTime, StoreKeys, type Settings, DefaultAction } from '~utils/types'
-import { useStorage } from '@plasmohq/storage/hook'
-import { Storage } from '@plasmohq/storage'
+import { Theme, type BackupIntervalTime, type Settings, DefaultAction } from '~utils/types'
 import ToggleSwitch from '~components/ToggleSwitch'
 import { MdChevronRight, MdFavoriteBorder } from 'react-icons/md'
 import store from '~store'
@@ -24,24 +22,18 @@ const SettingsView = () => {
     { value: '120', label: "2 hour" },
   ]
 
-  const themeOptions = []
-  Object.values(Theme).forEach((value, id) => {
-    themeOptions.push({
-      label: Object.keys(Theme)[id].toString(),
-      value: value
-    })
-  })
+  const themeOptions = Object.entries(Theme).map(([key, value]) => ({
+    label: key,
+    value: value
+  }))
 
-  const defaultActionOptions = []
-  Object.values(DefaultAction).forEach((value, id) => {
-    defaultActionOptions.push({
-      label: Object.keys(DefaultAction)[id].toString(),
-      value: value
-    })
-  })
+  const defaultActionOptions = Object.entries(DefaultAction).map(([key, value]) => ({
+    label: key,
+    value: value
+  }))
 
-  const setSettingsHandler = async (settings: Partial<Settings>) => {
-    const result = await store.settings.set(settings)
+  const setSettingsHandler = async (newSettings: Partial<Settings>) => {
+    const result = await store.settings.set(newSettings)
     if (!result) {
       showAlert({ text: 'Settings update failed', type: 'error' })
     }

@@ -1,4 +1,3 @@
-import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { StoreKeys, type Backup } from "~utils/types"
 import './BackupsView.scss'
@@ -6,19 +5,17 @@ import { useEffect, useState } from "react"
 import { MdAdd, MdClose, MdDeleteOutline, MdDone, MdUploadFile } from "react-icons/md"
 import { AnimatePresence, motion } from "motion/react"
 import { BACKUP_NUMBER_LIMIT, INPUT_MAX_LENGTH } from "~utils/constants"
+import { localStore } from "~utils/storageManager"
 import BackupCard from "~components/BackupCard"
 import useAlertMessage from "~hooks/useAlertMessage"
 import actions from "~actions"
 import store from "~store"
 import isFirefox from "~utils/isFirefox"
 
-const BackupsView = ({ }) => {
-
+const BackupsView = () => {
   const [backups] = useStorage<Backup[]>({
     key: StoreKeys.backups,
-    instance: new Storage({
-      area: "local"
-    })
+    instance: localStore
   }, [])
 
   const { renderAlert, showAlert } = useAlertMessage()
@@ -73,9 +70,10 @@ const BackupsView = ({ }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setInitialAnimation(true)
     }, 200)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -111,14 +109,14 @@ const BackupsView = ({ }) => {
             :
             <>
               <label htmlFor="file-input" className="custom-file-input"><MdUploadFile /><span>Upload A Local Backup</span></label>
-              <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackupHandler(event.target.files[0])} />
+              <input type="file" id="file-input" accept=".json" onChange={(event) => uploadBackupHandler(event.target.files?.[0])} />
             </>
           }
         </div>
         <div className="delete-all-backups-container">
           {showDeleteBackups ?
             <div className="delete-button" onClick={() => setShowDeleteBackups(false)}>
-              <MdDeleteOutline></MdDeleteOutline>
+              <MdDeleteOutline />
               Delete All Backups
             </div>
             :
@@ -148,7 +146,5 @@ const BackupsView = ({ }) => {
     </div>
   )
 }
-
-
 
 export default BackupsView

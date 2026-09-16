@@ -41,7 +41,7 @@ const AdditionalSettingsView = () => {
         <div className="item">
           <div className="title">
             Window size
-            <div className="desc">Chose the default size to open windows</div>
+            <div className="desc">Choose the default size to open windows</div>
           </div>
           <Dropdown
             value={settings.newSessionWindowState}

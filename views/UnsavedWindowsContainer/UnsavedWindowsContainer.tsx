@@ -1,7 +1,7 @@
-import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
 import { StoreKeys, type UnsavedWindow } from "~utils/types"
+import { localStore } from "~utils/storageManager"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useState } from "react"
@@ -12,9 +12,7 @@ import useAlertMessage from "~hooks/useAlertMessage"
 const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
     key: StoreKeys.unsavedWindows,
-    instance: new Storage({
-      area: "local"
-    })
+    instance: localStore
   }, [])
 
   const { showAlert, renderAlert } = useAlertMessage()
@@ -48,9 +46,10 @@ const UnsavedWindowsContainer = () => {
 
   useEffect(() => {
     setCurrentWindow()
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setInitialAnimation(true)
     }, 200)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -77,7 +76,7 @@ const UnsavedWindowsContainer = () => {
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       style={{ overflow: 'hidden' }}>
-                      <div key={window.id} className={'unsaved-window' + ' ' + (window.id === currentWindowId && 'current')}>
+                      <div className={`unsaved-window ${window.id === currentWindowId ? 'current' : ''}`.trim()}>
                         <div className="title">
                           <span className="tabs-count">{window.tabsCount}</span>
                           Unsaved Window ( {window.id} )
