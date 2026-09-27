@@ -1,49 +1,239 @@
 .tab-card {
   display: flex;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
-  height: 40px;
+  box-sizing: border-box;
   align-items: center;
-  gap: 8px;
-  border: 1px solid transparent;
-  padding: 0 4px;
-  overflow: hidden;
-  color: var(--on-background-color);
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  border: 1px solid var(--outline-color);
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.15s ease;
+  user-select: none;
+  cursor: pointer;
 
   &:hover {
-    background-color: var(--primary-color);
-    color: var(--on-primary-color);
-    border: 1px solid var(--outline-color);
-    border-radius: 4px;
-    cursor: pointer;
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    .checkbox-wrapper {
+      opacity: 1;
+    }
+
+    .tab-actions {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
-  img {
+  &.selected {
+    background-color: var(--background-select-color);
+    border-color: var(--primary-color);
+
+    .checkbox-wrapper {
+      opacity: 1;
+    }
+  }
+
+  &.select-mode {
+    .checkbox-wrapper {
+      opacity: 1;
+    }
+  }
+
+  .checkbox-wrapper {
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.checked {
+      opacity: 1;
+    }
+
+    .custom-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1.5px solid var(--outline-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--background-color);
+      transition: all 0.12s ease;
+
+      svg {
+        font-size: 14px;
+        color: var(--on-primary-color);
+      }
+    }
+
+    &.checked .custom-checkbox {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+  }
+
+  .favicon-wrapper {
+    flex-shrink: 0;
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      object-fit: contain;
+    }
+
+    .fallback-favicon {
+      font-size: 18px;
+      color: var(--on-surface-color);
+      opacity: 0.6;
+    }
   }
 
   .info {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    gap: 3px;
 
-    .title {
-      white-space: nowrap;
-      text-align: start;
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      max-width: 100%;
       overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 14px;
+
+      .title {
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .pinned-badge {
+        display: inline-flex;
+        align-items: center;
+        font-size: 11px;
+        color: var(--primary-color);
+        flex-shrink: 0;
+      }
+
+      .group-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 1px 5px;
+        border-radius: 4px;
+        border: 1px solid currentColor;
+        white-space: nowrap;
+        flex-shrink: 0;
+        text-transform: uppercase;
+      }
     }
 
     .url {
+      font-size: 11px;
       color: var(--on-background-variant-color);
-      font-size: 12px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      min-width: 0;
+      max-width: 100%;
+      display: block;
+    }
+  }
+
+  .tab-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+    position: relative;
+
+    .tab-action-btn {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--on-surface-color);
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.12s ease;
+
+      &:hover {
+        background-color: var(--icon-button-hover);
+      }
+
+      &.close-btn:hover {
+        color: var(--on-background-warning-color);
+      }
+
+      &.copy-btn {
+        position: relative;
+      }
+    }
+
+    .copied-tooltip {
+      position: absolute;
+      top: -24px;
+      right: 0;
+      background-color: var(--primary-color);
+      color: var(--on-primary-color);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &.list {
+    padding: 6px 12px;
+    height: 40px;
+    border-radius: 6px;
+
+    .info {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+
+      .title-row {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .url {
+        flex: 1;
+        min-width: 0;
+        text-align: right;
+      }
     }
   }
 }

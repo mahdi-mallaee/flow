@@ -1,27 +1,102 @@
-.search-results {
+.search-results-page {
   padding: 24px;
   background-color: var(--background-color);
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
   color: var(--on-background-color);
   display: flex;
-  gap: 32px;
+  gap: 24px;
   flex-direction: column;
 
-  .session-container {
-    display: flex;
-    gap: 8px;
-    flex-direction: column;
+  .search-summary {
+    font-size: 13px;
+    color: var(--on-background-variant-color);
+    font-weight: 500;
+  }
 
-    .session {
-      font-size: 16px;
+  .search-session-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .session-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      width: fit-content;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background-color 0.12s ease;
+
+      &:hover {
+        background-color: var(--surface-color);
+      }
+
+      .session-pill {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        color: #222;
+      }
+
+      .session-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--on-background-color);
+      }
+
+      .open-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background-color: #4caf50;
+        color: #fff;
+        text-transform: uppercase;
+      }
     }
 
-    .tabs {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .session-tabs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+      gap: 12px;
+      min-width: 0;
+    }
+  }
+
+  .search-highlight {
+    background-color: var(--primary-color);
+    color: var(--on-primary-color);
+    border-radius: 2px;
+    padding: 0 2px;
+    font-weight: 600;
+  }
+
+  .empty-search-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 12px;
+    color: var(--on-background-variant-color);
+
+    .empty-icon {
+      font-size: 48px;
+      opacity: 0.5;
+    }
+
+    .empty-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--on-background-color);
+    }
+
+    .empty-desc {
+      font-size: 13px;
     }
   }
 }

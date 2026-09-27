@@ -1,0 +1,194 @@
+.batch-action-bar {
+  position: sticky;
+  bottom: 16px;
+  margin: 0 20px;
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  border: 1px solid var(--outline-color);
+  border-radius: 12px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  animation: slideUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .selection-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .count-label {
+      font-size: 13px;
+
+      strong {
+        color: var(--primary-color);
+      }
+    }
+
+    .text-btn {
+      background: none;
+      border: none;
+      color: var(--on-surface-color);
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .actions-cluster {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .batch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--outline-color);
+      background-color: var(--background-color);
+      color: var(--on-background-color);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.12s ease;
+
+      svg {
+        font-size: 15px;
+      }
+
+      &:hover:not(:disabled) {
+        background-color: var(--icon-button-hover);
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      &.copied {
+        background-color: var(--primary-color);
+        color: var(--on-primary-color);
+      }
+
+      &.danger {
+        &:hover {
+          background-color: var(--alert-error);
+          color: var(--on-background-warning-color);
+          border-color: var(--on-background-warning-color);
+        }
+      }
+    }
+
+    .move-dropdown-wrapper {
+      position: relative;
+
+      .move-dropdown-menu {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 0;
+        min-width: 220px;
+        background-color: var(--surface-color);
+        border: 1px solid var(--outline-color);
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        padding: 6px;
+        z-index: 60;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .menu-header {
+          font-size: 11px;
+          font-weight: 600;
+          padding: 6px 8px;
+          color: var(--on-background-variant-color);
+          border-bottom: 1px solid var(--outline-color);
+          text-transform: uppercase;
+        }
+
+        .sessions-list {
+          max-height: 180px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .session-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.12s ease;
+
+            &:hover {
+              background-color: var(--background-hover-color);
+            }
+
+            .color-dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              flex-shrink: 0;
+            }
+
+            .option-title {
+              flex: 1;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            .option-count {
+              color: var(--on-background-variant-color);
+              font-size: 11px;
+            }
+          }
+        }
+      }
+    }
+
+    .close-bar-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--on-surface-color);
+      cursor: pointer;
+      font-size: 16px;
+
+      &:hover {
+        background-color: var(--icon-button-hover);
+      }
+    }
+  }
+}
