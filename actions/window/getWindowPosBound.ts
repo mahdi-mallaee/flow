@@ -1,6 +1,9 @@
 import type { WindowPosition } from "~utils/types";
 
 const getWindowPosBound = async (windowPos: WindowPosition): Promise<WindowPosition> => {
+  if (!chrome.system?.display?.getInfo) {
+    return windowPos
+  }
   let screen = (await chrome.system.display.getInfo())[0]?.bounds
 
   if (windowPos && windowPos.top && windowPos.left && windowPos.height && windowPos.width && screen) {

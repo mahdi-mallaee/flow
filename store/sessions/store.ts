@@ -1,31 +1,13 @@
-import basicUpdate from "./basicUpdate"
-import create from "./create"
-import getAll from "./getAll"
-import getGroups from "./getGroups"
-import getNumbers from "./getNumbers"
-import getOpenStatus from "./getOpenStatus"
-import getTabs from "./getTabs"
-import getWindowPos from "./getWindowPos"
-import refreshSessionStatus from "./refreshSessionStatus"
-import remove from "./remove"
-import setAll from "./setAll"
-import setOpenStatus from "./setOpenStatus"
-import setTabs from "./setTabs"
-
-const sessionsStore = {
-  setTabs,
-  getTabs,
-  create,
-  getAll,
-  setOpenStatus,
-  refreshSessionStatus,
-  remove,
-  setAll,
-  getOpenStatus,
-  getGroups,
-  getNumbers,
-  basicUpdate,
-  getWindowPos
-}
-
-export default sessionsStore
+export { default as basicUpdate } from "./basicUpdate";
+export { default as create } from "./create";
+export { default as getAll } from "./getAll";
+export { default as getGroups } from "./getGroups";
+export { default as getNumbers } from "./getNumbers";
+export { default as getOpenStatus } from "./getOpenStatus";
+export { default as getTabs } from "./getTabs";
+export { default as getWindowPos } from "./getWindowPos";
+export { default as refreshSessionStatus } from "./refreshSessionStatus";
+export { default as remove } from "./remove";
+export { default as setAll } from "./setAll";
+export { default as setOpenStatus } from "./setOpenStatus";
+export { default as setTabs } from "./setTabs";

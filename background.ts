@@ -1,5 +1,4 @@
 import actions from "~actions"
-import messageControl from "~actions/background/messageControl"
 import store from "~store"
 import { LANDING_PAGE_URL, UNINSTALL_URL } from "~utils/constants"
 import type { BgGlobalVar, Tab } from "~utils/types"
@@ -44,12 +43,24 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.tabs.create({ url: LANDING_PAGE_URL });
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
     actions.background.rebuildContextMenus()
+    actions.backup.runInterval()
   } else if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
     chrome.runtime.setUninstallURL(UNINSTALL_URL)
     actions.background.rebuildContextMenus()
     store.settings.update()
+    actions.backup.runInterval()
   }
 })
+
+if (chrome.alarms) {
+  chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "flow-auto-backup") {
+      actions.backup.create({
+        status: "interval backups"
+      })
+    }
+  })
+}
 
 chrome.runtime.onStartup.addListener(() => {
   gl.refreshUnsavedWindows = false
@@ -61,23 +72,25 @@ chrome.runtime.onStartup.addListener(() => {
   actions.background.rebuildContextMenus()
 })
 
-chrome.tabGroups.onCreated.addListener(() => {
-  actions.session.refreshTabs(gl)
-  actions.session.refreshGroups()
-})
-chrome.tabGroups.onRemoved.addListener(() => {
-  if (!gl.closingWindow) {
+if (chrome.tabGroups) {
+  chrome.tabGroups.onCreated?.addListener(() => {
     actions.session.refreshTabs(gl)
-  }
-})
-chrome.tabGroups.onMoved.addListener(() => {
-  actions.session.refreshTabs(gl)
-  actions.session.refreshGroups()
-})
-chrome.tabGroups.onUpdated.addListener(() => {
-  actions.session.refreshTabs(gl)
-  actions.session.refreshGroups()
-})
+    actions.session.refreshGroups()
+  })
+  chrome.tabGroups.onRemoved?.addListener(() => {
+    if (!gl.closingWindow.status) {
+      actions.session.refreshTabs(gl)
+    }
+  })
+  chrome.tabGroups.onMoved?.addListener(() => {
+    actions.session.refreshTabs(gl)
+    actions.session.refreshGroups()
+  })
+  chrome.tabGroups.onUpdated?.addListener(() => {
+    actions.session.refreshTabs(gl)
+    actions.session.refreshGroups()
+  })
+}
 
 chrome.tabs.onCreated.addListener(() => {
   actions.session.refreshTabs(gl)
@@ -90,7 +103,7 @@ chrome.tabs.onUpdated.addListener((id, info, tab) => {
     */
     actions.window.discardOpenedTab(id)
   }
-  if ((info.url || info.groupId || info.pinned !== undefined || info.title) && gl.closingWindow.windowId !== tab.windowId) {
+  if ((info.url || info.groupId || info.pinned !== undefined || (info.title && tab.status !== "loading")) && gl.closingWindow.windowId !== tab.windowId) {
     /*
     onUpdated event fires a lot so refreshing tabs after url change or groupId change makes opening sessions quicker as 
     no other information is needed for refreshing tabs
@@ -164,7 +177,7 @@ chrome.runtime.onMessage.addListener((
   { message, payload }:
     { message: Message, payload: any }, sender, sendResponse) => {
 
-  messageControl(gl, sender, message, payload, sendResponse)
+  actions.background.messageControl(gl, sender, message, payload, sendResponse)
 
   return true
 })

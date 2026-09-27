@@ -23,21 +23,23 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
   }, [searchInput])
 
   const tabClickHandler = async (tab: Tab) => {
-    const session = sessions.find(s => s.tabs.includes(tab))
+    const session = sessions.find(s => s.tabs.some(t => t.id === tab.id))
+    if (!session) return
     if (session.isOpen) {
-      chrome.windows.update(tab.windowId, { focused: true, })
-      chrome.tabs.update(tab.id, { active: true, })
+      chrome.windows.update(tab.windowId, { focused: true })
+      chrome.tabs.update(tab.id, { active: true })
     } else {
       const windowId = await actions.message.openSession({ sessionId: session.id, exludedTabIndex: tab.index })
-      chrome.windows.update(windowId, { focused: true, })
+      chrome.windows.update(windowId, { focused: true })
       const tabs = await actions.window.getTabs(windowId)
-      await chrome.tabs.update(tabs[tab.index].id, { active: true, })
+      if (tabs[tab.index]) {
+        await chrome.tabs.update(tabs[tab.index].id, { active: true })
+      }
     }
-
   }
 
   const searchResults = useMemo(() => {
-    if (debouncedSearchInput) {
+    if (debouncedSearchInput.trim()) {
       return sessions.map(session => {
         return {
           ...session,
@@ -51,13 +53,12 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
     }
   }, [debouncedSearchInput, sessions])
 
-
   return (
     <div className="search-view">
       <div className='view-title session-title '>
-        <MdSearch></MdSearch>
+        <MdSearch />
         <input placeholder="Search for title or url ..." onChange={e => setSearchInput(e.target.value)} autoFocus />
-        <MdClose onClick={() => setShowSearchView(false)}></MdClose>
+        <MdClose onClick={() => setShowSearchView(false)} />
       </div>
       {searchResults.length > 0 ?
         <div className="search-items-container">
@@ -76,7 +77,9 @@ const SearchView = ({ setShowSearchView }: { setShowSearchView: React.Dispatch<R
           ))}
         </div>
         :
-        <div className="not-found">Could not find anything!</div>
+        (debouncedSearchInput.trim() !== '' ? (
+          <div className="not-found">Could not find anything!</div>
+        ) : null)
       }
     </div>
   )

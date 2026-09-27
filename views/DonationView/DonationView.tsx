@@ -16,9 +16,7 @@ const DonationView = () => {
         <div>Your donations will ensure constant updates and improvements.</div>
 
         <div className='wallet-address'>
-          <span>TON (TON) wallet address (preferred)
-            
-          </span>
+          <span>TON (TON) wallet address (preferred)</span>
           <CopyButton text={tonAddress} />
         </div>
 
@@ -28,7 +26,7 @@ const DonationView = () => {
         </div>
 
         <div className='wallet-address'>
-          <span>Etherium (ETH) wallet address</span>
+          <span>Ethereum (ETH) wallet address</span>
           <CopyButton text={ethAddress} />
         </div>
 

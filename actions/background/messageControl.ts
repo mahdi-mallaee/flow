@@ -9,6 +9,7 @@
  */
 import { Message, type BgGlobalVar } from "~utils/types"
 import actions from "~actions"
+import logger from "~utils/logger"
 
 export default function messageControl(
   gl: BgGlobalVar, sender: chrome.runtime.MessageSender, message: Message, payload: any, sendResponse: (data: any) => void
@@ -21,6 +22,12 @@ export default function messageControl(
         actions.session.open(payload.sessionId, payload.alterSettingsBehavior, payload.currentWindowId, payload.exludedTabIndex)
           .then((res) => {
             sendResponse(res)
+          })
+          .catch((err) => {
+            logger.error("Failed to open session:", err)
+            sendResponse(null)
+          })
+          .finally(() => {
             gl.refreshUnsavedWindows = true
           })
         return true
@@ -29,7 +36,11 @@ export default function messageControl(
       {
         gl.refreshUnsavedWindows = false
         actions.background.createSession(payload, sendResponse)
-          .then(() => {
+          .catch((err) => {
+            logger.error("Failed to create session:", err)
+            sendResponse(false)
+          })
+          .finally(() => {
             gl.refreshUnsavedWindows = true
           })
         return true

@@ -1,8 +1,8 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { SessionsKeys, type SessionOpenStatus } from "~utils/types"
 
 const getOpenStatus = async (): Promise<SessionOpenStatus[]> => {
-  const localStorage = new Storage({ area: "local" })
+  const localStorage = localStore
   const sessionsOpenStatus: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
   return sessionsOpenStatus
 }

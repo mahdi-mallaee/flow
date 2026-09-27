@@ -1,23 +1,9 @@
-import create from "./create";
-import openFirstSession from "./openFirstSession";
-import open from "./open";
-import refreshOpenSessions from "./refreshOpenSessions";
-import refreshTabs from "./refreshTabs";
-import checkNumberLimit from "./checkNumberLimit";
-import openSessionsPage from "./openSessionsPage";
-import refreshGroups from "./refreshGroups";
-import moveTabs from "./moveTabs";
-
-const sessionActions = {
-  create: create,
-  open: open,
-  refreshTabs: refreshTabs,
-  refreshOpenSessions: refreshOpenSessions,
-  openFirstSession: openFirstSession,
-  checkNumberLimit: checkNumberLimit,
-  openSessionsPage: openSessionsPage,
-  refreshGroups: refreshGroups,
-  moveTabs: moveTabs,
-}
-
-export default sessionActions
+export { default as create } from "./create";
+export { default as openFirstSession } from "./openFirstSession";
+export { default as open } from "./open";
+export { default as refreshOpenSessions } from "./refreshOpenSessions";
+export { default as refreshTabs } from "./refreshTabs";
+export { default as checkNumberLimit } from "./checkNumberLimit";
+export { default as openSessionsPage } from "./openSessionsPage";
+export { default as refreshGroups } from "./refreshGroups";
+export { default as moveTabs } from "./moveTabs";

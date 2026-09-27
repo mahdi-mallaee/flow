@@ -1,7 +1,7 @@
-import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useEffect, useState } from "react"
 import store from "~store"
+import { localStore } from "~utils/storageManager"
 import { StoreKeys, type Session } from "~utils/types"
 
 /*
@@ -13,7 +13,7 @@ import { StoreKeys, type Session } from "~utils/types"
 const useSessions = () => {
   const [sessions, setSessions] = useState<Session[]>([])
 
-  const [statusId] = useStorage({ instance: new Storage({ area: 'local' }), key: StoreKeys.sessionsStatusId }, '')
+  const [statusId] = useStorage({ instance: localStore, key: StoreKeys.sessionsStatusId }, '')
 
   useEffect(() => {
     store.sessions.getAll()

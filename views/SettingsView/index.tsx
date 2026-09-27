@@ -1,2 +1,2 @@
-import SettignsView from "./SettingsView"
-export default SettignsView
+import SettingsView from "./SettingsView"
+export default SettingsView

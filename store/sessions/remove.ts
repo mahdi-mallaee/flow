@@ -1,12 +1,14 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type SessionTabsStore } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
 
 const remove = async (sessionId: string) => {
-  const localStorage = new Storage({ area: 'local' })
-  let basics: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
-  let opens: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []
-  let sessionsTabs: SessionTabsStore[] = await localStorage.get(SessionsKeys.tab) || []
+  const localStorage = localStore
+  const [basics = [], opens = [], sessionsTabs = []] = await Promise.all([
+    localStorage.get<BasicSession[]>(SessionsKeys.basic).then(res => res || []),
+    localStorage.get<SessionOpenStatus[]>(SessionsKeys.open).then(res => res || []),
+    localStorage.get<SessionTabsStore[]>(SessionsKeys.tab).then(res => res || [])
+  ])
 
   const basicsIndex = basics.findIndex(b => b.id === sessionId)
   const opensIndex = opens.findIndex(o => o.sessionId === sessionId)
@@ -23,9 +25,11 @@ const remove = async (sessionId: string) => {
     opens.splice(opensIndex, 1)
   }
 
-  await localStorage.set(SessionsKeys.basic, basics)
-  await localStorage.set(SessionsKeys.open, opens)
-  await localStorage.set(SessionsKeys.tab, sessionsTabs)
+  await Promise.all([
+    localStorage.set(SessionsKeys.basic, basics),
+    localStorage.set(SessionsKeys.open, opens),
+    localStorage.set(SessionsKeys.tab, sessionsTabs)
+  ])
   await refreshSessionStatus()
 }
 

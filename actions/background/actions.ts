@@ -1,11 +1,4 @@
-import createSession from "./createSessoin"
-import rebuildContextMenus from "./rebuildContextMenus"
-import showUnsavedAlert from "./showUnsavedAlert"
-
-const backgroundActions = {
-  createSession: createSession,
-  rebuildContextMenus: rebuildContextMenus,
-  showUnsavedAlert: showUnsavedAlert
-}
-
-export default backgroundActions
+export { default as createSession } from "./createSession";
+export { default as rebuildContextMenus } from "./rebuildContextMenus";
+export { default as showUnsavedAlert } from "./showUnsavedAlert";
+export { default as messageControl } from "./messageControl";

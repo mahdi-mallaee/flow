@@ -2,33 +2,38 @@ import { type Session, type Tab } from "~utils/types"
 import store from "~store"
 import actions from "~actions"
 
+let openingFirstSession = false
+
 /**
- * Runs at the chrome startup and assigns the opened window to its corresponding session.
- * 
+ * Runs at chrome startup and assigns the opened window to its corresponding session.
+ *
  * If there is a main session and the last closed window matches the main session's window,
  * it will assign them together.
- * 
+ *
  * If there is a main session and it was not the last closed window, it will open that session.
  */
 const openFirstSession = async () => {
-  const sessions = await store.sessions.getAll()
-  const mainSession = sessions.find(session => session.main === true)
-  const windows = await chrome.windows.getAll()
+  if (openingFirstSession) return
+  openingFirstSession = true
 
-  if (mainSession) {
-    if (windows && windows.length === 1) {
-      const windowTabs = await actions.window.getTabs(windows[0].id)
+  try {
+    const sessions = await store.sessions.getAll()
+    const mainSession = sessions.find(session => session.main === true)
+    const windows = await chrome.windows.getAll()
 
-      if (compareTabs(windowTabs, mainSession.tabs)) {
-        await store.sessions.setOpenStatus(mainSession.id, { windowId: windows[0].id })
+    if (mainSession) {
+      if (windows && windows.length === 1) {
+        const windowTabs = await actions.window.getTabs(windows[0].id)
+
+        if (compareTabs(windowTabs, mainSession.tabs)) {
+          await store.sessions.setOpenStatus(mainSession.id, { windowId: windows[0].id })
+        } else {
+          await openMainSession(mainSession)
+        }
       } else {
         await openMainSession(mainSession)
       }
-    } else {
-      await openMainSession(mainSession)
-    }
-  } else {
-    if (windows) {
+    } else if (windows) {
       let retry = true
       for (const window of windows) {
         const windowTabs = await actions.window.getTabs(window.id)
@@ -45,10 +50,12 @@ const openFirstSession = async () => {
         setTimeout(openFirstSession, 300)
       }
     }
-  }
 
-  await actions.session.refreshOpenSessions()
-  await actions.window.refreshUnsavedWindows()
+    await actions.session.refreshOpenSessions()
+    await actions.window.refreshUnsavedWindows()
+  } finally {
+    openingFirstSession = false
+  }
 }
 
 const openMainSession = async (mainSession: Session) => {

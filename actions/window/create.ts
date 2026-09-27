@@ -31,12 +31,11 @@ const create = async (sessionId?: string): Promise<number> => {
     })
   }
 
-
   if (actions.window.checkId(window.id)) {
     id = window.id
   }
 
-  const lastTabId = window.tabs[window.tabs.length - 1].id
+  const lastTabId = window.tabs?.[window.tabs.length - 1]?.id
 
   if (actions.window.checkId(window.id) && lastTabId && lastTabId > 0) {
     chrome.tabs.update(lastTabId, { active: true })

@@ -1,5 +1,5 @@
-import { Storage } from "@plasmohq/storage"
-import { StoreKeys, type UnsavedWindow } from "~utils/types"
+import store from "~store"
+import type { UnsavedWindow } from "~utils/types"
 
 /**
  * Checks if a window with the given ID is marked as unsaved in the local storage.
@@ -8,8 +8,7 @@ import { StoreKeys, type UnsavedWindow } from "~utils/types"
  * @returns A Promise that resolves to `true` if the window is marked as unsaved, `false` otherwise.
  */
 const isUnsaved = async (windowId: number): Promise<boolean> => {
-  const localStorage = new Storage({ area: "local" })
-  const unsavedWindows: UnsavedWindow[] = await localStorage.get(StoreKeys.unsavedWindows) || []
+  const unsavedWindows: UnsavedWindow[] = await store.windows.getUnsavedWindows()
   const index = unsavedWindows.findIndex(w => w.id === windowId)
   if (index >= 0) {
     return true

@@ -1,4 +1,4 @@
-import { Storage } from "@plasmohq/storage";
+import { localStore } from "~utils/storageManager";
 import { type Session, SessionsKeys, type BasicSession, type SessionOpenStatus, type SessionTabsStore } from "~utils/types";
 import refreshSessionStatus from "./refreshSessionStatus";
 
@@ -8,7 +8,7 @@ import refreshSessionStatus from "./refreshSessionStatus";
  * Session are seperated into three different parts to prevent race issues
  */
 const create = async (session: Session): Promise<boolean> => {
-  const localStorage = new Storage({ area: "local" })
+  const localStorage = localStore
 
   let basicSessions: BasicSession[] = await localStorage.get(SessionsKeys.basic) || []
   let sessionsOpenStatus: SessionOpenStatus[] = await localStorage.get(SessionsKeys.open) || []

@@ -1,21 +1,18 @@
-import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 import { MdAdd } from "react-icons/md"
 import { StoreKeys, type UnsavedWindow } from "~utils/types"
+import { localStore } from "~utils/storageManager"
 import './UnsavedWindowsContainer.scss'
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useState } from "react"
 import { WINDOWID_NONE } from "~utils/constants"
 import actions from "~actions"
 import useAlertMessage from "~hooks/useAlertMessage"
-import checkNumberLimit from "~actions/session/checkNumberLimit"
 
 const UnsavedWindowsContainer = () => {
   const [unsavedWindows] = useStorage<UnsavedWindow[]>({
     key: StoreKeys.unsavedWindows,
-    instance: new Storage({
-      area: "local"
-    })
+    instance: localStore
   }, [])
 
   const { showAlert, renderAlert } = useAlertMessage()
@@ -23,7 +20,7 @@ const UnsavedWindowsContainer = () => {
   const [initialAnimation, setInitialAnimation] = useState(false)
 
   const addAsSessionButtonClickHandler = async (window: UnsavedWindow) => {
-    const checkLimit = await checkNumberLimit()
+    const checkLimit = await actions.session.checkNumberLimit()
     if (!checkLimit) {
       showAlert({
         text: "You've reached session numbers limit!",
@@ -49,9 +46,10 @@ const UnsavedWindowsContainer = () => {
 
   useEffect(() => {
     setCurrentWindow()
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setInitialAnimation(true)
     }, 200)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -78,7 +76,7 @@ const UnsavedWindowsContainer = () => {
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.2 }}
                       style={{ overflow: 'hidden' }}>
-                      <div key={window.id} className={'unsaved-window' + ' ' + (window.id === currentWindowId && 'current')}>
+                      <div className={`unsaved-window ${window.id === currentWindowId ? 'current' : ''}`.trim()}>
                         <div className="title">
                           <span className="tabs-count">{window.tabsCount}</span>
                           Unsaved Window ( {window.id} )

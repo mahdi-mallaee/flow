@@ -9,7 +9,6 @@ import useSettings from "~hooks/useSettings"
 import useAlertMessage from "~hooks/useAlertMessage"
 import { INPUT_MAX_LENGTH } from "~utils/constants"
 import actions from "~actions"
-import checkNumberLimit from "~actions/session/checkNumberLimit"
 import { ReorderItem, ReorderList } from "~components/ReorderList/Reorder"
 
 const SessionsContainer = () => {
@@ -80,7 +79,7 @@ const SessionsContainer = () => {
       })
       return
     }
-    const checkLimit = await checkNumberLimit()
+    const checkLimit = await actions.session.checkNumberLimit()
     if (!checkLimit) {
       showAlert({
         text: "You've reached session numbers limit!",

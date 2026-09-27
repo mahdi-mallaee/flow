@@ -1,10 +1,10 @@
 import useSessions from "~hooks/useSessions"
 import './SessionDetailsView.scss'
-import { useParams } from "~node_modules/react-router-dom"
+import { useParams } from "react-router-dom"
 import { useState } from "react"
-import { MdClose, MdDelete } from "~node_modules/react-icons/md"
-import { BiWindowOpen } from "~node_modules/react-icons/bi"
-import { FaArrowRightToBracket } from "~node_modules/react-icons/fa6"
+import { MdClose, MdDelete } from "react-icons/md"
+import { BiWindowOpen } from "react-icons/bi"
+import { FaArrowRightToBracket } from "react-icons/fa6"
 import store from "~store"
 import actions from "~actions"
 import TabItem from "~components/TabItem"
@@ -12,7 +12,7 @@ import TabItem from "~components/TabItem"
 const SessionDetailsView = () => {
   const { id } = useParams()
   const sessions = useSessions()
-  const selectedSession = sessions?.find(s => s.id == id)
+  const selectedSession = sessions?.find(s => s.id === id)
   const [selectedTabIds, setSelectedTabIds] = useState<number[]>([])
   const [moveToSession, setMoveToSession] = useState(false)
 
@@ -26,12 +26,12 @@ const SessionDetailsView = () => {
         moveToSession ?
           <div className="session">
             {sessions.map(s => {
-              if (s.id === selectedSession.id) return null
+              if (s.id === selectedSession?.id) return null
               return (
                 <div key={s.id}
                   className={s.isOpen ? 'session-container open' : 'session-container'}
                   onClick={async () => {
-                    if (s.id !== selectedSession.id) {
+                    if (selectedSession && s.id !== selectedSession.id) {
                       const movingTabs = selectedSession.tabs.filter(t => selectedTabIds.includes(t.id))
                       await actions.session.moveTabs({ sourceSession: selectedSession, targetSession: s, tabs: movingTabs })
                       setSelectedTabIds([])
@@ -65,7 +65,7 @@ const SessionDetailsView = () => {
       }
 
       {
-        selectedTabIds.length > 0 &&
+        selectedTabIds.length > 0 && selectedSession &&
         <div className="tab-actions">
           <div className="select-action"
             onClick={() => {
@@ -101,12 +101,12 @@ const SessionDetailsView = () => {
                   onClick={async () => {
                     const settings = await store.settings.getAll()
                     if (settings.openSessionInCurrentWindow) {
-                      selectedTabIds.forEach(async id => {
+                      await Promise.all(selectedTabIds.map(async id => {
                         const tab = selectedSession.tabs.find(t => t.id === id)
                         if (tab) {
                           await chrome.tabs.create({ url: tab.url, active: false })
                         }
-                      })
+                      }))
                     } else {
                       const windowId = await actions.window.create()
                       if (actions.window.checkId(windowId)) {

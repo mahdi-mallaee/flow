@@ -1,14 +1,14 @@
-import { Storage } from "@plasmohq/storage"
+import { localStore } from "~utils/storageManager"
 import { SessionsKeys, type BasicSession, type SessionOpenStatus, type Session, type SessionTabsStore } from "~utils/types"
 import refreshSessionStatus from "./refreshSessionStatus"
-import actions from "~actions"
+import logger from "~utils/logger"
 
 const setAll = async (sessions: Session[]): Promise<boolean> => {
   if (!sessions) {
-    return
+    return false
   }
 
-  const localStorage = new Storage({ area: 'local' })
+  const localStorage = localStore
 
   const basicSessions: BasicSession[] = sessions.map(s => {
     return {
@@ -38,18 +38,17 @@ const setAll = async (sessions: Session[]): Promise<boolean> => {
   })
 
   try {
-    await localStorage.set(SessionsKeys.basic, basicSessions)
-    await localStorage.set(SessionsKeys.open, sessionsOpenStatus)
-    await localStorage.set(SessionsKeys.tab, sessionsTabs)
-  } catch {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ERROR: could not set the sessions correctly -> store/sessions/setAll l.12')
-      console.log('a backup will be created')
-    }
-    await actions.backup.create({ status: "manual", title: 'incorrect session set backup', sessions })
+    await Promise.all([
+      localStorage.set(SessionsKeys.basic, basicSessions),
+      localStorage.set(SessionsKeys.open, sessionsOpenStatus),
+      localStorage.set(SessionsKeys.tab, sessionsTabs)
+    ])
+  } catch (error) {
+    logger.error('ERROR: could not set the sessions correctly -> store/sessions/setAll', error)
     return false
   }
   await refreshSessionStatus()
   return true
 }
+
 export default setAll

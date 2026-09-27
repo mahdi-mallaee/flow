@@ -1,29 +1,14 @@
-import create from "./create";
-import discardOpenedTab from "./discardOpenedTab";
-import includesTab from "./includesTab";
-import getGroups from "./getGroups";
-import getTabs from "./getTabs";
-import isUnsaved from "./isUnsaved";
-import refreshUnsavedWindows from "./refreshUnsavedWindows";
-import checkId from "./checkId";
-import update from "./update";
-import refreshWindowPositions from "~actions/session/refreshWindowPosition";
-import getWindowPosBound from "./getWindowPosBound";
-import setBadgeColors from "./setBadgeColor";
-
-const windowActions = {
-  create: create,
-  discardOpenedTab: discardOpenedTab,
-  getTabs: getTabs,
-  getGroups: getGroups,
-  refreshUnsavedWindows: refreshUnsavedWindows,
-  isUnsaved: isUnsaved,
-  includesTab: includesTab,
-  checkId: checkId,
-  update: update,
-  refreshWindowPositions: refreshWindowPositions,
-  getWindowPosBound: getWindowPosBound,
-  setBadgeColors: setBadgeColors,
-}
-
-export default windowActions
+export { default as create } from "./create";
+export { default as discardOpenedTab } from "./discardOpenedTab";
+export { default as includesTab } from "./includesTab";
+export { default as getGroups } from "./getGroups";
+export { default as getTabs } from "./getTabs";
+export { default as isUnsaved } from "./isUnsaved";
+export { default as refreshUnsavedWindows } from "./refreshUnsavedWindows";
+export { default as checkId } from "./checkId";
+export { default as update } from "./update";
+export { default as refreshWindowPositions } from "./refreshWindowPosition";
+export { default as setOpenTabs } from "./setOpenTabs";
+export { default as groupTabs } from "./groupTabs";
+export { default as getWindowPosBound } from "./getWindowPosBound";
+export { default as setBadgeColors } from "./setBadgeColor";

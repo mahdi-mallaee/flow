@@ -1,6 +1,5 @@
 import actions from "~actions"
-import groupTabs from "~actions/session/groupTabs"
-import setOpenTabs from "~actions/session/setOpenTabs"
+import logger from "~utils/logger"
 import type { Tab, TabGroup } from "~utils/types"
 
 /**
@@ -11,11 +10,11 @@ import type { Tab, TabGroup } from "~utils/types"
  * @param windowId - The ID of the window to update.
  * @param tabs - The new tabs to be displayed in the window.
  * @param groups - The new tab groups to be applied to the window.
- * @param exludeTabIndex - The index of the tab that needs to be excluded from discarding.
+ * @param excludeTabIndex - The index of the tab that needs to be excluded from discarding.
  * 
  * @returns A promise that resolves when the update is complete.
  */
-const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exludeTabIndex?: number) => {
+const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], excludeTabIndex?: number) => {
   let currentWindowTabs = await actions.window.getTabs(windowId)
 
   const newTabsPromise = tabs.map(t => {
@@ -37,13 +36,13 @@ const update = async (windowId: number, tabs: Tab[], groups: TabGroup[], exludeT
   try {
     await Promise.allSettled(newTabsPromise)
     await Promise.allSettled(currentTabsPromise)
-  } catch {
-    console.log("Error updating tabs")
+  } catch (error) {
+    logger.error("Error updating tabs", error)
   }
 
-  await groupTabs(groups, tabs, windowId)
+  await actions.window.groupTabs(groups, tabs, windowId)
   currentWindowTabs = await actions.window.getTabs(windowId)
-  await setOpenTabs(currentWindowTabs, exludeTabIndex)
+  await actions.window.setOpenTabs(currentWindowTabs, excludeTabIndex)
 }
 
 export default update

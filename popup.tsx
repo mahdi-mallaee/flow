@@ -1,24 +1,22 @@
 import './index.scss'
 import { useStorage } from "@plasmohq/storage/hook"
-import { Storage } from "@plasmohq/storage"
 import ThemeProvider from "~components/ThemeProvider"
 import { useEffect, useRef, useState } from 'react'
 import ViewRouter from '~views/ViewRouter'
 import { MemoryRouter } from 'react-router-dom'
 import { DEFAULT_MAIN_CONTAINER_HEIGHT } from '~utils/constants'
+import { localStore } from '~utils/storageManager'
+import { StoreKeys } from '~utils/types'
 import actions from '~actions'
 import browser from "webextension-polyfill";
 (globalThis as any).chrome = browser;
-
 
 const IndexPopup = () => {
   const [containerHeight, setContainerHeight] = useState(DEFAULT_MAIN_CONTAINER_HEIGHT)
 
   const [mainViewHeight, setMainViewHeight] = useStorage<number>({
-    key: "mainheight",
-    instance: new Storage({
-      area: "local"
-    })
+    key: StoreKeys.mainHeight,
+    instance: localStore
   }, DEFAULT_MAIN_CONTAINER_HEIGHT)
 
   const ref = useRef(null)
@@ -30,7 +28,9 @@ const IndexPopup = () => {
         setContainerHeight(height)
       }
     })
-    observer.observe(ref.current)
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
 
     actions.session.refreshOpenSessions()
     actions.window.refreshUnsavedWindows()
@@ -45,7 +45,6 @@ const IndexPopup = () => {
     }
   }, [containerHeight])
 
-
   return (
     <ThemeProvider>
       <MemoryRouter>
@@ -53,9 +52,9 @@ const IndexPopup = () => {
           <div className='height-container' ref={ref} style={{ height: mainViewHeight }}>
             <ViewRouter />
           </div>
-        </div >
+        </div>
       </MemoryRouter>
-    </ThemeProvider >
+    </ThemeProvider>
   )
 }
 
