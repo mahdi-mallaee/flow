@@ -1,74 +1,285 @@
 .sidebar {
   background-color: var(--surface-color);
   color: var(--on-surface-color);
-  width: 300px;
+  width: 280px;
   height: 100%;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--outline-color);
 
-  .sessions-title {
-    font-size: 16px;
-    height: 48px;
+  .sidebar-header {
+    height: 56px;
+    padding: 0 16px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-  }
+    border-bottom: 1px solid var(--outline-color);
+    flex-shrink: 0;
 
-  .sessions-container {
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-
-    .session {
-      border-top: 1px solid var(--outline-color);
-      cursor: pointer;
-      padding: 0 8px;
-      transition: background-color 0.13s ease-in;
+    .title-area {
       display: flex;
-      gap: 8px;
-      height: 48px;
       align-items: center;
+      gap: 8px;
 
-      &.selected {
-        background-color: var(--primary-color);
-        color: var(--on-primary-color);
-
-        &:hover {
-          background-color: var(--primary-color);
-          opacity: 0.7;
-        }
+      .sessions-title {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.2px;
       }
 
-      .tabs-count,
-      .main-indicator {
-        flex-shrink: 0;
-        color: var(--on-primary-color);
-        border-radius: 4px;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 10px;
-        font-weight: 700;
+      .session-count-badge {
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        background-color: var(--outline-color);
+        color: var(--on-surface-color);
+        font-weight: 500;
       }
+    }
 
-      .title {
-        flex-grow: 1;
-        white-space: nowrap;
-        text-align: start;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .new-session-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--outline-color);
+      background-color: var(--background-color);
+      color: var(--on-background-color);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+
+      svg {
         font-size: 14px;
       }
 
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--on-primary-color);
+        border-color: var(--primary-color);
+      }
+    }
+  }
+
+  .new-session-input-card {
+    padding: 10px 14px;
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--outline-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+
+    input {
+      flex: 1;
+      height: 30px;
+      padding: 0 8px;
+      border: 1px solid var(--outline-color);
+      border-radius: 4px;
+      background: inherit;
+      color: var(--on-background-color);
+      font-size: 13px;
+      outline: none;
+
+      &:focus {
+        border-color: var(--primary-color);
+      }
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 4px;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        background: transparent;
+        color: var(--on-background-color);
+
+        &:hover {
+          background-color: var(--icon-button-hover);
+        }
+
+        &.confirm-btn:hover {
+          color: #2e7d32;
+        }
+
+        &.cancel-btn:hover {
+          color: var(--on-background-warning-color);
+        }
+      }
+    }
+  }
+
+  .sidebar-search {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--outline-color);
+    flex-shrink: 0;
+
+    svg {
+      font-size: 16px;
+      color: var(--on-background-variant-color);
+    }
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--on-background-color);
+      font-size: 12px;
+    }
+
+    .clear-icon {
+      cursor: pointer;
+      font-size: 14px;
+
+      &:hover {
+        color: var(--on-background-color);
+      }
+    }
+  }
+
+  .sessions-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px;
+    gap: 2px;
+
+    .session {
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 0 10px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+      .tabs-count {
+        flex-shrink: 0;
+        color: #222;
+        border-radius: 6px;
+        min-width: 24px;
+        height: 22px;
+        padding: 0 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .session-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .session-name {
+          font-size: 13px;
+          font-weight: 500;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .session-badges {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-top: 1px;
+
+          .status-dot.open {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #4caf50;
+            box-shadow: 0 0 4px #4caf50;
+          }
+
+          .badge-icon {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+
+            &.freeze {
+              color: #42a5f5;
+            }
+
+            &.main {
+              color: #ff9800;
+            }
+          }
+        }
+      }
+
+      .session-hover-actions {
+        display: none;
+        align-items: center;
+        gap: 2px;
+
+        .action-icon-btn {
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          border: none;
+          background: transparent;
+          color: inherit;
+          cursor: pointer;
+          font-size: 14px;
+
+          &:hover {
+            background-color: var(--icon-button-hover);
+          }
+
+          &.delete:hover {
+            color: var(--on-background-warning-color);
+          }
+        }
+      }
 
       &:hover {
         background-color: var(--background-hover-color);
 
-        .title {
-          text-decoration: underline;
+        .session-hover-actions {
+          display: flex;
         }
       }
+
+      &.selected {
+        background-color: var(--background-select-color);
+        color: var(--on-background-color);
+        font-weight: 600;
+        border-left: 3px solid var(--primary-color);
+      }
+    }
+
+    .no-sessions-found {
+      padding: 20px 12px;
+      font-size: 12px;
+      text-align: center;
+      color: var(--on-background-variant-color);
     }
   }
 }
