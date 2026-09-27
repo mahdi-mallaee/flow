@@ -16,13 +16,29 @@
     font-size: 16px;
   }
 
-  .header-button {
+  .header-buttons {
     margin-left: auto;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-    svg {
-      width: 22px;
-      height: 22px;
+    .header-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: var(--icon-button-hover);
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 }
