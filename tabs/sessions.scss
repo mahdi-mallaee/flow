@@ -25,6 +25,30 @@ button {
   color: var(--on-background-color);
   overflow: hidden;
 
+  // Universal scrollbar for all scrollable containers in sessions view
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--outline-color) transparent;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--outline-color);
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--on-background-disabled-color);
+      }
+    }
+  }
+
   .main {
     flex: 1;
     height: 100%;

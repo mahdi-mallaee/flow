@@ -18,15 +18,28 @@ body {
 }
 
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--outline-color) transparent;
+}
+
 ::-webkit-scrollbar {
-  background-color: var(--surface-color);
+  background-color: transparent;
   width: 6px;
-  border-radius: 8px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(180, 180, 180);
-  border-radius: 8px;
+  background-color: var(--outline-color);
+  border-radius: 4px;
+
+  &:hover {
+    background-color: var(--on-background-disabled-color);
+  }
 }
 
 .main-view {
