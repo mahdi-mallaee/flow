@@ -88,7 +88,8 @@ export enum Theme {
 
 export enum DefaultAction {
   popup = "popup",
-  sidepanel = "sidepanel"
+  sidepanel = "sidepanel",
+  sessionManager = "sessionManager"
 }
 
 export type Path = "/" | '/settings' | '/backups'

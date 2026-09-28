@@ -2,11 +2,11 @@ import actions from "~actions"
 import store from "~store"
 import { LANDING_PAGE_URL, UNINSTALL_URL } from "~utils/constants"
 import type { BgGlobalVar, Tab } from "~utils/types"
-import { Message } from '~utils/types'
-import browser from "webextension-polyfill";
-(globalThis as any).chrome = browser;
+import { DefaultAction, Message } from "~utils/types"
+import browser from "webextension-polyfill"
+;(globalThis as any).chrome = browser
 
-export { }
+export {}
 
 let gl: BgGlobalVar = {
   refreshUnsavedWindows: true,
@@ -14,6 +14,18 @@ let gl: BgGlobalVar = {
     status: false,
     windowId: -1
   }
+}
+
+// Sync extension action button behavior (popup, sessionManager, sidepanel)
+actions.background.syncActionBehavior()
+
+if (chrome.action?.onClicked) {
+  chrome.action.onClicked.addListener(async (tab) => {
+    const settings = await store.settings.getAll()
+    if (settings.defaultAction === DefaultAction.sessionManager) {
+      await actions.session.openSessionsPage({ windowId: tab?.windowId })
+    }
+  })
 }
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {

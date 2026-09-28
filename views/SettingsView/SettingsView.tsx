@@ -27,10 +27,11 @@ const SettingsView = () => {
     value: value
   }))
 
-  const defaultActionOptions = Object.entries(DefaultAction).map(([key, value]) => ({
-    label: key,
-    value: value
-  }))
+  const defaultActionOptions = [
+    { value: DefaultAction.popup, label: "Popup" },
+    { value: DefaultAction.sessionManager, label: "Session Manager" },
+    ...(chrome.sidePanel ? [{ value: DefaultAction.sidepanel, label: "Side Panel" }] : [])
+  ]
 
   const setSettingsHandler = async (newSettings: Partial<Settings>) => {
     const result = await store.settings.set(newSettings)
@@ -41,22 +42,22 @@ const SettingsView = () => {
 
   const defaultActionHandler = async (option: DefaultAction) => {
     await setSettingsHandler({ defaultAction: option })
+    await actions.background.syncActionBehavior()
 
     const windowId = (await chrome.windows.getCurrent()).id || -1
 
-    if (chrome.sidePanel) {
-      if (option === DefaultAction.popup) {
-        if (chrome.action?.openPopup) {
-          await chrome.action.openPopup({ windowId })
-        }
-        await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false })
-        await chrome.sidePanel.setOptions({ enabled: false })
-      } else {
-        await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
-        await chrome.sidePanel.setOptions({ enabled: true })
+    if (chrome.sidePanel && option === DefaultAction.sidepanel) {
+      try {
         await chrome.sidePanel.open({ windowId })
+      } catch {
+        // ignore if not supported in current context
       }
     }
+  }
+
+  const resetSettingsHandler = async () => {
+    await store.settings.reset()
+    await actions.background.syncActionBehavior()
   }
 
   return (
@@ -136,7 +137,7 @@ const SettingsView = () => {
 
         <div className="item">
           <div className="title">Reset settings to default</div>
-          <div className="reset-button" onClick={() => store.settings.reset()}>Reset</div>
+          <div className="reset-button" onClick={resetSettingsHandler}>Reset</div>
         </div>
       </div>
     </div>

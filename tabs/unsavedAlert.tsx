@@ -4,13 +4,14 @@ import Logo from "~components/Logo"
 import { useEffect, useState } from "react"
 import actions from "~actions"
 import store from "~store"
+import { logger } from "~utils/logger"
 
 const UnsavedAlert = () => {
   type state = 'default' | 'saved-session' | 'error'
   const [UIState, setUIState] = useState<state>('default')
 
   const openMainPopup = async () => {
-    await chrome.action.setPopup({ popup: "popup.html" })
+    await actions.background.syncActionBehavior()
     await chrome.action.openPopup()
   }
 
@@ -24,7 +25,7 @@ const UnsavedAlert = () => {
     }
     const result = await actions.session.create({ windowId: windowId })
     if (!result) {
-      console.error("Session creation failed")
+      logger.error("Session creation failed")
       setTimeout(() => { openMainPopup() }, 6000)
       setUIState('error')
       return
@@ -39,7 +40,7 @@ const UnsavedAlert = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      await chrome.action.setPopup({ popup: "popup.html" })
+      await actions.background.syncActionBehavior()
       window.close()
     }, 10000)
   }, [])
@@ -52,7 +53,7 @@ const UnsavedAlert = () => {
             <div>This window is not saved, you may want to catch it!</div>
             <div className="buttons">
               <div className="close-alert" onClick={async () => {
-                await chrome.action.setPopup({ popup: "popup.html" })
+                await actions.background.syncActionBehavior()
                 window.close()
               }}>No, Thanks</div>
               <div className="save-session" onClick={saveSessionHandler}>Yes, Please</div>
