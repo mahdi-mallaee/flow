@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type MouseEvent } from "react"
 import { BiWindowOpen } from "react-icons/bi"
 import {
+  MdArrowBack,
   MdChevronRight,
   MdClose,
   MdExpandMore,
@@ -8,7 +9,13 @@ import {
   MdPublic,
   MdTune
 } from "react-icons/md"
-import { MemoryRouter } from "react-router-dom"
+import {
+  MemoryRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate
+} from "react-router-dom"
 import browser from "webextension-polyfill"
 import actions from "~actions"
 import BatchActionBar from "~components/BatchActionBar"
@@ -22,6 +29,11 @@ import useAlertMessage from "~hooks/useAlertMessage"
 import useSessions from "~hooks/useSessions"
 import store from "~store"
 import type { Session, Tab, TabGroup } from "~utils/types"
+import AboutUsView from "~views/AboutUsView"
+import AdditionalSettingsView from "~views/AdditionalSettingsView"
+import BackupsView from "~views/BackupsView"
+import DonationView from "~views/DonationView"
+import PermissionsView from "~views/PermissionsView"
 import SettingsView from "~views/SettingsView"
 import "./sessions.scss"
 
@@ -600,25 +612,77 @@ const SessionsTabPage = () => {
               className="modal-content settings-modal"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-header">
-                <span className="modal-title">Settings</span>
-                <button
-                  className="modal-close-btn"
-                  onClick={() => setShowSettingsModal(false)}
-                >
-                  <MdClose />
-                </button>
-              </div>
-              <div className="settings-modal-body">
-                <MemoryRouter>
-                  <SettingsView />
-                </MemoryRouter>
-              </div>
+              <MemoryRouter initialEntries={["/settings"]}>
+                <SettingsModalContent
+                  onClose={() => setShowSettingsModal(false)}
+                />
+              </MemoryRouter>
             </div>
           </div>
         )}
       </div>
     </ThemeProvider>
+  )
+}
+
+const SettingsModalContent = ({ onClose }: { onClose: () => void }) => {
+  const location = useLocation()
+  const nav = useNavigate()
+
+  const isSubPage =
+    location.pathname !== "/" && location.pathname !== "/settings"
+
+  const getTitle = () => {
+    switch (location.pathname) {
+      case "/additional-settings":
+        return "Additional Settings"
+      case "/backups":
+        return "Backups"
+      case "/permissions":
+        return "Permissions"
+      case "/about-us":
+        return "About Us"
+      case "/donation":
+        return "Donation"
+      default:
+        return "Settings"
+    }
+  }
+
+  return (
+    <>
+      <div className="modal-header">
+        <div className="modal-title-area">
+          {isSubPage && (
+            <button
+              className="modal-back-btn"
+              onClick={() => nav("/settings")}
+              title="Back to Settings"
+            >
+              <MdArrowBack />
+            </button>
+          )}
+          <span className="modal-title">{getTitle()}</span>
+        </div>
+        <button className="modal-close-btn" onClick={onClose} title="Close">
+          <MdClose />
+        </button>
+      </div>
+      <div className="settings-modal-body">
+        <Routes>
+          <Route path="/" element={<SettingsView />} />
+          <Route path="/settings" element={<SettingsView />} />
+          <Route
+            path="/additional-settings"
+            element={<AdditionalSettingsView />}
+          />
+          <Route path="/backups" element={<BackupsView />} />
+          <Route path="/permissions" element={<PermissionsView />} />
+          <Route path="/about-us" element={<AboutUsView />} />
+          <Route path="/donation" element={<DonationView />} />
+        </Routes>
+      </div>
+    </>
   )
 }
 
