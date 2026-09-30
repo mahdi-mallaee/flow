@@ -5,6 +5,7 @@ import {
   MdChevronRight,
   MdClose,
   MdExpandMore,
+  MdLayersClear,
   MdOutlineDelete,
   MdPublic,
   MdTune
@@ -51,6 +52,10 @@ const SessionsTabPage = () => {
   const [collapsedGroupIds, setCollapsedGroupIds] = useState<number[]>([])
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false)
   const [sessionToDelete, setSessionToDelete] = useState<Session | null>(null)
+  const [draggedTab, setDraggedTab] = useState<Tab | null>(null)
+  const [dragOverTabId, setDragOverTabId] = useState<number | null>(null)
+  const [dragOverGroupId, setDragOverGroupId] = useState<number | null>(null)
+  const [dragOverUngrouped, setDragOverUngrouped] = useState<boolean>(false)
 
   // Derive active session reactively
   const selectedSession = useMemo(() => {
@@ -385,6 +390,181 @@ const SessionsTabPage = () => {
     }
   }, [selectedSession])
 
+  // --- Drag and Drop Handlers ---
+  const resetDragState = () => {
+    setDraggedTab(null)
+    setDragOverTabId(null)
+    setDragOverGroupId(null)
+    setDragOverUngrouped(false)
+  }
+
+  const handleReorderAndMoveTab = async (
+    draggedTabId: number,
+    target: { targetTabId?: number; targetGroupId?: number }
+  ) => {
+    if (!selectedSession) return
+    const tabs = [...(selectedSession.tabs || [])]
+    const draggedIndex = tabs.findIndex((t) => t.id === draggedTabId)
+    if (draggedIndex === -1) return
+
+    const draggedTabObj = { ...tabs[draggedIndex] }
+    const originalGroupId = tabs[draggedIndex].groupId ?? -1
+    let targetGroupId = originalGroupId
+    let insertIndex = draggedIndex
+
+    if (target.targetTabId !== undefined) {
+      const originalTargetIndex = tabs.findIndex((t) => t.id === target.targetTabId)
+      if (originalTargetIndex === -1 || originalTargetIndex === draggedIndex) return
+
+      targetGroupId = tabs[originalTargetIndex].groupId ?? -1
+      tabs.splice(draggedIndex, 1)
+
+      const newTargetIndex = tabs.findIndex((t) => t.id === target.targetTabId)
+      insertIndex = draggedIndex < originalTargetIndex ? newTargetIndex + 1 : newTargetIndex
+      draggedTabObj.groupId = targetGroupId
+      if (targetGroupId > 0) {
+        draggedTabObj.pinned = false
+      }
+      tabs.splice(insertIndex, 0, draggedTabObj)
+    } else if (target.targetGroupId !== undefined) {
+      targetGroupId = target.targetGroupId
+      draggedTabObj.groupId = targetGroupId
+      tabs.splice(draggedIndex, 1)
+
+      if (targetGroupId > 0) {
+        draggedTabObj.pinned = false
+        let lastGroupTabIndex = -1
+        for (let i = tabs.length - 1; i >= 0; i--) {
+          if (tabs[i].groupId === targetGroupId) {
+            lastGroupTabIndex = i
+            break
+          }
+        }
+        if (lastGroupTabIndex !== -1) {
+          insertIndex = lastGroupTabIndex + 1
+          tabs.splice(insertIndex, 0, draggedTabObj)
+        } else {
+          tabs.push(draggedTabObj)
+          insertIndex = tabs.length - 1
+        }
+      } else {
+        tabs.push(draggedTabObj)
+        insertIndex = tabs.length - 1
+      }
+    }
+
+    const updatedTabs = tabs.map((t, idx) => ({ ...t, index: idx }))
+    await store.sessions.setTabs(selectedSession.id, updatedTabs)
+
+    if (selectedSession.isOpen && actions.window.checkId(selectedSession.windowId)) {
+      try {
+        if (draggedTabObj.id && draggedTabObj.id > 0) {
+          if (chrome.tabGroups && chrome.tabs.group && chrome.tabs.ungroup) {
+            if (targetGroupId > 0 && targetGroupId !== originalGroupId) {
+              if (draggedTabObj.pinned) {
+                await chrome.tabs.update(draggedTabObj.id, { pinned: false })
+              }
+              await chrome.tabs.group({
+                tabIds: [draggedTabObj.id],
+                groupId: targetGroupId
+              })
+            } else if (targetGroupId <= 0 && originalGroupId > 0) {
+              await chrome.tabs.ungroup([draggedTabObj.id])
+            }
+          }
+
+          await chrome.tabs.move(draggedTabObj.id, { index: insertIndex })
+        }
+        await actions.session.refreshGroups()
+      } catch (err) {
+        // Defensive: ignore browser tab move/group failures
+      }
+    }
+  }
+
+  const handleTabDragStart = (e: React.DragEvent<HTMLDivElement>, tab: Tab) => {
+    setDraggedTab(tab)
+    e.dataTransfer.setData("text/plain", tab.id.toString())
+    e.dataTransfer.effectAllowed = "move"
+  }
+
+  const handleTabDragEnd = () => {
+    resetDragState()
+  }
+
+  const handleTabDragOver = (e: React.DragEvent<HTMLDivElement>, targetTab: Tab) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.dropEffect = "move"
+    if (draggedTab && draggedTab.id !== targetTab.id && dragOverTabId !== targetTab.id) {
+      setDragOverTabId(targetTab.id)
+    }
+  }
+
+  const handleTabDragLeave = (e: React.DragEvent<HTMLDivElement>, targetTab: Tab) => {
+    if (dragOverTabId === targetTab.id) {
+      setDragOverTabId(null)
+    }
+  }
+
+  const handleTabDrop = async (e: React.DragEvent<HTMLDivElement>, targetTab: Tab) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const dragged = draggedTab
+    resetDragState()
+    if (!dragged || dragged.id === targetTab.id) return
+
+    await handleReorderAndMoveTab(dragged.id, { targetTabId: targetTab.id })
+  }
+
+  const handleGroupDragOver = (e: React.DragEvent<HTMLDivElement>, groupId: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.dropEffect = "move"
+    if (dragOverGroupId !== groupId) {
+      setDragOverGroupId(groupId)
+    }
+  }
+
+  const handleGroupDragLeave = (e: React.DragEvent<HTMLDivElement>, groupId: number) => {
+    if (dragOverGroupId === groupId) {
+      setDragOverGroupId(null)
+    }
+  }
+
+  const handleGroupDrop = async (e: React.DragEvent<HTMLDivElement>, groupId: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const dragged = draggedTab
+    resetDragState()
+    if (!dragged) return
+
+    await handleReorderAndMoveTab(dragged.id, { targetGroupId: groupId })
+  }
+
+  const handleUngroupedDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.dropEffect = "move"
+    if (!dragOverUngrouped) {
+      setDragOverUngrouped(true)
+    }
+  }
+
+  const handleUngroupedDragLeave = () => {
+    setDragOverUngrouped(false)
+  }
+
+  const handleUngroupedDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const dragged = draggedTab
+    resetDragState()
+    if (!dragged) return
+
+    await handleReorderAndMoveTab(dragged.id, { targetGroupId: -1 })
+  }
+
   return (
     <ThemeProvider>
       <div className="sessions-page">
@@ -457,8 +637,13 @@ const SessionsTabPage = () => {
                       return (
                         <div className="tab-group-container" key={group.id}>
                           <div
-                            className="group-header"
+                            className={`group-header ${
+                              dragOverGroupId === group.id ? "drag-over" : ""
+                            }`}
                             onClick={() => toggleGroupCollapse(group.id)}
+                            onDragOver={(e) => handleGroupDragOver(e, group.id)}
+                            onDragLeave={(e) => handleGroupDragLeave(e, group.id)}
+                            onDrop={(e) => handleGroupDrop(e, group.id)}
                             style={{
                               borderLeftColor: group.color || "var(--primary-color)"
                             }}
@@ -494,6 +679,13 @@ const SessionsTabPage = () => {
                                   isSelectMode={
                                     isSelectMode || selectedTabIds.length > 0
                                   }
+                                  isDragging={draggedTab?.id === tab.id}
+                                  isDragOver={dragOverTabId === tab.id}
+                                  onDragStart={handleTabDragStart}
+                                  onDragEnd={handleTabDragEnd}
+                                  onDragOver={handleTabDragOver}
+                                  onDragLeave={handleTabDragLeave}
+                                  onDrop={handleTabDrop}
                                   onToggleSelect={handleToggleSelectTab}
                                   onClickHandler={() => handleTabCardClick(tab)}
                                   onCloseHandler={handleCloseTab}
@@ -506,9 +698,31 @@ const SessionsTabPage = () => {
                       )
                     })}
 
+                    {/* Render Ungroup Drop Zone when dragging a grouped tab */}
+                    {draggedTab && draggedTab.groupId && draggedTab.groupId > 0 && (
+                      <div
+                        className={`ungroup-drop-zone ${
+                          dragOverUngrouped ? "drag-over" : ""
+                        }`}
+                        onDragOver={handleUngroupedDragOver}
+                        onDragLeave={handleUngroupedDragLeave}
+                        onDrop={handleUngroupedDrop}
+                      >
+                        <MdLayersClear />
+                        <span>Drop here to remove from group</span>
+                      </div>
+                    )}
+
                     {/* Render Ungrouped Tabs */}
                     {groupedData.ungroupedTabs.length > 0 && (
-                      <div className="ungrouped-container">
+                      <div
+                        className={`ungrouped-container ${
+                          dragOverUngrouped ? "drag-over" : ""
+                        }`}
+                        onDragOver={handleUngroupedDragOver}
+                        onDragLeave={handleUngroupedDragLeave}
+                        onDrop={handleUngroupedDrop}
+                      >
                         {groupedData.groups.length > 0 && (
                           <div className="ungrouped-header">
                             Ungrouped Tabs ({groupedData.ungroupedTabs.length})
@@ -527,6 +741,13 @@ const SessionsTabPage = () => {
                               isSelectMode={
                                 isSelectMode || selectedTabIds.length > 0
                               }
+                              isDragging={draggedTab?.id === tab.id}
+                              isDragOver={dragOverTabId === tab.id}
+                              onDragStart={handleTabDragStart}
+                              onDragEnd={handleTabDragEnd}
+                              onDragOver={handleTabDragOver}
+                              onDragLeave={handleTabDragLeave}
+                              onDrop={handleTabDrop}
                               onToggleSelect={handleToggleSelectTab}
                               onClickHandler={() => handleTabCardClick(tab)}
                               onCloseHandler={handleCloseTab}

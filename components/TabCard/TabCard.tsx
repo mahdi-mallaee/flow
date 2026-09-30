@@ -17,10 +17,17 @@ interface TabCardProps {
   groupColor?: string
   isSelected?: boolean
   isSelectMode?: boolean
+  isDragging?: boolean
+  isDragOver?: boolean
   onToggleSelect?: (tab: Tab) => void
   onClickHandler?: () => void
   onCloseHandler?: (tab: Tab, e: MouseEvent) => void
   viewMode?: "grid" | "list"
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>, tab: Tab) => void
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>, tab: Tab) => void
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>, tab: Tab) => void
+  onDragLeave?: (e: React.DragEvent<HTMLDivElement>, tab: Tab) => void
+  onDrop?: (e: React.DragEvent<HTMLDivElement>, tab: Tab) => void
 }
 
 const TabCard = ({
@@ -31,10 +38,17 @@ const TabCard = ({
   groupColor,
   isSelected = false,
   isSelectMode = false,
+  isDragging = false,
+  isDragOver = false,
   onToggleSelect,
   onClickHandler,
   onCloseHandler,
-  viewMode = "grid"
+  viewMode = "grid",
+  onDragStart,
+  onDragEnd,
+  onDragOver,
+  onDragLeave,
+  onDrop
 }: TabCardProps) => {
   const [iconError, setIconError] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -62,7 +76,15 @@ const TabCard = ({
     <div
       className={`tab-card ${viewMode} ${tab.pinned ? "pinned" : ""} ${
         isSelected ? "selected" : ""
-      } ${isSelectMode ? "select-mode" : ""}`}
+      } ${isSelectMode ? "select-mode" : ""} ${isDragging ? "dragging" : ""} ${
+        isDragOver ? "drag-over" : ""
+      }`}
+      draggable={!isSelectMode && !!onDragStart}
+      onDragStart={(e) => onDragStart && onDragStart(e, tab)}
+      onDragEnd={(e) => onDragEnd && onDragEnd(e, tab)}
+      onDragOver={(e) => onDragOver && onDragOver(e, tab)}
+      onDragLeave={(e) => onDragLeave && onDragLeave(e, tab)}
+      onDrop={(e) => onDrop && onDrop(e, tab)}
       onClick={isSelectMode && onToggleSelect ? handleSelectClick : onClickHandler}
     >
       <div

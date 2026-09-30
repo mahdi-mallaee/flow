@@ -161,6 +161,12 @@ button {
             background-color: var(--background-hover-color);
           }
 
+          &.drag-over {
+            background-color: var(--background-select-color);
+            outline: 2px dashed var(--primary-color);
+            outline-offset: -2px;
+          }
+
           .collapse-arrow {
             display: flex;
             align-items: center;
@@ -191,12 +197,45 @@ button {
         display: flex;
         flex-direction: column;
         gap: 8px;
+        transition: outline 0.12s ease;
+
+        &.drag-over {
+          outline: 2px dashed var(--primary-color);
+          outline-offset: -2px;
+          border-radius: 6px;
+        }
 
         .ungrouped-header {
           font-size: 13px;
           font-weight: 600;
           color: var(--on-background-variant-color);
           padding: 4px 8px;
+        }
+      }
+
+      .ungroup-drop-zone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px;
+        border: 2px dashed var(--outline-color);
+        border-radius: 8px;
+        color: var(--on-background-variant-color);
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.15s ease;
+        margin-top: 10px;
+        user-select: none;
+
+        svg {
+          font-size: 18px;
+        }
+
+        &.drag-over {
+          border-color: var(--primary-color);
+          background-color: var(--background-select-color);
+          color: var(--on-background-color);
         }
       }
     }

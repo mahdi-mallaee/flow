@@ -65,6 +65,19 @@
     }
   }
 
+  &.dragging {
+    opacity: 0.35;
+    cursor: grabbing !important;
+    border-style: dashed;
+    border-color: var(--primary-color);
+  }
+
+  &.drag-over {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-color);
+    transform: translateY(-2px);
+  }
+
   .checkbox-wrapper {
     flex-shrink: 0;
     opacity: 0;
