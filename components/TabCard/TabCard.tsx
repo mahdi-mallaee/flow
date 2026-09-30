@@ -90,18 +90,6 @@ const TabCard = ({
 
       <div className="info">
         <div className="title-row">
-          <span
-            className="title"
-            title={typeof displayTitle === "string" ? displayTitle : undefined}
-          >
-            {displayTitle}
-          </span>
-          {tab.pinned && (
-            <span className="pinned-badge" title="Pinned Tab">
-              <MdPushPin className="pin-icon" />
-              <span>Pinned</span>
-            </span>
-          )}
           {groupName && (
             <span
               className="group-badge"
@@ -112,6 +100,18 @@ const TabCard = ({
               title={`Tab Group: ${groupName}`}
             >
               {groupName}
+            </span>
+          )}
+          <span
+            className="title"
+            title={typeof displayTitle === "string" ? displayTitle : undefined}
+          >
+            {displayTitle}
+          </span>
+          {tab.pinned && (
+            <span className="pinned-badge" title="Pinned Tab">
+              <MdPushPin className="pin-icon" />
+              <span>Pinned</span>
             </span>
           )}
         </div>
