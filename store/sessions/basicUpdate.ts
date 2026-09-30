@@ -12,14 +12,13 @@ const basicUpdate = async (sessionId: string, { title, main, groups, colorCode, 
       session.title = title
     }
 
-    if (main) {
-      sessions.forEach(session => {
-        if (session.id === sessionId) {
-          session.main = !session.main
-        } else {
-          session.main = false
+    if (typeof main === "boolean") {
+      sessions.forEach(s => {
+        if (s.id === sessionId) {
+          s.main = main
+        } else if (main) {
+          s.main = false
         }
-        return session
       })
     }
 

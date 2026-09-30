@@ -20,7 +20,10 @@ const SessionsContainer = () => {
   const sessions = useSessions()
 
   const mainButtonClickHandler = (id: string) => {
-    store.sessions.basicUpdate(id, { main: true })
+    const session = sessions.find((s) => s.id === id)
+    if (session) {
+      store.sessions.basicUpdate(id, { main: !session.main })
+    }
   }
 
   const deleteSession = async (session: Session) => {
