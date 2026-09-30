@@ -60,9 +60,9 @@ const TabCard = ({
 
   return (
     <div
-      className={`tab-card ${viewMode} ${isSelected ? "selected" : ""} ${
-        isSelectMode ? "select-mode" : ""
-      }`}
+      className={`tab-card ${viewMode} ${tab.pinned ? "pinned" : ""} ${
+        isSelected ? "selected" : ""
+      } ${isSelectMode ? "select-mode" : ""}`}
       onClick={isSelectMode && onToggleSelect ? handleSelectClick : onClickHandler}
     >
       <div
@@ -98,7 +98,8 @@ const TabCard = ({
           </span>
           {tab.pinned && (
             <span className="pinned-badge" title="Pinned Tab">
-              <MdPushPin />
+              <MdPushPin className="pin-icon" />
+              <span>Pinned</span>
             </span>
           )}
           {groupName && (
