@@ -207,22 +207,18 @@
         flex: 1;
         min-width: 0;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        .session-name {
-          font-size: 13px;
-          font-weight: 500;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+        align-items: center;
+        gap: 6px;
 
         .session-badges {
           display: flex;
           align-items: center;
-          gap: 6px;
-          margin-top: 1px;
+          gap: 5px;
+          flex-shrink: 0;
+
+          &:empty {
+            display: none;
+          }
 
           .status-dot.open {
             width: 7px;
@@ -230,12 +226,15 @@
             border-radius: 50%;
             background-color: #4caf50;
             box-shadow: 0 0 4px #4caf50;
+            flex-shrink: 0;
           }
 
           .badge-icon {
             display: inline-flex;
             align-items: center;
-            font-size: 10px;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
 
             &.freeze {
               color: #42a5f5;
@@ -245,6 +244,16 @@
               color: #ff9800;
             }
           }
+        }
+
+        .session-name {
+          flex: 1;
+          min-width: 0;
+          font-size: 13px;
+          font-weight: 500;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
 

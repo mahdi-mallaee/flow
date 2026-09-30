@@ -134,26 +134,28 @@ const Sidebar = ({
               </div>
 
               <div className="session-info">
+                {(session.isOpen || session.freeze || session.main) && (
+                  <div className="session-badges">
+                    {session.isOpen && (
+                      <span
+                        className="status-dot open"
+                        title={`Open in window #${session.windowId}`}
+                      />
+                    )}
+                    {session.freeze && (
+                      <span className="badge-icon freeze" title="Session Frozen">
+                        <FaSnowflake />
+                      </span>
+                    )}
+                    {session.main && (
+                      <span className="badge-icon main" title="Main Session">
+                        <MdPushPin />
+                      </span>
+                    )}
+                  </div>
+                )}
                 <div className="session-name" title={session.title}>
                   {session.title}
-                </div>
-                <div className="session-badges">
-                  {session.isOpen && (
-                    <span
-                      className="status-dot open"
-                      title={`Open in window #${session.windowId}`}
-                    />
-                  )}
-                  {session.freeze && (
-                    <span className="badge-icon freeze" title="Session Frozen">
-                      <FaSnowflake />
-                    </span>
-                  )}
-                  {session.main && (
-                    <span className="badge-icon main" title="Main Session">
-                      <MdPushPin />
-                    </span>
-                  )}
                 </div>
               </div>
 
