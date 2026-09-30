@@ -28,7 +28,7 @@ import Toolbar from "~components/Toolbar"
 import useAlertMessage from "~hooks/useAlertMessage"
 import useSessions from "~hooks/useSessions"
 import store from "~store"
-import type { Session, Tab, TabGroup } from "~utils/types"
+import type { Session, Tab, TabGroup, UnsavedWindow } from "~utils/types"
 import AboutUsView from "~views/AboutUsView"
 import AdditionalSettingsView from "~views/AdditionalSettingsView"
 import BackupsView from "~views/BackupsView"
@@ -113,6 +113,29 @@ const SessionsTabPage = () => {
       if (created) setSelectedSessionId(created.id)
     } else {
       showAlert({ text: "Failed to create session", type: "error" })
+    }
+  }
+
+  const handleSaveUnsavedWindow = async (window: UnsavedWindow) => {
+    const checkLimit = await actions.session.checkNumberLimit()
+    if (!checkLimit) {
+      showAlert({
+        text: "You have reached the maximum session limit!",
+        type: "warning"
+      })
+      return
+    }
+
+    const result = await actions.session.create({ windowId: window.id })
+    if (result) {
+      showAlert({ text: "Saved window as new session", type: "info" })
+      await actions.window.refreshUnsavedWindows()
+      await actions.session.refreshOpenSessions()
+      const updated = await store.sessions.getAll()
+      const created = updated.find((s) => s.windowId === window.id)
+      if (created) setSelectedSessionId(created.id)
+    } else {
+      showAlert({ text: "Failed to save window as session", type: "error" })
     }
   }
 
@@ -374,6 +397,7 @@ const SessionsTabPage = () => {
           createSessionHandler={handleCreateSession}
           deleteSessionHandler={(session) => setSessionToDelete(session)}
           openSessionHandler={handleOpenSession}
+          saveUnsavedWindowHandler={handleSaveUnsavedWindow}
         />
 
         <div className="main">

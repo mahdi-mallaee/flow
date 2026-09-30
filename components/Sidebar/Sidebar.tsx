@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react"
+import { useStorage } from "@plasmohq/storage/hook"
+import { useEffect, useMemo, useState } from "react"
 import { BiWindowOpen } from "react-icons/bi"
 import { FaSnowflake } from "react-icons/fa"
 import {
@@ -9,7 +10,9 @@ import {
   MdPushPin,
   MdSearch
 } from "react-icons/md"
-import type { Session } from "~utils/types"
+import actions from "~actions"
+import { localStore } from "~utils/storageManager"
+import { StoreKeys, type Session, type UnsavedWindow } from "~utils/types"
 import "./Sidebar.scss"
 
 interface SidebarProps {
@@ -19,6 +22,7 @@ interface SidebarProps {
   createSessionHandler?: (title: string) => Promise<void>
   deleteSessionHandler?: (session: Session) => void
   openSessionHandler?: (session: Session) => void
+  saveUnsavedWindowHandler?: (window: UnsavedWindow) => Promise<void>
 }
 
 const Sidebar = ({
@@ -27,11 +31,48 @@ const Sidebar = ({
   sessionClickHandler,
   createSessionHandler,
   deleteSessionHandler,
-  openSessionHandler
+  openSessionHandler,
+  saveUnsavedWindowHandler
 }: SidebarProps) => {
   const [filterText, setFilterText] = useState("")
   const [isCreating, setIsCreating] = useState(false)
   const [newTitle, setNewTitle] = useState("")
+  const [currentWindowId, setCurrentWindowId] = useState<number>(-1)
+
+  const [unsavedWindows = []] = useStorage<UnsavedWindow[]>(
+    {
+      key: StoreKeys.unsavedWindows,
+      instance: localStore
+    },
+    []
+  )
+
+  useEffect(() => {
+    chrome.windows.getCurrent().then((win) => {
+      if (win?.id && win.id > 0) {
+        setCurrentWindowId(win.id)
+      }
+    })
+    actions.window.refreshUnsavedWindows()
+  }, [])
+
+  const handleFocusWindow = async (windowId: number) => {
+    if (actions.window.checkId(windowId)) {
+      await chrome.windows.update(windowId, { focused: true })
+    }
+  }
+
+  const handleAddAsSession = async (win: UnsavedWindow) => {
+    if (saveUnsavedWindowHandler) {
+      await saveUnsavedWindowHandler(win)
+    } else {
+      const checkLimit = await actions.session.checkNumberLimit()
+      if (!checkLimit) return
+      await actions.session.create({ windowId: win.id })
+      await actions.window.refreshUnsavedWindows()
+      await actions.session.refreshOpenSessions()
+    }
+  }
 
   const filteredSessions = useMemo(() => {
     if (!filterText.trim()) return sessions
@@ -193,6 +234,61 @@ const Sidebar = ({
           <div className="no-sessions-found">No sessions matching search</div>
         )}
       </div>
+
+      {unsavedWindows && unsavedWindows.length > 0 && (
+        <div className="unsaved-windows-section">
+          <div className="unsaved-header">
+            <div className="title-area">
+              <span className="unsaved-title">Unsaved Windows</span>
+              <span className="unsaved-count-badge">
+                {unsavedWindows.length}
+              </span>
+            </div>
+          </div>
+
+          <div className="unsaved-container">
+            {unsavedWindows.map((win) => {
+              const isCurrent = win.id === currentWindowId
+              return (
+                <div
+                  key={win.id}
+                  className={`unsaved-window ${isCurrent ? "current" : ""}`}
+                  onClick={() => handleFocusWindow(win.id)}
+                  title={
+                    isCurrent
+                      ? `Window #${win.id} (Current - click to focus)`
+                      : `Window #${win.id} (Click to focus)`
+                  }
+                >
+                  <div className="tabs-count">
+                    {win.tabsCount <= 99 ? win.tabsCount : "99+"}
+                  </div>
+
+                  <div className="window-info">
+                    <span className="window-name">
+                      Unsaved Window ({win.id})
+                    </span>
+                    {isCurrent && <span className="current-badge">Current</span>}
+                  </div>
+
+                  <div className="window-actions">
+                    <button
+                      className="action-icon-btn add"
+                      title="Save as Session"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddAsSession(win)
+                      }}
+                    >
+                      <MdAdd />
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

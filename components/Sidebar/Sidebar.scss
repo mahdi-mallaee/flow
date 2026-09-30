@@ -308,4 +308,162 @@
       color: var(--on-background-variant-color);
     }
   }
+
+  .unsaved-windows-section {
+    border-top: 1px solid var(--outline-color);
+    background-color: var(--surface-color);
+    flex-shrink: 0;
+    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+
+    .unsaved-header {
+      height: 38px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+
+      .title-area {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .unsaved-title {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          color: var(--on-surface-variant-color);
+        }
+
+        .unsaved-count-badge {
+          font-size: 10px;
+          padding: 1px 6px;
+          border-radius: 10px;
+          background-color: var(--outline-color);
+          color: var(--on-surface-color);
+          font-weight: 600;
+        }
+      }
+    }
+
+    .unsaved-container {
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0 8px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--outline-color) transparent;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--outline-color);
+        border-radius: 4px;
+      }
+
+      .unsaved-window {
+        flex-shrink: 0;
+        min-height: 40px;
+        height: 40px;
+        box-sizing: border-box;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+          background-color: var(--background-hover-color);
+
+          .window-actions .action-icon-btn.add {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+          }
+        }
+
+        &.current {
+          border-left: 3px solid #e87100;
+        }
+
+        .tabs-count {
+          flex-shrink: 0;
+          color: var(--on-surface-color);
+          background-color: var(--background-color);
+          border: 1px solid var(--outline-color);
+          border-radius: 6px;
+          min-width: 24px;
+          height: 22px;
+          padding: 0 4px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .window-info {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          .window-name {
+            flex: 1;
+            min-width: 0;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .current-badge {
+            flex-shrink: 0;
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            background: rgba(232, 113, 0, 0.15);
+            color: #e87100;
+            font-weight: 600;
+          }
+        }
+
+        .window-actions {
+          display: flex;
+          align-items: center;
+
+          .action-icon-btn {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            border: 1px solid var(--outline-color);
+            background: var(--background-color);
+            color: var(--on-background-color);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.15s ease;
+
+            &:hover {
+              background-color: var(--primary-color) !important;
+              color: var(--on-primary-color) !important;
+              border-color: var(--primary-color) !important;
+            }
+          }
+        }
+      }
+    }
+  }
 }
